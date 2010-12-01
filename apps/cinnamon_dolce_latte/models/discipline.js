@@ -14,6 +14,8 @@
 CinnamonDolceLatte.Discipline = SC.Record.extend(
 /** @scope CinnamonDolceLatte.Discipline.prototype */ {
 	
+	childRecordNamespace: CinnamonDolceLatte,
+	
 	name: SC.Record.attr(String)
 
 }) ;
