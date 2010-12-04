@@ -1,5 +1,5 @@
 // ==========================================================================
-// Project:   CinnamonDolceLatte.Discipline
+// Project:   CinnamonDolceLatte.Topic
 // Copyright: ©2010 My Company, Inc.
 // ==========================================================================
 /*globals CinnamonDolceLatte */
@@ -11,11 +11,10 @@
   @extends SC.Record
   @version 0.1
 */
-CinnamonDolceLatte.Discipline = SC.Record.extend(
-/** @scope CinnamonDolceLatte.Discipline.prototype */ {
-	
+CinnamonDolceLatte.Topic = SC.ChildRecord.extend(
+/** @scope CinnamonDolceLatte.Topic.prototype */ {
 	childRecordNamespace: CinnamonDolceLatte,
 	
-	name: SC.Record.attr(String),
-	topics: SC.Record.toMany('CinnamonDolceLatte.Topic', {nested: true})
+	title: SC.Record.attr(String)
+	// posts: SC.Record.toMany('CinnamonDolceLatte.Post', {nested: true})
 }) ;

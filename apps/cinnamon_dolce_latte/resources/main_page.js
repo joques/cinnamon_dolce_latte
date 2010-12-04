@@ -143,9 +143,9 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					anchorLocation: SC.ANCHOR_TYPE,
 					
 					commentLabelView: SC.LabelView.design({
-						layout: { centerY: 0, centerX: 0, height: 20, width: 50 },
+						layout: { centerY: 0, centerX: 0, height: 20, width: 150 },
 						controlSize: SC.SMALL_CONTROL_SIZE,
-						value: 'Comments'					
+						value: 'Visitors\' Comments'					
 					})
 				}),
 				
