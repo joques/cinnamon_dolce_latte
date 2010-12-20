@@ -8,17 +8,32 @@ sc_require('models/discipline');
 
 CinnamonDolceLatte.Discipline.FIXTURES = [
 
-	{guid: "discipline-1",
-	name: "Software Engineering"},
+	{type: 'Discipline',
+	name: 'Software Engineering',
+	topics: [
+		{type: 'Topic', title: 'Formal Methods'},
+		{type: 'Topic', title: 'Agile methodologies'},
+		{type: 'Topic', title: 'Test and Behavior Driven Methodologies'}
+	]},
 	
-	{guid: "discipline-2",
-	name: "Artificial Intelligence"},
+	{type: 'Discipline'
+	name: 'Artificial Intelligence',
+	topics: [
+		{type: 'Topic', title: 'Multi-agent Systems'},
+		{type: 'Topic', title: 'Distributed Artificial Intelligence'},
+		{type: 'Topic', title: 'Distributed Planning'}
+	]},
 	
-	{guid: "discipline-3",
-	name: "Networking"},
+	{type: 'Discipline',
+	name: 'Networking',
+	topics: [
+		{type: 'Topic', title: 'Policy-based Network management'},
+		{}
+	]},
 	
-	{guid: "discipline-4",
-	name: "Information Technology"}
+	{type: 'Discipline',
+	name: 'Information Technology',
+	topics:[]}
 	
 ];
 ; if ((typeof SC !== 'undefined') && SC && SC.scriptDidLoad) SC.scriptDidLoad('cinnamon_dolce_latte');

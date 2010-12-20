@@ -15,6 +15,17 @@ CinnamonDolceLatte.Topic = SC.ChildRecord.extend(
 /** @scope CinnamonDolceLatte.Topic.prototype */ {
 	childRecordNamespace: CinnamonDolceLatte,
 	
-	title: SC.Record.attr(String)
+	description: SC.Record.attr(String)
 	// posts: SC.Record.toMany('CinnamonDolceLatte.Post', {nested: true})
+	
+	treeItemIsExpanded: NO,
+	
+	treeItemChildren: function(){
+		return null;
+	}.property(),
+	
+	isTopic: function(){
+		return YES;
+	}
+	
 }) ;

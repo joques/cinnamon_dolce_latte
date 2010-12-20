@@ -14,7 +14,9 @@
 CinnamonDolceLatte.Discipline = SC.Record.extend(
 /** @scope CinnamonDolceLatte.Discipline.prototype */ {
 	
-	name: SC.Record.attr(String)
-
+	childRecordNamespace: CinnamonDolceLatte,
+	
+	name: SC.Record.attr(String),
+	topics: SC.Record.toMany('CinnamonDolceLatte.Topic', {nested: true})
 }) ;
 ; if ((typeof SC !== 'undefined') && SC && SC.scriptDidLoad) SC.scriptDidLoad('cinnamon_dolce_latte');

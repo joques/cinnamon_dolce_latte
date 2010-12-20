@@ -25,6 +25,8 @@ CinnamonDolceLatte.main = function main() {
   // TODO: Set the content property on your primary controller
   // ex: CinnamonDolceLatte.contactsController.set('content',CinnamonDolceLatte.contacts);
 
+	CinnamonDolceLatte.disciplinesTreeController.populateDiscipline();
+
 } ;
 
 function main() { CinnamonDolceLatte.main(); }
