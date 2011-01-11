@@ -16,11 +16,10 @@ CinnamonDolceLatte.Discipline = SC.Record.extend(
 	
 	childRecordNamespace: CinnamonDolceLatte,
 	
-	name: SC.Record.attr(String),
+	name: SC.Record.attr(String, {isRequired: YES}),
 	topics: SC.Record.toMany('CinnamonDolceLatte.Topic', {nested: true}),
 	
-	treeItemIsExpanded: NO,
-	
+	treeItemIsExpanded: NO,	
 	treeItemChildren: function(){
 		return this.get("topics");
 	}.property(),
@@ -28,4 +27,5 @@ CinnamonDolceLatte.Discipline = SC.Record.extend(
 	isDiscipline: function(){
 		return YES;
 	}
+	
 }) ;

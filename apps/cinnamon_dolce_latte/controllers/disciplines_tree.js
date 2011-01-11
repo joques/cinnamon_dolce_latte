@@ -12,16 +12,16 @@
 */
 CinnamonDolceLatte.disciplinesTreeController = SC.TreeController.create(
 /** @scope CinnamonDolceLatte.disciplinesTreeController.prototype */ {
-	populateDiscipline: function() {
+	populateDisciplines: function() {
 		var rootNode = SC.Object.create({
 			treeItemIsExpanded: YES,
 			name: "root",
 			treeItemChildren: function(){
-				var disciplineQuery = SC.Query.local(CinnamonDolceLatte.Discipline, {orderBy: 'name'});
+				var disciplineQuery = SC.Query.local(CinnamonDolceLatte.Discipline);
 				var disciplines = CinnamonDolceLatte.store.find(disciplineQuery);
 				return disciplines;
 			}.property()
 		});
-		this.set('content', rootNode);
+		this.set('content', rootNode);		
 	}
 }) ;

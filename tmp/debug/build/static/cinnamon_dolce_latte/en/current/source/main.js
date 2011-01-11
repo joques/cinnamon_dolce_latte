@@ -25,6 +25,13 @@ CinnamonDolceLatte.main = function main() {
   // TODO: Set the content property on your primary controller
   // ex: CinnamonDolceLatte.contactsController.set('content',CinnamonDolceLatte.contacts);
 
+	var disciplineQuery = SC.Query.local(CinnamonDolceLatte.Discipline);
+	var disciplines = CinnamonDolceLatte.store.find(disciplineQuery);
+	
+	CinnamonDolceLatte.disciplineArrayController.set('content', disciplines);
+	
+	CinnamonDolceLatte.disciplinesTreeController.populateDisciplines();
+
 } ;
 
 function main() { CinnamonDolceLatte.main(); }

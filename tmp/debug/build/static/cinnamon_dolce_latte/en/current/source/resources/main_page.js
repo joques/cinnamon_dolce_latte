@@ -55,8 +55,8 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
         autoresizeBehavior: SC.RESIZE_TOP_LEFT,
         defaultThickness: 0.8,
 
-		topLeftView: SC.Pane.design({
-			childViews: 'topicHeaderView topicContentView'.w(),
+		topLeftView: SC.View.design({
+			childViews: 'topicHeaderView topicContentView topicButtonViews'.w(),
 			
 			topicHeaderView: SC.ToolbarView.design({
 				layout: { top: 36, left: 0, right: 0, height: 30 },
@@ -69,16 +69,41 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					value: 'Topics'
 				})				
 			}),
-			
+													
 			topicContentView: SC.ScrollView.design({
 				hasHorizontalScroller: NO,
 				layout: { top: 40, bottom:36, left: 0, right: 0 },
-				// backgroundColor: 'white',
 				
-				contentView: SC.LabelView.design({
-					layout: { centerY: 0, centerX: 0,height: 60,  width: 200 },
-			        controlSize: SC.SMALL_CONTROL_SIZE,
-			        value:   'topics and discipline'
+				contentView: SC.ListView.design({
+					layout: {top: 10, bottom: 10, left: 10, right:10},
+					
+					canEditContent: YES,
+					
+					contentValueKey: "name",
+					contentBinding: "CinnamonDolceLatte.disciplinesTreeController.arrangedObjects",
+					selectionBinding: "CinnamonDolceLatte.disciplinesTreeController.selection"
+				})
+			}),
+			
+			topicButtonViews: SC.View.design({
+				layout: { bottom: 10, centerX:0, height: 24, width: 170 },
+				childViews: 'addTopicButton deleteTopicButton'.w(),
+				
+				addTopicButton: SC.ButtonView.design({
+					layout: {height: 24, width: 80, left: 5},
+					theme: "capsule",
+					title: '+',
+					target: 'CinnamonDolceLatte.treeNodeController',
+					action: 'addNode'
+				}),
+				
+				deleteTopicButton: SC.ButtonView.design({
+					layout: {height: 24, width: 80, right: 5},
+					theme: "capsule",
+					title: '-',
+					target: 'CinnamonDolceLatte.treeNodeController',
+					action: 'deleteNode',
+					isEnabledBinding: 'CinnamonDolceLatte.treeNodeController.canDeleteNode'								
 				})
 				
 			})
@@ -98,8 +123,8 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 	        autoresizeBehavior: SC.RESIZE_TOP_LEFT,
 	        // defaultThickness: 0.8,
 			
-			topLeftView: SC.Pane.design({
-				childViews: 'postHeaderView postContentView'.w(),
+			topLeftView: SC.View.design({
+				childViews: 'postHeaderView postContentView postButtonViews'.w(),
 				
 				postHeaderView: SC.ToolbarView.design({
 					layout: {top: 36, left: 0, right: 0, height: 30},
@@ -115,14 +140,63 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 				
 				postContentView: SC.ScrollView.design({
 					hasHorizontalScroller: NO,
-					layout: { top: 40, left: 0, right: 0 },
-					// backgroundColor: 'white',
+					layout: { top: 40, bottom: 36, left: 0, right: 0 },
 
-					contentView: SC.LabelView.design({
-						layout: { centerY: 0, centerX: 0,height: 60,  width: 200 },
-				        controlSize: SC.SMALL_CONTROL_SIZE,
-				        value:   'our posts'
+					contentView: SC.TableView.design({
+						layout: {top: 10, bottom:10, left: 10, right:10},
+						
+						columns:[
+														
+							SC.TableColumn.create({
+								key: 'title',
+								label: 'Title',
+								width: 400
+							}),
+							SC.TableColumn.create({
+								key: 'shortArticle',
+								label: 'Article',
+								width: 940
+							}),
+							SC.TableColumn.create({
+								key: 'date_created',
+								label: 'Created on',
+								width: 35
+							})
+						],
+						
+						contentBinding: "CinnamonDolceLatte.postArrayController.arrangedObjects",
+						selectionBinding: "CinnamonDolceLatte.postArrayController.selection",
+						canReorderContent: YES,
+						
+					    sortedColumnBinding: 'CinnamonDolceLatte.postArrayController.sortedColumn',
+					    selectOnMouseDown: YES,
+					    exampleView: SC.TableRowView,
+					    recordType: CinnamonDolceLatte.Post
+					})				
+				}),
+				
+				postButtonViews: SC.View.design({
+					layout: { bottom: 10, centerX:0, height: 24, width: 170 },
+					childViews: 'addPostButton deletePostButton'.w(),
+
+					addPostButton: SC.ButtonView.design({
+						layout: {height: 24, width: 80, left: 5},
+						theme: "capsule",
+						title: '+',
+						// target: 'CinnamonDolceLatte.treeNodeController',
+						// action: 'addNode',
+						isEnabledBinding: 'CinnamonDolceLatte.treeNodeController.canAddPost'								
+					}),
+
+					deletePostButton: SC.ButtonView.design({
+						layout: {height: 24, width: 80, right: 5},
+						theme: "capsule",
+						title: '-',
+						// target: 'CinnamonDolceLatte.treeNodeController',
+						// action: 'deleteNode',
+						isEnabledBinding: 'CinnamonDolceLatte.postController.canDeletePost'								
 					})
+
 				})
 			}),
 			
@@ -134,7 +208,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			}),
 			
 			
-			bottomRightView: SC.Pane.design({
+			bottomRightView: SC.View.design({
 				childViews: 'commentHeaderView commentContentView'.w(),
 				
 				commentHeaderView: SC.ToolbarView.design({
@@ -146,19 +220,42 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						layout: { centerY: 0, centerX: 0, height: 20, width: 150 },
 						controlSize: SC.SMALL_CONTROL_SIZE,
 						value: 'Visitors\' Comments'					
-					})
+					})										
+					
 				}),
 				
 				commentContentView: SC.ScrollView.design({
 					hasHorizontalScroller: NO,
 					layout: { top: 40, left: 0, right: 0 },
 					// backgroundColor: 'white',
-
-					contentView: SC.LabelView.design({
-						layout: { centerY: 0, centerX: 0,height: 60,  width: 200 },
-				        controlSize: SC.SMALL_CONTROL_SIZE,
-				        value:   'friends comments'
+					
+					
+					contentView: SC.TableView.design({
+						layout: {top: 45, bottom:10, left: 10, right:10},
+						
+						columns:[
+							SC.TableColumn.create({
+								key: 'shortComment',
+								label: 'Comment',
+								width: 1340
+							}),
+							SC.TableColumn.create({
+								key: 'date_created',
+								label: 'Created on',
+								width: 35
+							})
+						],
+						
+						contentBinding: "CinnamonDolceLatte.commentArrayController.arrangedObjects",
+						selectionBinding: "CinnamonDolceLatte.commentArrayController.selection",
+						canReorderContent: YES, 
+						
+					    sortedColumnBinding: 'CinnamonDolceLatte.commentArrayController.sortedColumn',
+					    selectOnMouseDown: YES,
+					    exampleView: SC.TableRowView,
+					    recordType: CinnamonDolceLatte.Comment
 					})
+					
 				})
 				
 			})
