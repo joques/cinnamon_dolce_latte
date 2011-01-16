@@ -183,8 +183,8 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						layout: {height: 24, width: 80, left: 5},
 						theme: "capsule",
 						title: '+',
-						// target: 'CinnamonDolceLatte.treeNodeController',
-						// action: 'addNode',
+						target: 'CinnamonDolceLatte.postArrayController',
+						action: 'addPost',
 						isEnabledBinding: 'CinnamonDolceLatte.treeNodeController.canAddPost'								
 					}),
 
@@ -192,8 +192,8 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						layout: {height: 24, width: 80, right: 5},
 						theme: "capsule",
 						title: '-',
-						// target: 'CinnamonDolceLatte.treeNodeController',
-						// action: 'deleteNode',
+						target: 'CinnamonDolceLatte.postArrayController',
+						action: 'deletePost',
 						isEnabledBinding: 'CinnamonDolceLatte.postController.canDeletePost'								
 					})
 
@@ -209,7 +209,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			
 			
 			bottomRightView: SC.View.design({
-				childViews: 'commentHeaderView commentContentView'.w(),
+				childViews: 'commentHeaderView commentContentView commentButtonViews'.w(),
 				
 				commentHeaderView: SC.ToolbarView.design({
 					layout: {top: 36, left: 0, right: 0, height: 30},
@@ -231,7 +231,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					
 					
 					contentView: SC.TableView.design({
-						layout: {top: 45, bottom:10, left: 10, right:10},
+						layout: {top: 45, bottom:34, left: 10, right:10},
 						
 						columns:[
 							SC.TableColumn.create({
@@ -256,7 +256,31 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					    recordType: CinnamonDolceLatte.Comment
 					})
 					
-				})
+				}),
+				
+				commentButtonViews: SC.View.design({
+					layout: { bottom: 10, centerX:0, height: 24, width: 170 },
+					childViews: 'addCommentButton deleteCommentButton'.w(),
+
+					addCommentButton: SC.ButtonView.design({
+						layout: {height: 24, width: 80, left: 5},
+						theme: "capsule",
+						title: '+',
+						target: 'CinnamonDolceLatte.commentArrayController',
+						action: 'addComment',
+						isEnabledBinding: 'CinnamonDolceLatte.postController.canAddComment'								
+					}),
+
+					deleteCommentButton: SC.ButtonView.design({
+						layout: {height: 24, width: 80, right: 5},
+						theme: "capsule",
+						title: '-',
+						target: 'CinnamonDolceLatte.commentArrayController',
+						action: 'deleteComment',
+						isEnabledBinding: 'CinnamonDolceLatte.commentController.canDeleteComment'								
+					})
+
+				})				
 				
 			})
 						

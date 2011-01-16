@@ -12,7 +12,7 @@
 */
 CinnamonDolceLatte.topicController = SC.ObjectController.create(
 /** @scope CinnamonDolceLatte.topicController.prototype */ {
-
-  // TODO: Add your own code here.
+	
+		contentBinding: SC.Binding.single('CinnamonDolceLatte.topicArrayController.selection')
 
 }) ;

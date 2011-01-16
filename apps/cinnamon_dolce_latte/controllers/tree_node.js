@@ -16,24 +16,51 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 	contentBinding: SC.Binding.single('CinnamonDolceLatte.disciplinesTreeController.selection'),
 	canDeleteNode: NO,
 	canAddPost: NO,
+	topicCol: null,
 	
 	observeContent: function() {
 		var record = this.get("content");
 		
 		if(record) {
 			this.set('canDeleteNode', YES);
-			this.set('canAddPost', YES);
 			if(record.isTopic) {
+				this.set('canAddPost', YES);
+				
+				// Add topic Array controller and select the current one
+				var allDisc = CinnamonDolceLatte.disciplinesTreeController.get('arrangedObjects');
+				var discSize = allDisc.get('length');
+				
+				var discCount;
+				for(discCount=0; discCount<discSize; discCount++) {
+					var curTopicCol = allDisc.objectAt(discCount).get('topics');
+					var topIdx = curTopicCol.indexOf(record);
+					
+					if(topIdx != -1) {
+						this.set('topicCol', curTopicCol);
+						break;
+					}
+				}
+				
+				CinnamonDolceLatte.topicArrayController.set('content', this.get('topicCol'));
+				CinnamonDolceLatte.topicArrayController.selectObject(record);
+				
+				
+				// set the content of the postArrayController
 				var selectedPosts = record.get("posts");
 				CinnamonDolceLatte.postArrayController.set('content', selectedPosts);
 			} else if(record.isDiscipline) {
+				this.set('canAddPost', NO);
 				CinnamonDolceLatte.disciplineArrayController.selectObject(record);
 				
 				var selTopics = record.get("topics");
-				CinnamonDolceLatte.topicArrayController.set('content', selTopics);
+				this.set('topicCol', selTopics);
+				CinnamonDolceLatte.topicArrayController.set('content', this.get('topicCol'));
 				
 				CinnamonDolceLatte.postArrayController.set('content', null);
 			}
+			
+			CinnamonDolceLatte.topicArrayController.set('content', this.get('topicCol'));
+			
 		} else {
 			this.set('canDeleteNode', NO);
 			this.set('canAddPost', NO);	
@@ -56,20 +83,22 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 			} else if(curSel.isTopic) {
 				
 				if(treeNodeCount > 0) {
-					var topics;
-					var i;
-										
-					for(i=0; i<treeNodeCount; i++) {
-						var curTopics = allTreeNodes.objectAt(i).get('topics');
-						var topicIdx = curTopics.indexOf(curSel);
-						
-						if(topicIdx != -1) {
-							topics = curTopics;
-							break;
-						}
-					}
+					// var topics;
+					// var i;
+					// 					
+					// for(i=0; i<treeNodeCount; i++) {
+					// 	var curTopics = allTreeNodes.objectAt(i).get('topics');
+					// 	var topicIdx = curTopics.indexOf(curSel);
+					// 	
+					// 	if(topicIdx != -1) {
+					// 		topics = curTopics;
+					// 		break;
+					// 	}
+					// }
 					
-					CinnamonDolceLatte.topicArrayController.deleteTopic(curSel, topics);
+					// CinnamonDolceLatte.topicArrayController.deleteTopic(curSel, topics);
+					CinnamonDolceLatte.topicArrayController.deleteTopic(curSel, this.get('topicCol'));
+					
 				}
 			}
 		}
