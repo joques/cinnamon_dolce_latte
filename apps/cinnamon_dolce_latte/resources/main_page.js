@@ -378,9 +378,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			this.set('detailIsVisible', NO);
 	    },
 
-	    /**
-	     * Discard changes
-	     */
 	    cancel: function() {
 	      CinnamonDolceLatte.commentController.discard();
 	      this.set('detailIsVisible', NO);
