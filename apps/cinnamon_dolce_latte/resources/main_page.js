@@ -171,7 +171,10 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					    sortedColumnBinding: 'CinnamonDolceLatte.postArrayController.sortedColumn',
 					    selectOnMouseDown: YES,
 					    exampleView: SC.TableRowView,
-					    recordType: CinnamonDolceLatte.Post
+					    recordType: CinnamonDolceLatte.Post,
+					
+						target: "CinnamonDolceLatte.mainPage.detailPostPane",
+						action: "showForUpdate"
 					})				
 				}),
 				
@@ -307,16 +310,16 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 	detailCommentPane: SC.PanelPane.create({
 		layout: { width:400, height:140, centerX:0, centerY:-50},
 		contentView: SC.View.extend({
-			childViews: 'title comment saveButton cancelButton'.w(),
+			childViews: 'paneTitle commentContent saveButton cancelButton'.w(),
 			
-			title: SC.LabelView.design({
+			paneTitle: SC.LabelView.design({
 			        layout: { left: 17, right: 17, top: 17, height: 26 },
 			        value: 'Comment Details',
 			        textAlign: SC.ALIGN_CENTER,
 			        fontWeight: SC.BOLD_WEIGHT
 			}),
 			
-			comment: SC.View.design({
+			commentContent: SC.View.design({
 				layout: { left: 17, right: 17, top: 44, height: 26 },
 				childViews: 'label field'.w(),
 				
@@ -361,7 +364,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		        // Show
 		        panel.append();
 		        // Set focus on the username field
-		        CinnamonDolceLatte.mainPage.detailCommentPane.contentView.comment.field.becomeFirstResponder();
+		        CinnamonDolceLatte.mainPage.detailCommentPane.contentView.commentContent.field.becomeFirstResponder();
 		      }
 		      else {
 		        // Hide
@@ -381,9 +384,106 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 	    cancel: function() {
 	      CinnamonDolceLatte.commentController.discard();
 	      this.set('detailIsVisible', NO);
-	    }
-	    
+	    }		
+	}),
+	
+	detailPostPane: SC.PanelPane.create({
+		layout: { width:400, height:200, centerX:0, centerY:-50},
+		contentView: SC.View.extend({
+			childViews: 'paneTitle postTitle postArticle saveButton cancelButton'.w(),
+			
+			paneTitle: SC.LabelView.design({
+			        layout: { left: 17, right: 17, top: 17, height: 26 },
+			        value: 'Post Details',
+			        textAlign: SC.ALIGN_CENTER,
+			        fontWeight: SC.BOLD_WEIGHT
+			}),
+			
+			postTitle: SC.View.design({
+				layout: { left: 17, right: 17, top: 44, height: 26 },
+				childViews: 'label field'.w(),
+				
+				label: SC.LabelView.design({
+		          layout: { left: 0, width: 95, height: 18, centerY: 0 },
+
+		          value: 'Title',
+		          textAlign: SC.ALIGN_RIGHT,
+		          fontWeight: SC.BOLD_WEIGHT
+		        }),
+				
+				field: SC.TextFieldView.design({
+		          layout: { width: 250, height: 22, right: 3, centerY: 0 },
+		          valueBinding: 'CinnamonDolceLatte.postController.updatedTitle',
+		          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailPostPane.isEnabled'
+		        })
+			}),
+			
+			postArticle: SC.View.design({
+				layout: { left: 17, right: 17, top: 72, height: 26 },
+				childViews: 'label field'.w(),
+				
+				label: SC.LabelView.design({
+		          layout: { left: 0, width: 95, height: 18, centerY: 0 },
+
+		          value: 'Article',
+		          textAlign: SC.ALIGN_RIGHT,
+		          fontWeight: SC.BOLD_WEIGHT
+		        }),
+				
+				field: SC.TextFieldView.design({
+		          layout: { width: 250, height: 22, right: 3, centerY: 0 },
+		          valueBinding: 'CinnamonDolceLatte.postController.updatedArticle',
+		          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailArticlePane.isEnabled'
+		        })
+			}),
+			
+			saveButton: SC.ButtonView.design({
+	        layout: {bottom: 10, right: 110, height:24, width:80},
+	        title: 'Save',
+	        action: 'save',
+	        isDefault: YES,
+	        isEnabledBinding: 'CinnamonDolceLatte.postController.contentIsChanged',
+	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailPostPane.isEnabled'
+	      }),
+
+	      cancelButton: SC.ButtonView.design({
+	        layout: {bottom: 10, right: 20, height:24, width:80},
+	        title: 'Cancel',
+	        action: 'cancel',
+	        isCancel: YES,
+	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailPostPane.isEnabled'
+	      })			
+		}),
 		
+		detailIsVisible: NO,
+		
+		detailIsVisibleDidChange: function() {
+		      var panel = CinnamonDolceLatte.mainPage.get('detailPostPane');
+		      if (this.get('detailIsVisible')) {
+		        // Show
+		        panel.append();
+		        // Set focus on the username field
+		        CinnamonDolceLatte.mainPage.detailPostPane.contentView.postTitle.field.becomeFirstResponder();
+		      }
+		      else {
+		        // Hide
+		        panel.remove();
+		      }
+		}.observes('detailIsVisible'),
+		
+		showForUpdate: function() {
+		      this.set('detailIsVisible', YES);
+		},
+		
+		save: function() {
+	        CinnamonDolceLatte.postController.save();
+			this.set('detailIsVisible', NO);
+	    },
+
+	    cancel: function() {
+	      CinnamonDolceLatte.postController.discard();
+	      this.set('detailIsVisible', NO);
+	    }		
 	})
 
 });

@@ -47,6 +47,10 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 		}
 		
 		return YES;
+	},
+	
+	updatePosts: function(postIdx) {
+		this.enumerableContentDidChange(postIdx, 1, 0);
 	}
 	
 }) ;
