@@ -47,6 +47,10 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 		
 		return YES;
 		
+	},
+	
+	updateComments: function(commentIdx) {
+		this.enumerableContentDidChange(commentIdx, 1, 0);
 	}
 
 }) ;
