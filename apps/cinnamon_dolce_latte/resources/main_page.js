@@ -253,7 +253,10 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					    sortedColumnBinding: 'CinnamonDolceLatte.commentArrayController.sortedColumn',
 					    selectOnMouseDown: YES,
 					    exampleView: SC.TableRowView,
-					    recordType: CinnamonDolceLatte.Comment
+					    recordType: CinnamonDolceLatte.Comment,
+					
+						target: "CinnamonDolceLatte.mainPage.detailCommentPane",
+						action: "showForUpdate"
 					})
 					
 				}),
@@ -299,6 +302,91 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			escapeHTML: false
 		})
 	})    
-  })
+  }),
+
+	detailCommentPane: SC.PanelPane.create({
+		layout: { width:400, height:140, centerX:0, centerY:-50},
+		contentView: SC.View.extend({
+			childViews: 'title comment saveButton cancelButton'.w(),
+			
+			title: SC.LabelView.design({
+			        layout: { left: 17, right: 17, top: 17, height: 26 },
+			        value: 'Comment Details',
+			        textAlign: SC.ALIGN_CENTER,
+			        fontWeight: SC.BOLD_WEIGHT
+			}),
+			
+			comment: SC.View.design({
+				layout: { left: 17, right: 17, top: 44, height: 26 },
+				childViews: 'label field'.w(),
+				
+				label: SC.LabelView.design({
+		          layout: { left: 0, width: 95, height: 18, centerY: 0 },
+
+		          value: 'Comment',
+		          textAlign: SC.ALIGN_RIGHT,
+		          fontWeight: SC.BOLD_WEIGHT
+		        }),
+				
+				field: SC.TextFieldView.design({
+		          layout: { width: 250, height: 22, right: 3, centerY: 0 },
+		          valueBinding: 'CinnamonDolceLatte.commentController.updatedComment',
+		          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailCommentPane.isEnabled'
+		        })
+			}),
+			
+			saveButton: SC.ButtonView.design({
+	        layout: {bottom: 10, right: 110, height:24, width:80},
+	        title: 'Save',
+	        action: 'save',
+	        isDefault: YES,
+	        isEnabledBinding: 'CinnamonDolceLatte.commentController.contentIsChanged',
+	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailCommentPane.isEnabled'
+	      }),
+
+	      cancelButton: SC.ButtonView.design({
+	        layout: {bottom: 10, right: 20, height:24, width:80},
+	        title: 'Cancel',
+	        action: 'cancel',
+	        isCancel: YES,
+	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailCommentPane.isEnabled'
+	      })			
+		}),
+		
+		detailIsVisible: NO,
+		
+		detailIsVisibleDidChange: function() {
+		      var panel = CinnamonDolceLatte.mainPage.get('detailCommentPane');
+		      if (this.get('detailIsVisible')) {
+		        // Show
+		        panel.append();
+		        // Set focus on the username field
+		        CinnamonDolceLatte.mainPage.detailCommentPane.contentView.comment.field.becomeFirstResponder();
+		      }
+		      else {
+		        // Hide
+		        panel.remove();
+		      }
+		}.observes('detailIsVisible'),
+		
+		showForUpdate: function() {
+		      this.set('detailIsVisible', YES);
+		},
+		
+		save: function() {
+	        CinnamonDolceLatte.commentController.save();
+			this.set('detailIsVisible', NO);
+	    },
+
+	    /**
+	     * Discard changes
+	     */
+	    cancel: function() {
+	      CinnamonDolceLatte.commentController.discard();
+	      this.set('detailIsVisible', NO);
+	    }
+	    
+		
+	})
 
 });
