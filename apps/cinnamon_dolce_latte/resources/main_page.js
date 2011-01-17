@@ -121,7 +121,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			layout: {left: 0, top: 36, right: 0, bottom: 36},
 			layoutDirection: SC.LAYOUT_VERTICAL,
 	        autoresizeBehavior: SC.RESIZE_TOP_LEFT,
-	        // defaultThickness: 0.8,
+
 			
 			topLeftView: SC.View.design({
 				childViews: 'postHeaderView postContentView postButtonViews'.w(),
