@@ -81,7 +81,17 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					
 					contentValueKey: "name",
 					contentBinding: "CinnamonDolceLatte.disciplinesTreeController.arrangedObjects",
-					selectionBinding: "CinnamonDolceLatte.disciplinesTreeController.selection"
+					selectionBinding: "CinnamonDolceLatte.disciplinesTreeController.selection",
+					
+					exampleView: SC.ListItemView.extend({
+						inlineEditorShouldBeginEditing: function() {
+							return this.contentIsEditable();
+						},
+						
+						inlineEditorDidEndEditing: function(inLineEditor, finalValue) {
+							CinnamonDolceLatte.treeNodeController.updateNodeName(finalValue);
+						}
+					})					
 				})
 			}),
 			

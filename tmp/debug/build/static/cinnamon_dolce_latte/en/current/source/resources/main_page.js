@@ -81,7 +81,17 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					
 					contentValueKey: "name",
 					contentBinding: "CinnamonDolceLatte.disciplinesTreeController.arrangedObjects",
-					selectionBinding: "CinnamonDolceLatte.disciplinesTreeController.selection"
+					selectionBinding: "CinnamonDolceLatte.disciplinesTreeController.selection",
+					
+					exampleView: SC.ListItemView.extend({
+						inlineEditorShouldBeginEditing: function() {
+							return this.contentIsEditable();
+						},
+						
+						inlineEditorDidEndEditing: function(inLineEditor, finalValue) {
+							CinnamonDolceLatte.treeNodeController.updateNodeName(finalValue);
+						}
+					})					
 				})
 			}),
 			
@@ -121,7 +131,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			layout: {left: 0, top: 36, right: 0, bottom: 36},
 			layoutDirection: SC.LAYOUT_VERTICAL,
 	        autoresizeBehavior: SC.RESIZE_TOP_LEFT,
-	        // defaultThickness: 0.8,
+
 			
 			topLeftView: SC.View.design({
 				childViews: 'postHeaderView postContentView postButtonViews'.w(),

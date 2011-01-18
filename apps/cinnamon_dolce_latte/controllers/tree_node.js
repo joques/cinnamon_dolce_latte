@@ -17,7 +17,7 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 	canDeleteNode: NO,
 	canAddPost: NO,
 	topicCol: null,
-	
+		
 	observeContent: function() {
 		var record = this.get("content");
 		
@@ -122,6 +122,17 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 		} else {
 			return CinnamonDolceLatte.disciplineArrayController.addDiscipline();
 		}
+	},
+	
+	updateNodeName: function(finalValue) {
+		var record = this.get('content');
+		if(record) {
+			if(record.isTopic) {
+				record.set('description', finalValue);
+			} else if(record.isDiscipline) {
+				record.set('name', finalValue);
+			}
+		}		
 	}
 		
 }) ;

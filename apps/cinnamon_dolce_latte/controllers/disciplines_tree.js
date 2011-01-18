@@ -23,5 +23,5 @@ CinnamonDolceLatte.disciplinesTreeController = SC.TreeController.create(
 			}.property()
 		});
 		this.set('content', rootNode);		
-	}
+	}	
 }) ;

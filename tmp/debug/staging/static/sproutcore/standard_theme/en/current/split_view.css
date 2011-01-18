@@ -1,11 +1,11 @@
 /* @group SC.SplitView */
 
 .sc-theme .sc-horizontal .sc-split-divider-view {
-	background: url('/static/sproutcore/standard_theme/en/current/images/sc-theme-ysprite.png?1290970590') repeat-y 0px top;
+	background: url('/static/sproutcore/standard_theme/en/current/images/sc-theme-ysprite.png?1295317431') repeat-y 0px top;
 }
 
 .sc-theme .sc-vertical .sc-split-divider-view {
-	background: url('/static/sproutcore/standard_theme/en/current/images/sc-theme-repeat-x.png?1290970590') repeat-x 0px -1397px;
+	background: url('/static/sproutcore/standard_theme/en/current/images/sc-theme-repeat-x.png?1295317431') repeat-x 0px -1397px;
 }
 
 /* @end */
