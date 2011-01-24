@@ -15,7 +15,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 
 	topView: SC.ToolbarView.design({
 		layout: { top: 0, left: 0, right: 0, height: 36 },
-		childViews: 'appLabelView bannerLabelView searchView'.w(),
+		childViews: 'appLabelView bannerLabelView searchView logOutButton'.w(),
 		anchorLocation: SC.ANCHOR_TOP,
 		
 		appLabelView: SC.LabelView.design({
@@ -32,7 +32,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		}),
 		
 		searchView: SC.View.design({
-			layout: { centerY: 0, height: 24, right: 0, width: 225},
+			layout: { centerY: 0, height: 24, right: 85, width: 225},
 			childViews: 'searchArea searchButton'.w(),
 			
 			searchArea: SC.TextFieldView.design({
@@ -45,6 +45,13 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 				theme: "capsule",
 				title: 'search'
 			})
+		}),
+		
+		logOutButton: SC.ButtonView.design({
+			layout: {height: 22, right: 0, width: 80, centerY: 0},
+			theme: "capsule",
+			title: '_Logout'.loc(),
+			action: 'logOut'		
 		})
 	}),
 	
@@ -314,7 +321,12 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			value: 'Cinnamon Dolce Latt&egrave; &copy;',
 			escapeHTML: false
 		})
-	})    
+	}),
+	
+	logOut: function() {
+		SC.routes.set('location', 'logoutPage/logoutPane');
+	}
+	    
   }),
 
 	detailCommentPane: SC.PanelPane.create({
@@ -486,7 +498,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		},
 		
 		save: function() {
-	        CinnamonDolceLatte.postController.save();
+	    CinnamonDolceLatte.postController.save();
 			this.set('detailIsVisible', NO);
 	    },
 

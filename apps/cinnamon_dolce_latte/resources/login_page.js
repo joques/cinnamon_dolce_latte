@@ -26,6 +26,7 @@ CinnamonDolceLatte.loginPage = SC.Page.design({
 			
 				field: SC.TextFieldView.design({
 					layout: {left: 10, width: 160, centerY: 20, height: 50},
+					hint: "_Username".loc(),
 					isEnabledBinding: SC.Binding.from("CinnamonDolceLatte.loginController.isLoggingIn")
 																			.bool()
 																			.transform(function(value, isForward) {return !value ;}),
@@ -46,6 +47,7 @@ CinnamonDolceLatte.loginPage = SC.Page.design({
 				
 				field: SC.TextFieldView.design({
 					layout: {left: 0, width: 160, centerY: 20, height: 50},
+					hint: "_Password".loc(),
 					isPassword: YES,
 					isEnabledBinding: SC.Binding.from("CinnamonDolceLatte.loginController.isLoggingIn")
 																			.bool()
