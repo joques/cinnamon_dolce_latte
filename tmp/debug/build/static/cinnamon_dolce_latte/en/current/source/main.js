@@ -17,21 +17,22 @@ CinnamonDolceLatte.main = function main() {
   // The default code here will make the mainPane for your application visible
   // on screen.  If you app gets any level of complexity, you will probably 
   // create multiple pages and panes.  
-  CinnamonDolceLatte.getPath('mainPage.mainPane').append() ;
+  // CinnamonDolceLatte.getPath('mainPage.mainPane').append() ;
 
+	// CinnamonDolceLatte.getPath('loginPage.loginPane').append() ;
+
+	SC.routes.add(':pageName/:paneName', CinnamonDolceLatte.routes, 'moveToPage');
+	SC.routes.add(':', CinnamonDolceLatte.routes, 'moveToPage');
+	
+	SC.routes.set('location', 'loginPage/loginPane');
+	
   // Step 2. Set the content property on your primary controller.
   // This will make your app come alive!
 
-  // TODO: Set the content property on your primary controller
-  // ex: CinnamonDolceLatte.contactsController.set('content',CinnamonDolceLatte.contacts);
-
 	var disciplineQuery = SC.Query.local(CinnamonDolceLatte.Discipline);
 	var disciplines = CinnamonDolceLatte.store.find(disciplineQuery);
-	
-	CinnamonDolceLatte.disciplineArrayController.set('content', disciplines);
-	
+	CinnamonDolceLatte.disciplineArrayController.set('content', disciplines);	
 	CinnamonDolceLatte.disciplinesTreeController.populateDisciplines();
-
 } ;
 
 function main() { CinnamonDolceLatte.main(); }

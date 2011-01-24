@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   CinnamonDolceLatte
-// Copyright: ©2010 My Company, Inc.
+// Copyright: ©2010 iTrinity, Inc.
 // ==========================================================================
 /*globals CinnamonDolceLatte */
 
@@ -14,7 +14,7 @@ CinnamonDolceLatte = SC.Application.create(
   /** @scope CinnamonDolceLatte.prototype */ {
 
   NAMESPACE: 'CinnamonDolceLatte',
-  VERSION: '0.1.0',
+  VERSION: '1.0.0',
 
   // This is your application store.  You will use this store to access all
   // of your model data.  You can also set a data source on this store to

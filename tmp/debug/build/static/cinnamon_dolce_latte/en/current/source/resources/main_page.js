@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   CinnamonDolceLatte - mainPage
-// Copyright: ©2010 My Company, Inc.
+// Copyright: ©2010 iTrinity Inc.
 // ==========================================================================
 /*globals CinnamonDolceLatte */
 

@@ -1,6 +1,6 @@
 # ===========================================================================
 # Project:   CinnamonDolceLatte
-# Copyright: ©2010 My Company, Inc.
+# Copyright: ©2010 iTrinity, Inc.
 # ===========================================================================
 
 # Add initial buildfile information here
