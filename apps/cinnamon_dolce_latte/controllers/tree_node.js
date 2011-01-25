@@ -28,29 +28,31 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 				
 				// Add topic Array controller and select the current one
 				var allDisc = CinnamonDolceLatte.disciplinesTreeController.get('arrangedObjects');
-				var discSize = allDisc.get('length');
-				
-				var discCount;
-				for(discCount=0; discCount<discSize; discCount++) {
-					var curTopicCol = allDisc.objectAt(discCount).get('topics');
-					
-					if (curTopicCol) {
-						var topIdx = curTopicCol.indexOf(record);
+				if (allDisc) {
+					var discSize = allDisc.get('length');
 
-						if(topIdx != -1) {
-							this.set('topicCol', curTopicCol);
-							break;
+					var discCount;
+					for(discCount=0; discCount<discSize; discCount++) {
+						var curTopicCol = allDisc.objectAt(discCount).get('topics');
+
+						if (curTopicCol) {
+							var topIdx = curTopicCol.indexOf(record);
+
+							if(topIdx != -1) {
+								this.set('topicCol', curTopicCol);
+								break;
+							}
 						}
 					}
+
+					CinnamonDolceLatte.topicArrayController.set('content', this.get('topicCol'));
+					CinnamonDolceLatte.topicArrayController.selectObject(record);
+
+
+					// set the content of the postArrayController
+					var selectedPosts = record.get("posts");
+					CinnamonDolceLatte.postArrayController.set('content', selectedPosts);
 				}
-				
-				CinnamonDolceLatte.topicArrayController.set('content', this.get('topicCol'));
-				CinnamonDolceLatte.topicArrayController.selectObject(record);
-				
-				
-				// set the content of the postArrayController
-				var selectedPosts = record.get("posts");
-				CinnamonDolceLatte.postArrayController.set('content', selectedPosts);
 			} else if(record.isDiscipline) {
 				this.set('canAddPost', NO);
 				CinnamonDolceLatte.disciplineArrayController.selectObject(record);

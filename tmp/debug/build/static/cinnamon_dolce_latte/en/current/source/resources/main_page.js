@@ -339,7 +339,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 	}),
 	
 	logOut: function() {
-		CinnamonDolceLatte.disciplinesTreeController.set("selection",null);
 		SC.routes.set('location', 'logoutPage/logoutPane');
 	}
 	    

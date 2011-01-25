@@ -39,9 +39,7 @@ CinnamonDolceLatte.routes = SC.Object.create({
 				CinnamonDolceLatte.loginController.set('userName', '');
 				CinnamonDolceLatte.loginController.set('passWord', '');
 				CinnamonDolceLatte.loginController.set('returnRoute',  'mainPage/mainPane');
-				
-				
-				// CinnamonDolceLatte.loginPage.loginPane.boxView.userName.field.becomeFirstResponder();					
+								
 				SC.routes.set('location', 'loginPage/loginPane');
 				return ;
 			}
