@@ -16,6 +16,7 @@ CinnamonDolceLatte.Comment = SC.Record.extend(
 	
 		childRecordNamespace: CinnamonDolceLatte,
 		comment: SC.Record.attr(String, {isRequired: YES}),
+		commentator: SC.Record.attr(String, {isRequired: YES}),
 		date_created: SC.Record.attr(SC.DateTime),
 		
 		shortComment: function() {

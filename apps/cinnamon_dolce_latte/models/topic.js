@@ -16,6 +16,7 @@ CinnamonDolceLatte.Topic = SC.ChildRecord.extend(
 	childRecordNamespace: CinnamonDolceLatte,
 	
 	description: SC.Record.attr(String, {isRequired: YES}),
+	keywords: SC.Record.attr(Array, {isRequired: YES}),
 	posts: SC.Record.toMany('CinnamonDolceLatte.Post', { nested: true }),
 		
 	treeItemIsExpanded: NO,	

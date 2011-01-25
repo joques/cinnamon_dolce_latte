@@ -17,6 +17,8 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 		var curPost = CinnamonDolceLatte.postController.get('content');
 		var commentCol = curPost.get('comments');
 		
+		var commentatorName = CinnamonDolceLatte.loginController.get('nameToDisplay');
+
 		// generate the id 
 		var com_lenght = this.get('content').get('length');
 		com_lenght++;
@@ -26,6 +28,7 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 			type: 'Comment',
 			guid: guid_val,
 			comment: 'Add your comment here here',
+			commentator: commentatorName,
 			date_created: SC.DateTime.create()
 		});
 				

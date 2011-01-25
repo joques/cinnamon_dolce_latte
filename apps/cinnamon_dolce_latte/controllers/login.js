@@ -13,9 +13,16 @@
 CinnamonDolceLatte.loginController = SC.ObjectController.create(
 /** @scope CinnamonDolceLatte.loginController.prototype */ {
 	userName: '',
+	nameToDisplay: '',
 	passWord: '',
 	isLoggingIn: NO,
 	returnRoute: '',
+	
+	
+	observeUserName: function() {
+		myUserName = this.get("userName");
+		this.set("nameToDisplay", myUserName + " " + myUserName);
+	}.observes("userName"),
 	
 	beginLogging: function() {
 		try {

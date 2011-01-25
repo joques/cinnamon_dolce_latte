@@ -33,11 +33,14 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 				var discCount;
 				for(discCount=0; discCount<discSize; discCount++) {
 					var curTopicCol = allDisc.objectAt(discCount).get('topics');
-					var topIdx = curTopicCol.indexOf(record);
 					
-					if(topIdx != -1) {
-						this.set('topicCol', curTopicCol);
-						break;
+					if (curTopicCol) {
+						var topIdx = curTopicCol.indexOf(record);
+
+						if(topIdx != -1) {
+							this.set('topicCol', curTopicCol);
+							break;
+						}
 					}
 				}
 				

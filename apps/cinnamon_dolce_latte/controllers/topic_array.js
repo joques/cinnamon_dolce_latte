@@ -13,6 +13,18 @@
 CinnamonDolceLatte.topicArrayController = SC.ArrayController.create(
 /** @scope CinnamonDolceLatte.topicArrayController.prototype */ {
 	
+	searchKeyword: '',
+	canSearch: NO,
+	
+	observeSearchKeyword: function() {
+		var mySearchKeyword = this.get("searchKeyword");
+		if ((mySearchKeyword === undefined) || (mySearchKeyword === null) || (mySearchKeyword === '')) {
+			this.set("canSearch", NO);	
+		} else {
+			this.set("canSearch", YES);
+		}
+	}.observes("searchKeyword"),
+	
 	addTopic: function(topics) {
 		var topic;
 		var top_len = this.get('content').get('length');
@@ -25,6 +37,7 @@ CinnamonDolceLatte.topicArrayController = SC.ArrayController.create(
 			type: 'Topic',
 			guid: guid_val,
 			description: 'New Topic',
+			keywords: [],
 			posts: []
 		});
 				
@@ -33,5 +46,27 @@ CinnamonDolceLatte.topicArrayController = SC.ArrayController.create(
 	
 	deleteTopic: function(topic, topicCol) {
 		topicCol.removeObject(topic);
+	},
+	
+	localSearch: function() {
+		var allTopics = this.get("content");
+		if(allTopics) {
+			var topicCount = allTopics.get("length");
+			var i;
+			for (i=0; i<topicCount; i++) {
+				var curTopic = allTopics.objectAt(i);
+				var curKeywords = curTopic.get("keywords");
+				var curKeywordIdx = curKeywords.indexOf(this.get("searchKeyword"));
+				
+				if (curKeywordIdx != -1) {
+					CinnamonDolceLatte.disciplinesTreeController.selectObject(curTopic);
+					this.set("searchKeyword", '');
+					return;
+				}
+			}	
+		}
+		
+		this.set("searchKeyword", '');		
+		SC.AlertPane.error("Keyword search", "Keyword not found!");	
 	}
 }) ;

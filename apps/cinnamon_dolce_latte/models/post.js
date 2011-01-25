@@ -17,6 +17,7 @@ CinnamonDolceLatte.Post = SC.ChildRecord.extend(
 	
 	title: SC.Record.attr(String, {isRequired: YES}),
 	article: SC.Record.attr(String, {isRequired: YES}),
+	creator: SC.Record.attr(String),
 	date_created: SC.Record.attr(SC.DateTime),
 	comments: SC.Record.toMany('CinnamonDolceLatte.Comment', { nested: true }),
 	

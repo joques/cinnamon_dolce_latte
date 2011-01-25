@@ -17,9 +17,6 @@ CinnamonDolceLatte.main = function main() {
   // The default code here will make the mainPane for your application visible
   // on screen.  If you app gets any level of complexity, you will probably 
   // create multiple pages and panes.  
-  // CinnamonDolceLatte.getPath('mainPage.mainPane').append() ;
-
-	// CinnamonDolceLatte.getPath('loginPage.loginPane').append() ;
 
 	SC.routes.add(':pageName/:paneName', CinnamonDolceLatte.routes, 'moveToPage');
 	SC.routes.add(':', CinnamonDolceLatte.routes, 'moveToPage');

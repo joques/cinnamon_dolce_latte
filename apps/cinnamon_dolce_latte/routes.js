@@ -23,7 +23,9 @@ CinnamonDolceLatte.routes = SC.Object.create({
 				if (authCookie == null) {
 					CinnamonDolceLatte.loginController.set('userName', '');
 					CinnamonDolceLatte.loginController.set('passWord', '');
-					CinnamonDolceLatte.loginController.set('returnRoute', pageName + '/' + paneName);					
+					CinnamonDolceLatte.loginController.set('returnRoute', pageName + '/' + paneName);
+					
+					// CinnamonDolceLatte.loginPage.loginPane.boxView.userName.field.becomeFirstResponder();
 					SC.routes.set('location', 'loginPage/loginPane');
 					return ;
 				}
@@ -36,7 +38,10 @@ CinnamonDolceLatte.routes = SC.Object.create({
 				}
 				CinnamonDolceLatte.loginController.set('userName', '');
 				CinnamonDolceLatte.loginController.set('passWord', '');
-				CinnamonDolceLatte.loginController.set('returnRoute',  'mainPage/mainPane');					
+				CinnamonDolceLatte.loginController.set('returnRoute',  'mainPage/mainPane');
+				
+				
+				// CinnamonDolceLatte.loginPage.loginPane.boxView.userName.field.becomeFirstResponder();					
 				SC.routes.set('location', 'loginPage/loginPane');
 				return ;
 			}

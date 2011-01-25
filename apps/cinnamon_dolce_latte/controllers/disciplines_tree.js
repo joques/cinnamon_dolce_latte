@@ -12,6 +12,7 @@
 */
 CinnamonDolceLatte.disciplinesTreeController = SC.TreeController.create(
 /** @scope CinnamonDolceLatte.disciplinesTreeController.prototype */ {
+	
 	populateDisciplines: function() {
 		var rootNode = SC.Object.create({
 			treeItemIsExpanded: YES,
@@ -23,5 +24,5 @@ CinnamonDolceLatte.disciplinesTreeController = SC.TreeController.create(
 			}.property()
 		});
 		this.set('content', rootNode);		
-	}	
+	}
 }) ;

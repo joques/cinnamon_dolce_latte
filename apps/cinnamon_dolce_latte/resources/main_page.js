@@ -12,6 +12,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
   // load.
   mainPane: SC.MainPane.design({
     childViews: 'middleView topView bottomView'.w(),
+		classNames: ['main'],
 
 	topView: SC.ToolbarView.design({
 		layout: { top: 0, left: 0, right: 0, height: 36 },
@@ -32,18 +33,22 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		}),
 		
 		searchView: SC.View.design({
-			layout: { centerY: 0, height: 24, right: 85, width: 225},
+			layout: { centerY: 0, height: 24, right: 125, width: 225},
 			childViews: 'searchArea searchButton'.w(),
 			
 			searchArea: SC.TextFieldView.design({
-				layout: {left: 0, height: 22, width: 120},
-				hint: "local search".loc()
+				layout: {left: 0, height: 22, width: 140},
+				hint: "_Search".loc(),
+				valueBinding: "CinnamonDolceLatte.topicArrayController.searchKeyword"
 			}),
 						
 			searchButton: SC.ButtonView.design({
-				layout: {height: 22, right: 12, width: 80},
+				layout: {height: 22, right: 0, width: 80},
 				theme: "capsule",
-				title: 'search'
+				title: '_SearchButton'.loc(),
+				isEnabledBinding: SC.Binding.from("CinnamonDolceLatte.topicArrayController.canSearch"),
+				target: 'CinnamonDolceLatte.topicArrayController',
+				action: 'localSearch'
 			})
 		}),
 		
@@ -172,8 +177,13 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 							SC.TableColumn.create({
 								key: 'shortArticle',
 								label: 'Article',
-								width: 940
+								width: 800
 							}),
+							SC.TableColumn.create({
+								key: 'creator',
+								label: 'Author',
+								width: 140
+							}),							
 							SC.TableColumn.create({
 								key: 'date_created',
 								label: 'Created on',
@@ -257,7 +267,12 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 							SC.TableColumn.create({
 								key: 'shortComment',
 								label: 'Comment',
-								width: 1340
+								width: 1200
+							}),
+							SC.TableColumn.create({
+								key: 'commentator',
+								label: 'Author',
+								width: 140
 							}),
 							SC.TableColumn.create({
 								key: 'date_created',
@@ -399,7 +414,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		},
 		
 		save: function() {
-	        CinnamonDolceLatte.commentController.save();
+	    CinnamonDolceLatte.commentController.save();
 			this.set('detailIsVisible', NO);
 	    },
 
