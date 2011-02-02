@@ -72,6 +72,8 @@ CinnamonDolceLatte.loginController = SC.ObjectController.create(
 			authCookie.value = 'response token';
 			authCookie.expires = null;
 			authCookie.write();
+			// SC.LOG_OBSERVERS = true;
+			this.populateStore();
 			
 			var curReturnRoute = CinnamonDolceLatte.loginController.get('returnRoute');
 			
@@ -81,10 +83,28 @@ CinnamonDolceLatte.loginController = SC.ObjectController.create(
 				SC.routes.set('location', 'mainPage/mainPane');
 			}
 			
+			// SC.LOG_OBSERVERS = false;
+			
 		} catch(err) {
 			SC.AlertPane.error("Logging Error", err.message);
 			SC.Logger.info("Error in Logging " + err.message);
 		}
+	},
+	
+	populateStore: function() {
+		// reset the store
+		CinnamonDolceLatte.store.reset();
+		CinnamonDolceLatte.store = SC.Store.create().from(SC.Record.fixtures);
+		
+		CinnamonDolceLatte.disciplinesTreeController.populateDisciplines();
+		CinnamonDolceLatte.getPath('mainPage.mainPane').append();
+		
+		// var pagePane = CinnamonDolceLatte.getPath(pagePanePath);
+		// 	pagePane.append();
+			
+		var disciplineQuery = SC.Query.local(CinnamonDolceLatte.Discipline);
+		var disciplines = CinnamonDolceLatte.store.find(disciplineQuery);
+		CinnamonDolceLatte.disciplineArrayController.set('content', disciplines);	
 	}
 	
 }) ;

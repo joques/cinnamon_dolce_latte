@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -87,7 +87,7 @@ SC.Event = function(originalEvent) {
       this.wheelDeltaX = 0-(originalEvent.wheelDeltaX||0);
 
       // Scrolling in Safari 5.0.1, which is huge for some reason
-      if (version === 533.17) {
+      if (version >= 533.17 && version <= 533.19) {
         deltaMultiplier = 0.004;
 
       // Scrolling in Safari 5.0

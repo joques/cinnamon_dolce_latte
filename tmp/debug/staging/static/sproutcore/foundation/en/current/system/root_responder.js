@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -522,7 +522,7 @@ SC.RootResponder = SC.Object.extend({
         target = SC.objectForPropertyPath(target) ;
         if (target) this.set('defaultResponder', target) ; // cache if found
       }
-      if (target) {
+      if (target && !target.isResponderContext) {
         if (target.respondsTo && !target.respondsTo(methodName)) {
           target = null ;
         } else if (SC.typeOf(target[methodName]) !== SC.T_FUNCTION) {
@@ -612,7 +612,7 @@ SC.RootResponder = SC.Object.extend({
     this.listenFor('touchstart touchmove touchend touchcancel'.w(), document);
 
     // handle basic events
-    this.listenFor('keydown keyup beforedeactivate mousedown mouseup click dblclick mouseout mouseover mousemove selectstart contextmenu'.w(), document)
+    this.listenFor('keydown keyup beforedeactivate mousedown mouseup click dblclick mousemove selectstart contextmenu'.w(), document)
         .listenFor('resize'.w(), window);
         
     if(SC.browser.msie) this.listenFor('focusin focusout'.w(), document);

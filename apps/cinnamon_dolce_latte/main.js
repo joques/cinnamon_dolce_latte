@@ -20,16 +20,10 @@ CinnamonDolceLatte.main = function main() {
 
 	SC.routes.add(':pageName/:paneName', CinnamonDolceLatte.routes, 'moveToPage');
 	SC.routes.add(':', CinnamonDolceLatte.routes, 'moveToPage');
-	
 	SC.routes.set('location', 'loginPage/loginPane');
 	
   // Step 2. Set the content property on your primary controller.
   // This will make your app come alive!
-
-	var disciplineQuery = SC.Query.local(CinnamonDolceLatte.Discipline);
-	var disciplines = CinnamonDolceLatte.store.find(disciplineQuery);
-	CinnamonDolceLatte.disciplineArrayController.set('content', disciplines);	
-	CinnamonDolceLatte.disciplinesTreeController.populateDisciplines();
 } ;
 
 function main() { CinnamonDolceLatte.main(); }

@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1328,7 +1328,7 @@ SC.Observable = {
 
 /** @private used by addProbe/removeProbe */
 SC.logChange = function logChange(target, key, value) {
-  console.log("CHANGE: %@[%@] =>".fmt(target, key), target.get(key));
+  console.log("CHANGE: %@[%@] => %@".fmt(target, key, target.get(key)));
 };
 
 /**

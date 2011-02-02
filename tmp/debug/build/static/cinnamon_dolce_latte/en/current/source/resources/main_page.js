@@ -95,7 +95,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					contentBinding: "CinnamonDolceLatte.disciplinesTreeController.arrangedObjects",
 					selectionBinding: "CinnamonDolceLatte.disciplinesTreeController.selection",
 					
-					exampleView: SC.ListItemView.extend({
+					exampleView: SC.ListItemView.extend({						
 						inlineEditorShouldBeginEditing: function() {
 							return this.contentIsEditable();
 						},

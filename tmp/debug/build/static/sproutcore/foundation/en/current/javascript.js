@@ -1,7 +1,7 @@
 /* >>>>>>>>>> BEGIN source/system/locale.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -296,7 +296,7 @@ SC.stringsFor = function(languageCode, strings) {
 /* >>>>>>>>>> BEGIN source/lproj/strings.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -313,7 +313,7 @@ SC.stringsFor('English', {
 /* >>>>>>>>>> BEGIN source/core.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -465,7 +465,7 @@ SC.mixin(Function.prototype, /** @scope Function.prototype */ {
 /* >>>>>>>>>> BEGIN source/controllers/controller.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -511,7 +511,7 @@ SC.Controller = SC.Object.extend(
 /* >>>>>>>>>> BEGIN source/mixins/selection_support.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -763,7 +763,7 @@ SC.SelectionSupport = {
 /* >>>>>>>>>> BEGIN source/controllers/array.js */
 // ========================================================================
 // SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2008, Sprout Systems, Inc. and contributors.
+// Copyright ©2006-2011, Strobe Inc. and contributors.
 // Portions copyright ©2008 Apple Inc.  All rights reserved.
 // ========================================================================
 
@@ -1283,7 +1283,7 @@ SC.ArrayController = SC.Controller.extend(SC.Array, SC.SelectionSupport,
 /* >>>>>>>>>> BEGIN source/controllers/object.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1627,7 +1627,7 @@ SC.ObjectController = SC.Controller.extend(
 /* >>>>>>>>>> BEGIN source/mixins/tree_item_content.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1789,7 +1789,7 @@ SC.TreeItemContent = {
 /* >>>>>>>>>> BEGIN source/mixins/collection_content.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1969,7 +1969,7 @@ SC.CollectionContent = {
 /* >>>>>>>>>> BEGIN source/private/tree_item_observer.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -2878,7 +2878,7 @@ SC.TreeItemObserver = SC.Object.extend(SC.Array, SC.CollectionContent, {
 /* >>>>>>>>>> BEGIN source/controllers/tree.js */
 // ========================================================================
 // SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2008, Sprout Systems, Inc. and contributors.
+// Copyright ©2006-2011, Strobe Inc. and contributors.
 // Portions copyright ©2008 Apple Inc.  All rights reserved.
 // ========================================================================
 
@@ -3004,7 +3004,7 @@ SC.TreeController = SC.ObjectController.extend(SC.SelectionSupport,
 /* >>>>>>>>>> BEGIN source/system/browser.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -3065,7 +3065,7 @@ SC.mixin(SC.browser, (function() {
 /* >>>>>>>>>> BEGIN source/system/builder.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -3277,7 +3277,7 @@ SC.Builder.fn = {
 /* >>>>>>>>>> BEGIN source/system/core_query.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -5328,7 +5328,7 @@ SC.mixin(SC.$, {
 /* >>>>>>>>>> BEGIN source/system/event.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -5415,7 +5415,7 @@ SC.Event = function(originalEvent) {
       this.wheelDeltaX = 0-(originalEvent.wheelDeltaX||0);
 
       // Scrolling in Safari 5.0.1, which is huge for some reason
-      if (version === 533.17) {
+      if (version >= 533.17 && version <= 533.19) {
         deltaMultiplier = 0.004;
 
       // Scrolling in Safari 5.0
@@ -6224,7 +6224,7 @@ SC.PRINTABLE_KEYS = {
 /* >>>>>>>>>> BEGIN source/system/cursor.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -6357,7 +6357,7 @@ SC.Cursor.sharedStyleSheet = function() {
 /* >>>>>>>>>> BEGIN source/system/responder.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -6483,7 +6483,7 @@ SC.Responder = SC.Object.extend( /** SC.Responder.prototype */ {
 /* >>>>>>>>>> BEGIN source/mixins/string.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -7028,7 +7028,7 @@ SC.String.fmt = String.prototype.fmt; // copy from runtime
 /* >>>>>>>>>> BEGIN source/views/view.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -9234,7 +9234,7 @@ SC.View = SC.Responder.extend(SC.DelegateSupport,
     if (pf) {
       ret = { width: pf.width, height: pf.height };
     } else {
-      var f = frame ;
+      var f = frame || {};
       ret = {
         width: (f.left || 0) + (f.width || 0) + (f.right || 0),
         height: (f.top || 0) + (f.height || 0) + (f.bottom || 0)
@@ -10343,7 +10343,7 @@ if(SC.browser.msie) SC.Event.add(window, 'unload', SC.View, SC.View.unload) ;
 /* >>>>>>>>>> BEGIN source/mixins/responder_context.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -10614,7 +10614,7 @@ SC.ResponderContext = {
 /* >>>>>>>>>> BEGIN source/panes/pane.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -11464,7 +11464,7 @@ SC.Pane = SC.View.extend(SC.ResponderContext,
 /* >>>>>>>>>> BEGIN source/debug/control_test_pane.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            portions copyright @2009 Apple Inc.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -11659,7 +11659,7 @@ SC.ControlTestPane.show = function() {
 /* >>>>>>>>>> BEGIN source/ext/object.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -11744,7 +11744,7 @@ SC.mixin(SC.Object.prototype, /** @scope SC.Object.prototype */ {
 /* >>>>>>>>>> BEGIN source/ext/run_loop.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -11939,7 +11939,7 @@ Where not otherwise indicated, all YUI content is authored by Yahoo! engineers a
 /* >>>>>>>>>> BEGIN source/mixins/button.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -12301,7 +12301,7 @@ SC.Button = {
 /* >>>>>>>>>> BEGIN source/mixins/content_display.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -12351,36 +12351,54 @@ SC.ContentDisplay = {
     this._display_contentDidChange();
   },
 
+  /**
+   * Remove observer on existing content object, if present
+   * @private
+   */
+  destroyMixin: function () {
+    if (!this._display_content) return;
+    this._display_stopObservingContent(this._display_content);
+    this._display_content = null;
+  },
+
+  /** @private */
+  _display_beginObservingContent: function(content) {
+    var f = this._display_contentPropertyDidChange;
+
+    if (SC.isArray(content)) {
+      content.invoke('addObserver', '*', this, f);
+    }
+    else if (content.addObserver) {
+      content.addObserver('*', this, f);
+    }
+  },
+
+  /** @private */
+  _display_stopObservingContent: function(content) {
+    var f = this._display_contentPropertyDidChange;
+
+    if (SC.isArray(content)) {
+      content.invoke('removeObserver', '*', this, f);
+    }
+    else if (content.removeObserver) {
+      content.removeObserver('*', this, f);
+    }
+  },
+
   /** @private */
   _display_contentDidChange: function(target, key, value) {
     // handle changes to the content...
-    if ((value = this.get('content')) != this._display_content) {
+    if ((value = this.get('content')) === this._display_content) return;
 
-      // get the handler method
-      var f = this._display_contentPropertyDidChange ;
-      
-      // stop listening to old content.
-      var content = this._display_content;
-      if (content) {
-        if (SC.isArray(content)) {
-          content.invoke('removeObserver', '*', this, f) ;
-        } else if (content.removeObserver) {
-          content.removeObserver('*', this, f) ;
-        }
-      }
-      
-      // start listening for changes on the new content object.
-      content = this._display_content = value ; 
-      if (content) {
-        if (SC.isArray(content)) {
-          content.invoke('addObserver', '*', this, f) ;
-        } else if (content.addObserver) {
-          content.addObserver('*', this, f) ;
-        }
-      }
+    // stop listening to old content.
+    var content = this._display_content;
+    if (content) this._display_stopObservingContent(content);
 
-      this.displayDidChange();
-    }
+    // start listening for changes on the new content object.
+    content = this._display_content = value;
+    if (content) this._display_beginObservingContent(content);
+
+    this.displayDidChange();
   }.observes('content', 'contentDisplayProperties'),
   
   /** @private Invoked when properties on the content object change. */
@@ -12399,7 +12417,7 @@ SC.ContentDisplay = {
 /* >>>>>>>>>> BEGIN source/mixins/control.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -12778,7 +12796,7 @@ SC.Control = {
 /* >>>>>>>>>> BEGIN source/mixins/editable.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -12932,7 +12950,7 @@ SC.Editable = {
 /* >>>>>>>>>> BEGIN source/mixins/validatable.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -13123,7 +13141,7 @@ SC.Validatable = {
 /* >>>>>>>>>> BEGIN source/views/field.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -13346,9 +13364,9 @@ SC.FieldView = SC.View.extend(SC.Control, SC.Validatable,
   },
   
   /** @private
-    Remove the active class on mouseOut if mouse is down.
+    Remove the active class on mouseExited if mouse is down.
   */  
-  mouseOut: function(evt) {
+  mouseExited: function(evt) {
     if (this._field_isMouseDown) this.set('isActive', NO);
     evt.allowDefault();
     return YES;
@@ -13357,7 +13375,7 @@ SC.FieldView = SC.View.extend(SC.Control, SC.Validatable,
   /** @private
     If mouse was down and we renter the button area, set the active state again.
   */  
-  mouseOver: function(evt) {
+  mouseEntered: function(evt) {
     this.set('isActive', this._field_isMouseDown);
     evt.allowDefault();
     return YES;
@@ -13445,7 +13463,7 @@ SC.FieldView = SC.View.extend(SC.Control, SC.Validatable,
 /* >>>>>>>>>> BEGIN source/system/text_selection.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -13550,7 +13568,7 @@ SC.TextSelection = SC.Object.extend(SC.Copyable, SC.Freezable,
 /* >>>>>>>>>> BEGIN source/mixins/static_layout.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -13629,7 +13647,7 @@ SC.StaticLayout = {
 /* >>>>>>>>>> BEGIN source/views/text_field.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -14577,7 +14595,7 @@ SC.TextFieldView = SC.FieldView.extend(SC.StaticLayout, SC.Editable,
 /* >>>>>>>>>> BEGIN source/mixins/inline_text_field.js */
 // ========================================================================
 // SproutCore
-// copyright 2006-2008 Sprout Systems, Inc.
+// copyright 2006-2011 Strobe Inc.
 // ========================================================================
 
 sc_require('views/text_field') ;
@@ -15163,7 +15181,7 @@ SC.InlineTextFieldView.mixin(
 /* >>>>>>>>>> BEGIN source/protocols/inline_editor_delegate.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -15249,7 +15267,7 @@ SC.InlineEditorDelegate = {
 /* >>>>>>>>>> BEGIN source/system/application.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -15288,7 +15306,7 @@ SC.Application = SC.Responder.extend(SC.ResponderContext,
 /* >>>>>>>>>> BEGIN source/system/benchmark.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -15804,7 +15822,7 @@ SC.Benchmark = SC.Benchmark;
 /* >>>>>>>>>> BEGIN source/system/bundle.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -16143,7 +16161,7 @@ SC.mixin(/** @scope SC */ {
 /* >>>>>>>>>> BEGIN source/system/datetime.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -17285,7 +17303,7 @@ if (SC.RecordAttribute && !SC.RecordAttribute.transforms[SC.guidFor(SC.DateTime)
 /* >>>>>>>>>> BEGIN source/system/ready.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -17484,7 +17502,7 @@ SC.mode = SC.APP_MODE;
 /* >>>>>>>>>> BEGIN source/system/root_responder.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -18006,7 +18024,7 @@ SC.RootResponder = SC.Object.extend({
         target = SC.objectForPropertyPath(target) ;
         if (target) this.set('defaultResponder', target) ; // cache if found
       }
-      if (target) {
+      if (target && !target.isResponderContext) {
         if (target.respondsTo && !target.respondsTo(methodName)) {
           target = null ;
         } else if (SC.typeOf(target[methodName]) !== SC.T_FUNCTION) {
@@ -18096,7 +18114,7 @@ SC.RootResponder = SC.Object.extend({
     this.listenFor('touchstart touchmove touchend touchcancel'.w(), document);
 
     // handle basic events
-    this.listenFor('keydown keyup beforedeactivate mousedown mouseup click dblclick mouseout mouseover mousemove selectstart contextmenu'.w(), document)
+    this.listenFor('keydown keyup beforedeactivate mousedown mouseup click dblclick mousemove selectstart contextmenu'.w(), document)
         .listenFor('resize'.w(), window);
         
     if(SC.browser.msie) this.listenFor('focusin focusout'.w(), document);
@@ -19554,7 +19572,7 @@ SC.ready(SC.RootResponder, SC.RootResponder.ready = function() {
 /* >>>>>>>>>> BEGIN source/system/platform.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -19854,7 +19872,7 @@ SC.platform = {
 /* >>>>>>>>>> BEGIN source/system/device.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -19998,7 +20016,7 @@ SC.ready(function() {
 /* >>>>>>>>>> BEGIN source/system/exception_handler.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -20084,7 +20102,7 @@ SC.ExceptionHandler = {
 /* >>>>>>>>>> BEGIN source/system/image_cache.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -20419,7 +20437,8 @@ SC.imageCache = SC.Object.create(/** @scope SC.imageCache.prototype */ {
     // if entry is loading, abort it also.  Call local abort method in-case
     // browser decides not to follow up.
     if (this._loading.indexOf(entry) >= 0) {
-      queue.image.abort();
+      // In some cases queue.image is undefined. Is it ever defined?
+      if (queue.image) queue.image.abort();
       this.imageStatusDidChange(entry, this.ABORTED);
     }
     
@@ -20518,7 +20537,7 @@ SC.imageCache = SC.Object.create(/** @scope SC.imageCache.prototype */ {
 /* >>>>>>>>>> BEGIN source/system/json.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -21035,7 +21054,7 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 /* >>>>>>>>>> BEGIN source/system/math.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -21094,7 +21113,7 @@ SC.Math = SC.Object.create({
 /* >>>>>>>>>> BEGIN source/system/page.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -21204,7 +21223,7 @@ SC.Page.localization = function(attrs) { return attrs; };
 /* >>>>>>>>>> BEGIN source/system/render_context.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -22194,7 +22213,7 @@ SC.RenderContext.escapeHTML = function(text) {
 /* >>>>>>>>>> BEGIN source/system/response.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -22734,7 +22753,7 @@ SC.XHRResponse = SC.Response.extend({
 /* >>>>>>>>>> BEGIN source/system/request.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -23335,7 +23354,7 @@ SC.Request.manager = SC.Object.create( SC.DelegateSupport, {
 /* >>>>>>>>>> BEGIN source/system/routes.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -23757,7 +23776,7 @@ SC.routes = SC.Object.create({
 /* >>>>>>>>>> BEGIN source/tasks/task.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -23776,7 +23795,7 @@ SC.Task = SC.Object.extend({
 /* >>>>>>>>>> BEGIN source/system/task_queue.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -23928,7 +23947,7 @@ SC.backgroundTaskQueue = SC.TaskQueue.create({
 /* >>>>>>>>>> BEGIN source/system/time.js */
 // ========================================================================
 // SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2008, Sprout Systems, Inc. and contributors.
+// Copyright ©2006-2011, Strobe Inc. and contributors.
 // Portions copyright ©2008 Apple Inc.  All rights reserved.
 // ========================================================================
 
@@ -24403,7 +24422,7 @@ SC.mixin(Date.prototype, {
 /* >>>>>>>>>> BEGIN source/system/timer.js */
 // ========================================================================
 // SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2008, Sprout Systems, Inc. and contributors.
+// Copyright ©2006-2011, Strobe Inc. and contributors.
 // Portions copyright ©2008 Apple Inc.  All rights reserved.
 // ========================================================================
 
@@ -24956,7 +24975,7 @@ SC.Timer.returnTimerToPool = function(timer) {
 /* >>>>>>>>>> BEGIN source/system/user_defaults.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -25355,7 +25374,7 @@ SC.userDefaults = SC.UserDefaults.create();
 /* >>>>>>>>>> BEGIN source/system/utils.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -26067,7 +26086,7 @@ SC.mixin( /** @scope SC */ {
 /* >>>>>>>>>> BEGIN source/tasks/preload_bundle.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -26110,7 +26129,7 @@ SC.PreloadBundleTask = SC.Task.extend({
 /* >>>>>>>>>> BEGIN source/validators/validator.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -26438,7 +26457,7 @@ SC.Validator.mixin(/** @scope SC.Validator */ {
 /* >>>>>>>>>> BEGIN source/validators/credit_card.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -26565,7 +26584,7 @@ SC.Validator.CreditCard = SC.Validator.extend(
 /* >>>>>>>>>> BEGIN source/validators/date.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -26619,7 +26638,7 @@ SC.Validator.Date = SC.Validator.extend(
 /* >>>>>>>>>> BEGIN source/validators/date_time.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -26669,7 +26688,7 @@ SC.Validator.DateTime = SC.Validator.extend({
 /* >>>>>>>>>> BEGIN source/validators/email.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -26716,7 +26735,7 @@ SC.Validator.EmailOrEmpty = SC.Validator.Email.extend(
 /* >>>>>>>>>> BEGIN source/validators/not_empty.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -26755,7 +26774,7 @@ SC.Validator.NotEmpty = SC.Validator.extend(
 /* >>>>>>>>>> BEGIN source/validators/number.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -26855,7 +26874,7 @@ SC.Validator.Number = SC.Validator.extend(
 /* >>>>>>>>>> BEGIN source/validators/password.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -26943,7 +26962,7 @@ SC.Validator.Password = SC.Validator.extend(
 /* >>>>>>>>>> BEGIN source/validators/positive_integer.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -27029,7 +27048,7 @@ SC.Validator.PositiveInteger = SC.Validator.extend(
 /* >>>>>>>>>> BEGIN source/views/container.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -27170,7 +27189,7 @@ SC.ContainerView = SC.View.extend(
 /* >>>>>>>>>> BEGIN source/views/image.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -27189,7 +27208,7 @@ SC.IMAGE_STATE_SPRITE = 'sprite';
 */
 SC.BLANK_IMAGE_DATAURL = "data:image/gif;base64,R0lGODlhAQABAJAAAP///wAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw==";
 
-SC.BLANK_IMAGE_URL = SC.browser.msie && SC.browser.msie<8 ? '/static/sproutcore/foundation/en/current/blank.gif?1295317431' : SC.BLANK_IMAGE_DATAURL;
+SC.BLANK_IMAGE_URL = SC.browser.msie && SC.browser.msie<8 ? '/static/sproutcore/foundation/en/current/blank.gif?1296255410' : SC.BLANK_IMAGE_DATAURL;
 
 /**
   @class
@@ -27352,7 +27371,7 @@ SC.ImageView.valueIsUrl = function(value) {
 /* >>>>>>>>>> BEGIN source/views/label.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -27693,7 +27712,7 @@ SC.LabelView = SC.View.extend(SC.Control,
 /* >>>>>>>>>> BEGIN source/panes/main.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================

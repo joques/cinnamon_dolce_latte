@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -2206,7 +2206,7 @@ SC.View = SC.Responder.extend(SC.DelegateSupport,
     if (pf) {
       ret = { width: pf.width, height: pf.height };
     } else {
-      var f = frame ;
+      var f = frame || {};
       ret = {
         width: (f.left || 0) + (f.width || 0) + (f.right || 0),
         height: (f.top || 0) + (f.height || 0) + (f.bottom || 0)

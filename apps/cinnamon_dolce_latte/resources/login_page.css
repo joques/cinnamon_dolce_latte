@@ -5,9 +5,27 @@
 
 
 .login-pane {
-  background-color: #254981;
+/*  background-color: #254981;*/
 }
 
 .sc-pane.login-pane > .sc-view {
-  background-color: #254981;
+	background-image: -moz-linear-gradient(top, #ddd3bf, #bcae91);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ddd3bf),color-stop(1, #bcae91));
+	
+	font-family: 'OFL Sorts Mill Goudy TT', arial, serif;
+	font-size: 15px;	
+	
+	/*Opacity*/
+	filter:alpha(opacity=90);
+	-moz-opacity: 0.90;
+	-khtml-opacity: 0.90;
+	opacity: 0.90;
+	
+	-webkit-border-radius: 10px; 
+	-moz-border-radius: 10px;
+	
+	 /* BOX SHADOW */
+		-moz-box-shadow: 0 1px 3px black;
+		-webkit-box-shadow: 0 1px 3px black;
+	 	box-shadow: 0 1px 3px black;	
 }

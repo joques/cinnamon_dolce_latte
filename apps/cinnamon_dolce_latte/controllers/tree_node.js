@@ -48,7 +48,6 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 					CinnamonDolceLatte.topicArrayController.set('content', this.get('topicCol'));
 					CinnamonDolceLatte.topicArrayController.selectObject(record);
 
-
 					// set the content of the postArrayController
 					var selectedPosts = record.get("posts");
 					CinnamonDolceLatte.postArrayController.set('content', selectedPosts);
@@ -88,28 +87,12 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 			} else if(curSel.isTopic) {
 				
 				if(treeNodeCount > 0) {
-					// var topics;
-					// var i;
-					// 					
-					// for(i=0; i<treeNodeCount; i++) {
-					// 	var curTopics = allTreeNodes.objectAt(i).get('topics');
-					// 	var topicIdx = curTopics.indexOf(curSel);
-					// 	
-					// 	if(topicIdx != -1) {
-					// 		topics = curTopics;
-					// 		break;
-					// 	}
-					// }
-					
-					// CinnamonDolceLatte.topicArrayController.deleteTopic(curSel, topics);
 					CinnamonDolceLatte.topicArrayController.deleteTopic(curSel, this.get('topicCol'));
-					
 				}
 			}
 		}
 		
 		// then select the first one in collection		
-		
 		if(firstNode) {
 			CinnamonDolceLatte.disciplinesTreeController.selectObject(firstNode);
 		}

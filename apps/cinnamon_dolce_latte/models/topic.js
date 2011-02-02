@@ -22,7 +22,7 @@ CinnamonDolceLatte.Topic = SC.ChildRecord.extend(
 	treeItemIsExpanded: NO,	
 	treeItemChildren: function(){
 		return null;
-	}.property().cacheable(),
+	}.property(),
 	
 	name: function(){
 		return this.get("description");

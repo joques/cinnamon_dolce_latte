@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -354,8 +354,8 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button, SC.StaticLayout,
   },
 
   /** @private
-    Remove the active class on mouseOut if mouse is down.
-  */  
+    Remove the active class on mouseExited if mouse is down.
+  */
   mouseExited: function(evt) {
     if (this._isMouseDown) {
       this.set('isActive', NO);

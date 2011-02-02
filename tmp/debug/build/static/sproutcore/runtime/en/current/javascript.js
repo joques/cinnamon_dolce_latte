@@ -2,7 +2,7 @@
 /*! @license
 ==========================================================================
 SproutCore Costello -- Property Observing Library
-Copyright ©2006-2010, Sprout Systems, Inc. and contributors.
+Copyright ©2006-2011, Strobe Inc. and contributors.
 Portions copyright ©2008-2010 Apple Inc. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a 
@@ -31,7 +31,7 @@ For more information about SproutCore, visit http://www.sproutcore.com
 /* >>>>>>>>>> BEGIN source/core.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1096,7 +1096,7 @@ if (!Date.now) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/base.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1336,7 +1336,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/indexOf.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1371,7 +1371,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/insertAt.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1494,7 +1494,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/objectAt.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1530,7 +1530,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/popObject.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1582,7 +1582,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/pushObject.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -1630,7 +1630,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/rangeObserver.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -2003,7 +2003,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/removeAt.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -2105,7 +2105,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/removeObject.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -2156,7 +2156,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/replace.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -2252,7 +2252,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/shiftObject.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -2304,7 +2304,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/debug/test_suites/array/unshiftObject.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -2353,7 +2353,7 @@ SC.ArraySuite.define(function(T) {
 /* >>>>>>>>>> BEGIN source/private/observer_set.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -2535,7 +2535,7 @@ SC.ObserverSet.slice = SC.ObserverSet.clone ;
 /* >>>>>>>>>> BEGIN source/mixins/observable.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -3863,7 +3863,7 @@ SC.Observable = {
 
 /** @private used by addProbe/removeProbe */
 SC.logChange = function logChange(target, key, value) {
-  console.log("CHANGE: %@[%@] =>".fmt(target, key), target.get(key));
+  console.log("CHANGE: %@[%@] => %@".fmt(target, key, target.get(key)));
 };
 
 /**
@@ -3888,7 +3888,7 @@ SC.mixin(Array.prototype, SC.Observable) ;
 /* >>>>>>>>>> BEGIN source/system/enumerator.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -3997,7 +3997,7 @@ SC.Enumerator._pushContext = function(context) {
 /* >>>>>>>>>> BEGIN source/mixins/enumerable.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -5297,7 +5297,7 @@ Array.prototype.isEnumerable = YES ;
 /* >>>>>>>>>> BEGIN source/system/range_observer.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -5570,7 +5570,7 @@ SC.RangeObserver = {
 /* >>>>>>>>>> BEGIN source/mixins/array.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -6215,7 +6215,7 @@ if (!Array.prototype.lastIndexOf) {
 /* >>>>>>>>>> BEGIN source/mixins/comparable.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -6262,7 +6262,7 @@ SC.Comparable = {
 /* >>>>>>>>>> BEGIN source/mixins/copyable.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -6336,7 +6336,7 @@ Array.prototype.copy = function(deep) {
 /* >>>>>>>>>> BEGIN source/mixins/delegate_support.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -6448,7 +6448,7 @@ SC.DelegateSupport = {
 /* >>>>>>>>>> BEGIN source/mixins/freezable.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -6560,7 +6560,7 @@ SC.mixin(Array.prototype, SC.Freezable);
 /* >>>>>>>>>> BEGIN source/system/set.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -7094,7 +7094,7 @@ SC.CoreSet.constructor = SC.CoreSet;
 /* >>>>>>>>>> BEGIN source/private/observer_queue.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -7269,7 +7269,7 @@ SC.Observers = {
 /* >>>>>>>>>> BEGIN source/system/object.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -7803,6 +7803,10 @@ SC.Object.prototype = {
     var idx, inits = this.destroyMixin, len = (inits) ? inits.length : 0 ;
     for(idx=0;idx < len; idx++) inits[idx].call(this);
 
+    // disconnect all bindings
+    this.bindings.invoke('disconnect');
+    this.bindings = null;
+
     return this ;
   },
 
@@ -8154,7 +8158,7 @@ SC._object_className = function(obj) {
 /* >>>>>>>>>> BEGIN source/private/chain_observer.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -8297,7 +8301,7 @@ SC._ChainObserver.prototype = {
 /* >>>>>>>>>> BEGIN source/protocols/observable_protocol.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -8339,7 +8343,7 @@ SC.ObservableProtocol = {
 /* >>>>>>>>>> BEGIN source/protocols/sparse_array_delegate.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -8472,7 +8476,7 @@ SC.SparseArrayDelegate = {
 /* >>>>>>>>>> BEGIN source/system/binding.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -9635,7 +9639,7 @@ SC.Cookie.mixin(
 /* >>>>>>>>>> BEGIN source/system/error.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -9794,7 +9798,7 @@ SC.Error.HAS_MULTIPLE_VALUES = -100 ;
 /* >>>>>>>>>> BEGIN source/system/index_set.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -11449,7 +11453,7 @@ SC.Logger = SC.Object.create({
 /* >>>>>>>>>> BEGIN source/system/run_loop.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -11746,7 +11750,7 @@ SC.run = function(callback, target, useExistingRunLoop) {
 /* >>>>>>>>>> BEGIN source/system/selection_set.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -12445,7 +12449,7 @@ SC.SelectionSet.EMPTY = SC.SelectionSet.create().freeze();
 /* >>>>>>>>>> BEGIN source/system/sparse_array.js */
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
-// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
 //            Portions ©2008-2010 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
