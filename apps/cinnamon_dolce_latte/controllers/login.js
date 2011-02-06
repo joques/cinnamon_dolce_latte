@@ -92,19 +92,21 @@ CinnamonDolceLatte.loginController = SC.ObjectController.create(
 	},
 	
 	populateStore: function() {
-		// reset the store
-		CinnamonDolceLatte.store.reset();
-		CinnamonDolceLatte.store = SC.Store.create().from(SC.Record.fixtures);
+		// recreate  the store
+
+		if(CinnamonDolceLatte.store) {
+			CinnamonDolceLatte.store.reset();
+		}
+		
+		CinnamonDolceLatte.store = SC.Store.create().from(SC.Record.fixtures);	
 		
 		CinnamonDolceLatte.disciplinesTreeController.populateDisciplines();
 		CinnamonDolceLatte.getPath('mainPage.mainPane').append();
 		
-		// var pagePane = CinnamonDolceLatte.getPath(pagePanePath);
-		// 	pagePane.append();
-			
 		var disciplineQuery = SC.Query.local(CinnamonDolceLatte.Discipline);
 		var disciplines = CinnamonDolceLatte.store.find(disciplineQuery);
-		CinnamonDolceLatte.disciplineArrayController.set('content', disciplines);	
+		CinnamonDolceLatte.disciplineArrayController.set('content', disciplines);
+
 	}
 	
 }) ;

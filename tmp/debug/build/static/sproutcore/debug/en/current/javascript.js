@@ -135,6 +135,7 @@ if (!SC.LOG_RUNLOOP_INVOCATIONS) SC.LOG_RUNLOOP_INVOCATIONS = false;
 
 
 SC.addInvokeOnceLastDebuggingInfo = function() {
+  return;
   
   SC.ObserverSet.add = function(target, method, context, originatingTarget, originatingMethod, originatingStack) {
     var targetGuid = (target) ? SC.guidFor(target) : "__this__";
@@ -152,12 +153,10 @@ SC.addInvokeOnceLastDebuggingInfo = function() {
     // context is really useful sometimes but not used that often so this
     // implementation is intentionally lazy.
     if (context !== undefined) {
-      if (!methods.contexts) methods.contexts = {} ;
-      methods.contexts[SC.guidFor(method)] = context ;
+      var contexts = methods.contexts || (methods.contexts = {}) ;
+      contexts[SC.guidFor(method)] = context ;
     }
-
-    this._membersCacheIsValid = NO ;
-
+    
     // THIS IS THE PORTION THAT DIFFERS FROM THE STANDARD IMPLEMENTATION
     
     // Recording the calling object/function can be a useful debugging tool.
@@ -376,5 +375,3 @@ SC.addInvokeOnceLastDebuggingInfo = function() {
   
 };
 
-/* >>>>>>>>>> BEGIN bundle_loaded.js */
-; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/debug');

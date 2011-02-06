@@ -102,11 +102,11 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						
 						inlineEditorDidEndEditing: function(inLineEditor, finalValue) {
 							CinnamonDolceLatte.treeNodeController.updateNodeName(finalValue);
-						}
+						}				
 					})					
 				})
 			}),
-			
+						
 			topicButtonViews: SC.View.design({
 				layout: { bottom: 10, centerX:0, height: 24, width: 170 },
 				childViews: 'addTopicButton deleteTopicButton'.w(),
@@ -427,7 +427,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 	detailPostPane: SC.PanelPane.create({
 		layout: { width:400, height:200, centerX:0, centerY:-50},
 		contentView: SC.View.extend({
-			childViews: 'paneTitle postTitle postArticle saveButton cancelButton'.w(),
+			childViews: 'paneTitle postTitle postArticle referenceButton saveButton cancelButton'.w(),
 			
 			paneTitle: SC.LabelView.design({
 			        layout: { left: 17, right: 17, top: 17, height: 26 },
@@ -474,6 +474,16 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		        })
 			}),
 			
+			
+			referenceButton: SC.ButtonView.design({
+	        layout: {bottom: 10, left: 10, height:24, width:120},
+	        title: 'References',
+	        action: 'showReferences'
+	        // isEnabledBinding: 'CinnamonDolceLatte.postController.contentIsChanged',
+	        // isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailPostPane.isEnabled'
+	      }),
+			
+			
 			saveButton: SC.ButtonView.design({
 	        layout: {bottom: 10, right: 110, height:24, width:80},
 	        title: 'Save',
@@ -510,6 +520,29 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		
 		showForUpdate: function() {
 		      this.set('detailIsVisible', YES);
+		},
+		
+		showReferences: function() {
+			 var refPane =      SC.PickerPane.create({
+			        layout: { width: 400, height: 200 },
+			        contentView: SC.View.extend({
+								// childViews: 'referenceHeaderView referenceContentView referenceButtonViews'.w(),								
+								childViews: 'referenceHeaderView'.w(),		
+								referenceHeaderView: SC.ToolbarView.design({
+									layout: {top: 10, left: 0, right: 0, height: 30},
+									childViews: 'referenceLabelView'.w(),
+									anchorLocation: SC.ANCHOR_TYPE,
+
+									referenceLabelView: SC.LabelView.design({
+										layout: { centerY: 0, centerX: 0, height: 20, width: 150 },
+										controlSize: SC.SMALL_CONTROL_SIZE,
+										value: 'Post References'					
+									})										
+								})						
+							})
+			      }).popup(this);
+			this.cancel();
+			return refPane;
 		},
 		
 		save: function() {

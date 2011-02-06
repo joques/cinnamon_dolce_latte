@@ -11,7 +11,7 @@
   @extends SC.Record
   @version 0.1
 */
-CinnamonDolceLatte.Post = SC.ChildRecord.extend(
+CinnamonDolceLatte.Post = SC.Record.extend(
 /** @scope CinnamonDolceLatte.Post.prototype */ {
 	childRecordNamespace: CinnamonDolceLatte,
 	
@@ -19,7 +19,7 @@ CinnamonDolceLatte.Post = SC.ChildRecord.extend(
 	article: SC.Record.attr(String, {isRequired: YES}),
 	creator: SC.Record.attr(String),
 	date_created: SC.Record.attr(SC.DateTime),
-	comments: SC.Record.toMany('CinnamonDolceLatte.Comment', { nested: true }),
+	comments: SC.Record.toMany('CinnamonDolceLatte.Comment', { nested: YES }),
 	
 	shortArticle: function() {
 		var art_len = this.get('article').length;

@@ -92,7 +92,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     var ret = this.get('dataSource');
     if (typeof ret === SC.T_STRING) {
       ret = SC.objectForPropertyPath(ret);
-      if (ret) ret = ret.create();
+      if (ret && ret.isClass) ret = ret.create();
       if (ret) this.set('dataSource', ret);
     }
     return ret;
@@ -242,15 +242,6 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     @property {SC.Set}
   */
   changelog: null,
-  
-  /**
-    A set of SC.RecordArray that have been returned from findAll with an 
-    SC.Query. These will all be notified with _notifyRecordArraysWithQuery() 
-    whenever the store changes.
-  
-    @property {Array}
-  */
-  recordArraysWithQuery: null,
   
   /**
     An array of SC.Error objects associated with individual records in the
@@ -1599,7 +1590,6 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     @returns {Boolean} if the action was succesful.
   */
   commitRecords: function(recordTypes, ids, storeKeys, params) {
-    
     var source    = this._getDataSource(),
         isArray   = SC.typeOf(recordTypes) === SC.T_ARRAY,    
         retCreate= [], retUpdate= [], retDestroy = [], 
@@ -1815,8 +1805,8 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     ret = storeKey = recordType.storeKeyFor(id); // needed to cache
       
     if (this.readStatus(storeKey) & K.BUSY) {
-        this.dataSourceDidComplete(storeKey, dataHash, id);
-      } else this.pushRetrieve(recordType, id, dataHash, storeKey);
+      this.dataSourceDidComplete(storeKey, dataHash, id);
+    } else this.pushRetrieve(recordType, id, dataHash, storeKey);
     
     // return storeKey
     return ret ;
@@ -2338,7 +2328,8 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     storeKey.  As opposed to storeKeyFor() however, this method
     will NOT generate a new storeKey but returned undefined.
     
-    @param {String} id a record id
+    @param {SC.Record} recordType the record type
+    @param {String} primaryKey the primary key
     @returns {Number} a storeKey.
   */
   storeKeyExists: function(recordType, primaryKey) {

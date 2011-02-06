@@ -23,17 +23,17 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 		var post_lenght = this.get('content').get('length');
 		post_lenght++;
 		var guid_val = "post" + post_lenght;
-		
-		postCol.pushObject({
-			type: 'Post',
+				
+		var myNewPost = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Post, {
 			guid: guid_val,
 			title: 'New Post',
 			article: 'Post the article here',
 			creator: creatorName,
 			date_created: SC.DateTime.create(),
-			comments: []
+			comments: []			
 		});
-				
+		
+		postCol.pushObject(myNewPost);						
 		return YES;		
 	},
 	

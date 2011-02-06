@@ -23,17 +23,16 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 		var com_lenght = this.get('content').get('length');
 		com_lenght++;
 		var guid_val = "comment" + com_lenght;
-		
-		commentCol.pushObject({
-			type: 'Comment',
+				
+		var myNewComment = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Comment, {
 			guid: guid_val,
 			comment: 'Add your comment here here',
 			commentator: commentatorName,
 			date_created: SC.DateTime.create()
 		});
-				
-		return YES;		
 		
+		commentCol.pushObject(myNewComment);				
+		return YES;
 	},
 	
 	deleteComment: function() {

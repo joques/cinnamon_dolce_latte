@@ -52,12 +52,11 @@ CinnamonDolceLatte.loginPage = SC.Page.design({
 					isEnabledBinding: SC.Binding.from("CinnamonDolceLatte.loginController.isLoggingIn")
 																			.bool()
 																			.transform(function(value, isForward) {return !value ;}),
-					valueBinding: "CinnamonDolceLatte.loginController.passWord"				
+					valueBinding: "CinnamonDolceLatte.loginController.passWord"
 				})
 			}),
 			
-			loginButton: SC.ButtonView.design({
-				
+			loginButton: SC.ButtonView.design({				
 				layout: {left: 355, width: 100, centerY: 25, height: 50},
 				title: '_Login',
 				localize: YES,

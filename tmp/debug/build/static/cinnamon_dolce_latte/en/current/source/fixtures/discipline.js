@@ -7,7 +7,6 @@
 sc_require('models/discipline');
 
 CinnamonDolceLatte.Discipline.FIXTURES = [
-
 	{
 		type: 'Discipline',
 		guid: 'disc1',

@@ -5813,6 +5813,7 @@ CoreTest.Runner = {
         
     for(idx=0;idx<len;idx++) CoreTest.mixin(ret, arguments[len]);
     if (!ret.plan) ret.plan = CoreTest.Plan.create({ delegate: ret });
+    window.resizeTo(1400, 800);
     Q$(window).load(function() { ret.begin(); });      
     return ret ;
   },
@@ -5890,7 +5891,7 @@ CoreTest.Runner = {
     }
 
     if (r.warnings > 0) {
-      str += CoreTest.fmt('&nbsp;<span class="warnings">%@ warnings%@</span>',
+      str += CoreTest.fmt('&nbsp;<span class="warnings">%@ warning%@</span>',
             r.warnings, (r.warnings !== 1 ? 's' : ''));
     }
 
@@ -6217,5 +6218,3 @@ CoreTest.Suite = /** @scope CoreTest.Suite.prototype */ {
   
 };
 
-/* >>>>>>>>>> BEGIN bundle_loaded.js */
-; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/testing');

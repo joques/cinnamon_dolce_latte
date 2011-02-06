@@ -11,13 +11,13 @@
   @extends SC.Record
   @version 0.1
 */
-CinnamonDolceLatte.Topic = SC.ChildRecord.extend(
+CinnamonDolceLatte.Topic = SC.Record.extend(
 /** @scope CinnamonDolceLatte.Topic.prototype */ {
 	childRecordNamespace: CinnamonDolceLatte,
 	
 	description: SC.Record.attr(String, {isRequired: YES}),
 	keywords: SC.Record.attr(Array, {isRequired: YES}),
-	posts: SC.Record.toMany('CinnamonDolceLatte.Post', { nested: true }),
+	posts: SC.Record.toMany('CinnamonDolceLatte.Post', { nested: YES }),
 		
 	treeItemIsExpanded: NO,	
 	treeItemChildren: function(){
@@ -26,7 +26,7 @@ CinnamonDolceLatte.Topic = SC.ChildRecord.extend(
 	
 	name: function(){
 		return this.get("description");
-	}.property('description').cacheable(),
+	}.property('description'),
 	
 	isTopic: function(){
 		return YES;

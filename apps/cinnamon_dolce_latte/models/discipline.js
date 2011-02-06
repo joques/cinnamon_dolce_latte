@@ -17,7 +17,7 @@ CinnamonDolceLatte.Discipline = SC.Record.extend(
 	childRecordNamespace: CinnamonDolceLatte,
 	
 	name: SC.Record.attr(String, {isRequired: YES}),
-	topics: SC.Record.toMany('CinnamonDolceLatte.Topic', {nested: true, isEditable: true}),
+	topics: SC.Record.toMany('CinnamonDolceLatte.Topic', {nested: YES, isEditable: true}),
 	
 	treeItemIsExpanded: NO,	
 	treeItemChildren: function(){

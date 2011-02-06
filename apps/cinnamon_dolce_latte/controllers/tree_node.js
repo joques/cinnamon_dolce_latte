@@ -21,7 +21,7 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 	observeContent: function() {
 		var record = this.get("content");
 		
-		if(record) {
+		if(record) {			
 			this.set('canDeleteNode', YES);
 			if(record.isTopic) {
 				this.set('canAddPost', YES);

@@ -33,13 +33,16 @@ CinnamonDolceLatte.topicArrayController = SC.ArrayController.create(
 		// Need a smarter approach to guid generation. Maybe, I could use a central controller 
 		var guid_val = "topic" + top_len;
 		
-		topics.pushObject({
+		var myNewTopic = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Topic, {
 			type: 'Topic',
 			guid: guid_val,
 			description: 'New Topic',
 			keywords: [],
 			posts: []
 		});
+		
+		topics.pushObject(myNewTopic);
+		
 				
 		return YES;
 	},
