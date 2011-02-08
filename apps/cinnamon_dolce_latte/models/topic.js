@@ -11,13 +11,13 @@
   @extends SC.Record
   @version 0.1
 */
-CinnamonDolceLatte.Topic = SC.Record.extend(
+CinnamonDolceLatte.Topic = SC.ChildRecord.extend(
 /** @scope CinnamonDolceLatte.Topic.prototype */ {
 	childRecordNamespace: CinnamonDolceLatte,
 	
 	description: SC.Record.attr(String, {isRequired: YES}),
 	keywords: SC.Record.attr(Array, {isRequired: YES}),
-	posts: SC.Record.toMany('CinnamonDolceLatte.Post', { nested: YES }),
+	posts: SC.Record.toMany('CinnamonDolceLatte.Post', { nested: YES, isEditable: YES }),
 		
 	treeItemIsExpanded: NO,	
 	treeItemChildren: function(){

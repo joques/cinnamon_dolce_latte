@@ -113,7 +113,7 @@ SC.PopupButtonView = SC.ButtonView.extend(
     var menu = this.get('menu');
     
     // if it is already instantiated or does not exist, we cannot do anything
-    if (!menu || !menu.isClass) return;
+    if (!menu.isClass || !menu) return;
     
     // create
     this.menu = menu.create();
@@ -274,8 +274,7 @@ SC.PopupButtonView = SC.ButtonView.extend(
   {
     if (!this.get('isEnabled')) return NO ;
     var menu = this.get('instantiatedMenu') ;
-
-    return (!!menu && menu.performKeyEquivalent(charCode, evt, YES)) ;
+    return (!!menu && menu.performKeyEquivalent(charCode, evt)) ;
   },
 
   /** @private */

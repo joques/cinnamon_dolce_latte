@@ -29,9 +29,13 @@ CinnamonDolceLatte.postController = SC.ObjectController.create(
 			this.set('updatedArticle', postRecord.get('article'));
 			
 			var selComments = postRecord.get('comments');
-			CinnamonDolceLatte.commentArrayController.set('content', selComments);			
+			CinnamonDolceLatte.commentArrayController.set('content', selComments);
+			
+			var selReferences = postRecord.get('post_refs');
+			CinnamonDolceLatte.referenceArrayController.set('content', selReferences);
 		} else {
 			CinnamonDolceLatte.commentArrayController.set('content', null);
+			CinnamonDolceLatte.referenceArrayController.set('content', null);
 			this.set('canDeletePost', NO);
 			this.set('canAddComment', NO);
 			

@@ -18,20 +18,20 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 		var commentCol = curPost.get('comments');
 		
 		var commentatorName = CinnamonDolceLatte.loginController.get('nameToDisplay');
+		alert("commentatorName is " + commentatorName);
 
 		// generate the id 
 		var com_lenght = this.get('content').get('length');
 		com_lenght++;
 		var guid_val = "comment" + com_lenght;
-				
-		var myNewComment = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Comment, {
+							
+		commentCol.pushObject({
+			type: 'Comment',
 			guid: guid_val,
 			comment: 'Add your comment here here',
 			commentator: commentatorName,
 			date_created: SC.DateTime.create()
-		});
-		
-		commentCol.pushObject(myNewComment);				
+		});				
 		return YES;
 	},
 	
@@ -47,8 +47,7 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 			this.selectObject(this.get('arrangedObjects').objectAt(0));
 		}
 		
-		return YES;
-		
+		return YES;		
 	},
 	
 	updateComments: function(commentIdx) {

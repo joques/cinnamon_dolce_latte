@@ -22,12 +22,12 @@ SC.PreloadBundleTask = SC.Task.extend({
   bundle: null,
   
   /**
-    The target to supply to SC.Module.loadModule.
+    The target to supply to SC.loadBundle.
   */
   target: "SC",
   
   /**
-    The action to supply to SC.Module.loadModule.
+    The action to supply to SC.loadBundle.
   */
   action: "preloaded",
   
@@ -35,7 +35,7 @@ SC.PreloadBundleTask = SC.Task.extend({
     var bundle;
     if (bundle = this.get("bundle")) {
       var st = Date.now();
-      SC.Module.loadModule(this.get("bundle"), this.get("target"), this.get("action"));
+      SC.loadBundle(this.get("bundle"), this.get("target"), this.get("action"));
     }
   }
 });

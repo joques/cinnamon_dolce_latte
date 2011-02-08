@@ -5,8 +5,12 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-sc_require('mixins/inline_editable');
-sc_require('mixins/inline_editor_delegate');
+sc_require('views/view') ;
+sc_require('mixins/control') ;
+
+SC.ALIGN_LEFT = 'left';
+SC.ALIGN_RIGHT = 'right';
+SC.ALIGN_CENTER = 'center';
 
 SC.REGULAR_WEIGHT = 'normal';
 SC.BOLD_WEIGHT = 'bold';
@@ -21,37 +25,14 @@ SC.BOLD_WEIGHT = 'bold';
   
   @extends SC.View
   @extends SC.Control
-  @extends SC.InlineEditable
   @extends SC.InlineEditorDelegate
   @since SproutCore 1.0
 */
-SC.LabelView = SC.View.extend(SC.Control, SC.InlineEditorDelegate, SC.InlineEditable,
+SC.LabelView = SC.View.extend(SC.Control,
 /** @scope SC.LabelView.prototype */ {
 
   classNames: ['sc-label-view'],
 
-  displayProperties: 'displayTitle textAlign fontWeight icon escapeHTML needsEllipsis hint'.w(),
-
-
-  
-  isEditable: NO,
-  
-  /**
-    The exampleInlineTextFieldView property is by default a 
-    SC.InlineTextFieldView but it can be set to a customized inline text field
-    view.
-  
-    @property
-    @type {SC.View}
-    @default {SC.InlineTextFieldView}
-  */
-  exampleInlineTextFieldView: SC.InlineTextFieldView,
-  
-  /**
-    LabelView is its own delegate by default, but you can change this to use a customized editor.
-  */
-  editorDelegate: null,
-  
   /**
     Specify the font weight for this.  You may pass SC.REGULAR_WEIGHT, or SC.BOLD_WEIGHT.
   */
@@ -100,6 +81,17 @@ SC.LabelView = SC.View.extend(SC.Control, SC.InlineEditorDelegate, SC.InlineEdit
   hint: null,
 
   /**
+    The exampleInlineTextFieldView property is by default a 
+    SC.InlineTextFieldView but it can be set to a customized inline text field
+    view.
+  
+    @property
+    @type {SC.View}
+    @default {SC.InlineTextFieldView}
+  */
+  exampleInlineTextFieldView: SC.InlineTextFieldView,
+  
+  /**
     An optional icon to display to the left of the label.  Set this value
     to either a CSS class name (for spriting) or an image URL.
   */
@@ -109,14 +101,12 @@ SC.LabelView = SC.View.extend(SC.Control, SC.InlineEditorDelegate, SC.InlineEdit
     Set the alignment of the label view.
   */
   textAlign: SC.ALIGN_LEFT,
-
+  
   /**
-    The name of the theme's SC.LabelView render delegate.
-
-    @property {String}
+    If you want the inline editor to be multiline set this property to YES.
   */
-  renderDelegateName: 'labelRenderDelegate',
-
+  isInlineEditorMultiline: NO,
+  
   /**
     [RO] The value that will actually be displayed.
     
@@ -125,7 +115,7 @@ SC.LabelView = SC.View.extend(SC.Control, SC.InlineEditorDelegate, SC.InlineEdit
     
     @field
   */
-  displayTitle: function() {
+  displayValue: function() {
     var value, formatter;
     
     value = this.get('value') ;
@@ -155,9 +145,12 @@ SC.LabelView = SC.View.extend(SC.Control, SC.InlineEditorDelegate, SC.InlineEdit
     
     // 4. Localize
     if (value && this.getDelegateProperty('localize', this.displayDelegate)) value = value.loc() ;
-        
+
+    // 5. escapeHTML if needed
+    if (this.get('escapeHTML')) value = SC.RenderContext.escapeHTML(value);
+    
     return value ;
-  }.property('value', 'localize', 'formatter').cacheable(),
+  }.property('value', 'localize', 'formatter', 'escapeHTML').cacheable(),
   
   
   /**
@@ -169,9 +162,31 @@ SC.LabelView = SC.View.extend(SC.Control, SC.InlineEditorDelegate, SC.InlineEdit
   */
   hintValue: function() {
     var hintVal = this.get('hint');
+    if (this.get('escapeHTML')) hintVal = SC.RenderContext.escapeHTML(hintVal);
     return hintVal ;
-  }.property('hint').cacheable(),
+  }.property('hint', 'escapeHTML').cacheable(),
   
+  /**
+    Enables editing using the inline editor.
+  */
+  isEditable: NO,
+  isEditableBindingDefault: SC.Binding.bool(),
+
+  /**
+    YES if currently editing label view.
+  */
+  isEditing: NO,
+  
+  /**
+    Validator to use during inline editing.
+    
+    If you have set isEditing to YES, then any validator you set on this
+    property will be used when the label view is put into edit mode.
+    
+    @type {SC.Validator}
+  */
+  validator: null,
+
   /**
     Event dispatcher callback.
     If isEditable is set to true, opens the inline text editor view.
@@ -182,6 +197,62 @@ SC.LabelView = SC.View.extend(SC.Control, SC.InlineEditorDelegate, SC.InlineEdit
   doubleClick: function( evt ) { return this.beginEditing(); },
   
   
+  /**
+    Opens the inline text editor (closing it if it was already open for 
+    another view).
+    
+    @return {Boolean} YES if did begin editing
+  */
+  beginEditing: function() {
+    if (this.get('isEditing')) return YES ;
+    if (!this.get('isEditable')) return NO ;
+
+    var el = this.$(),
+        value = this.get('value'),
+        f = SC.viewportOffset(el[0]),
+        frameTemp = this.convertFrameFromView(this.get('frame'), null) ;
+    f.width=frameTemp.width;
+    f.height=frameTemp.height;
+    
+    SC.InlineTextFieldView.beginEditing({
+      frame: f,
+      delegate: this,
+      exampleElement: el,
+      value: value, 
+      multiline: this.get('isInlineEditorMultiline'), 
+      isCollection: NO,
+      validator: this.get('validator'),
+      exampleInlineTextFieldView: this.get('exampleInlineTextFieldView')
+    });
+  },
+  
+  /**
+    Cancels the current inline editor and then exits editor. 
+    
+    @return {Boolean} NO if the editor could not exit.
+  */
+  discardEditing: function() {
+    if (!this.get('isEditing')) return YES ;
+    return SC.InlineTextFieldView.discardEditing() ;
+  },
+  
+  /**
+    Commits current inline editor and then exits editor.
+    
+    @return {Boolean} NO if the editor could not exit
+  */
+  commitEditing: function() {
+    if (!this.get('isEditing')) return YES ;
+    return SC.InlineTextFieldView.commitEditing() ;
+  },
+
+  /** @private
+    Set editing to true so edits will no longer be allowed.
+  */
+  inlineEditorWillBeginEditing: function(inlineEditor) {
+    this.set('isEditing', YES);
+  },
+
   /** @private 
     Hide the label view while the inline editor covers it.
   */
@@ -191,22 +262,78 @@ SC.LabelView = SC.View.extend(SC.Control, SC.InlineEditorDelegate, SC.InlineEdit
     layer.css('opacity', 0.0);
   },
   
-  
-  /** @private 
-    Hide the label view while the inline editor covers it.
+  /** @private
+    Delegate method defaults to the isEditable property
   */
-  inlineEditorDidBeginEditing: function(editor) {
-    this._oldOpacity = this.get('layout').opacity ;
-    this.adjust('opacity', 0);
+  inlineEditorShouldBeginEditing: function(){
+    return this.get('isEditable');
   },
   
   /** @private
+    Could check with a validator someday...
+  */
+  inlineEditorShouldEndEditing: function(inlineEditor, finalValue) {
+    return YES ;
+  },
+
+  /** @private
     Update the field value and make it visible again.
   */
-  inlineEditorDidEndEditing: function(editor, finalValue) {
+  inlineEditorDidEndEditing: function(inlineEditor, finalValue) {
     this.setIfChanged('value', finalValue) ;
-    this.adjust('opacity', this._oldOpacity);
+    this.$().css('opacity', this._oldOpacity);
     this._oldOpacity = null ;
     this.set('isEditing', NO) ;
+  },
+
+  displayProperties: 'displayValue textAlign fontWeight icon'.w(),
+  
+  _TEMPORARY_CLASS_HASH: {},
+  
+  render: function(context, firstTime) {
+    var value = this.get('displayValue'),
+        icon = this.get('icon'),
+        hint = this.get('hintValue'),
+        classes, stylesHash, text,
+        iconChanged = false, textChanged = false;
+    
+    if (icon) {
+      var url = (icon.indexOf('/')>=0) ? icon : SC.BLANK_IMAGE_URL,
+          className = (url === icon) ? '' : icon ;
+      icon = '<img src="'+url+'" alt="" class="icon '+className+'" />';
+      if(icon!==this._iconCache) {
+        this._iconCache=icon;
+        iconChanged = true;
+      }
+    }
+    
+    if (hint && (!value || value === '')) {
+      text = '<span class="sc-hint">'+hint+'</span>';
+    }else{
+      text = value;
+    }
+    if(text!==this._textCache) {
+      this._textCache=text;
+      textChanged = true;
+    }
+        
+    if(firstTime || textChanged || iconChanged){
+      context.push(icon, text);
+    }
+    
+    // and setup alignment and font-weight on styles
+    stylesHash = { 
+      'text-align': this.get('textAlign'), 
+      'font-weight': this.get('fontWeight')
+    };
+           
+    // if we are editing, set the opacity to 0
+    if (this.get('isEditing')) stylesHash['opacity']=0;
+    context.addStyle(stylesHash);
+    
+    classes = this._TEMPORARY_CLASS_HASH;
+    classes.icon = !!this.get('icon');
+    context.setClass(classes);
   }
+  
 });

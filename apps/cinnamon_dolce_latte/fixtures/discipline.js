@@ -25,6 +25,43 @@ CinnamonDolceLatte.Discipline.FIXTURES = [
 						article: 'say something about the content of the article',
 						creator: 'Pierre Libasky',
 						date_created: SC.DateTime.create({year: 2010, month: 10, day: 23}),
+						post_refs: [
+							{
+								type: 'Reference',
+								guid: 'ref1',
+								resource_title: 'A Taxonomy of Process Calculi for Distribution and Mobility',
+								resource_type: 'Conference',
+								date_of_publication: SC.DateTime.create({year: 2010, month: 07, day: 15}),
+								authors: [{
+									type: 'Author',
+									guid: 'author1',
+									first_name: 'Daniele',
+									last_name: 'Gorla',
+									email: 'Daniele.Gorla@uniroma.it'
+								}]
+							},
+							{
+								type: 'Reference',
+								guid: 'ref2',
+								resource_title: 'Social Networks and Multi-agent Organizational Performance',
+								resource_type: 'Conference',
+								date_of_publication: SC.DateTime.create({year: 2009, month: 11, day: 12}),
+								authors: [{
+									type: 'Author',
+									guid: 'author2',
+									first_name: 'Mattew',
+									last_name: 'Gaston',
+									email: 'mgastol@cs.umbc.edu'
+								},
+								{
+									type: 'Author',
+									guid: 'author3',
+									first_name: 'Marie',
+									last_name: 'desJardins',
+									email: 'mariedjl@cs.umbc.edu'
+								}]
+							}
+						],
 						comments: [
 							{
 								type: 'Comment',

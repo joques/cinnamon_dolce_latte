@@ -47,8 +47,27 @@ SC.WellView = SC.ContainerView.extend(
       this.childViews = [view] ;
     } 
   },
-
-  theme: 'well',
+  
+  /**
+     The render method for the WellView simply add the html necessary for
+     the border.
+     
+   */
+  
+  render: function(context, firstTime) {
+    if(firstTime){
+     context.push("<div class='top-left-edge'></div>",
+       "<div class='top-edge'></div>",
+       "<div class='top-right-edge'></div>",
+       "<div class='right-edge'></div>",
+       "<div class='bottom-right-edge'></div>",
+       "<div class='bottom-edge'></div>",
+       "<div class='bottom-left-edge'></div>",
+       "<div class='left-edge'></div>",
+       "<div class='content-background'></div>");
+     }    
+     arguments.callee.base.apply(this,arguments);
+  },
   
   /**
      Invoked whenever the content property changes.  This method will simply

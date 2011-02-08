@@ -13,16 +13,6 @@ sc_require("tasks/task");
   bundles while not blocking user interaction.
 */
 SC.TaskQueue = SC.Task.extend({
-  
-  init: function() {
-    var self = this;
-    this._doIdleEntry = function() {
-      self._idleEntry();
-    };
-    
-    this._tasks = [];
-  },
-  
   /**
     If YES, the queue will automatically run in the background when the browser idles.
   */
@@ -50,7 +40,7 @@ SC.TaskQueue = SC.Task.extend({
   */
   minimumIdleDuration: 500,
   
-  _tasks: null,
+  _tasks: [],
   
   /**
     Returns YES if there are tasks in the queue.
@@ -101,7 +91,11 @@ SC.TaskQueue = SC.Task.extend({
   */
   _setupIdle: function() {
     if (this.get('runWhenIdle') && !this._idleIsScheduled && this.get('taskCount') > 0) {
-      setTimeout(this._doIdleEntry, 
+      var self = this;
+      setTimeout(
+        function(){
+          self._idleEntry();
+        }, 
         this.get('interval')
       );
       this._idleIsScheduled = YES;
@@ -115,15 +109,15 @@ SC.TaskQueue = SC.Task.extend({
   _idleEntry: function() {
     this._idleIsScheduled = NO;
     var last = SC.RunLoop.lastRunLoopEnd;
-    
-    // if no recent events (within < 1s)
     if (Date.now() - last > this.get('minimumIdleDuration')) {
-      SC.run(this.run, this);
+      // if no recent events (within < 1s)
+      this.run();
+    } else {
+      SC.run(function() {
+        this._setupIdle();        
+      }, this);
       SC.RunLoop.lastRunLoopEnd = last; // we were never here
     }
-    
-    // set up idle timer if needed
-    this._setupIdle();
   },
   
   /**
@@ -141,6 +135,9 @@ SC.TaskQueue = SC.Task.extend({
       // check if the limit has been exceeded
       if (Date.now() - start > limit) break;
     }
+    
+    // set up idle timer if needed
+    this._setupIdle();
     
     this.set("isRunning", NO);
   }

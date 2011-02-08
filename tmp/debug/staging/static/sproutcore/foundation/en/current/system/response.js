@@ -238,35 +238,36 @@ SC.Response = SC.Object.extend(
     @returns {SC.Response} receiver
   */
   receive: function(callback, context) {
+    // If we timed out, we should ignore this response.
     if (!this.get('timedOut')) {
       // If we had a timeout timer scheduled, invalidate it now.
       var timer = this.get('timeoutTimer');
       if (timer) timer.invalidate();
       this.set('timedOut', NO);
+    
+      var req = this.get('request');
+      var source = req ? req.get('source') : null;
+    
+      SC.run(function() {
+        // invoke the source, giving a chance to fixup the reponse or (more 
+        // likely) cancel the request.
+        if (source && source.willReceive) source.willReceive(req, this);
+
+        // invoke the callback.  note if the response was cancelled or not
+        callback.call(context, !this.get('isCancelled'));
+
+        // if we weren't cancelled, then give the source first crack at handling
+        // the response.  if the source doesn't want listeners to be notified,
+        // it will cancel the response.
+        if (!this.get('isCancelled') && source && source.didReceive) {
+          source.didReceive(req, this);
+        }
+
+        // notify listeners if we weren't cancelled.
+        if (!this.get('isCancelled')) this.notify();
+      }, this);
     }
-
-    var req = this.get('request');
-    var source = req ? req.get('source') : null;
-
-    SC.run(function() {
-      // invoke the source, giving a chance to fixup the response or (more
-      // likely) cancel the request.
-      if (source && source.willReceive) source.willReceive(req, this);
-
-      // invoke the callback.  note if the response was cancelled or not
-      callback.call(context, !this.get('isCancelled'));
-
-      // if we weren't cancelled, then give the source first crack at handling
-      // the response.  if the source doesn't want listeners to be notified,
-      // it will cancel the response.
-      if (!this.get('isCancelled') && source && source.didReceive) {
-        source.didReceive(req, this);
-      }
-
-      // notify listeners if we weren't cancelled.
-      if (!this.get('isCancelled')) this.notify();
-    }, this);
-
+    
     // no matter what, remove from inflight queue
     SC.Request.manager.transportDidClose(this) ;
     return this;
@@ -293,31 +294,28 @@ SC.Response = SC.Object.extend(
     if (this.get('timedOut') === null) {
       this.set('timedOut', YES);
       this.cancelTransport();
-
-      // Invokes any relevant callbacks and notifies registered listeners, if
-      // any. In the event of a timeout, we set the status to 0 since we
-      // didn't actually get a response from the server.
-      this.receive(function(proceed) {
-        if (!proceed) return;
-
-        // Set our value to an error.
-        var error = SC.$error("HTTP Request timed out", "Request", 0) ;
-        error.set("errorValue", this) ;
-        this.set('isError', YES);
-        this.set('errorObject', error);
-        this.set('status', 0);
-      }, this);
-
-      return YES;
+      SC.Request.manager.transportDidClose(this);
+      
+      // Set our value to an error.
+      var error = SC.$error("HTTP Request timed out", "Request", 408) ;
+      error.set("errorValue", this) ;
+      this.set('isError', YES);
+      this.set('errorObject', error);
+      
+      // Invoke the didTimeout callback.
+      var req = this.get('request');
+      var source = req ? req.get('source') : null;
+      if (!this.get('isCancelled') && source && source.didTimeout) {
+        source.didTimeout(req, this);
+      }
     }
-
-    return NO;
   },
   
   /**
     Override with concrete implementation to actually cancel the transport.
   */
   cancelTransport: function() {},
+  
   
   /** @private
     Will notify each listener.
@@ -421,12 +419,28 @@ SC.XHRResponse = SC.Response.extend({
     if (rawRequest) rawRequest.abort();
     this.set('rawRequest', null);
   },
-
+  
   invokeTransport: function() {
+    
     var rawRequest, transport, handleReadyStateChange, async, headers;
     
-    rawRequest = this.createRequest();
-
+    // Get an XHR object
+    function tryThese() {
+      for (var i=0; i < arguments.length; i++) {
+        try {
+          var item = arguments[i]() ;
+          return item ;
+        } catch (e) {}
+      }
+      return NO;
+    }
+    
+    rawRequest = tryThese(
+      function() { return new XMLHttpRequest(); },
+      function() { return new ActiveXObject('Msxml2.XMLHTTP'); },
+      function() { return new ActiveXObject('Microsoft.XMLHTTP'); }
+    );
+    
     // save it 
     this.set('rawRequest', rawRequest);
     
@@ -465,33 +479,6 @@ SC.XHRResponse = SC.Response.extend({
     return rawRequest ;
   },
   
-  /**
-    Creates the correct XMLHttpRequest object for this browser.
-
-    You can override this if you need to, for example, create an XHR on a
-    different domain name from an iframe.
-
-    @returns {XMLHttpRequest|ActiveXObject}
-  */
-  createRequest: function() {
-    // Get an XHR object
-    function tryThese() {
-      for (var i=0; i < arguments.length; i++) {
-        try {
-          var item = arguments[i]() ;
-          return item ;
-        } catch (e) {}
-      }
-      return NO;
-    }
-
-    return tryThese(
-      function() { return new XMLHttpRequest(); },
-      function() { return new ActiveXObject('Msxml2.XMLHTTP'); },
-      function() { return new ActiveXObject('Microsoft.XMLHTTP'); }
-    );
-  },
-
   /**  @private
   
     Called by the XHR when it responds with some final results.
@@ -504,8 +491,9 @@ SC.XHRResponse = SC.Response.extend({
         readyState = rawRequest.readyState,
         error, status, msg;
 
-    if (readyState === 4 && !this.get('timedOut')) {
+    if (readyState === 4) {
       this.receive(function(proceed) {
+
         if (!proceed) return ; // skip receiving...
       
         // collect the status and decide if we're in an error state or not
@@ -535,7 +523,7 @@ SC.XHRResponse = SC.Response.extend({
       }, this);
 
       // Avoid memory leaks
-      if (!SC.browser.msie && !SC.browser.opera) {
+      if (!SC.browser.msie) {
         SC.Event.remove(rawRequest, 'readystatechange', this, this.finishRequest);	  
       } else {
         rawRequest.onreadystatechange = null;

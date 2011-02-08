@@ -16,7 +16,6 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 	addPost: function() {
 		var curTopic = CinnamonDolceLatte.topicController.get('content');
 		var postCol = curTopic.get('posts');
-		
 		var creatorName = CinnamonDolceLatte.loginController.get('nameToDisplay');
 		
 		// generate the id 
@@ -24,16 +23,16 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 		post_lenght++;
 		var guid_val = "post" + post_lenght;
 				
-		var myNewPost = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Post, {
+		postCol.pushObject({
+			type: 'Post',
 			guid: guid_val,
 			title: 'New Post',
 			article: 'Post the article here',
 			creator: creatorName,
 			date_created: SC.DateTime.create(),
-			comments: []			
+			comments: []
 		});
-		
-		postCol.pushObject(myNewPost);						
+								
 		return YES;		
 	},
 	

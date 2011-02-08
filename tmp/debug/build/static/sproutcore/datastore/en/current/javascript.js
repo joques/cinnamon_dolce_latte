@@ -895,7 +895,7 @@ SC.Record = SC.Object.extend(
       
       if(!ignoreDidChange) this.endEditing(key);
     }
-    return this ;
+    return this ;  
   },
   
   /**
@@ -1017,7 +1017,7 @@ SC.Record = SC.Object.extend(
         store      = this.get('store'), 
         storeKey   = this.get('storeKey'), 
         key, valueForKey, typeClass, recHash, attrValue, normChild,  isRecord,
-        isChild, defaultVal, keyForDataHash, attr;
+        isChild, defaultVal, keyForDataHash;
       
     var dataHash = store.readEditableDataHash(storeKey) || {};
     dataHash[primaryKey] = recordId;
@@ -1034,12 +1034,8 @@ SC.Record = SC.Object.extend(
           isChild  = valueForKey.isChildRecordTransform;
           if (!isRecord && !isChild) {
             attrValue = this.get(key);
+
             if(attrValue!==undefined || (attrValue===null && includeNull)) {
-              attr = this[key];
-              // if record attribute, make sure we transform with the fromType
-              if(SC.instanceOf(attr, SC.RecordAttribute)) {
-                attrValue = attr.fromType(this, key, attrValue);
-              }
               dataHash[keyForDataHash] = attrValue;
             }
           
@@ -6509,9 +6505,9 @@ SC.ChildRecord = SC.Record.extend(
    * Invokes the parent's recordDidChange() function until it gets to an SC.Record instance, at
    * which point the record is marked as dirty in the store.
    */
-  recordDidChange: function(key) {
+  recordDidChange: function() {
     if (this._parentRecord && this._parentRecord.recordDidChange) {
-      this._parentRecord.recordDidChange(key);
+      this._parentRecord.recordDidChange();
     }
     else{
       arguments.callee.base.apply(this,arguments);
@@ -6715,41 +6711,12 @@ SC.RecordAttribute = SC.Object.extend(
   */
   toType: function(record, key, value) {
     var transform = this.get('transform'),
-        type      = this.get('typeClass'),
-        children;
+        type      = this.get('typeClass');
     
     if (transform && transform.to) {
       value = transform.to(value, this, type, record, key) ;
-      
-      // if the transform needs to do something when its children change, we need to set up an observer for it
-      if(!SC.none(value) && (children = transform.observesChildren)) {
-        var i, len = children.length,
-        // store the record, transform, and key so the observer knows where it was called from
-        context = {
-          record: record,
-          key: key
-        };
-        
-        for(i = 0; i < len; i++) value.addObserver(children[i], this, this._SCRA_childObserver, context);
-      }
     }
-    
     return value ;
-  },
-  
-  /**
-    @private
-    
-    Shared observer used by any attribute whose transform creates a seperate object that needs to write back to the datahash when it changes. For example, when enumerable content changes on a SC.Set attribute, it writes back automatically instead of forcing you to call .set manually.
-    This functionality can be used by setting an array named observesChildren on your transform containing the names of keys to observe.
-    When one of them triggers it will call childDidChange on your transform with the same arguments as to and from.
-  */
-  _SCRA_childObserver: function(obj, key, deprecated, context, rev) {
-    // write the new value back to the record
-    this.call(context.record, context.key, obj);
-    
-    // mark the attribute as dirty
-    context.record.notifyPropertyChange(context.key);
   },
 
   /** 
@@ -6861,23 +6828,6 @@ SC.RecordAttribute.transforms = {};
   | *to(value, attr, klass, record, key)* | converts the passed value (which will be of the class expected by the attribute) into the underlying attribute value |
   | *from(value, attr, klass, record, key)* | converts the underyling attribute value into a value of the class |
   
-  You can also provide an array of keys to observer on the return value. When any of these change, your from method will be called to write the changed object back to the record. For example:
-  
-  {{{
-  {
-    to: function(value, attr, type, record, key) {
-      if(value) return value.toSet();
-      else return SC.Set.create();
-    },
-  
-    from: function(value, attr, type, record, key) {
-      return value.toArray();
-    },
-  
-    observesChildren: ['[]']
-  }
-  }}}
-  
   @param {Object} klass the type of object you convert
   @param {Object} transform the transform object
   @returns {SC.RecordAttribute} receiver
@@ -6931,9 +6881,7 @@ SC.RecordAttribute.registerTransform(Array, {
       obj = [];
     }
     return obj;
-  },
-  
-  observesChildren: ['[]']
+  }
 });
 
 /** @private - generic converter for Object */
@@ -6980,7 +6928,8 @@ SC.RecordAttribute.registerTransform(Date, {
 
   /** @private - convert a string to a Date */
   to: function(str, attr) {
-    if (str === null) return null;
+    if (str === null)
+      return null;
 
     var ret ;
     str = str.toString() || '';
@@ -7078,21 +7027,6 @@ if (SC.DateTime && !SC.RecordAttribute.transforms[SC.guidFor(SC.DateTime)]) {
   });
   
 }
-
-/**
-  Parses a coreset represented as an array.
- */
-SC.RecordAttribute.registerTransform(SC.Set, {
-  to: function(value, attr, type, record, key) {
-    return SC.Set.create(value);
-  },
-  
-  from: function(value, attr, type, record, key) {
-    return value.toArray();
-  },
-  
-  observesChildren: ['[]']
-});
 
 /* >>>>>>>>>> BEGIN source/models/child_attribute.js */
 // ==========================================================================
@@ -8237,8 +8171,6 @@ SC.ManyArray = SC.Object.extend(SC.Enumerable, SC.Array,
       record.recordDidChange(pname);
     } 
     
-    this.enumerableContentDidChange(idx, amt, len - amt);
-    
     return this;
   },
   
@@ -8369,8 +8301,7 @@ SC.ManyArray = SC.Object.extend(SC.Enumerable, SC.Array,
   
   /** @private */
   unknownProperty: function(key, value) {
-    var ret;
-    if (SC.typeOf(key) === SC.T_STRING) ret = this.reducedProperty(key, value);
+    var ret = this.reducedProperty(key, value);
     return ret === undefined ? arguments.callee.base.apply(this,arguments) : ret;
   },
 
@@ -8477,7 +8408,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     var ret = this.get('dataSource');
     if (typeof ret === SC.T_STRING) {
       ret = SC.objectForPropertyPath(ret);
-      if (ret && ret.isClass) ret = ret.create();
+      if (ret) ret = ret.create();
       if (ret) this.set('dataSource', ret);
     }
     return ret;
@@ -8627,6 +8558,15 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     @property {SC.Set}
   */
   changelog: null,
+  
+  /**
+    A set of SC.RecordArray that have been returned from findAll with an 
+    SC.Query. These will all be notified with _notifyRecordArraysWithQuery() 
+    whenever the store changes.
+  
+    @property {Array}
+  */
+  recordArraysWithQuery: null,
   
   /**
     An array of SC.Error objects associated with individual records in the
@@ -9975,6 +9915,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     @returns {Boolean} if the action was succesful.
   */
   commitRecords: function(recordTypes, ids, storeKeys, params) {
+    
     var source    = this._getDataSource(),
         isArray   = SC.typeOf(recordTypes) === SC.T_ARRAY,    
         retCreate= [], retUpdate= [], retDestroy = [], 
@@ -10190,8 +10131,8 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     ret = storeKey = recordType.storeKeyFor(id); // needed to cache
       
     if (this.readStatus(storeKey) & K.BUSY) {
-      this.dataSourceDidComplete(storeKey, dataHash, id);
-    } else this.pushRetrieve(recordType, id, dataHash, storeKey);
+        this.dataSourceDidComplete(storeKey, dataHash, id);
+      } else this.pushRetrieve(recordType, id, dataHash, storeKey);
     
     // return storeKey
     return ret ;
@@ -10713,8 +10654,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     storeKey.  As opposed to storeKeyFor() however, this method
     will NOT generate a new storeKey but returned undefined.
     
-    @param {SC.Record} recordType the record type
-    @param {String} primaryKey the primary key
+    @param {String} id a record id
     @returns {Number} a storeKey.
   */
   storeKeyExists: function(recordType, primaryKey) {
@@ -11663,7 +11603,7 @@ sc_require('models/record');
   array.
   
   The information below about RecordArray internals is only intended for those
-  who need to override this class for some reason to do something special.
+  who need to override this class for some reason to do some special.
   
   h2. Internal Notes
   
@@ -11672,20 +11612,14 @@ sc_require('models/record');
   storeKeys.  The underlying array can be a real array or it may be a 
   SparseArray, which is how you implement incremental loading.
   
-  If the RecordArray is created with an SC.Query object as well (and it 
+  If the RecordArray is created with an SC.Query objects as well (and it 
   almost always will have a Query object), then the RecordArray will also 
   consult the query for various delegate operations such as determining if 
   the record array should update automatically whenever records in the store
-  changes. It will also ask the Query to refresh the storeKeys whenever records 
-  change in the store.
+  changes.
   
-  If the SC.Query object has complex matching rules, it might be 
-  computationally heavy to match a large dataset to a query. To avoid the 
-  browser from ever showing a slow script timer in this scenario, the query
-  matching is by default paced at 100ms. If query matching takes longer than 
-  100ms, it will chunk the work with setTimeout to avoid too much computation
-  to happen in one runloop.
-  
+  It will also ask the Query to refresh the storeKeys whenever records change
+  in the store.
   
   @extends SC.Object
   @extends SC.Enumerable
@@ -12118,20 +12052,13 @@ SC.RecordArray = SC.Object.extend(SC.Enumerable, SC.Array,
         changed   = this._scq_changedStoreKeys,
         didChange = NO,
         K         = SC.Record,
-        storeKeysToPace = [],
-        startDate = new Date(),
         rec, status, recordType, sourceKeys, scope, included;
-    
+
     // if we have storeKeys already, just look at the changed keys
     var oldStoreKeys = storeKeys;
     if (storeKeys && !_flush) {
-      
       if (changed) {
         changed.forEach(function(storeKey) {
-          if(storeKeysToPace.length>0 || new Date()-startDate>SC.RecordArray.QUERY_MATCHING_THRESHOLD) {
-            storeKeysToPace.push(storeKey);
-            return;
-          }
           // get record - do not include EMPTY or DESTROYED records
           status = store.peekStatus(storeKey);
           if (!(status & K.EMPTY) && !((status & K.DESTROYED) || (status === K.BUSY_DESTROYING))) {
@@ -12152,14 +12079,10 @@ SC.RecordArray = SC.Object.extend(SC.Enumerable, SC.Array,
               storeKeys.removeObject(storeKey);
             } // if (storeKeys.indexOf)
           } // if (included)
-          
         }, this);
         // make sure resort happens
         didChange = YES ;
-        
       } // if (changed)
-      
-      //console.log(this.toString() + ' partial flush took ' + (new Date()-startDate) + ' ms');
     
     // if no storeKeys, then we have to go through all of the storeKeys 
     // and decide if they belong or not.  ick.
@@ -12168,6 +12091,7 @@ SC.RecordArray = SC.Object.extend(SC.Enumerable, SC.Array,
       // collect the base set of keys.  if query has a parent scope, use that
       if (scope = query.get('scope')) {
         sourceKeys = scope.flush().get('storeKeys');
+
       // otherwise, lookup all storeKeys for the named recordType...
       } else if (recordType = query.get('expandedRecordTypes')) {
         sourceKeys = SC.IndexSet.create();
@@ -12175,16 +12099,11 @@ SC.RecordArray = SC.Object.extend(SC.Enumerable, SC.Array,
           sourceKeys.addEach(store.storeKeysFor(recordType));
         });
       }
-      
+
       // loop through storeKeys to determine if it belongs in this query or 
       // not.
       storeKeys = [];
       sourceKeys.forEach(function(storeKey) {
-        if(storeKeysToPace.length>0 || new Date()-startDate>SC.RecordArray.QUERY_MATCHING_THRESHOLD) {
-          storeKeysToPace.push(storeKey);
-          return;
-        }
-        
         status = store.peekStatus(storeKey);
         if (!(status & K.EMPTY) && !((status & K.DESTROYED) || (status === K.BUSY_DESTROYING))) {
           rec = store.materializeRecord(storeKey);
@@ -12192,27 +12111,9 @@ SC.RecordArray = SC.Object.extend(SC.Enumerable, SC.Array,
         }
       });
       
-      //console.log(this.toString() + ' full flush took ' + (new Date()-startDate) + ' ms');
-      
       didChange = YES ;
     }
-    
-    // if we reach our threshold of pacing we need to schedule the rest of the
-    // storeKeys to also be updated
-    if(storeKeysToPace.length>0) {
-      var self = this;
-      // use setTimeout here to guarantee that we hit the next runloop, 
-      // and not the same runloop which the invoke* methods do not guarantee
-      window.setTimeout(function() {
-        SC.run(function() {
-          if(!self || self.get('isDestroyed')) return;
-          self.set('needsFlush', YES);
-          self._scq_changedStoreKeys = SC.IndexSet.create().addEach(storeKeysToPace);
-          self.flush();
-        });
-      }, 1);
-    }
-    
+
     // clear set of changed store keys
     if (changed) changed.clear();
     
@@ -12334,15 +12235,8 @@ SC.RecordArray.mixin({
     
     @property {SC.Error}
   */
-  NOT_EDITABLE: SC.Error.desc("SC.RecordArray is not editable"),
-  
-  /**
-    Number of milliseconds to allow a query matching to run for. If this number
-    is exceeded, the query matching will be paced so as to not lock up the 
-    browser (by essentially splitting the work with a setTimeout)
-    
-    @property {Number}
-  */
-  QUERY_MATCHING_THRESHOLD: 100
+  NOT_EDITABLE: SC.Error.desc("SC.RecordArray is not editable")
 });
 
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/datastore');

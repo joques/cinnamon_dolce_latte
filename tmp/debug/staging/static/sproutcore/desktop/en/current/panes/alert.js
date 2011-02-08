@@ -108,8 +108,6 @@ SC.AlertPane = SC.PanelPane.extend({
   
   classNames: 'sc-alert',
   
-  ariaRole: 'alertdialog',
-  
   /**
     The delegate to notify when the pane is dismissed.  If you set a 
     delegate, it should respond to the method:

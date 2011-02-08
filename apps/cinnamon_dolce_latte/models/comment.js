@@ -11,7 +11,7 @@
   @extends SC.Record
   @version 0.1
 */
-CinnamonDolceLatte.Comment = SC.Record.extend(
+CinnamonDolceLatte.Comment = SC.ChildRecord.extend(
 /** @scope CinnamonDolceLatte.Comment.prototype */ {
 	
 		childRecordNamespace: CinnamonDolceLatte,

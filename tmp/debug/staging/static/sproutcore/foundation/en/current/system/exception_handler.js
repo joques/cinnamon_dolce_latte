@@ -22,9 +22,6 @@
 */
 
 SC.ExceptionHandler = {
-
-  enabled: (SC.buildMode !== 'debug'),
-
   /**
     Called when an exception is encountered by code executed using SC.run().
 
