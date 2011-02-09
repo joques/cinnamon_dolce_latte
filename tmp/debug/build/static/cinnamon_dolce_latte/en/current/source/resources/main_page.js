@@ -632,7 +632,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		          layout: { width: 350, height: 60, centerX: 0, centerY: 0 },
 							isTextArea: YES,
 		          valueBinding: 'CinnamonDolceLatte.commentController.updatedComment',
-		          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailCommentPane.isEnabled'
+		          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailReferencePane.isEnabled'
 		        })
 			}),
 			
@@ -641,8 +641,8 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 	        title: 'Save',
 	        action: 'save',
 	        isDefault: YES,
-	        isEnabledBinding: 'CinnamonDolceLatte.commentController.contentIsChanged',
-	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailCommentPane.isEnabled'
+	        isEnabledBinding: 'CinnamonDolceLatte.referenceController.contentIsChanged',
+	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailReferencePane.isEnabled'
 	      }),
 
 	      cancelButton: SC.ButtonView.design({
@@ -650,7 +650,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 	        title: 'Cancel',
 	        action: 'cancel',
 	        isCancel: YES,
-	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailCommentPane.isEnabled'
+	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailReferencePane.isEnabled'
 	      })			
 		}),
 		
