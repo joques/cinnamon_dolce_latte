@@ -22,13 +22,13 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		appLabelView: SC.LabelView.design({
 			layout: { centerY: 0, height: 24, left: 8, width: 200 },
 	        controlSize: SC.SMALL_CONTROL_SIZE,
-	        value:   'Virtual Reading Group'
+	        value:   '_vrg'.loc()
 		}),
 		
 		bannerLabelView: SC.LabelView.design({
 			layout: { centerY: 0, centerX: 0, height: 24, width: 250 },
 	        controlSize: SC.LARGE_CONTROL_SIZE,
-	        value:   'Sharing Great Insight ...',
+	        value:   '_AppTitle'.loc(),
 			anchorLocation: SC.ANCHOR_CENTER		
 		}),
 		
@@ -78,7 +78,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 				topicLabelView: SC.LabelView.design({
 					layout: { centerY: 0, centerX: 0, height: 20, width: 50 },
 					controlSize: SC.SMALL_CONTROL_SIZE,
-					value: 'Topics'
+					value: '_Topics'.loc()
 				})				
 			}),
 													
@@ -156,7 +156,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					postLabelView: SC.LabelView.design({
 						layout: { centerY: 0, centerX: 0, height: 20, width: 50 },
 						controlSize: SC.SMALL_CONTROL_SIZE,
-						value: 'Articles'					
+						value: '_Articles'.loc()					
 					})
 				}),
 				
@@ -171,22 +171,22 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 														
 							SC.TableColumn.create({
 								key: 'title',
-								label: 'Title',
+								label: '_Title'.loc(),
 								width: 400
 							}),
 							SC.TableColumn.create({
 								key: 'shortArticle',
-								label: 'Article',
+								label: '_Article'.loc(),
 								width: 800
 							}),
 							SC.TableColumn.create({
 								key: 'creator',
-								label: 'Author',
+								label: '_Author'.loc(),
 								width: 140
 							}),							
 							SC.TableColumn.create({
 								key: 'date_created',
-								label: 'Created on',
+								label: '_CreatedOn'.loc(),
 								width: 35
 							})
 						],
@@ -249,7 +249,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					commentLabelView: SC.LabelView.design({
 						layout: { centerY: 0, centerX: 0, height: 20, width: 150 },
 						controlSize: SC.SMALL_CONTROL_SIZE,
-						value: 'Visitors\' Comments'					
+						value: '_vComment'.loc()					
 					})										
 					
 				}),
@@ -263,17 +263,17 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						columns:[
 							SC.TableColumn.create({
 								key: 'shortComment',
-								label: 'Comment',
+								label: '_Comment'.loc(),
 								width: 1200
 							}),
 							SC.TableColumn.create({
 								key: 'commentator',
-								label: 'Author',
+								label: '_Author'.loc(),
 								width: 140
 							}),
 							SC.TableColumn.create({
 								key: 'date_created',
-								label: 'Created on',
+								label: '_CreatedOn'.loc(),
 								width: 35
 							})
 						],
@@ -346,15 +346,21 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		contentView: SC.View.extend({
 			childViews: 'paneTitle commentContent saveButton cancelButton'.w(),
 			
-			paneTitle: SC.LabelView.design({
-			        layout: { left: 17, right: 17, top: 5, height: 15 },
-			        value: 'Edit Comment',
-			        textAlign: SC.ALIGN_CENTER,
-			        fontWeight: SC.BOLD_WEIGHT
+			
+			paneTitle: SC.ToolbarView.design({
+				layout: {top: 5, left: 0, right: 0, height: 20},
+				childViews: 'referenceLabelView'.w(),
+				anchorLocation: SC.ANCHOR_TYPE,
+
+				referenceLabelView: SC.LabelView.design({
+					layout: { centerY: 0, centerX: 0, height: 15, width: 80},
+					controlSize: SC.SMALL_CONTROL_SIZE,
+					value: '_EditComment'.loc()					
+				})										
 			}),
 			
 			commentContent: SC.View.design({
-				layout: { left: 17, right: 17, top: 23, height: 70 },
+				layout: { left: 17, right: 17, top: 30, height: 70 },
 				childViews: 'field'.w(),
 								
 				field: SC.TextFieldView.design({
@@ -367,7 +373,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			
 			saveButton: SC.ButtonView.design({
 	        layout: {bottom: 10, right: 110, height:24, width:80},
-	        title: 'Save',
+	        title: '_Save'.loc(),
 	        action: 'save',
 	        isDefault: YES,
 	        isEnabledBinding: 'CinnamonDolceLatte.commentController.contentIsChanged',
@@ -376,7 +382,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 
 	      cancelButton: SC.ButtonView.design({
 	        layout: {bottom: 10, right: 20, height:24, width:80},
-	        title: 'Cancel',
+	        title: '_Cancel'.loc(),
 	        action: 'cancel',
 	        isCancel: YES,
 	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailCommentPane.isEnabled'
@@ -419,21 +425,26 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		contentView: SC.View.extend({
 			childViews: 'paneTitle postTitle postArticle referenceButton saveButton cancelButton'.w(),
 			
-			paneTitle: SC.LabelView.design({
-			        layout: { left: 17, right: 17, top: 5, height: 15 },
-			        value: 'Edit Post',
-			        textAlign: SC.ALIGN_CENTER,
-			        fontWeight: SC.BOLD_WEIGHT
+			paneTitle: SC.ToolbarView.design({
+				layout: {top: 5, left: 0, right: 0, height: 20},
+				childViews: 'referenceLabelView'.w(),
+				anchorLocation: SC.ANCHOR_TYPE,
+
+				referenceLabelView: SC.LabelView.design({
+					layout: { centerY: 0, centerX: 0, height: 15, width: 80},
+					controlSize: SC.SMALL_CONTROL_SIZE,
+					value: '_EditPost'.loc()					
+				})										
 			}),
 			
 			postTitle: SC.View.design({
-				layout: { left: 17, right: 17, top: 25, height: 26 },
+				layout: { left: 17, right: 17, top: 30, height: 26 },
 				childViews: 'label field'.w(),
 				
 				label: SC.LabelView.design({
 		          layout: { left: 0, width: 95, height: 24, centerY: 0 },
 
-		          value: 'Title',
+		          value: '_Title'.loc(),
 		          textAlign: SC.ALIGN_RIGHT,
 		          fontWeight: SC.BOLD_WEIGHT
 		        }),
@@ -452,7 +463,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 				label: SC.LabelView.design({
 		          layout: { left: 0, width: 95, height: 18, centerY: 0 },
 
-		          value: 'Article',
+		          value: '_Article'.loc(),
 		          textAlign: SC.ALIGN_RIGHT,
 		          fontWeight: SC.BOLD_WEIGHT
 		        }),
@@ -461,23 +472,21 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		          layout: { width: 250, height: 65, right: 3, centerY: 0 },
 							isTextArea: YES,
 		          valueBinding: 'CinnamonDolceLatte.postController.updatedArticle',
-		          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailArticlePane.isEnabled'
+		          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailPostPane.isEnabled'
 		        })
 			}),
 			
 			
 			referenceButton: SC.ButtonView.design({
 	        layout: {bottom: 10, left: 10, height:24, width:120},
-	        title: 'References',
+	        title: '_References'.loc(),
 	        action: 'showReferences'
-	        // isEnabledBinding: 'CinnamonDolceLatte.postController.contentIsChanged',
-	        // isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailPostPane.isEnabled'
 	      }),
 			
 			
 			saveButton: SC.ButtonView.design({
 	        layout: {bottom: 10, right: 110, height:24, width:80},
-	        title: 'Save',
+	        title: '_Save'.loc(),
 	        action: 'save',
 	        isDefault: YES,
 	        isEnabledBinding: 'CinnamonDolceLatte.postController.contentIsChanged',
@@ -486,7 +495,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 
 	      cancelButton: SC.ButtonView.design({
 	        layout: {bottom: 10, right: 20, height:24, width:80},
-	        title: 'Cancel',
+	        title: '_Cancel'.loc(),
 	        action: 'cancel',
 	        isCancel: YES,
 	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailPostPane.isEnabled'
@@ -517,8 +526,8 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			 var refPane =      SC.PickerPane.create({
 			        layout: { width: 700, height: 400 },
 			        contentView: SC.View.extend({
-								// childViews: 'referenceHeaderView referenceContentView referenceButtonViews'.w(),								
-								childViews: 'referenceHeaderView referenceContentView referenceButtonViews'.w(),		
+								childViews: 'referenceHeaderView referenceContentView referenceButtonViews'.w(),
+										
 								referenceHeaderView: SC.ToolbarView.design({
 									layout: {top: 10, left: 0, right: 0, height: 30},
 									childViews: 'referenceLabelView'.w(),
@@ -527,7 +536,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 									referenceLabelView: SC.LabelView.design({
 										layout: { centerY: 0, centerX: 0, height: 20, width: 60 },
 										controlSize: SC.SMALL_CONTROL_SIZE,
-										value: 'References'					
+										value: '_References'.loc()					
 									})										
 								}),
 								
@@ -540,22 +549,22 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 										columns:[
 											SC.TableColumn.create({
 												key: 'resource_title',
-												label: 'Title',
+												label: '_Title'.loc(),
 												width: 400
 											}),
 											SC.TableColumn.create({
 												key: 'resource_type',
-												label: 'Category',
+												label: '_Category'.loc(),
 												width: 80
 											}),
 											SC.TableColumn.create({
 												key: 'authorsName',
-												label: 'Authors',
+												label: '_Authors'.loc(),
 												width: 120
 											}),
 											SC.TableColumn.create({
 												key: 'date_of_publication',
-												label: 'Published on',
+												label: '_PublishedOn'.loc(),
 												width: 60
 											})
 										],
@@ -576,7 +585,14 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 								
 								referenceButtonViews: SC.View.design({
 									layout: {bottom: 5, left: 0, right: 0, height: 30},
-									childViews: 'addReferenceButton deleteReferenceButton'.w(),
+									childViews: 'closeReferenceButton addReferenceButton deleteReferenceButton'.w(),
+									
+									closeReferenceButton: SC.ButtonView.design({
+										layout: {left: 10, width: 80, height: 24},
+										title: '_Close'.loc(),
+										action: 'closePickerPane',
+										target: 'CinnamonDolceLatte.mainPage.detailPostPane'
+									}),
 									
 									deleteReferenceButton: SC.ButtonView.design({
 										layout: {right: 10, width: 80, height: 24},
@@ -592,7 +608,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 										target: 'CinnamonDolceLatte.referenceArrayController',
 										action: 'addReference'
 									})
-								})						
+								})
 							})
 			      }).popup(this);
 			this.cancel();
@@ -607,38 +623,171 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 	    cancel: function() {
 	      CinnamonDolceLatte.postController.discard();
 	      this.set('detailIsVisible', NO);
-	    }		
+	    },
+	
+			closePickerPane: function(sender){
+				sender.get('pane').remove();
+			}
 	}),//detailPostPane
 	
 	
 	// detailReferencePane
 	detailReferencePane: SC.PanelPane.create({
-		layout: { width:400, height:300, centerX:0, centerY:-50},
+		layout: { width:400, height:450, centerX:0, centerY:-50},
 		contentView: SC.View.extend({
-			childViews: 'paneTitle referenceContent saveButton cancelButton'.w(),
+			childViews: 'paneTitle referenceContent addAuthorButton deleteAuthorButton saveButton cancelButton'.w(),
 			
-			paneTitle: SC.LabelView.design({
-			        layout: { left: 17, right: 17, top: 5, height: 15 },
-			        value: 'Edit Reference',
-			        textAlign: SC.ALIGN_CENTER,
-			        fontWeight: SC.BOLD_WEIGHT
+			paneTitle: SC.ToolbarView.design({
+				layout: {top: 5, left: 0, right: 0, height: 20},
+				childViews: 'referenceLabelView'.w(),
+				anchorLocation: SC.ANCHOR_TYPE,
+
+				referenceLabelView: SC.LabelView.design({
+					layout: { centerY: 0, centerX: 0, height: 15, width: 80},
+					controlSize: SC.SMALL_CONTROL_SIZE,
+					value: '_EditReference'.loc()					
+				})										
+			}),
+									
+			referenceContent: SC.View.design({
+				layout: { left: 5, right: 5, top: 23, height: 370 },
+				// childViews: 'resourceTitle resourceType resourceDOP authors'.w(),
+				childViews: 'resourceTitle resourceType resourceDOP authors'.w(),
+				
+				// resourceTitle
+				resourceTitle: SC.View.design({
+					layout: { left: 0, right: 0, top: 10, height: 50 },
+					childViews: 'label field'.w(),
+
+					label: SC.LabelView.design({
+			          layout: { left: 0, width: 120, height: 18, centerY: 0 },
+
+			          value: '_ResourceTitle'.loc(),
+			          textAlign: SC.ALIGN_RIGHT,
+			          fontWeight: SC.BOLD_WEIGHT
+			        }),
+
+					field: SC.TextFieldView.design({
+			          layout: { width: 250, height: 45, right: 3, centerY: 0 },
+								isTextArea: YES,
+								hint: '_ResourceTitle'.loc(),
+			          valueBinding: 'CinnamonDolceLatte.referenceController.updatedTitle',
+			          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailReferencePane.isEnabled'
+			        })
+				}),
+				
+				// resourceType				
+				resourceType: SC.View.design({
+					layout: { left: 0, right: 0, top: 60, height: 50 },
+					childViews: 'label field'.w(),
+
+					label: SC.LabelView.design({
+			          layout: { left: 0, width: 120, height: 18, centerY: 0 },
+
+			          value: '_ResourceType'.loc(),
+			          textAlign: SC.ALIGN_RIGHT,
+			          fontWeight: SC.BOLD_WEIGHT
+			        }),
+
+					field: SC.SelectFieldView.design({
+			          layout: { width: 250, height: 45, right: 3, centerY: +10 },
+								objects: [{name: 'talk', value: 'Talk'},
+								{name: 'wiki', value: 'Wiki'},
+								{name: 'conference', value: 'Conference'},
+								{name: 'journal', value: 'Journal'},
+								{name: 'blog', value: 'Blog'}],
+								
+								nameKey: 'name',
+								valueKey: 'value',			
+			          valueBinding: 'CinnamonDolceLatte.referenceController.updatedType'
+			          // isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailReferencePane.isEnabled'
+			        })
+				}),
+				
+				// resourceDOP				
+				resourceDOP: SC.View.design({
+					layout: { left: 0, right: 0, top: 110, height: 50 },
+					childViews: 'label field'.w(),
+
+					label: SC.LabelView.design({
+			          layout: { left: 0, width: 120, height: 18, centerY: 0 },
+
+			          value: '_PublishedOn'.loc(),
+			          textAlign: SC.ALIGN_RIGHT,
+			          fontWeight: SC.BOLD_WEIGHT
+			        }),
+
+					field: SC.TextFieldView.design({
+			          layout: { width: 250, height: 45, right: 3, centerY: 0 },
+								isTextArea: YES,
+								hint: '_dop'.loc(),
+			          valueBinding: 'CinnamonDolceLatte.referenceController.updatedDOP',
+			          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailReferencePane.isEnabled'
+			        })
+				}),
+				
+				// authors
+				authors: SC.ScrollView.design({
+					hasHorizontalScroller: NO,
+					layout: { top: 160, left: 0, right: 0 },
+					
+					contentView: SC.TableView.design({
+						layout: {bottom:15, left: 10, right:10},
+						columns:[
+							SC.TableColumn.create({
+								key: 'first_name',
+								label: '_FirstName'.loc(),
+								width: 120
+							}),
+							SC.TableColumn.create({
+								key: 'last_name',
+								label: '_LastName'.loc(),
+								width: 120
+							}),
+							SC.TableColumn.create({
+								key: 'email',
+								label: '_Email'.loc(),
+								width: 120
+							})
+						],
+
+						contentBinding: "CinnamonDolceLatte.authorArrayController.arrangedObjects",
+						selectionBinding: "CinnamonDolceLatte.authorArrayController.selection",
+						canReorderContent: YES, 
+
+					    sortedColumnBinding: 'CinnamonDolceLatte.authorArrayController.sortedColumn',
+					    selectOnMouseDown: YES,
+					    exampleView: SC.TableRowView,
+					    recordType: CinnamonDolceLatte.Author
+
+						// target: "CinnamonDolceLatte.mainPage.detailAuthorPane",
+						// action: "showForUpdate"
+						})					
+				})								
 			}),
 			
-			referenceContent: SC.View.design({
-				layout: { left: 17, right: 17, top: 23, height: 70 },
-				childViews: 'field'.w(),
-								
-				field: SC.TextFieldView.design({
-		          layout: { width: 350, height: 60, centerX: 0, centerY: 0 },
-							isTextArea: YES,
-		          valueBinding: 'CinnamonDolceLatte.commentController.updatedComment',
-		          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailReferencePane.isEnabled'
-		        })
+			
+			addAuthorButton: SC.ButtonView.design({
+				layout: {bottom: 10, left: 5, height:24, width:80},
+				theme: "capsule",
+				title: 'Author+',
+				target: 'CinnamonDolceLatte.authorArrayController',
+				action: 'addAuthor',
+				isEnabledBinding: 'CinnamonDolceLatte.referenceController.canAddAuthor'								
+			}),
+
+			deleteAuthorButton: SC.ButtonView.design({
+				layout: {bottom: 10, left: 90, height:24, width:80},
+				theme: "capsule",
+				title: 'Author-',
+				target: 'CinnamonDolceLatte.authorArrayController',
+				action: 'deleteAuthor',
+				isEnabledBinding: 'CinnamonDolceLatte.authorController.canDeleteAuthor'				
 			}),
 			
 			saveButton: SC.ButtonView.design({
 	        layout: {bottom: 10, right: 110, height:24, width:80},
-	        title: 'Save',
+	        title: '_Save'.loc(),
 	        action: 'save',
 	        isDefault: YES,
 	        isEnabledBinding: 'CinnamonDolceLatte.referenceController.contentIsChanged',
@@ -647,7 +796,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 
 	      cancelButton: SC.ButtonView.design({
 	        layout: {bottom: 10, right: 20, height:24, width:80},
-	        title: 'Cancel',
+	        title: '_Cancel'.loc(),
 	        action: 'cancel',
 	        isCancel: YES,
 	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailReferencePane.isEnabled'
