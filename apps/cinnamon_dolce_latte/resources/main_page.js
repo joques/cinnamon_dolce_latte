@@ -418,7 +418,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 	      CinnamonDolceLatte.commentController.discard();
 	      this.set('detailIsVisible', NO);
 	    }		
-	}),
+	}), // detailCommentPane
 	
 	detailPostPane: SC.PanelPane.create({
 		layout: { width:400, height:200, centerX:0, centerY:-50},
@@ -651,7 +651,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 									
 			referenceContent: SC.View.design({
 				layout: { left: 5, right: 5, top: 23, height: 370 },
-				// childViews: 'resourceTitle resourceType resourceDOP authors'.w(),
 				childViews: 'resourceTitle resourceType resourceDOP authors'.w(),
 				
 				// resourceTitle
@@ -722,7 +721,8 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 								isTextArea: YES,
 								hint: '_dop'.loc(),
 			          valueBinding: 'CinnamonDolceLatte.referenceController.updatedDOP',
-			          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailReferencePane.isEnabled'
+			          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailReferencePane.isEnabled',
+								validator: 'DateTime'
 			        })
 				}),
 				
@@ -755,13 +755,13 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						selectionBinding: "CinnamonDolceLatte.authorArrayController.selection",
 						canReorderContent: YES, 
 
-					    sortedColumnBinding: 'CinnamonDolceLatte.authorArrayController.sortedColumn',
-					    selectOnMouseDown: YES,
-					    exampleView: SC.TableRowView,
-					    recordType: CinnamonDolceLatte.Author
+					  sortedColumnBinding: 'CinnamonDolceLatte.authorArrayController.sortedColumn',
+					  selectOnMouseDown: YES,
+					  exampleView: SC.TableRowView,
+					  recordType: CinnamonDolceLatte.Author,
 
-						// target: "CinnamonDolceLatte.mainPage.detailAuthorPane",
-						// action: "showForUpdate"
+						target: "CinnamonDolceLatte.mainPage.detailAuthorPane",
+						action: "showForUpdate"
 						})					
 				})								
 			}),
@@ -832,6 +832,146 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 	      CinnamonDolceLatte.referenceController.discard();
 	      this.set('detailIsVisible', NO);
 	    }		
-	})//detailReferencePane
+	}), //detailReferencePane
+	
+	detailAuthorPane: SC.PanelPane.create({
+		layout: { width:400, height:230, centerX:0, centerY:-50},
+		contentView: SC.View.extend({
+			childViews: 'paneTitle authorContent saveButton cancelButton'.w(),
+			
+			paneTitle: SC.ToolbarView.design({
+				layout: {top: 5, left: 0, right: 0, height: 20},
+				childViews: 'referenceLabelView'.w(),
+				anchorLocation: SC.ANCHOR_TYPE,
+
+				referenceLabelView: SC.LabelView.design({
+					layout: { centerY: 0, centerX: 0, height: 15, width: 80},
+					controlSize: SC.SMALL_CONTROL_SIZE,
+					value: '_EditAuthor'.loc()					
+				})										
+			}),
+			
+			
+			authorContent: SC.View.design({
+				layout: { left: 5, right: 5, top: 23, height: 150 },
+				childViews: 'firstName lastName emailAddress'.w(),
+				
+				// firstName
+				firstName: SC.View.design({
+					layout: { left: 0, right: 0, top: 10, height: 50 },
+					childViews: 'label field'.w(),
+
+					label: SC.LabelView.design({
+			          layout: { left: 0, width: 120, height: 18, centerY: 0 },
+
+			          value: '_FirstName'.loc(),
+			          textAlign: SC.ALIGN_RIGHT,
+			          fontWeight: SC.BOLD_WEIGHT
+			        }),
+
+					field: SC.TextFieldView.design({
+			          layout: { width: 250, height: 45, right: 3, centerY: 0 },
+								isTextArea: YES,
+								hint: '_FirstName'.loc(),
+			          valueBinding: 'CinnamonDolceLatte.authorController.updatedFirstName',
+			          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailAuthorPane.isEnabled'
+			        })
+				}),
+				
+				// lastName	
+				lastName: SC.View.design({
+					layout: { left: 0, right: 0, top: 60, height: 50 },
+					childViews: 'label field'.w(),
+
+					label: SC.LabelView.design({
+			          layout: { left: 0, width: 120, height: 18, centerY: 0 },
+
+			          value: '_LastName'.loc(),
+			          textAlign: SC.ALIGN_RIGHT,
+			          fontWeight: SC.BOLD_WEIGHT
+			        }),
+
+					field: SC.TextFieldView.design({
+			          layout: { width: 250, height: 45, right: 3, centerY: 0 },
+								isTextArea: YES,
+								hint: '_LastName'.loc(),
+			          valueBinding: 'CinnamonDolceLatte.authorController.updatedLastName',
+			          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailAuthorPane.isEnabled'
+			        })
+				}),
+				
+				// Email Address				
+				emailAddress: SC.View.design({
+					layout: { left: 0, right: 0, top: 110, height: 50 },
+					childViews: 'label field'.w(),
+
+					label: SC.LabelView.design({
+			          layout: { left: 0, width: 120, height: 18, centerY: 0 },
+
+			          value: '_Email'.loc(),
+			          textAlign: SC.ALIGN_RIGHT,
+			          fontWeight: SC.BOLD_WEIGHT
+			        }),
+
+					field: SC.TextFieldView.design({
+			          layout: { width: 250, height: 45, right: 3, centerY: 0 },
+								isTextArea: YES,
+								hint: '_Email'.loc(),
+			          valueBinding: 'CinnamonDolceLatte.authorController.updatedEmail',
+			          isEnabledBinding: 'CinnamonDolceLatte.mainPage.detailAuthorPane.isEnabled',
+								validator: 'Email'
+			        })
+				})				
+			}),
+			
+			saveButton: SC.ButtonView.design({
+	        layout: {bottom: 10, right: 110, height:24, width:80},
+	        title: '_Save'.loc(),
+	        action: 'save',
+	        isDefault: YES,
+	        isEnabledBinding: 'CinnamonDolceLatte.authorController.contentIsChanged',
+	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailAuthorPane.isEnabled'
+	      }),
+
+	      cancelButton: SC.ButtonView.design({
+	        layout: {bottom: 10, right: 20, height:24, width:80},
+	        title: '_Cancel'.loc(),
+	        action: 'cancel',
+	        isCancel: YES,
+	        isVisibleBinding: 'CinnamonDolceLatte.mainPage.detailAuthorPane.isEnabled'
+	      })			
+		}),
+		
+		detailIsVisible: NO,
+		
+		detailIsVisibleDidChange: function() {
+		      var panel = CinnamonDolceLatte.mainPage.get('detailAuthorPane');
+		      if (this.get('detailIsVisible')) {
+		        // Show
+		        panel.append();
+		        // Set focus on the username field
+		        CinnamonDolceLatte.mainPage.detailCommentPane.contentView.commentContent.field.becomeFirstResponder();
+		      }
+		      else {
+		        // Hide
+		        panel.remove();
+		      }
+		}.observes('detailIsVisible'),
+		
+		showForUpdate: function() {
+		      this.set('detailIsVisible', YES);
+		},
+		
+		save: function() {
+	    CinnamonDolceLatte.authorController.save();
+			this.set('detailIsVisible', NO);
+	    },
+
+	  cancel: function() {
+	      CinnamonDolceLatte.authorController.discard();
+	      this.set('detailIsVisible', NO);
+	    }		
+	}) // detailAuthorPane
+	
 
 });

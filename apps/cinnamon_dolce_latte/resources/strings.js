@@ -28,6 +28,7 @@ SC.stringsFor('English', {
 	"_Save": "Save",
 	"_Cancel": "Cancel",
 	"_Close": "Close",
+	"_EditAuthor": "Edit Author",
 	"_EditPost": "Edit Post",
 	"_EditReference": "Edit Reference",
 	"_Category": "Category",

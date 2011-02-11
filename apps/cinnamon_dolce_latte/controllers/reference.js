@@ -56,6 +56,7 @@ CinnamonDolceLatte.referenceController = SC.ObjectController.create(
 		save: function() {
 			this.set('resource_title', this.get('updatedTitle'));
 			this.set('resource_type', this.get('updatedType'));
+			this.set('date_of_publication', this.get('updatedDOP'));
 
 			var allRefs = CinnamonDolceLatte.referenceArrayController.get('arrangedObjects');
 			var curRefIdx = allRefs.indexOf(this.get('content'));
