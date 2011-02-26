@@ -20,7 +20,9 @@ CinnamonDolceLatte.main = function main() {
 
 	SC.routes.add(':pageName/:paneName', CinnamonDolceLatte.routes, 'moveToPage');
 	SC.routes.add(':', CinnamonDolceLatte.routes, 'moveToPage');
-	SC.routes.set('location', 'loginPage/loginPane');
+	// SC.routes.set('location', 'loginPage/loginPane');
+	
+	CinnamonDolceLatte.statechart.initStatechart();
 	
   // Step 2. Set the content property on your primary controller.
   // This will make your app come alive!

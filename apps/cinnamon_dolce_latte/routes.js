@@ -32,8 +32,6 @@ CinnamonDolceLatte.routes = SC.Object.create({
 				}
 
 				if ((pageName == 'logoutPage') && (paneName == 'logoutPane')) {
-					// SC.LOG_OBSERVERS = true;
-					
 					var authCookie = SC.Cookie.find('CinnamonDolceLatteCookie');
 					if (authCookie != null) {
 						authCookie.destroy();
@@ -41,6 +39,10 @@ CinnamonDolceLatte.routes = SC.Object.create({
 					CinnamonDolceLatte.loginController.set('userName', '');
 					CinnamonDolceLatte.loginController.set('passWord', '');
 					CinnamonDolceLatte.loginController.set('returnRoute',  'mainPage/mainPane');
+					
+					if(CinnamonDolceLatte.store) {
+						CinnamonDolceLatte.store.reset();
+					}
 										
 					CinnamonDolceLatte.disciplinesTreeController.set("selection", null);
 					CinnamonDolceLatte.disciplineArrayController.set("content", null);
@@ -49,9 +51,7 @@ CinnamonDolceLatte.routes = SC.Object.create({
 					// remove the main page
 					CinnamonDolceLatte.getPath('mainPage.mainPane').remove();
 														
-					
 					SC.routes.set('location', 'loginPage/loginPane');
-					// SC.LOG_OBSERVERS = false;
 					return ;
 				}
 

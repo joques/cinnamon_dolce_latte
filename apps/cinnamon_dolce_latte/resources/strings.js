@@ -37,5 +37,8 @@ SC.stringsFor('English', {
 	"_FirstName": "First Name",
 	"_LastName": "Last Name",
 	"_Email": "Email Address",
-  "_Sorry, wrong username or password.  Try again?": "Sorry, wrong username or password.  Try again?"
+  "_Sorry, wrong username or password.  Try again?": "Sorry, wrong username or password.  Try again?",
+	"_AuthenticationError": "Invalid credentials. Please try again",
+	"_KeywordSearch": "Keyword search",
+	"_KeywordNF": "Keyword not found!"
 }) ;

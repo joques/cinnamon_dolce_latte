@@ -32,7 +32,8 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 			date_created: SC.DateTime.create(),
 			comments: []
 		});
-								
+		
+		CinnamonDolceLatte.statechart.gotoState('postManager');						
 		return YES;		
 	},
 	
@@ -48,6 +49,7 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 			this.selectObject(this.get('arrangedObjects').objectAt(0));
 		}
 		
+		CinnamonDolceLatte.statechart.gotoState('postManager');
 		return YES;
 	},
 	

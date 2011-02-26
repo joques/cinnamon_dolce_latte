@@ -6,6 +6,7 @@
 
 CinnamonDolceLatte.loginPage = SC.Page.design({
 	loginPane: SC.MainPane.design({
+		defaultResponder: 'CinnamonDolceLatte.statechart',
 		layout: {width: 460, height: 160, centerX: 0, centerY: 0},
 		classNames: ['login-pane'],
 		childViews: 'boxView'.w(),
@@ -62,8 +63,8 @@ CinnamonDolceLatte.loginPage = SC.Page.design({
 				localize: YES,
 				isDefault: YES,
 				isEnabledBinding: SC.Binding.from("CinnamonDolceLatte.loginController.isLoggingIn").bool().transform(function(value, isForward) {return !value ;}),
-				target: 'CinnamonDolceLatte.loginController',
-				action: 'beginLogging'
+				// target: 'CinnamonDolceLatte.loginController',
+				action: 'signin'
 			})			
 		})
 	})

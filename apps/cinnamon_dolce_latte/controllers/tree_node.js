@@ -72,6 +72,8 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 	}.observes("content"),
 	
 	deleteNode: function() {
+		var deleteResponse = YES;
+		
 		var allTreeNodes = CinnamonDolceLatte.disciplinesTreeController.get('arrangedObjects');
 		var firstNode = null;
 		var treeNodeCount = allTreeNodes.get('length');
@@ -83,11 +85,10 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 		var curSel = this.get('content');
 		if(curSel) {
 			if(curSel.isDiscipline) {
-				CinnamonDolceLatte.disciplineArrayController.deleteDiscipline(curSel.get('id'));
-			} else if(curSel.isTopic) {
-				
+				deleteResponse = CinnamonDolceLatte.disciplineArrayController.deleteDiscipline(curSel.get('id'));
+			} else if(curSel.isTopic) {				
 				if(treeNodeCount > 0) {
-					CinnamonDolceLatte.topicArrayController.deleteTopic(curSel, this.get('topicCol'));
+					deleteResponse = CinnamonDolceLatte.topicArrayController.deleteTopic(curSel, this.get('topicCol'));
 				}
 			}
 		}
@@ -97,19 +98,25 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 			CinnamonDolceLatte.disciplinesTreeController.selectObject(firstNode);
 		}
 		
-		return YES;
+		CinnamonDolceLatte.statechart.gotoState('disciplineTopicManager');
+		return deleteResponse;
 	},
 	
 	addNode: function() {
+		var addResponse = YES;
+		
 		var ndRecord = this.get('content');
 		if(ndRecord) {
 			if(ndRecord.isDiscipline) {
 				var topics = ndRecord.get("topics");
-				return CinnamonDolceLatte.topicArrayController.addTopic(topics);
-			} else {return YES;}
+				addResponse =  CinnamonDolceLatte.topicArrayController.addTopic(topics);
+			} else {addResponse =  YES;}
 		} else {
-			return CinnamonDolceLatte.disciplineArrayController.addDiscipline();
+			addResponse =  CinnamonDolceLatte.disciplineArrayController.addDiscipline();
 		}
+		
+		CinnamonDolceLatte.statechart.gotoState('disciplineTopicManager');
+		return addResponse;
 	},
 	
 	updateNodeName: function(finalValue) {

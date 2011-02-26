@@ -11,6 +11,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
   // Add childViews to this pane for views to display immediately on page 
   // load.
   mainPane: SC.MainPane.design({
+		defaultResponder: 'CinnamonDolceLatte.statechart',
     childViews: 'middleView topView bottomView'.w(),
 		classNames: ['main'],
 
@@ -47,7 +48,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 				theme: "capsule",
 				title: '_SearchButton'.loc(),
 				isEnabledBinding: SC.Binding.from("CinnamonDolceLatte.topicArrayController.canSearch"),
-				target: 'CinnamonDolceLatte.topicArrayController',
 				action: 'localSearch'
 			})
 		}),
@@ -115,7 +115,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					layout: {height: 24, width: 80, left: 5},
 					theme: "capsule",
 					title: '+',
-					target: 'CinnamonDolceLatte.treeNodeController',
 					action: 'addNode'
 				}),
 				
@@ -123,7 +122,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					layout: {height: 24, width: 80, right: 5},
 					theme: "capsule",
 					title: '-',
-					target: 'CinnamonDolceLatte.treeNodeController',
 					action: 'deleteNode',
 					isEnabledBinding: 'CinnamonDolceLatte.treeNodeController.canDeleteNode'								
 				})
@@ -200,8 +198,8 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					    exampleView: SC.TableRowView,
 					    recordType: CinnamonDolceLatte.Post,
 					
-						target: "CinnamonDolceLatte.mainPage.detailPostPane",
-						action: "showForUpdate"
+						// target: "CinnamonDolceLatte.mainPage.detailPostPane",
+						action: "showPostEditor"
 					})				
 				}),
 				
@@ -213,7 +211,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						layout: {height: 24, width: 80, left: 5},
 						theme: "capsule",
 						title: '+',
-						target: 'CinnamonDolceLatte.postArrayController',
 						action: 'addPost',
 						isEnabledBinding: 'CinnamonDolceLatte.treeNodeController.canAddPost'								
 					}),
@@ -222,7 +219,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						layout: {height: 24, width: 80, right: 5},
 						theme: "capsule",
 						title: '-',
-						target: 'CinnamonDolceLatte.postArrayController',
 						action: 'deletePost',
 						isEnabledBinding: 'CinnamonDolceLatte.postController.canDeletePost'								
 					})
@@ -286,9 +282,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					  selectOnMouseDown: YES,
 					  exampleView: SC.TableRowView,
 					  recordType: CinnamonDolceLatte.Comment,
-					
-						target: "CinnamonDolceLatte.mainPage.detailCommentPane",
-						action: "showForUpdate"
+						action: "showCommentEditor"
 					})
 					
 				}),
@@ -301,7 +295,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						layout: {height: 24, width: 80, left: 5},
 						theme: "capsule",
 						title: '+',
-						target: 'CinnamonDolceLatte.commentArrayController',
 						action: 'addComment',
 						isEnabledBinding: 'CinnamonDolceLatte.postController.canAddComment'								
 					}),
@@ -310,7 +303,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						layout: {height: 24, width: 80, right: 5},
 						theme: "capsule",
 						title: '-',
-						target: 'CinnamonDolceLatte.commentArrayController',
 						action: 'deleteComment',
 						isEnabledBinding: 'CinnamonDolceLatte.commentController.canDeleteComment'								
 					})
@@ -333,13 +325,8 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			value: 'Cinnamon Dolce Latt&egrave; &copy;',
 			escapeHTML: false
 		})
-	}),
-	
-	logOut: function() {
-		SC.routes.set('location', 'logoutPage/logoutPane');
-	}
-	    
-  }),
+	})	    
+}),
 
 	detailCommentPane: SC.PanelPane.create({
 		layout: { width:400, height:140, centerX:0, centerY:-50},
@@ -403,21 +390,19 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		        // Hide
 		        panel.remove();
 		      }
-		}.observes('detailIsVisible'),
+		}.observes('detailIsVisible'),		
 		
 		showForUpdate: function() {
-		      this.set('detailIsVisible', YES);
+			this.set('detailIsVisible', YES);
 		},
 		
 		save: function() {
-	    CinnamonDolceLatte.commentController.save();
-			this.set('detailIsVisible', NO);
-	    },
-
-	    cancel: function() {
-	      CinnamonDolceLatte.commentController.discard();
-	      this.set('detailIsVisible', NO);
-	    }		
+			CinnamonDolceLatte.statechart.sendEvent('saveComment');
+		},
+		
+		cancel: function() {
+			CinnamonDolceLatte.statechart.sendEvent('cancelComment');
+		}		
 	}), // detailCommentPane
 	
 	detailPostPane: SC.PanelPane.create({
@@ -480,7 +465,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 			referenceButton: SC.ButtonView.design({
 	        layout: {bottom: 10, left: 10, height:24, width:120},
 	        title: '_References'.loc(),
-	        action: 'showReferences'
+	        action: 'showPostReferences'
 	      }),
 			
 			
@@ -522,7 +507,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		      this.set('detailIsVisible', YES);
 		},
 		
-		showReferences: function() {
+		displayReferences: function() {
 			 var refPane =      SC.PickerPane.create({
 			        layout: { width: 700, height: 400 },
 			        contentView: SC.View.extend({
@@ -578,8 +563,10 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 									    exampleView: SC.TableRowView,
 									    recordType: CinnamonDolceLatte.Reference,
 
-										target: "CinnamonDolceLatte.mainPage.detailReferencePane",
-										action: "showForUpdate"
+										// target: "CinnamonDolceLatte.mainPage.detailReferencePane",
+										target: "CinnamonDolceLatte.mainPage.detailPostPane",
+										// action: "showForUpdate"
+										action: "showReferenceEditor"
 										})					
 								}),
 								
@@ -597,7 +584,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 									deleteReferenceButton: SC.ButtonView.design({
 										layout: {right: 10, width: 80, height: 24},
 										title: '-',
-										target: 'CinnamonDolceLatte.referenceArrayController',
+										target: 'CinnamonDolceLatte.mainPage.detailPostPane',
 										action: 'deleteReference',
 										isEnabledBinding: 'CinnamonDolceLatte.referenceController.canDeleteReference'
 									}),
@@ -605,7 +592,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 									addReferenceButton: SC.ButtonView.design({
 										layout: {right: 100, width: 80, height: 24},
 										title: '+',
-										target: 'CinnamonDolceLatte.referenceArrayController',
+										target: 'CinnamonDolceLatte.mainPage.detailPostPane',
 										action: 'addReference'
 									})
 								})
@@ -616,18 +603,34 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		},
 		
 		save: function() {
-	    CinnamonDolceLatte.postController.save();
-			this.set('detailIsVisible', NO);
-	    },
+			CinnamonDolceLatte.statechart.sendEvent('savePost');
+	  },
 
-	    cancel: function() {
-	      CinnamonDolceLatte.postController.discard();
-	      this.set('detailIsVisible', NO);
-	    },
+	  cancel: function() {
+			CinnamonDolceLatte.statechart.sendEvent('cancelPost');
+	  },
 	
-			closePickerPane: function(sender){
-				sender.get('pane').remove();
-			}
+		showPostReferences: function() {
+			CinnamonDolceLatte.statechart.sendEvent('showPostReferences');
+		},
+	
+		closePickerPane: function(sender){
+			CinnamonDolceLatte.statechart.sendEvent('closeRefs');
+			sender.get('pane').remove();
+		},
+		
+		addReference: function() {
+			CinnamonDolceLatte.statechart.sendEvent('addReference');
+		},
+		
+		deleteReference: function() {
+			CinnamonDolceLatte.statechart.sendEvent('deleteReference');
+		},
+		
+		showReferenceEditor: function() {
+			CinnamonDolceLatte.statechart.sendEvent('showReferenceEditor');
+		}
+		
 	}),//detailPostPane
 	
 	
@@ -760,8 +763,9 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 					  exampleView: SC.TableRowView,
 					  recordType: CinnamonDolceLatte.Author,
 
-						target: "CinnamonDolceLatte.mainPage.detailAuthorPane",
-						action: "showForUpdate"
+						// target: "CinnamonDolceLatte.mainPage.detailAuthorPane",
+						target: "CinnamonDolceLatte.mainPage.detailReferencePane",
+						action: "showAuthorEditor"
 						})					
 				})								
 			}),
@@ -771,7 +775,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 				layout: {bottom: 10, left: 5, height:24, width:80},
 				theme: "capsule",
 				title: 'Author+',
-				target: 'CinnamonDolceLatte.authorArrayController',
 				action: 'addAuthor',
 				isEnabledBinding: 'CinnamonDolceLatte.referenceController.canAddAuthor'								
 			}),
@@ -780,7 +783,6 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 				layout: {bottom: 10, left: 90, height:24, width:80},
 				theme: "capsule",
 				title: 'Author-',
-				target: 'CinnamonDolceLatte.authorArrayController',
 				action: 'deleteAuthor',
 				isEnabledBinding: 'CinnamonDolceLatte.authorController.canDeleteAuthor'				
 			}),
@@ -824,14 +826,25 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		},
 		
 		save: function() {
-	    CinnamonDolceLatte.referenceController.save();
-			this.set('detailIsVisible', NO);
+			CinnamonDolceLatte.statechart.sendEvent('saveReference');
 	    },
 
 	    cancel: function() {
-	      CinnamonDolceLatte.referenceController.discard();
-	      this.set('detailIsVisible', NO);
-	    }		
+				CinnamonDolceLatte.statechart.sendEvent('cancelReference');
+	    },
+	
+	addAuthor: function() {
+		CinnamonDolceLatte.statechart.sendEvent('addAuthor');
+	},
+	
+	deleteAuthor: function() {
+		CinnamonDolceLatte.statechart.sendEvent('deleteAuthor');
+	},
+	
+	showAuthorEditor: function() {
+		CinnamonDolceLatte.statechart.sendEvent('showAuthorEditor');
+	}	
+	
 	}), //detailReferencePane
 	
 	detailAuthorPane: SC.PanelPane.create({
@@ -963,14 +976,12 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 		},
 		
 		save: function() {
-	    CinnamonDolceLatte.authorController.save();
-			this.set('detailIsVisible', NO);
-	    },
+			CinnamonDolceLatte.statechart.sendEvent('saveAuthorEdit');
+	  },
 
 	  cancel: function() {
-	      CinnamonDolceLatte.authorController.discard();
-	      this.set('detailIsVisible', NO);
-	    }		
+			CinnamonDolceLatte.statechart.sendEvent('cancelAuthorEdit');
+	  }		
 	}) // detailAuthorPane
 	
 

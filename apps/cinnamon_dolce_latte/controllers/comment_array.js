@@ -18,7 +18,6 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 		var commentCol = curPost.get('comments');
 		
 		var commentatorName = CinnamonDolceLatte.loginController.get('nameToDisplay');
-		alert("commentatorName is " + commentatorName);
 
 		// generate the id 
 		var com_lenght = this.get('content').get('length');
@@ -31,7 +30,9 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 			comment: 'Add your comment here here',
 			commentator: commentatorName,
 			date_created: SC.DateTime.create()
-		});				
+		});
+		
+		CinnamonDolceLatte.statechart.gotoState('loggedIn.disciplineTopicManager.postManager.commentManager');				
 		return YES;
 	},
 	
@@ -47,6 +48,7 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 			this.selectObject(this.get('arrangedObjects').objectAt(0));
 		}
 		
+		CinnamonDolceLatte.statechart.gotoState('loggedIn.disciplineTopicManager.postManager.commentManager');
 		return YES;		
 	},
 	

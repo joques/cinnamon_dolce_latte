@@ -61,12 +61,14 @@ CinnamonDolceLatte.topicArrayController = SC.ArrayController.create(
 				if (curKeywordIdx != -1) {
 					CinnamonDolceLatte.disciplinesTreeController.selectObject(curTopic);
 					this.set("searchKeyword", '');
+					CinnamonDolceLatte.statechart.gotoState('applicationMamager');
 					return;
 				}
 			}	
 		}
 		
-		this.set("searchKeyword", '');		
-		SC.AlertPane.error("Keyword search", "Keyword not found!");	
+		this.set("searchKeyword", '');
+		CinnamonDolceLatte.statechart.gotoState('applicationMamager');		
+		SC.AlertPane.error("_KeywordSearch".loc(), "_KeywordNF".loc());	
 	}
 }) ;
