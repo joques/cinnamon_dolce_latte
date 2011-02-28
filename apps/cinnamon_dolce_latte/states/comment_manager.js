@@ -1,5 +1,5 @@
 /**
- * This is the discipline and topic state manager.
+ * This is the state model of the comment object
  *
  * @author joques
  * 

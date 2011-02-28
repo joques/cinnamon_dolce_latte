@@ -15,9 +15,11 @@ CinnamonDolceLatte.centralIdController = SC.ObjectController.create(
 
 storeIds: function() {
 	var iDQuery = SC.Query.local(CinnamonDolceLatte.CentralId);
-	var idSet = CinnamonDolceLatte.store.find(iDQuery, '1');				
+	var idSet = CinnamonDolceLatte.store.find(iDQuery);
 	
-	this.set('content', idSet);
+	var uniqSet = idSet.objectAt(0);		
+	
+	this.set('content', uniqSet);
 },
 
 nextDisciplineId: function() {

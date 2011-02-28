@@ -30,7 +30,6 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 			date_created: SC.DateTime.create()
 		});
 		
-		CinnamonDolceLatte.statechart.gotoState('loggedIn.disciplineTopicManager.postManager.commentManager');				
 		return YES;
 	},
 	
@@ -46,7 +45,6 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 			this.selectObject(this.get('arrangedObjects').objectAt(0));
 		}
 		
-		CinnamonDolceLatte.statechart.gotoState('loggedIn.disciplineTopicManager.postManager.commentManager');
 		return YES;		
 	},
 	

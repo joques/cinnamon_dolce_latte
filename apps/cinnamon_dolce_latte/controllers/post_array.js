@@ -32,7 +32,6 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 			comments: []
 		});
 		
-		CinnamonDolceLatte.statechart.gotoState('postManager');						
 		return YES;		
 	},
 	
@@ -48,7 +47,6 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 			this.selectObject(this.get('arrangedObjects').objectAt(0));
 		}
 		
-		CinnamonDolceLatte.statechart.gotoState('postManager');
 		return YES;
 	},
 	

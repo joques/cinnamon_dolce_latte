@@ -1,5 +1,5 @@
 /**
- * This is the main file of the application statechart.
+ * This file describes the state model of the application manager
  *
  * @author joques
  * 

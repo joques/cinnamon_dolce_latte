@@ -98,7 +98,6 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 			CinnamonDolceLatte.disciplinesTreeController.selectObject(firstNode);
 		}
 		
-		CinnamonDolceLatte.statechart.gotoState('disciplineTopicManager');
 		return deleteResponse;
 	},
 	
@@ -115,7 +114,6 @@ CinnamonDolceLatte.treeNodeController = SC.ObjectController.create(
 			addResponse =  CinnamonDolceLatte.disciplineArrayController.addDiscipline();
 		}
 		
-		CinnamonDolceLatte.statechart.gotoState('disciplineTopicManager');
 		return addResponse;
 	},
 	
