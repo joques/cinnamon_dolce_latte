@@ -19,9 +19,8 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 		var creatorName = CinnamonDolceLatte.loginController.get('nameToDisplay');
 		
 		// generate the id 
-		var post_lenght = this.get('content').get('length');
-		post_lenght++;
-		var guid_val = "post" + post_lenght;
+		var postId = CinnamonDolceLatte.centralIdController.nextPostId();		
+		var guid_val = "post" + postId;
 				
 		postCol.pushObject({
 			type: 'Post',

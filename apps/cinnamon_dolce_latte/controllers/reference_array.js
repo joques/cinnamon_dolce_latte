@@ -18,9 +18,8 @@ CinnamonDolceLatte.referenceArrayController = SC.ArrayController.create(
 		var refCol = curPost.get('post_refs');
 		
 		// generate the id 
-		var ref_lenght = this.get('content').get('length');
-		ref_lenght++;
-		var guid_val = "ref" + ref_lenght;
+		var refId = CinnamonDolceLatte.centralIdController.nextReferenceId();		
+		var guid_val = "ref" + refId;
 				
 		refCol.pushObject({
 			type: 'Reference',

@@ -18,11 +18,9 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 		var commentCol = curPost.get('comments');
 		
 		var commentatorName = CinnamonDolceLatte.loginController.get('nameToDisplay');
-
-		// generate the id 
-		var com_lenght = this.get('content').get('length');
-		com_lenght++;
-		var guid_val = "comment" + com_lenght;
+		
+		var commentId = CinnamonDolceLatte.centralIdController.nextCommentId();
+		var guid_val = "comment" + commentId;
 							
 		commentCol.pushObject({
 			type: 'Comment',

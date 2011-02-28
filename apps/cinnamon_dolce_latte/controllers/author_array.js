@@ -18,9 +18,8 @@ CinnamonDolceLatte.authorArrayController = SC.ArrayController.create(
 		var authorCol = curRef.get('authors');
 		
 		// generate the id 
-		var post_lenght = this.get('content').get('length');
-		post_lenght++;
-		var guid_val = "post" + post_lenght;
+		var authorId = CinnamonDolceLatte.centralIdController.nextAuthorId();
+		var guid_val = "author" + authorId;
 				
 		authorCol.pushObject({
 			type: 'Author',

@@ -27,11 +27,8 @@ CinnamonDolceLatte.topicArrayController = SC.ArrayController.create(
 	
 	addTopic: function(topics) {
 		var topic;
-		var top_len = this.get('content').get('length');
-		top_len++;
-		
-		// Need a smarter approach to guid generation. Maybe, I could use a central controller 
-		var guid_val = "topic" + top_len;
+		var topicId = CinnamonDolceLatte.centralIdController.nextTopicId();	
+		var guid_val = "topic" + topicId;
 		
 		topics.pushObject({
 			type: 'Topic',
