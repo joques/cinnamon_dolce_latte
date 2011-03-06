@@ -27,6 +27,7 @@ CinnamonDolceLatte.routes = SC.Object.create({
 
 						// CinnamonDolceLatte.loginPage.loginPane.boxView.userName.field.becomeFirstResponder();
 						SC.routes.set('location', 'loginPage/loginPane');
+						
 						return ;
 					}
 				}
@@ -52,6 +53,7 @@ CinnamonDolceLatte.routes = SC.Object.create({
 					CinnamonDolceLatte.getPath('mainPage.mainPane').remove();
 														
 					SC.routes.set('location', 'loginPage/loginPane');
+					
 					return ;
 				}
 

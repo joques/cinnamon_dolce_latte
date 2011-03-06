@@ -12,41 +12,52 @@ CinnamonDolceLatte.loginPage = SC.Page.design({
 		childViews: 'boxView'.w(),
 		
 		boxView: SC.View.design({
+			layerId: 'loginBox',
 			childViews: 'userName passWord loginButton'.w(),
 			
 			userName: SC.View.design({
+				layerId: 'loginUserName',
 				layout: {left: 10, width: 160, centerY: 0, height: 80},
 				childViews: 'label field'.w(),        
 				
 				label: SC.LabelView.design({
+					layerId: 'loginUserNameLabel',
 					layout: {left: 10, width: 160, centerY: -18, height: 15},
-					value: "_Username",
-					localize: YES,
+					value: "_Username".loc(),
 					textAlign: SC.ALIGN_CENTER
 				}),
 			
 				field: SC.TextFieldView.design({
+					layerId: 'loginUserNameTextField',
 					layout: {left: 10, width: 160, centerY: 20, height: 50},
 					hint: "_Username".loc(),
 					isEnabledBinding: SC.Binding.from("CinnamonDolceLatte.loginController.isLoggingIn")
 																			.bool()
 																			.transform(function(value, isForward) {return !value ;}),
-					valueBinding: "CinnamonDolceLatte.loginController.userName"
+					valueBinding: "CinnamonDolceLatte.loginController.userName",
+					
+					isVisibleObserver: function() {
+					    if(this.get('isVisibleInWindow')) {
+					      this.$input()[0].focus();
+					    }
+					  }.observes('isVisibleInWindow')
 				})
 			}),
 			
 			passWord: SC.View.design({
+				layerId: 'loginPassWord',
 				layout: {left: 185, width: 160, centerY: 0, height: 80},
 				childViews: 'label field'.w(),        
 				
 				label: SC.LabelView.design({
+					layerId: 'loginPassWordLabel',
 					layout: {left: 0, width: 160, centerY: -18, height: 15},
-					value: "_Password",
-					localize: YES,
+					value: "_Password".loc(),
 					textAlign: SC.ALIGN_CENTER					
 				}),
 				
 				field: SC.TextFieldView.design({
+					layerId: 'loginPassWordTextField',
 					layout: {left: 0, width: 160, centerY: 20, height: 50},
 					hint: "_Password".loc(),
 					isPassword: YES,
@@ -57,13 +68,12 @@ CinnamonDolceLatte.loginPage = SC.Page.design({
 				})
 			}),
 			
-			loginButton: SC.ButtonView.design({				
+			loginButton: SC.ButtonView.design({
+				layerId: 'loginButton',				
 				layout: {left: 355, width: 100, centerY: 25, height: 50},
-				title: '_Login',
-				localize: YES,
+				title: '_Login'.loc(),
 				isDefault: YES,
 				isEnabledBinding: SC.Binding.from("CinnamonDolceLatte.loginController.isLoggingIn").bool().transform(function(value, isForward) {return !value ;}),
-				// target: 'CinnamonDolceLatte.loginController',
 				action: 'signin'
 			})			
 		})
