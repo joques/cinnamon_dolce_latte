@@ -189,13 +189,10 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 						contentBinding: "CinnamonDolceLatte.postArrayController.arrangedObjects",
 						selectionBinding: "CinnamonDolceLatte.postArrayController.selection",
 						canReorderContent: YES,
-						
-					    sortedColumnBinding: 'CinnamonDolceLatte.postArrayController.sortedColumn',
-					    selectOnMouseDown: YES,
-					    exampleView: SC.TableRowView,
-					    recordType: CinnamonDolceLatte.Post,
-					
-						// target: "CinnamonDolceLatte.mainPage.detailPostPane",
+					  sortedColumnBinding: 'CinnamonDolceLatte.postArrayController.sortedColumn',
+					  selectOnMouseDown: YES,
+					  exampleView: SC.TableRowView,
+					  recordType: CinnamonDolceLatte.Post,
 						action: "showPostEditor"
 					})				
 				}),
