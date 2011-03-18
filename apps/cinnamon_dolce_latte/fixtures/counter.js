@@ -6,17 +6,17 @@
 
 sc_require('models/central_id');
 
-CinnamonDolceLatte.CentralId.FIXTURES = [
+CinnamonDolceLatte.Counter.FIXTURES = [
 
 {
 	type: 'CentralId',
 	guid: 1,
-	discipline_id: 4,
-	topic_id: 9,
-	post_id: 2,
-	comment_id: 2,
-	reference_id: 2,
-	author_id: 3
+	discipline_counter: 4,
+	topic_counter: 9,
+	post_counter: 2,
+	comment_counter: 2,
+	reference_counter: 2,
+	author_counter: 3
 }
 
 ];

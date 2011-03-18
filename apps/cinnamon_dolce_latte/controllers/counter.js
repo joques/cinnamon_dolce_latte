@@ -10,11 +10,11 @@
 
   @extends SC.ObjectController
 */
-CinnamonDolceLatte.centralIdController = SC.ObjectController.create(
-/** @scope CinnamonDolceLatte.centralIdController.prototype */ {
+CinnamonDolceLatte.counterController = SC.ObjectController.create(
+/** @scope CinnamonDolceLatte.counterController.prototype */ {
 
 storeIds: function() {
-	var iDQuery = SC.Query.local(CinnamonDolceLatte.CentralId);
+	var counterQuery = SC.Query.local(CinnamonDolceLatte.Counter);
 	var idSet = CinnamonDolceLatte.store.find(iDQuery);
 	
 	var uniqSet = idSet.objectAt(0);		
