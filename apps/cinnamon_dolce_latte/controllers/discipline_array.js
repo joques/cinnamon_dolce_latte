@@ -16,11 +16,8 @@ CinnamonDolceLatte.disciplineArrayController = SC.ArrayController.create(
 	addDiscipline: function() {
 		// Normally, I should make sure that the guid is unique
 		var discipline;
-		var disciplineId = CinnamonDolceLatte.centralIdController.nextDisciplineId();		
-		var guid_val = "disc" + disciplineId;
 		
 		discipline = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Discipline, {
-			guid: guid_val,
 			name: "New Discipline",
 			topics: []
 		});

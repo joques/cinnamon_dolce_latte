@@ -1,5 +1,5 @@
 // ==========================================================================
-// Project:   CinnamonDolceLatte.referenceArrayController
+// Project:   CinnamonDolceLatte.citationArrayController
 // Copyright: ©2011 My Company, Inc.
 // ==========================================================================
 /*globals CinnamonDolceLatte */
@@ -10,21 +10,16 @@
 
   @extends SC.ArrayController
 */
-CinnamonDolceLatte.referenceArrayController = SC.ArrayController.create(
-/** @scope CinnamonDolceLatte.referenceArrayController.prototype */ {
+CinnamonDolceLatte.citationArrayController = SC.ArrayController.create(
+/** @scope CinnamonDolceLatte.citationArrayController.prototype */ {
 	
-	addReference: function() {
+	addCitation: function() {
 		var curPost = CinnamonDolceLatte.postController.get('content');
 		var refCol = curPost.get('post_refs');
 		
-		// generate the id 
-		var refId = CinnamonDolceLatte.centralIdController.nextReferenceId();		
-		var guid_val = "ref" + refId;
-				
 		refCol.pushObject({
 			type: 'Reference',
-			guid: guid_val,
-			resource_title: 'New reference',
+			resource_title: 'New citation',
 			resource_type: 'Conference',
 			date_of_publication: SC.DateTime.create(),
 			authors: []
@@ -33,9 +28,9 @@ CinnamonDolceLatte.referenceArrayController = SC.ArrayController.create(
 		return YES;
 	},
 	
-	deleteReference: function() {
+	deleteCitation: function() {
 		var refCol = CinnamonDolceLatte.postController.get('content').get('post_refs');
-		var selRef = CinnamonDolceLatte.referenceController.get('content');
+		var selRef = CinnamonDolceLatte.citationController.get('content');
 		refCol.removeObject(selRef);
 		
 		// select a new post if possible
@@ -48,7 +43,7 @@ CinnamonDolceLatte.referenceArrayController = SC.ArrayController.create(
 		return YES;
 	},
 	
-	updateReferences: function(refIdx) {
+	updateCitations: function(refIdx) {
 		this.enumerableContentDidChange(refIdx, 1, 0);
 	}
 	

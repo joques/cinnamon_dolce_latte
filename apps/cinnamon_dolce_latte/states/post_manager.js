@@ -44,8 +44,8 @@ CinnamonDolceLatte.postManagerState = Ki.State.extend({
 					this.gotoState('showingSelectedPosts');
 				}, 
 				
-				showPostReferences: function() {
-					this.gotoState('showingPostReferences');
+				showPostCitations: function() {
+					this.gotoState('showingPostCitations');
 				},
 				
 				exitState: function() {
@@ -53,27 +53,27 @@ CinnamonDolceLatte.postManagerState = Ki.State.extend({
 				}
 			}),
 			
-			showingPostReferences: Ki.State.design({
-				initialSubstate: 'allReferences',
+			showingPostCitations: Ki.State.design({
+				initialSubstate: 'allCitations',
 				
 				enterState: function() {
-					CinnamonDolceLatte.mainPage.detailPostPane.displayReferences();
+					CinnamonDolceLatte.mainPage.detailPostPane.displayCitations();
 				},
 				
-				allReferences: Ki.State.design({
+				allCitations: Ki.State.design({
 					
-					addReference: function() {
-						CinnamonDolceLatte.referenceArrayController.addReference();
-						this.gotoState('allReferences');
+					addCitation: function() {
+						CinnamonDolceLatte.citationArrayController.addCitation();
+						this.gotoState('allCitations');
 					},
 
-					deleteReference: function() {
-						CinnamonDolceLatte.referenceArrayController.deleteReference();
-						this.gotoState('allReferences');
+					deletecitation: function() {
+						CinnamonDolceLatte.citationArrayController.deleteCitation();
+						this.gotoState('allCitations');
 					},
 
-					showReferenceEditor: function() {
-						this.gotoState('showingReferenceEditor');
+					showCitationEditor: function() {
+						this.gotoState('showingCitationEditor');
 					},
 
 					closeRefs: function() {
@@ -81,34 +81,34 @@ CinnamonDolceLatte.postManagerState = Ki.State.extend({
 					}
 				}),
 				
-				showingReferenceEditor: Ki.State.design({
-					initialSubstate: 'referenceEditor',
+				showingCitationEditor: Ki.State.design({
+					initialSubstate: 'citationEditor',
 					
 					enterState: function() {
-						CinnamonDolceLatte.mainPage.detailReferencePane.showForUpdate();
+						CinnamonDolceLatte.mainPage.detailCitationPane.showForUpdate();
 					},
 					
-					referenceEditor: Ki.State.design({
-						saveReference: function() {
-							CinnamonDolceLatte.referenceController.save();
-							CinnamonDolceLatte.mainPage.detailReferencePane.set('detailIsVisible', NO);
-							this.gotoState('allReferences');
+					citationEditor: Ki.State.design({
+						saveCitation: function() {
+							CinnamonDolceLatte.citationController.save();
+							CinnamonDolceLatte.mainPage.detailCitationPane.set('detailIsVisible', NO);
+							this.gotoState('allCitations');
 						},
 
-						cancelReference: function() {
-							CinnamonDolceLatte.referenceController.discard();
-							CinnamonDolceLatte.mainPage.detailReferencePane.set('detailIsVisible', NO);
-							this.gotoState('allReferences');
+						cancelCitation: function() {
+							CinnamonDolceLatte.citationController.discard();
+							CinnamonDolceLatte.mainPage.detailCitationPane.set('detailIsVisible', NO);
+							this.gotoState('allCitations');
 						},
 
 						addAuthor: function() {
 							CinnamonDolceLatte.authorArrayController.addAuthor();
-							this.gotoState('showingReferenceEditor');
+							this.gotoState('showingCitationEditor');
 						},
 
 						deleteAuthor: function() {
 							CinnamonDolceLatte.authorArrayController.deleteAuthor();
-							this.gotoState('showingReferenceEditor');
+							this.gotoState('showingCitationEditor');
 						},
 
 						showAuthorEditor: function() {
@@ -122,12 +122,12 @@ CinnamonDolceLatte.postManagerState = Ki.State.extend({
 						},
 						saveAuthorEdit: function() {
 					    CinnamonDolceLatte.authorController.save();
-							this.gotoState('showingReferenceEditor');
+							this.gotoState('showingCitationEditor');
 					  },
 
 					  cancelAuthorEdit: function() {
 					      CinnamonDolceLatte.authorController.discard();
-								this.gotoState('showingReferenceEditor');
+								this.gotoState('showingCitationEditor');
 					  },
 					
 					exitState: function() {

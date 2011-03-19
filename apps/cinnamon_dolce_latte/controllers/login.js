@@ -85,8 +85,6 @@ CinnamonDolceLatte.loginController = SC.ObjectController.create(
 		CinnamonDolceLatte.store = SC.Store.create().from(SC.Record.fixtures);	
 		
 		CinnamonDolceLatte.disciplinesTreeController.populateDisciplines();
-		CinnamonDolceLatte.centralIdController.storeIds();
-		
 		CinnamonDolceLatte.getPath('mainPage.mainPane').append();
 		
 		var disciplineQuery = SC.Query.local(CinnamonDolceLatte.Discipline);

@@ -19,12 +19,8 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 		
 		var commentatorName = CinnamonDolceLatte.loginController.get('nameToDisplay');
 		
-		var commentId = CinnamonDolceLatte.centralIdController.nextCommentId();
-		var guid_val = "comment" + commentId;
-							
 		commentCol.pushObject({
 			type: 'Comment',
-			guid: guid_val,
 			comment: 'Add your comment here here',
 			commentator: commentatorName,
 			date_created: SC.DateTime.create()

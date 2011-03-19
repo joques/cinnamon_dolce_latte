@@ -18,13 +18,8 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 		var postCol = curTopic.get('posts');
 		var creatorName = CinnamonDolceLatte.loginController.get('nameToDisplay');
 		
-		// generate the id 
-		var postId = CinnamonDolceLatte.centralIdController.nextPostId();		
-		var guid_val = "post" + postId;
-				
 		postCol.pushObject({
 			type: 'Post',
-			guid: guid_val,
 			title: 'New Post',
 			article: 'Post the article here',
 			creator: creatorName,

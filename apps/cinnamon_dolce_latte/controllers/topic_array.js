@@ -27,12 +27,9 @@ CinnamonDolceLatte.topicArrayController = SC.ArrayController.create(
 	
 	addTopic: function(topics) {
 		var topic;
-		var topicId = CinnamonDolceLatte.centralIdController.nextTopicId();	
-		var guid_val = "topic" + topicId;
 		
 		topics.pushObject({
 			type: 'Topic',
-			guid: guid_val,
 			description: 'New Topic',
 			keywords: [],
 			posts: []

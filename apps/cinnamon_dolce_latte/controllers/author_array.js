@@ -14,16 +14,11 @@ CinnamonDolceLatte.authorArrayController = SC.ArrayController.create(
 /** @scope CinnamonDolceLatte.authorArrayController.prototype */ {
 
 	addAuthor: function() {
-		var curRef = CinnamonDolceLatte.referenceController.get('content');
+		var curRef = CinnamonDolceLatte.citationController.get('content');
 		var authorCol = curRef.get('authors');
 		
-		// generate the id 
-		var authorId = CinnamonDolceLatte.centralIdController.nextAuthorId();
-		var guid_val = "author" + authorId;
-				
 		authorCol.pushObject({
 			type: 'Author',
-			guid: guid_val,
 			first_name: 'FirstName',
 			last_name: 'LastName',
 			email: 'email@address'
@@ -33,7 +28,7 @@ CinnamonDolceLatte.authorArrayController = SC.ArrayController.create(
 	},
 	
 	deleteAuthor: function() {
-		var authorCol = CinnamonDolceLatte.referenceController.get('content').get('authors');
+		var authorCol = CinnamonDolceLatte.citationController.get('content').get('authors');
 		var selAuthor = CinnamonDolceLatte.authorController.get('content');
 		authorCol.removeObject(selAuthor);
 		

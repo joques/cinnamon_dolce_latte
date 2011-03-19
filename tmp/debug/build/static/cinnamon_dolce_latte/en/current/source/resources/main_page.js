@@ -5,8 +5,7 @@
 /*globals CinnamonDolceLatte */
 
 // This page describes the main user interface for your application.  
-CinnamonDolceLatte.mainPage = SC.Page.design({
-	
+CinnamonDolceLatte.mainPage = SC.Page.design({	
   mainPane: SC.MainPane.design({
 		defaultResponder: 'CinnamonDolceLatte.statechart',
     childViews: 'middleView topView bottomView'.w(),

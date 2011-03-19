@@ -1,5 +1,5 @@
 // ==========================================================================
-// Project:   CinnamonDolceLatte.Reference
+// Project:   CinnamonDolceLatte.Citation
 // Copyright: ©2011 My Company, Inc.
 // ==========================================================================
 /*globals CinnamonDolceLatte */
@@ -11,8 +11,8 @@
   @extends SC.Record
   @version 0.1
 */
-CinnamonDolceLatte.Reference = SC.ChildRecord.extend(
-/** @scope CinnamonDolceLatte.Reference.prototype */ {
+CinnamonDolceLatte.Citation = SC.ChildRecord.extend(
+/** @scope CinnamonDolceLatte.Citation.prototype */ {
 	childRecordNamespace: CinnamonDolceLatte,
 	
 	resource_title: SC.Record.attr(String, {isRequired: YES}),

@@ -1,5 +1,5 @@
 // ==========================================================================
-// Project:   CinnamonDolceLatte.referenceController
+// Project:   CinnamonDolceLatte.citationController
 // Copyright: ©2011 My Company, Inc.
 // ==========================================================================
 /*globals CinnamonDolceLatte */
@@ -10,10 +10,10 @@
 
   @extends SC.ObjectController
 */
-CinnamonDolceLatte.referenceController = SC.ObjectController.create(
-/** @scope CinnamonDolceLatte.referenceController.prototype */ {
-		contentBinding: SC.Binding.single('CinnamonDolceLatte.referenceArrayController.selection'),
-		canDeleteReference: NO,
+CinnamonDolceLatte.citationController = SC.ObjectController.create(
+/** @scope CinnamonDolceLatte.citationController.prototype */ {
+		contentBinding: SC.Binding.single('CinnamonDolceLatte.citationArrayController.selection'),
+		canDeleteCitation: NO,
 		contentIsChanged: NO,
 		updatedTitle: null,
 		updatedType: null,
@@ -23,7 +23,7 @@ CinnamonDolceLatte.referenceController = SC.ObjectController.create(
 		observeContent: function() {
 			var refRecord = this.get('content');
 			if(refRecord) {
-				this.set('canDeleteReference', YES);
+				this.set('canDeleteCitation', YES);
 				var authors = refRecord.get('authors');
 				CinnamonDolceLatte.authorArrayController.set('content', authors);
 				this.set('canAddAuthor', YES);
@@ -32,7 +32,7 @@ CinnamonDolceLatte.referenceController = SC.ObjectController.create(
 				this.set('updatedType', refRecord.get('resource_type'));
 			} else {
 				CinnamonDolceLatte.authorArrayController.set('content', null);
-				this.set('canDeleteReference', NO);
+				this.set('canDeleteCitation', NO);
 				this.set('canAddAuthor', NO);
 				this.set('updatedTitle', null);
 				this.set('updatedDOP', null);
@@ -58,11 +58,11 @@ CinnamonDolceLatte.referenceController = SC.ObjectController.create(
 			this.set('resource_type', this.get('updatedType'));
 			this.set('date_of_publication', this.get('updatedDOP'));
 
-			var allRefs = CinnamonDolceLatte.referenceArrayController.get('arrangedObjects');
+			var allRefs = CinnamonDolceLatte.citationArrayController.get('arrangedObjects');
 			var curRefIdx = allRefs.indexOf(this.get('content'));
 
 			if(curRefIdx != -1) {
-				CinnamonDolceLatte.referenceArrayController.updateReferences(curRefIdx);
+				CinnamonDolceLatte.citationArrayController.updateCitations(curRefIdx);
 			}
 		},
 		

@@ -1,12 +1,12 @@
 // ==========================================================================
-// Project:   CinnamonDolceLatte.Reference Unit Test
+// Project:   CinnamonDolceLatte.citationArrayController Unit Test
 // Copyright: ©2011 My Company, Inc.
 // ==========================================================================
 /*globals CinnamonDolceLatte module test ok equals same stop start */
 
-module("CinnamonDolceLatte.Reference");
+module("CinnamonDolceLatte.citationArrayController");
 
-// TODO: Replace with real unit test for Reference
+// TODO: Replace with real unit test for CinnamonDolceLatte.citationArrayController
 test("test description", function() {
   var expected = "test";
   var result   = "test";
