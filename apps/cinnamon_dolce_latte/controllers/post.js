@@ -32,10 +32,10 @@ CinnamonDolceLatte.postController = SC.ObjectController.create(
 			CinnamonDolceLatte.commentArrayController.set('content', selComments);
 			
 			var selReferences = postRecord.get('post_refs');
-			CinnamonDolceLatte.referenceArrayController.set('content', selReferences);
+			CinnamonDolceLatte.citationArrayController.set('content', selReferences);
 		} else {
 			CinnamonDolceLatte.commentArrayController.set('content', null);
-			CinnamonDolceLatte.referenceArrayController.set('content', null);
+			CinnamonDolceLatte.citationArrayController.set('content', null);
 			this.set('canDeletePost', NO);
 			this.set('canAddComment', NO);
 			

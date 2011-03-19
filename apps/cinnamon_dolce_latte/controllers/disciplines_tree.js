@@ -18,12 +18,13 @@ CinnamonDolceLatte.disciplinesTreeController = SC.TreeController.create(
 			treeItemIsExpanded: YES,
 			name: "root",
 			treeItemChildren: function(){
-				var disciplineQuery = SC.Query.local(CinnamonDolceLatte.Discipline);
-				var disciplines = CinnamonDolceLatte.store.find(disciplineQuery);				
+				var disciplines = CinnamonDolceLatte.store.find(CinnamonDolceLatte.DISCIPLINES_QUERY);
+				CinnamonDolceLatte.disciplineArrayController.set('content', disciplines);			
 				return disciplines;
 			}.property()
 		});
 		
-		this.set('content', rootNode);		
+		this.set('content', rootNode);
+
 	}	
 }) ;

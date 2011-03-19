@@ -12,20 +12,9 @@
 // See comments for some pointers on what to do next.
 //
 CinnamonDolceLatte.main = function main() {
-
-  // Step 1: Instantiate Your Views
-  // The default code here will make the mainPane for your application visible
-  // on screen.  If you app gets any level of complexity, you will probably 
-  // create multiple pages and panes.  
-
 	SC.routes.add(':pageName/:paneName', CinnamonDolceLatte.routes, 'moveToPage');
 	SC.routes.add(':', CinnamonDolceLatte.routes, 'moveToPage');
-	// SC.routes.set('location', 'loginPage/loginPane');
-	
 	CinnamonDolceLatte.statechart.initStatechart();
-	
-  // Step 2. Set the content property on your primary controller.
-  // This will make your app come alive!
 } ;
 
 function main() { CinnamonDolceLatte.main(); }
