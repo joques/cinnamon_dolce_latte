@@ -33,8 +33,8 @@ CinnamonDolceLatte.topicArrayController = SC.ArrayController.create(
 			description: 'New Topic',
 			keywords: [],
 			posts: []
-		});				
-
+		});
+		
 		return YES;
 	},
 	
