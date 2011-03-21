@@ -6,4 +6,4 @@
 # Add initial buildfile information here
 config :all, :required => [:sproutcore, 'sproutcore/table', :ki]
 
-proxy "/disciplines", :to => "localhost:3000"
+proxy "/CDL", :to => "localhost:3000"

@@ -34,7 +34,7 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
 
   fetch: function(store, query) {
 	  if (query === CinnamonDolceLatte.DISCIPLINES_QUERY) {
-	    SC.Request.getUrl('/disciplines').header({'Accept': 'application/json'}).json()
+	    SC.Request.getUrl('/CDL/disciplines').header({'Accept': 'application/json'}).json()
 	      .notify(this, 'didFetchDisciplines', store, query)
 	      .send();
 	    return YES;
@@ -66,7 +66,7 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
 
 	  if (SC.kindOf(store.recordTypeFor(storeKey), CinnamonDolceLatte.Discipline)) {
 
-	    var url = '/disciplines/' + store.idFor(storeKey);
+	    var url = '/CDL/disciplines/' + store.idFor(storeKey);
 	    SC.Request.getUrl(url).header({
 	                'Accept': 'application/json'
 	            }).json()
@@ -90,7 +90,7 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
   createRecord: function(store, storeKey) {
 	  if (SC.kindOf(store.recordTypeFor(storeKey), CinnamonDolceLatte.Discipline)) {
 
-	    SC.Request.postUrl('/disciplines').header({
+	    SC.Request.postUrl('/CDL/disciplines').header({
 	                'Accept': 'application/json'
 	            }).json()
 	      .notify(this, this.didCreateDiscipline, store, storeKey)
@@ -114,7 +114,7 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
   
   updateRecord: function(store, storeKey) {
 	  if (SC.kindOf(store.recordTypeFor(storeKey), CinnamonDolceLatte.Discipline)) {
-	    SC.Request.putUrl('/disciplines/' + store.idFor(storeKey)).header({
+	    SC.Request.putUrl('/CDL/disciplines/' + store.idFor(storeKey)).header({
 	                'Accept': 'application/json'
 	            }).json()
 	      .notify(this, this.didUpdateDiscipline, store, storeKey)
@@ -135,7 +135,7 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
   
   destroyRecord: function(store, storeKey) {
 	  if (SC.kindOf(store.recordTypeFor(storeKey), CinnamonDolceLatte.Discipline)) {
-	    SC.Request.deleteUrl('/disciplines/' + store.idFor(storeKey)).header({
+	    SC.Request.deleteUrl('/CDL/disciplines/' + store.idFor(storeKey)).header({
 	                'Accept': 'application/json'
 	            }).json()
 	      .notify(this, this.didDestroyDiscipline, store, storeKey)
