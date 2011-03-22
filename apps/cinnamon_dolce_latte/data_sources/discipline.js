@@ -34,7 +34,7 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
 
   fetch: function(store, query) {
 	  if (query === CinnamonDolceLatte.DISCIPLINES_QUERY) {
-	    SC.Request.getUrl('/CDL/disciplines').header({'Accept': 'application/json'}).json()
+	    SC.Request.getUrl('/CDL/disciplines/').header({'Accept': 'application/json'}).json()
 	      .notify(this, 'didFetchDisciplines', store, query)
 	      .send();
 	    return YES;
@@ -60,10 +60,7 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
   // 
   
   retrieveRecord: function(store, storeKey) {
-    
-    // TODO: Add handlers to retrieve an individual record's contents
-    // call store.dataSourceDidComplete(storeKey) when done.
-
+	    
 	  if (SC.kindOf(store.recordTypeFor(storeKey), CinnamonDolceLatte.Discipline)) {
 
 	    var url = '/CDL/disciplines/' + store.idFor(storeKey);
@@ -88,16 +85,27 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
 	},
   
   createRecord: function(store, storeKey) {
-	  if (SC.kindOf(store.recordTypeFor(storeKey), CinnamonDolceLatte.Discipline)) {
-
-	    SC.Request.postUrl('/CDL/disciplines').header({
+		var curRecordType = store.recordTypeFor(storeKey) ;
+		if (SC.kindOf(curRecordType, CinnamonDolceLatte.Discipline)) {
+			SC.Request.postUrl('/CDL/disciplines/').header({
 	                'Accept': 'application/json'
 	            }).json()
 	      .notify(this, this.didCreateDiscipline, store, storeKey)
 	      .send(store.readDataHash(storeKey));
 	    return YES;
-	  } else return NO;
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Topic)) {
 
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Post) {
+
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Comment) {
+
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Citation) {
+
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Author) {
+
+		} else {
+			return NO;
+		}	
   },
 
 	didCreateDiscipline: function(response, store, storeKey) {
