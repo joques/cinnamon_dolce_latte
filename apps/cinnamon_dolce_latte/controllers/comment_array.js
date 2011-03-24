@@ -15,16 +15,16 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 	
 	addComment: function() {
 		var curPost = CinnamonDolceLatte.postController.get('content');
-		var commentCol = curPost.get('comments');
-		
+		var commentCol = curPost.get('comments');		
 		var commentatorName = CinnamonDolceLatte.loginController.get('nameToDisplay');
-		
-		commentCol.pushObject({
-			type: 'Comment',
+
+		var comment = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Comment, {
 			comment: 'Add your comment here here',
 			commentator: commentatorName,
-			date_created: SC.DateTime.create()
+			date_created: SC.DateTime.create()			
 		});
+		
+		commentCol.pushObject(comment);
 		
 		return YES;
 	},
@@ -33,10 +33,10 @@ CinnamonDolceLatte.commentArrayController = SC.ArrayController.create(
 		var commentCol = CinnamonDolceLatte.postController.get('content').get('comments');
 		var selComment = CinnamonDolceLatte.commentController.get('content');
 		commentCol.removeObject(selComment);
+		CinnamonDolceLatte.store.destroyRecord(CinnamonDolceLatte.Comment, selComment.get('id')) ;
 		
 		// select a new post if possible
-		var comLength = this.get('arrangedObjects').get('length');
-		
+		var comLength = this.get('arrangedObjects').get('length');		
 		if(comLength > 0) {
 			this.selectObject(this.get('arrangedObjects').objectAt(0));
 		}

@@ -260,6 +260,8 @@ if (!String.prototype.w) {
   };
 }
 
+/* >>>>>>>>>> BEGIN __sc_chance.js */
+if (typeof CHANCE_SLICES === 'undefined') var CHANCE_SLICES = [];CHANCE_SLICES = CHANCE_SLICES.concat([]);
 /* >>>>>>>>>> BEGIN source/extras.js */
 // ==========================================================================
 // Project:   SproutCore Unit Testing Library
@@ -5452,6 +5454,21 @@ CoreTest.Plan = {
       
     });
   },
+
+  clearHtmlbody: function(){
+    var body = Q$('body')[0];
+
+    // first, find the first element with id 'htmlbody-begin'  if exists,
+    // remove everything after that to reset...
+    var begin = Q$('body #htmlbody-begin')[0];
+    if (!begin) {
+      begin = Q$('<div id="htmlbody-begin"></div>')[0];
+      body.appendChild(begin);
+    } else {
+      while(begin.nextSibling) body.removeChild(begin.nextSibling);
+    }
+    begin = null;
+  },
   
   /**
     Converts the passed string into HTML and then appends it to the main body 
@@ -5459,24 +5476,13 @@ CoreTest.Plan = {
     main page.
   */
   htmlbody: function htmlbody(string) {
-    this.synchronize(function() {
-      var html = Q$(string) ;
-      var body = Q$('body')[0];
+    var html = Q$(string) ;
+    var body = Q$('body')[0];
 
-      // first, find the first element with id 'htmlbody-begin'  if exists,
-      // remove everything after that to reset...
-      var begin = Q$('body #htmlbody-begin')[0];
-      if (!begin) {
-        begin = Q$('<div id="htmlbody-begin"></div>')[0];
-        body.appendChild(begin);
-      } else {
-        while(begin.nextSibling) body.removeChild(begin.nextSibling);
-      }
-      begin = null; 
+    this.clearHtmlbody();
 
-      // now append new content
-      html.each(function() { body.appendChild(this); });
-    }) ;
+    // now append new content
+    html.each(function() { body.appendChild(this); });
   },
   
   /**
@@ -5772,6 +5778,10 @@ window.test = function(desc, func) {
 }; 
 
 // reset htmlbody for unit testing
+window.clearHtmlbody = function() {
+  CoreTest.defaultPlan().clearHtmlbody(); 
+}; 
+
 window.htmlbody = function(string) {
   CoreTest.defaultPlan().htmlbody(string); 
 }; 
@@ -5813,6 +5823,7 @@ CoreTest.Runner = {
         
     for(idx=0;idx<len;idx++) CoreTest.mixin(ret, arguments[len]);
     if (!ret.plan) ret.plan = CoreTest.Plan.create({ delegate: ret });
+    window.resizeTo(1400, 800);
     Q$(window).load(function() { ret.begin(); });      
     return ret ;
   },
@@ -5890,7 +5901,7 @@ CoreTest.Runner = {
     }
 
     if (r.warnings > 0) {
-      str += CoreTest.fmt('&nbsp;<span class="warnings">%@ warnings%@</span>',
+      str += CoreTest.fmt('&nbsp;<span class="warnings">%@ warning%@</span>',
             r.warnings, (r.warnings !== 1 ? 's' : ''));
     }
 
@@ -5908,6 +5919,16 @@ CoreTest.Runner = {
     result.html(str);
     
     if (this.errors) CoreTest.errors=this.errors.join('');
+
+
+    // Unload the SproutCore event system so that the user can select the text
+    // of the various events.  (It is handy when looking at failed tests.)
+    if (SC  &&  SC.Event  &&  SC.Event.unload) {
+      try {
+        SC.Event.unload();
+      }
+      catch (e) {}
+    }
   },
   
   planDidRecord: function(plan, module, test, assertions, timings) {
@@ -6217,5 +6238,3 @@ CoreTest.Suite = /** @scope CoreTest.Suite.prototype */ {
   
 };
 
-/* >>>>>>>>>> BEGIN bundle_loaded.js */
-; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/testing');

@@ -18,14 +18,16 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 		var postCol = curTopic.get('posts');
 		var creatorName = CinnamonDolceLatte.loginController.get('nameToDisplay');
 		
-		postCol.pushObject({
-			type: 'Post',
+		var post = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Post, {
 			title: 'New Post',
 			article: 'Post the article here',
 			creator: creatorName,
 			date_created: SC.DateTime.create(),
-			comments: []
+			comments: [],
+			posts: []		
 		});
+		
+		postCol.pushObject(post);
 		
 		return YES;		
 	},
@@ -34,11 +36,11 @@ CinnamonDolceLatte.postArrayController = SC.ArrayController.create(
 		var postCol = CinnamonDolceLatte.topicController.get('content').get('posts');
 		var selPost = CinnamonDolceLatte.postController.get('content');
 		postCol.removeObject(selPost);
+		CinnamonDolceLatte.store.destroyRecord(CinnamonDolceLatte.Post, selPost.get('id')) ;
 		
 		// select a new post if possible
-		var postLength = this.get('arrangedObjects').get('length');
-		
-		if(postLength > 0) {
+		var postLength = this.get('arrangedObjects').get('length');		
+		if (postLength > 0) {
 			this.selectObject(this.get('arrangedObjects').objectAt(0));
 		}
 		

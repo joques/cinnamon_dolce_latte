@@ -34,6 +34,7 @@ CoreTest.Runner = {
         
     for(idx=0;idx<len;idx++) CoreTest.mixin(ret, arguments[len]);
     if (!ret.plan) ret.plan = CoreTest.Plan.create({ delegate: ret });
+    window.resizeTo(1400, 800);
     Q$(window).load(function() { ret.begin(); });      
     return ret ;
   },
@@ -111,7 +112,7 @@ CoreTest.Runner = {
     }
 
     if (r.warnings > 0) {
-      str += CoreTest.fmt('&nbsp;<span class="warnings">%@ warnings%@</span>',
+      str += CoreTest.fmt('&nbsp;<span class="warnings">%@ warning%@</span>',
             r.warnings, (r.warnings !== 1 ? 's' : ''));
     }
 
@@ -129,6 +130,16 @@ CoreTest.Runner = {
     result.html(str);
     
     if (this.errors) CoreTest.errors=this.errors.join('');
+
+
+    // Unload the SproutCore event system so that the user can select the text
+    // of the various events.  (It is handy when looking at failed tests.)
+    if (SC  &&  SC.Event  &&  SC.Event.unload) {
+      try {
+        SC.Event.unload();
+      }
+      catch (e) {}
+    }
   },
   
   planDidRecord: function(plan, module, test, assertions, timings) {

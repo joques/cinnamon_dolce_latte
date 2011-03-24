@@ -92,7 +92,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     var ret = this.get('dataSource');
     if (typeof ret === SC.T_STRING) {
       ret = SC.objectForPropertyPath(ret);
-      if (ret) ret = ret.create();
+      if (ret && ret.isClass) ret = ret.create();
       if (ret) this.set('dataSource', ret);
     }
     return ret;
@@ -146,6 +146,10 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     else {
       newStoreClass = SC.NestedStore;
     }
+    
+    // Replicate parent records references
+    attrs.childRecords = this.childRecords ? SC.clone(this.childRecords) : {};
+    attrs.parentRecords = this.parentRecords ? SC.clone(this.parentRecords) : {};
     
     var ret    = newStoreClass.create(attrs),
         nested = this.nestedStores;
@@ -244,15 +248,6 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
   changelog: null,
   
   /**
-    A set of SC.RecordArray that have been returned from findAll with an 
-    SC.Query. These will all be notified with _notifyRecordArraysWithQuery() 
-    whenever the store changes.
-  
-    @property {Array}
-  */
-  recordArraysWithQuery: null,
-  
-  /**
     An array of SC.Error objects associated with individual records in the
     store (indexed by store keys).
     
@@ -273,6 +268,16 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     @property {Hash}
   */
   queryErrors: null,
+  
+  /**
+    A hash of child Records and there immediate parents
+  */
+  childRecords: null,
+  
+  /**
+    A hash of parent records with registered children
+  */
+  parentRecords: null,
   
   // ..........................................................
   // CORE ATTRIBUTE API
@@ -353,7 +358,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     // clone if needed
     if (!editables[propertyName]) {
       ret = hash[propertyName];
-      if (ret && ret.isCopyable) ret = hash[propertyName] = ret.copy();
+      if (ret && ret.isCopyable) ret = hash[propertyName] = ret.copy(YES);
       editables[propertyName] = YES ;
     }
     
@@ -386,6 +391,11 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     var editables = this.editables;
     if (!editables) editables = this.editables = [];
     editables[storeKey] = 1 ; // use number for dense array support
+    
+    var that = this;
+    this._propagateToChildren(storeKey, function(storeKey){
+      that.writeDataHash(storeKey, null, status);
+    });
     
     return this ;
   },
@@ -489,10 +499,15 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
       storeKey = storeKeys;
     }
     
+    var that = this;
     for(idx=0;idx<len;idx++) {
       if (isArray) storeKey = storeKeys[idx];
       this.revisions[storeKey] = rev;
       this._notifyRecordPropertyChange(storeKey, statusOnly, key);
+      
+      this._propagateToChildren(storeKey, function(storeKey){
+        that.dataHashDidChange(storeKey, null, statusOnly, key);
+      });
     }
     
     return this ;
@@ -680,27 +695,33 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     // OK, no locking issues.  So let's just copy them changes. 
     // get local reference to values.
     var len = changes.length, i, storeKey, myDataHashes, myStatuses, 
-      myEditables, myRevisions, chDataHashes, chStatuses, chRevisions;
+      myEditables, myRevisions, myParentRecords, myChildRecords, 
+      chDataHashes, chStatuses, chRevisions, chParentRecords, chChildRecords;
     
-    myRevisions  = this.revisions ;
-    myDataHashes = this.dataHashes;
-    myStatuses   = this.statuses;
-    myEditables  = this.editables ;
+    myRevisions     = this.revisions ;
+    myDataHashes    = this.dataHashes;
+    myStatuses      = this.statuses;
+    myEditables     = this.editables ;
+    myParentRecords = this.parentRecords ? this.parentRecords : this.parentRecords ={} ;
+    myChildRecords  = this.childRecords ? this.childRecords : this.childRecords = {} ;
     
     // setup some arrays if needed
     if (!myEditables) myEditables = this.editables = [] ;
-    
-    chDataHashes = nestedStore.dataHashes;
-    chRevisions  = nestedStore.revisions ;
-    chStatuses   = nestedStore.statuses;
+    chDataHashes    = nestedStore.dataHashes;
+    chRevisions     = nestedStore.revisions ;
+    chStatuses      = nestedStore.statuses;
+    chParentRecords = nestedStore.parentRecords || {};
+    chChildRecords  = nestedStore.childRecords || {};
     
     for(i=0;i<len;i++) {
       storeKey = changes[i];
 
       // now copy changes
-      myDataHashes[storeKey] = chDataHashes[storeKey];
-      myStatuses[storeKey]   = chStatuses[storeKey];
-      myRevisions[storeKey]  = chRevisions[storeKey];
+      myDataHashes[storeKey]    = chDataHashes[storeKey];
+      myStatuses[storeKey]      = chStatuses[storeKey];
+      myRevisions[storeKey]     = chRevisions[storeKey];
+      myParentRecords[storeKey] = chParentRecords[storeKey];
+      myChildRecords[storeKey]  = chChildRecords[storeKey];
       
       myEditables[storeKey] = 0 ; // always make dataHash no longer editable
       
@@ -850,7 +871,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     SproutCore.
   */
   findAll: function(recordType, conditions, params) {
-    console.warn("SC.Store#findAll() will be removed in a future version of SproutCore.  Use SC.Store#find() instead");
+    SC.Logger.warn("SC.Store#findAll() will be removed in a future version of SproutCore.  Use SC.Store#find() instead");
     
 
     if (!recordType || !recordType.isQuery) {
@@ -1090,11 +1111,11 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     // any busy or ready state or destroyed dirty state is not allowed
     if ((status & K.BUSY)  || 
         (status & K.READY) || 
-        (status == K.DESTROYED_DIRTY)) { 
+        (status === K.DESTROYED_DIRTY)) { 
       throw id ? K.RECORD_EXISTS_ERROR : K.BAD_STATE_ERROR;
       
     // allow error or destroyed state only with id
-    } else if (!id && (status==SC.DESTROYED_CLEAN || status==SC.ERROR)) {
+    } else if (!id && (status===SC.DESTROYED_CLEAN || status===SC.ERROR)) {
       throw K.BAD_STATE_ERROR;
     }
     
@@ -1120,7 +1141,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     ret = this.materializeRecord(storeKey);
     if (ret) ret.propagateToAggregates();
     return ret;
-  },
+  },  
   
   /**
     Creates an array of new records.  You must pass an array of dataHashes 
@@ -1177,7 +1198,13 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     // remove the data hash, set new status
     this.removeDataHash(storeKey, status);
     this.dataHashDidChange(storeKey);
-            
+    
+    // Handle all the child Records
+    var that = this;
+    this._propagateToChildren(storeKey, function(storeKey){
+      that.unloadRecord(null, null, storeKey, newStatus);
+    });
+      
     return this ;
   },
   
@@ -1253,7 +1280,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
       return this; // nothing to do
       
     // error out if empty
-    } else if (status == K.EMPTY) {
+    } else if (status === K.EMPTY) {
       throw K.NOT_FOUND_ERROR ;
       
     // error out if busy
@@ -1261,7 +1288,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
       throw K.BUSY_ERROR ;
       
     // if new status, destroy but leave in clean state
-    } else if (status == K.READY_NEW) {
+    } else if (status === K.READY_NEW) {
       status = K.DESTROYED_CLEAN ;
       
     // otherwise, destroy in dirty state
@@ -1282,6 +1309,11 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     if(this.get('commitRecordsAutomatically')){
       this.invokeLast(this.commitRecords);
     }
+    
+    var that = this;
+    this._propagateToChildren(storeKey, function(storeKey){
+      that.destroyRecord(null, null, storeKey);
+    });
         
     return this ;
   },
@@ -1325,6 +1357,66 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
       }
     }
     return this ;
+  },
+  
+  /**
+    register a Child Record to the parent
+  */
+  registerChildToParent: function(parentStoreKey, childStoreKey, path){
+    var prs, crs, oldPk, oldChildren, pkRef;
+    // Check the child to see if it has a parent
+    crs = this.childRecords || {};
+    prs = this.parentRecords || {};
+    // first rid of the old parent
+    oldPk = crs[childStoreKey];
+    if (oldPk){
+      oldChildren = prs[oldPk];
+      delete oldChildren[childStoreKey];
+      // this.recordDidChange(null, null, oldPk, key);
+    }
+    pkRef = prs[parentStoreKey] || {};
+    pkRef[childStoreKey] = path || YES;
+    prs[parentStoreKey] = pkRef;
+    crs[childStoreKey] = parentStoreKey;
+    // sync the status of the child
+    this.writeStatus(childStoreKey, this.statuses[parentStoreKey]);
+    this.childRecords = crs;
+    this.parentRecords = prs;
+  },
+  
+  /**
+    materialize the parent when passing in a store key for the child
+  */
+  materializeParentRecord: function(childStoreKey){
+    var pk, crs;
+    if (SC.none(childStoreKey)) return null;
+    crs = this.childRecords;
+    pk = crs ? this.childRecords[childStoreKey] : null ;
+    if (SC.none(pk)) return null;
+    
+    return this.materializeRecord(pk);
+  },
+  
+  /**
+    function for retrieving a parent record key
+  */
+  parentStoreKeyExists: function(storeKey){
+    if (SC.none(storeKey)) return ;
+    var crs = this.childRecords || {};
+    return crs[storeKey];
+  },
+  
+  /**
+    function that propigates a function all to all children
+  */
+  _propagateToChildren: function(storeKey, func){
+    // Handle all the child Records
+    if ( SC.none(this.parentRecords) ) return;
+    var children = this.parentRecords[storeKey] || {};
+    if (SC.none(func)) return;
+    for (var key in children) {
+      if (children.hasOwnProperty(key)) func(key);
+    }
   },
   
   /**
@@ -1599,7 +1691,6 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     @returns {Boolean} if the action was succesful.
   */
   commitRecords: function(recordTypes, ids, storeKeys, params) {
-    
     var source    = this._getDataSource(),
         isArray   = SC.typeOf(recordTypes) === SC.T_ARRAY,    
         retCreate= [], retUpdate= [], retDestroy = [], 
@@ -1815,8 +1906,8 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     ret = storeKey = recordType.storeKeyFor(id); // needed to cache
       
     if (this.readStatus(storeKey) & K.BUSY) {
-        this.dataSourceDidComplete(storeKey, dataHash, id);
-      } else this.pushRetrieve(recordType, id, dataHash, storeKey);
+      this.dataSourceDidComplete(storeKey, dataHash, id);
+    } else this.pushRetrieve(recordType, id, dataHash, storeKey);
     
     // return storeKey
     return ret ;
@@ -1920,7 +2011,6 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     // DESTROYED_DIRTY
     if (!(status & K.BUSY)) {
       throw K.BAD_STATE_ERROR; // should never be called in this state
-      
     }
     
     // otherwise, determine proper state transition
@@ -1988,7 +2078,13 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     
     statusOnly = dataHash || newId ? NO : YES;
     this.dataHashDidChange(storeKey, null, statusOnly);
-    
+
+    // Force record to refresh its cached properties based on store key
+    var record = this.materializeRecord(storeKey);
+    if (record != null) {
+      record.notifyPropertyChange('status');
+    }
+
     return this ;
   },
   
@@ -2014,6 +2110,12 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     this.removeDataHash(storeKey, status) ;
     this.dataHashDidChange(storeKey);
 
+    // Force record to refresh its cached properties based on store key
+    var record = this.materializeRecord(storeKey);
+    if (record != null) {
+      record.notifyPropertyChange('status');
+    }
+
     return this ;
   },
 
@@ -2029,7 +2131,7 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
 
     // EMPTY, ERROR, READY_CLEAN, READY_NEW, READY_DIRTY, DESTROYED_CLEAN,
     // DESTROYED_DIRTY
-    if (!(status & K.BUSY)) throw K.BAD_STATE_ERROR; 
+    if (!(status & K.BUSY)) { throw K.BAD_STATE_ERROR; }
 
     // otherwise, determine proper state transition
     else status = K.ERROR ;
@@ -2042,6 +2144,12 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
 
     this.writeStatus(storeKey, status) ;
     this.dataHashDidChange(storeKey, null, YES);
+
+    // Force record to refresh its cached properties based on store key
+    var record = this.materializeRecord(storeKey);
+    if (record != null) {
+      record.notifyPropertyChange('status');
+    }
 
     return this ;
   },
@@ -2338,7 +2446,8 @@ SC.Store = SC.Object.extend( /** @scope SC.Store.prototype */ {
     storeKey.  As opposed to storeKeyFor() however, this method
     will NOT generate a new storeKey but returned undefined.
     
-    @param {String} id a record id
+    @param {SC.Record} recordType the record type
+    @param {String} primaryKey the primary key
     @returns {Number} a storeKey.
   */
   storeKeyExists: function(recordType, primaryKey) {
@@ -2619,7 +2728,7 @@ SC.Store._getDefaultStore = function() {
 */
 SC.Store.updateRecords = function(dataHashes, dataSource, recordType, isLoaded) {
   
-  console.warn("SC.Store.updateRecords() is deprecated.  Use loadRecords() instead");
+  SC.Logger.warn("SC.Store.updateRecords() is deprecated.  Use loadRecords() instead");
   
   var store = this._getDefaultStore(),
       len   = dataHashes.length,

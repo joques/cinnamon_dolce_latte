@@ -5,8 +5,6 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-sc_require('views/view') ;
-sc_require('mixins/control') ;
 sc_require('mixins/validatable') ;
 
 /** @class
@@ -33,6 +31,14 @@ SC.FieldView = SC.View.extend(SC.Control, SC.Validatable,
      WARNING: Use only with textField** Juan
   */
   isTextArea: NO,
+
+  /**
+    The WAI-ARIA role for field view. This property's value should not be
+    changed.
+
+    @property {String}
+  */
+  ariaRole: 'textbox',
 
   _field_isMouseDown: NO,
 
@@ -259,7 +265,7 @@ SC.FieldView = SC.View.extend(SC.Control, SC.Validatable,
   keyDown: function(evt) {
 
     // handle tab key
-    if (evt.which === 9) {
+    if (evt.which === 9 || evt.keyCode===9) {
       var view = evt.shiftKey ? this.get('previousValidKeyView') : this.get('nextValidKeyView');
       if (view) view.becomeFirstResponder();
       else evt.allowDefault();
@@ -314,7 +320,18 @@ SC.FieldView = SC.View.extend(SC.Control, SC.Validatable,
     var ret = this.getFieldValue() ;
     if (this.objectForFieldValue) ret = this.objectForFieldValue(ret);
     return ret ;
+  },
+
+  render: function(context, firstTime) {
+    arguments.callee.base.apply(this,arguments);
+
+    //addressing accessibility
+    if(firstTime) {
+      context.attr('aria-multiline', this.get('isTextArea'));
+      context.attr('aria-disabled', !this.get('isEnabled'));
+    }
   }
+
   
 });
 

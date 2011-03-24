@@ -11,15 +11,15 @@
   @extends SC.Record
   @version 0.1
 */
-CinnamonDolceLatte.Post = SC.ChildRecord.extend(
+CinnamonDolceLatte.Post = SC.Record.extend(
 /** @scope CinnamonDolceLatte.Post.prototype */ {
-	childRecordNamespace: CinnamonDolceLatte,
+	nestedRecordNamespace: CinnamonDolceLatte,
 	
 	title: SC.Record.attr(String, {isRequired: YES}),
 	article: SC.Record.attr(String, {isRequired: YES}),
 	creator: SC.Record.attr(String),
 	date_created: SC.Record.attr(SC.DateTime),
-	post_refs: SC.Record.toMany('CinnamonDolceLatte.Reference', { nested: YES, isEditable: YES }),
+	citations: SC.Record.toMany('CinnamonDolceLatte.Citation', { nested: YES, isEditable: YES }),
 	comments: SC.Record.toMany('CinnamonDolceLatte.Comment', { nested: YES, isEditable: YES }),
 	
 	shortArticle: function() {

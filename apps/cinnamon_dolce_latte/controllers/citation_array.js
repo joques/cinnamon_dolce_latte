@@ -15,28 +15,29 @@ CinnamonDolceLatte.citationArrayController = SC.ArrayController.create(
 	
 	addCitation: function() {
 		var curPost = CinnamonDolceLatte.postController.get('content');
-		var refCol = curPost.get('post_refs');
-		
-		refCol.pushObject({
-			type: 'Reference',
+		var postCitations = curPost.get('citations');
+		var citation = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Citation, {
 			resource_title: 'New citation',
 			resource_type: 'Conference',
 			date_of_publication: SC.DateTime.create(),
-			authors: []
+			authors: []			
 		});
+		
+		postCitations.pushObject(citation);
 								
 		return YES;
 	},
 	
 	deleteCitation: function() {
-		var refCol = CinnamonDolceLatte.postController.get('content').get('post_refs');
-		var selRef = CinnamonDolceLatte.citationController.get('content');
-		refCol.removeObject(selRef);
+		var postCitations = CinnamonDolceLatte.postController.get('content').get('citations');
+		var selCitation = CinnamonDolceLatte.citationController.get('content');
+		postCitations.removeObject(selCitation);
+		CinnamonDolceLatte.store.destroyRecord(CinnamonDolceLatte.Citation, selCitation.get('id')) ;
 		
 		// select a new post if possible
-		var refLength = this.get('arrangedObjects').get('length');
+		var citationLength = this.get('arrangedObjects').get('length');
 		
-		if(refLength > 0) {
+		if(citationLength > 0) {
 			this.selectObject(this.get('arrangedObjects').objectAt(0));
 		}
 		

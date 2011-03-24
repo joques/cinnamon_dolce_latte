@@ -12,10 +12,8 @@
   @version 0.1
 */
 CinnamonDolceLatte.Discipline = SC.Record.extend(
-/** @scope CinnamonDolceLatte.Discipline.prototype */ {
-	
-	childRecordNamespace: CinnamonDolceLatte,
-	
+/** @scope CinnamonDolceLatte.Discipline.prototype */ {	
+	nestedRecordNamespace: CinnamonDolceLatte,	
 	name: SC.Record.attr(String, {isRequired: YES}),
 	topics: SC.Record.toMany('CinnamonDolceLatte.Topic', {nested: YES, isEditable: YES}),
 	

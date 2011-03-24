@@ -14,15 +14,15 @@ CinnamonDolceLatte.authorArrayController = SC.ArrayController.create(
 /** @scope CinnamonDolceLatte.authorArrayController.prototype */ {
 
 	addAuthor: function() {
-		var curRef = CinnamonDolceLatte.citationController.get('content');
-		var authorCol = curRef.get('authors');
-		
-		authorCol.pushObject({
-			type: 'Author',
+		var curCitation = CinnamonDolceLatte.citationController.get('content');
+		var authorCol = curCitation.get('authors');
+		var author =  CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Citation, {
 			first_name: 'FirstName',
 			last_name: 'LastName',
-			email: 'email@address'
+			email: 'email@address.net'						
 		});
+		
+		authorCol.pushObject(author);
 								
 		return YES;		
 	},
@@ -31,6 +31,7 @@ CinnamonDolceLatte.authorArrayController = SC.ArrayController.create(
 		var authorCol = CinnamonDolceLatte.citationController.get('content').get('authors');
 		var selAuthor = CinnamonDolceLatte.authorController.get('content');
 		authorCol.removeObject(selAuthor);
+		CinnamonDolceLatte.store.destroyRecord(CinnamonDolceLatte.Author, selAuthor.get('id')) ;
 		
 		// select a new post if possible
 		var authorLength = this.get('arrangedObjects').get('length');

@@ -11,9 +11,9 @@
   @extends SC.Record
   @version 0.1
 */
-CinnamonDolceLatte.Citation = SC.ChildRecord.extend(
+CinnamonDolceLatte.Citation = SC.Record.extend(
 /** @scope CinnamonDolceLatte.Citation.prototype */ {
-	childRecordNamespace: CinnamonDolceLatte,
+	nestedRecordNamespace: CinnamonDolceLatte,
 	
 	resource_title: SC.Record.attr(String, {isRequired: YES}),
 	resource_type: SC.Record.attr(String, {isRequired: YES}),

@@ -156,10 +156,10 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 				
 				postContentView: SC.ScrollView.design({
 					hasHorizontalScroller: NO,
-					layout: { top: 40, bottom: 36, left: 0, right: 0 },
+					layout: { top: 30, bottom: 36, left: 0, right: 0 },
 
 					contentView: SC.TableView.design({
-						layout: {top: 10, bottom:10, left: 10, right:10},
+						layout: {top: 0, bottom:10, left: 10, right:10},
 						
 						columns:[
 														
@@ -231,7 +231,7 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 				childViews: 'commentHeaderView commentContentView commentButtonViews'.w(),
 				
 				commentHeaderView: SC.ToolbarView.design({
-					layout: {top: 36, left: 0, right: 0, height: 30},
+					layout: {top: 0, left: 0, right: 0, height: 30},
 					childViews: 'commentLabelView'.w(),
 					anchorLocation: SC.ANCHOR_TYPE,
 					
@@ -245,9 +245,9 @@ CinnamonDolceLatte.mainPage = SC.Page.design({
 				
 				commentContentView: SC.ScrollView.design({
 					hasHorizontalScroller: NO,
-					layout: { top: 40, left: 0, right: 0 },
+					layout: { top: 30, left: 0, right: 0 },
 					contentView: SC.TableView.design({
-						layout: {top: 45, bottom:34, left: 10, right:10},
+						layout: {top: 2, bottom:34, left: 10, right:10},
 						
 						columns:[
 							SC.TableColumn.create({

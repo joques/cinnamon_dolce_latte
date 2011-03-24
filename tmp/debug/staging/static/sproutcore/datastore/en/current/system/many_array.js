@@ -272,6 +272,8 @@ SC.ManyArray = SC.Object.extend(SC.Enumerable, SC.Array,
       record.recordDidChange(pname);
     } 
     
+    this.enumerableContentDidChange(idx, amt, len - amt);
+    
     return this;
   },
   
@@ -402,7 +404,8 @@ SC.ManyArray = SC.Object.extend(SC.Enumerable, SC.Array,
   
   /** @private */
   unknownProperty: function(key, value) {
-    var ret = this.reducedProperty(key, value);
+    var ret;
+    if (SC.typeOf(key) === SC.T_STRING) ret = this.reducedProperty(key, value);
     return ret === undefined ? arguments.callee.base.apply(this,arguments) : ret;
   },
 

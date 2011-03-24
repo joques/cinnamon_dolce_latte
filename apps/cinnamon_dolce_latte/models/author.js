@@ -11,10 +11,8 @@
   @extends SC.Record
   @version 0.1
 */
-CinnamonDolceLatte.Author = SC.ChildRecord.extend(
+CinnamonDolceLatte.Author = SC.Record.extend(
 /** @scope CinnamonDolceLatte.Author.prototype */ {
-	childRecordNamespace: CinnamonDolceLatte,
-	
 	first_name: SC.Record.attr(String, {isRequired: YES}),
 	last_name: SC.Record.attr(String, {isRequired: YES}),
 	email: SC.Record.attr(String, {isRequired: YES})

@@ -36,7 +36,36 @@ SC.PanelPane = SC.Pane.extend({
   layout: { left:0, right:0, top:0, bottom:0 },
   classNames: ['sc-panel'],
   acceptsKeyPane: YES,
-  
+
+  /**
+    The WAI-ARIA role for panel pane. This property's value should not be
+    changed.
+
+    @property {String}
+  */
+  ariaRole: 'dialog',
+
+  /**
+    The WAI-ARIA attribute for the panel pane. This property is assigned to
+    'aria-labelledby' attribute, which defines a string value that labels the
+    element. Used to support voiceover. It should be assigned a non-empty string,
+    if the 'aria-labelledby' attribute has to be set for the element.
+
+    @property {String}
+  */
+  ariaLabeledBy: null,
+
+  /**
+    The WAI-ARIA attribute for the panel pane. This property is assigned to
+    'aria-describedby' attribute.Used to support voiceover. It is intended to
+    provide additional detail that some users might need. It should be assigned
+    a non-empty string, if the 'aria-describedby' attribute has to be set for
+    the element.
+
+    @property {String}
+  */
+  ariaDescribedBy: null,
+
   /**
     Indicates that a pane is modal and should not allow clicks to pass
     though to panes underneath it.  This will usually cause the pane to show
@@ -65,31 +94,6 @@ SC.PanelPane = SC.Pane.extend({
   */
   contentView: null,
   contentViewBindingDefault: SC.Binding.single(),
-
-  /**
-    Replaces any child views with the passed new content.  
-    
-    This method is automatically called whenever your contentView property 
-    changes.  You can override it if you want to provide some behavior other
-    than the default.
-    
-    @param {SC.View} newContent the new panel view or null.
-    @returns {void}
-  */
-  
-  render: function(context, firstTime) {
-    if (context.needsContent) {
-      this.renderChildViews(context, firstTime) ;
-      context.push("<div class='top-left-edge'></div>",
-       "<div class='top-edge'></div>",
-       "<div class='top-right-edge'></div>",
-       "<div class='right-edge'></div>",
-       "<div class='bottom-right-edge'></div>",
-       "<div class='bottom-edge'></div>",
-       "<div class='bottom-left-edge'></div>",
-       "<div class='left-edge'></div>");
-    }
-  },
   
   replaceContent: function(newContent) {
     this.removeAllChildren() ;
@@ -119,7 +123,14 @@ SC.PanelPane = SC.Pane.extend({
   // ..........................................................
   // INTERNAL SUPPORT
   //
-  
+
+  /**
+    The name of the theme's SC.PanelPane render delegate.
+
+    @property {String}
+  */
+  renderDelegateName: 'panelRenderDelegate',
+
   // get the modal pane. 
   _modalPane: function() {
     var pane = this.get('modalPane');
@@ -176,5 +187,21 @@ SC.PanelPane = SC.Pane.extend({
     var ret = arguments.callee.base.apply(this,arguments);
     this.becomeKeyPane();
     return ret ;
+  },
+
+  render: function(context, firstTime) {
+    arguments.callee.base.apply(this,arguments);
+    var ariaLabeledBy   = this.get('ariaLabeledBy'),
+        ariaDescribedBy = this.get('ariaDescribedBy');
+
+    //addressing accessibility
+    if(firstTime) {
+      if(ariaLabeledBy && ariaLabeledBy !== "") {
+        context.attr('aria-labelledby', ariaLabeledBy);
+      }
+      if(ariaDescribedBy && ariaDescribedBy !== "") {
+       context.attr('aria-describedby', ariaDescribedBy);
+      }
+    }
   }
 });

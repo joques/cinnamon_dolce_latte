@@ -251,6 +251,14 @@ SC.SelectFieldView = SC.FieldView.extend(
     } else return arguments.callee.base.apply(this,arguments);
   },
    
+  touchStart: function(evt) {
+    return this.mouseDown(evt);
+  },
+  
+  touchEnd: function(evt) {
+    return this.mouseUp(evt);
+  },
+
   // when fetching the raw value, convert back to an object if needed...
   /** @private */
   getFieldValue: function() {
@@ -323,14 +331,14 @@ SC.SelectFieldView = SC.FieldView.extend(
     if (this.get('isEnabled') === false) this.$()[0].disabled = true;
     SC.Event.add(input, 'blur', this, this.fieldDidBlur);
     SC.Event.add(input, 'focus',this, this.fieldDidFocus);
-    return arguments.callee.base.apply(this,arguments);
+    SC.Event.add(input, 'change',this, this._field_fieldValueDidChange);
   },
   
   willDestroyLayer: function() {
     var input = this.$input();
     SC.Event.remove(input, 'focus', this, this.fieldDidFocus);
     SC.Event.remove(input, 'blur', this, this.fieldDidBlur);
-    return arguments.callee.base.apply(this,arguments);
+    SC.Event.remove(input, 'change',this, this._field_fieldValueDidChange);
   }
  
 });

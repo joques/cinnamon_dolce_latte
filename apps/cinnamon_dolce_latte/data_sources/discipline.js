@@ -91,41 +91,38 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
 		if (SC.kindOf(curRecordType, CinnamonDolceLatte.Discipline)) {
 			createRequestUrl = "/CDL/disciplines";
 		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Topic)) {
+			
 			// the url should be /CDL/disciplines/disciplineid/topics
-			var disciplineStoreKey = store.parentStoreKeyExists(storeKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			var disciplineID = CinnamonDolceLatte.disciplineController.get('content').get('id');
 			createRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics";
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Post) {
-			var topicStoreKey = store.parentStoreKeyExists(storeKey);
-			var topicID = store.idFor(topicStoreKey);
-			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Post)) {
+			
+			var topicID = CinnamonDolceLatte.topicController.get('content').get('id');
+			var disciplineID = CinnamonDolceLatte.disciplineController.get('content').get('id');
 			createRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts";
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Comment) {
-			var postStoreKey = store.parentStoreKeyExists(storeKey);
-			var postID = store.idFor(postStoreKey);
-			var topicStoreKey = store.parentStoreKeyExists(postStoreKey);
-			var topicID = store.idFor(topicStoreKey);
-			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Comment)) {
+			
+
+			var postID = CinnamonDolceLatte.postController.get('content').get('id');
+			var topicID = CinnamonDolceLatte.topicController.get('content').get('id');
+			var disciplineID = CinnamonDolceLatte.disciplineController.get('content').get('id');
 			createRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/comments";
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Citation) {
-			var postStoreKey = store.parentStoreKeyExists(storeKey);
-			var postID = store.idFor(postStoreKey);
-			var topicStoreKey = store.parentStoreKeyExists(postStoreKey);
-			var topicID = store.idFor(topicStoreKey);
-			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
-			createRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/citations";			
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Author) {
-			var citationStoreKey = store.parentStoreKeyExists(storeKey);
-			var citationID = store.idFor(citationStoreKey);
-			var postStoreKey = store.parentStoreKeyExists(citationStoreKey);
-			var postID = store.idFor(postStoreKey);
-			var topicStoreKey = store.parentStoreKeyExists(postStoreKey);
-			var topicID = store.idFor(topicStoreKey);
-			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Citation)) {
+			
+			var postID = CinnamonDolceLatte.postController.get('content').get('id');
+			var topicID = CinnamonDolceLatte.topicController.get('content').get('id');
+			var disciplineID = CinnamonDolceLatte.disciplineController.get('content').get('id');
+			createRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/citations";
+			
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Author)) {
+			
+			var citationID = CinnamonDolceLatte.citationController.get('content').get('id');
+			var postID = CinnamonDolceLatte.postController.get('content').get('id');
+			var topicID = CinnamonDolceLatte.topicController.get('content').get('id');
+			var disciplineID = CinnamonDolceLatte.disciplineController.get('content').get('id');			
 			createRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/citations/" + citationID + "/authors";		
 		}
 		
@@ -158,53 +155,90 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
 		var updateRequestUrl = null;
 		
 		if (SC.kindOf(curRecordType, CinnamonDolceLatte.Discipline)) {
-			var disciplineID = store.idFor(storeKey);
+			
+			var disciplineID = this.extractID(store.idFor(storeKey));
+			
 			updateRequestUrl = "/CDL/disciplines/" + disciplineID;
+			console.log("case discipline url = " + updateRequestUrl);			
+			
 		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Topic)) {
+			
 			// the url should be /CDL/disciplines/disciplineid/topics
-			var topicID = store.idFor(storeKey);
-			var disciplineStoreKey = store.parentStoreKeyExists(storeKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			var topicID = this.extractID(store.idFor(storeKey));
+			
+			var disciplineStoreKey = store.parentStoreKeyExists(storeKey);			
+			var disciplineID = this.extractID(store.idFor(disciplineStoreKey));
+			
 			updateRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID;
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Post) {
-			var postID = store.idFor(storeKey);
+			console.log("case Topic url = " + updateRequestUrl);
+			
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Post)) {
+			
+			var postID = this.extractID(store.idFor(storeKey));
 			var topicStoreKey = store.parentStoreKeyExists(storeKey);
-			var topicID = store.idFor(topicStoreKey);
+			
+			var topicID = this.extractID(store.idFor(topicStoreKey));
 			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			
+			var disciplineID = this.extractID(store.idFor(disciplineStoreKey));
 			updateRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID;
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Comment) {
-			var commentID = store.idFor(storeKey);
-			var postStoreKey = store.parentStoreKeyExists(storeKey);
-			var postID = store.idFor(postStoreKey);
-			var topicStoreKey = store.parentStoreKeyExists(postStoreKey);
-			var topicID = store.idFor(topicStoreKey);
+			console.log("case Post url = " + updateRequestUrl);			
+			
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Comment)) {
+			
+			var commentID = this.extractID(store.idFor(storeKey));
+			
+			var postStoreKey = store.parentStoreKeyExists(storeKey);			
+			var postID = this.extractID(store.idFor(postStoreKey));
+			
+			var topicStoreKey = store.parentStoreKeyExists(postStoreKey);			
+			var topicID = this.extractID(store.idFor(topicStoreKey));
+			
 			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			var disciplineID = this.extractID(store.idFor(disciplineStoreKey));
+			
 			updateRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/comments/" + commentID;
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Citation) {
-			var citationID = store.idFor(storeKey);
+			console.log("case Comment url = " + updateRequestUrl);
+						
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Citation)) {
+			
+			var citationID = this.extractID(store.idFor(storeKey));
+			
 			var postStoreKey = store.parentStoreKeyExists(storeKey);
-			var postID = store.idFor(postStoreKey);
+			var postID = this.extractID(store.idFor(postStoreKey));
+			
 			var topicStoreKey = store.parentStoreKeyExists(postStoreKey);
-			var topicID = store.idFor(topicStoreKey);
+			var topicID = this.extractID(store.idFor(topicStoreKey));
+			
 			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			var disciplineID = this.extractID(store.idFor(disciplineStoreKey));
+			
 			updateRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/citations/" + citationID;			
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Author) {
-			var authorID = store.idFor(storeKey);
+			console.log("case Citation url = " + updateRequestUrl);
+						
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Author)) {
+			
+			var authorID = this.extractID(store.idFor(storeKey));
+			
 			var citationStoreKey = store.parentStoreKeyExists(storeKey);
-			var citationID = store.idFor(citationStoreKey);
+			var citationID = this.extractID(store.idFor(citationStoreKey));
+			
 			var postStoreKey = store.parentStoreKeyExists(citationStoreKey);
-			var postID = store.idFor(postStoreKey);
+			var postID = this.extractID(store.idFor(postStoreKey));
+			
 			var topicStoreKey = store.parentStoreKeyExists(postStoreKey);
-			var topicID = store.idFor(topicStoreKey);
+			var topicID = this.extractID(store.idFor(topicStoreKey));
+			
 			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			var disciplineID = this.extractID(store.idFor(disciplineStoreKey));
+			
 			updateRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/citations/" + citationID + "/authors/" + authorID;		
+			console.log("case Author url = " + updateRequestUrl);			
 		}
 		
+		
 		if (updateRequestUrl != null) {
+			console.log("final url = " + updateRequestUrl);
 			SC.Request.putUrl(updateRequestUrl).header({
 	                'Accept': 'application/json'
 	            }).json()
@@ -230,50 +264,79 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
 		var destroyRequestUrl = null;
 		
 		if (SC.kindOf(curRecordType, CinnamonDolceLatte.Discipline)) {
-			var disciplineID = store.idFor(storeKey);
+			
+			var disciplineID = this.extractID(store.idFor(storeKey));
 			destroyRequestUrl = "/CDL/disciplines/" + disciplineID;
+			
 		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Topic)) {
+			
 			// the url should be /CDL/disciplines/disciplineid/topics
-			var topicID = store.idFor(storeKey);
+			var topicID = this.extractID(store.idFor(storeKey));
+			
 			var disciplineStoreKey = store.parentStoreKeyExists(storeKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			var disciplineID = this.extractID(store.idFor(disciplineStoreKey));
+			
 			destroyRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID;
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Post) {
-			var postID = store.idFor(storeKey);
+			
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Post)) {
+			
+			var postID = this.extractID(store.idFor(storeKey));
+			
 			var topicStoreKey = store.parentStoreKeyExists(storeKey);
-			var topicID = store.idFor(topicStoreKey);
+			var topicID = this.extractID(store.idFor(topicStoreKey));
+			
 			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			var disciplineID = this.extractID(store.idFor(disciplineStoreKey));
+			
 			destroyRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID;
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Comment) {
-			var commentID = store.idFor(storeKey);
+			
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Comment)) {
+			
+			var commentID = this.extractID(store.idFor(storeKey));
+			
 			var postStoreKey = store.parentStoreKeyExists(storeKey);
-			var postID = store.idFor(postStoreKey);
+			var postID = this.extractID(store.idFor(postStoreKey));
+			
 			var topicStoreKey = store.parentStoreKeyExists(postStoreKey);
-			var topicID = store.idFor(topicStoreKey);
+			var topicID = this.extractID(store.idFor(topicStoreKey));
+			
 			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
+			var disciplineID = this.extractID(store.idFor(disciplineStoreKey));
+			
 			destroyRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/comments/" + commentID;
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Citation) {
-			var citationID = store.idFor(storeKey);
+			
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Citation)) {
+			
+			var citationID = this.extractID(store.idFor(storeKey));
+			
 			var postStoreKey = store.parentStoreKeyExists(storeKey);
-			var postID = store.idFor(postStoreKey);
+			var postID = this.extractID(store.idFor(postStoreKey));
+			
 			var topicStoreKey = store.parentStoreKeyExists(postStoreKey);
-			var topicID = store.idFor(topicStoreKey);
+			var topicID = this.extractID(store.idFor(topicStoreKey));
+			
 			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
-			destroyRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/citations/" + citationID;			
-		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Author) {
-			var authorID = store.idFor(storeKey);
+			var disciplineID = this.extractID(store.idFor(disciplineStoreKey));
+			
+			destroyRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/citations/" + citationID;
+						
+		} else if (SC.kindOf(curRecordType, CinnamonDolceLatte.Author)) {
+			
+			var authorID = this.extractID(store.idFor(storeKey));
+			
 			var citationStoreKey = store.parentStoreKeyExists(storeKey);
-			var citationID = store.idFor(citationStoreKey);
+			var citationID = this.extractID(store.idFor(citationStoreKey));
+			
 			var postStoreKey = store.parentStoreKeyExists(citationStoreKey);
-			var postID = store.idFor(postStoreKey);
+			var postID = this.extractID(store.idFor(postStoreKey));
+			
 			var topicStoreKey = store.parentStoreKeyExists(postStoreKey);
-			var topicID = store.idFor(topicStoreKey);
+			var topicID = this.extractID(store.idFor(topicStoreKey));
+			
 			var disciplineStoreKey = store.parentStoreKeyExists(topicStoreKey);
-			var disciplineID = store.idFor(disciplineStoreKey);
-			destroyRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/citations/" + citationID + "/authors/" + authorID;		
+			var disciplineID = this.extractID(store.idFor(disciplineStoreKey));
+			
+			destroyRequestUrl = "/CDL/disciplines/" + disciplineID + "/topics/" + topicID + "/posts/" + postID + "/citations/" + citationID + "/authors/" + authorID;			
 		}
 		
 		if (destroyRequestUrl != null) {
@@ -292,5 +355,18 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
 	  if (SC.ok(response)) {
 	    store.dataSourceDidDestroy(storeKey);
 	  } else store.dataSourceDidError(response);
+	},
+	
+	extractID: function(initialID) {
+		var finalID = null;
+		
+		var iDIndex = initialID.lastIndexOf('/');			
+		if (iDIndex === -1) {
+			finalID = initialID.toString();
+		} else {
+			finalID = initialID.substring(iDIndex);
+		}
+		
+		return finalID;
 	}
 }) ;

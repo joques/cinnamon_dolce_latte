@@ -7,19 +7,6 @@
 
 // sc_require("system/browser");
 
-SC.bundleDidLoad = function(bundle) {
-  var info = this.BUNDLE_INFO[bundle] ;
-  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
-  info.loaded = true ;
-};
-
-SC.bundleIsLoaded = function(bundle) {
-  var info = this.BUNDLE_INFO[bundle] ;
-  return info ? !!info.loaded : false ;
-};
-
-SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
-
 SC.setupBodyClassNames = function() {
   var el = document.body ;
   if (!el) return ;
@@ -41,8 +28,22 @@ SC.setupBodyClassNames = function() {
   if(shadows) classNames.push('box-shadow');
   if(borderRad) classNames.push('border-rad');
   classNames.push(browser) ;
+  if (browser === 'chrome') classNames.push('safari');
   classNames.push(platform) ;
-  if (parseInt(SC.browser.msie,0)==7) classNames.push('ie7') ;
+  
+  var ieVersion = parseInt(SC.browser.msie,10);
+  if (ieVersion) {
+    if (ieVersion === 7) {
+      classNames.push('ie7');
+    } 
+    else if (ieVersion === 8) {
+      classNames.push('ie8');
+    }
+    else if (ieVersion === 9) {
+      classNames.push('ie9');
+    }
+  }
+  
   if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
   if ('createTouch' in document) classNames.push('touch');
   el.className = classNames.join(' ') ;

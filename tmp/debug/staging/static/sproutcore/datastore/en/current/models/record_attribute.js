@@ -6,7 +6,6 @@
 // ==========================================================================
 
 sc_require('models/record');
-sc_require('models/child_record');
 
 /** @class
 
@@ -49,6 +48,12 @@ sc_require('models/child_record');
 */
 SC.RecordAttribute = SC.Object.extend(
   /** @scope SC.RecordAttribute.prototype */ {
+  /**
+    Walk like a duck.
+
+    @property {Boolean}
+  */
+  isRecordAttribute: YES,
 
   /**
     The default value.  If attribute is null or undefined, this default value
@@ -176,12 +181,41 @@ SC.RecordAttribute = SC.Object.extend(
   */
   toType: function(record, key, value) {
     var transform = this.get('transform'),
-        type      = this.get('typeClass');
+        type      = this.get('typeClass'),
+        children;
     
     if (transform && transform.to) {
       value = transform.to(value, this, type, record, key) ;
+      
+      // if the transform needs to do something when its children change, we need to set up an observer for it
+      if(!SC.none(value) && (children = transform.observesChildren)) {
+        var i, len = children.length,
+        // store the record, transform, and key so the observer knows where it was called from
+        context = {
+          record: record,
+          key: key
+        };
+        
+        for(i = 0; i < len; i++) value.addObserver(children[i], this, this._SCRA_childObserver, context);
+      }
     }
+    
     return value ;
+  },
+  
+  /**
+    @private
+    
+    Shared observer used by any attribute whose transform creates a seperate object that needs to write back to the datahash when it changes. For example, when enumerable content changes on a SC.Set attribute, it writes back automatically instead of forcing you to call .set manually.
+    This functionality can be used by setting an array named observesChildren on your transform containing the names of keys to observe.
+    When one of them triggers it will call childDidChange on your transform with the same arguments as to and from.
+  */
+  _SCRA_childObserver: function(obj, key, deprecated, context, rev) {
+    // write the new value back to the record
+    this.call(context.record, context.key, obj);
+    
+    // mark the attribute as dirty
+    context.record.notifyPropertyChange(context.key);
   },
 
   /** 
@@ -293,6 +327,23 @@ SC.RecordAttribute.transforms = {};
   | *to(value, attr, klass, record, key)* | converts the passed value (which will be of the class expected by the attribute) into the underlying attribute value |
   | *from(value, attr, klass, record, key)* | converts the underyling attribute value into a value of the class |
   
+  You can also provide an array of keys to observer on the return value. When any of these change, your from method will be called to write the changed object back to the record. For example:
+  
+  {{{
+  {
+    to: function(value, attr, type, record, key) {
+      if(value) return value.toSet();
+      else return SC.Set.create();
+    },
+  
+    from: function(value, attr, type, record, key) {
+      return value.toArray();
+    },
+  
+    observesChildren: ['[]']
+  }
+  }}}
+  
   @param {Object} klass the type of object you convert
   @param {Object} transform the transform object
   @returns {SC.RecordAttribute} receiver
@@ -346,7 +397,9 @@ SC.RecordAttribute.registerTransform(Array, {
       obj = [];
     }
     return obj;
-  }
+  },
+  
+  observesChildren: ['[]']
 });
 
 /** @private - generic converter for Object */
@@ -393,8 +446,10 @@ SC.RecordAttribute.registerTransform(Date, {
 
   /** @private - convert a string to a Date */
   to: function(str, attr) {
-    if (str === null)
-      return null;
+
+    // If a null or undefined value is passed, don't
+    // do any normalization.
+    if (SC.none(str)) { return str; }
 
     var ret ;
     str = str.toString() || '';
@@ -416,7 +471,7 @@ SC.RecordAttribute.registerTransform(Date, {
       if (d[12]) { date.setMilliseconds(Number("0." + d[12]) * 1000); }
       if (d[14]) {
          offset = (Number(d[16]) * 60) + Number(d[17]);
-         offset *= ((d[15] == '-') ? 1 : -1);
+         offset *= ((d[15] === '-') ? 1 : -1);
       }
 
       offset -= date.getTimezoneOffset();
@@ -436,6 +491,9 @@ SC.RecordAttribute.registerTransform(Date, {
   
   /** @private - convert a date to a string */
   from: function(date) { 
+
+    if (SC.none(date)) { return null; }
+
     var ret = this._dates[date.getTime()];
     if (ret) return ret ; 
     
@@ -492,3 +550,18 @@ if (SC.DateTime && !SC.RecordAttribute.transforms[SC.guidFor(SC.DateTime)]) {
   });
   
 }
+
+/**
+  Parses a coreset represented as an array.
+ */
+SC.RecordAttribute.registerTransform(SC.Set, {
+  to: function(value, attr, type, record, key) {
+    return SC.Set.create(value);
+  },
+  
+  from: function(value, attr, type, record, key) {
+    return value.toArray();
+  },
+  
+  observesChildren: ['[]']
+});

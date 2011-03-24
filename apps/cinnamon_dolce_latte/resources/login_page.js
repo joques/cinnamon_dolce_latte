@@ -7,7 +7,7 @@
 CinnamonDolceLatte.loginPage = SC.Page.design({
 	loginPane: SC.MainPane.design({
 		defaultResponder: 'CinnamonDolceLatte.statechart',
-		layout: {width: 460, height: 160, centerX: 0, centerY: 0},
+		layout: {width: 460, height: 160, centerX: 0, centerY: 0}, 
 		classNames: ['login-pane'],
 		childViews: 'boxView'.w(),
 		

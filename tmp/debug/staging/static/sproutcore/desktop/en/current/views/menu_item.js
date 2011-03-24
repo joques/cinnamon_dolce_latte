@@ -22,6 +22,14 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
 
   classNames: ['sc-menu-item'],
 
+  /**
+    The WAI-ARIA role for menu items. This property's value should not be
+    changed.
+
+    @property {String}
+  */
+  ariaRole: 'menuitem',
+
   escapeHTML: YES,
 
   /**
@@ -140,6 +148,16 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
         itemHeight = this.get('itemHeight') || SC.DEFAULT_MENU_ITEM_HEIGHT ;
     this.set('itemWidth',itemWidth);
     this.set('itemHeight',itemHeight);
+
+    //addressing accessibility
+    if(content.get(menu.itemSeparatorKey)){
+      //assign the role of separator
+      context.attr('role', 'separator');
+    } else if (this.getContentProperty('itemCheckboxKey')) {
+      //assign the role of menuitemcheckbox
+      context.attr('role', 'menuitemcheckbox');
+      context.attr('aria-checked', true);
+    }
 
     context = context.begin('a').addClass('menu-item');
 
@@ -298,9 +316,14 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     @returns {Boolean}
   */
   performAction: function() {
-    // Disabled menu items and menu items with submenus should not have
-    // actions.
-    if (!this.get('isEnabled')||this.get('hasSubMenu')) return NO;
+    // Clicking on a disabled menu item should close the menu.
+    if (!this.get('isEnabled')) {
+      this.getPath('parentMenu.rootMenu').remove();
+      return YES;
+    }
+
+    // Menus that contain submenus should ignore clicks
+    if (this.get('hasSubMenu')) return NO;
 
     var disableFlash = this.getContentProperty('itemDisableMenuFlashKey'),
         menu;

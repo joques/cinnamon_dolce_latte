@@ -26,20 +26,20 @@ CinnamonDolceLatte.topicArrayController = SC.ArrayController.create(
 	}.observes("searchKeyword"),
 	
 	addTopic: function(topics) {
-		var topic;
-		
-		topics.pushObject({
-			type: 'Topic',
+		var topic = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Topic, {
 			description: 'New Topic',
 			keywords: [],
 			posts: []
 		});
 		
+		topics.pushObject(topic);
+				
 		return YES;
 	},
 	
 	deleteTopic: function(topic, topicCol) {
 		topicCol.removeObject(topic);
+		CinnamonDolceLatte.store.destroyRecord(CinnamonDolceLatte.Topic, topic.get('id')) ;
 	},
 	
 	localSearch: function() {

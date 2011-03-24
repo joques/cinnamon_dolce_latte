@@ -12,7 +12,5 @@
 */
 CinnamonDolceLatte.disciplineController = SC.ObjectController.create(
 /** @scope CinnamonDolceLatte.disciplineController.prototype */ {
-
-  // TODO: Add your own code here.
-
+	contentBinding: SC.Binding.single('CinnamonDolceLatte.disciplineArrayController.selection')
 }) ;

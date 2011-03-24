@@ -63,6 +63,38 @@ SC.RadioView = SC.View.extend(SC.Control,
   classNames: ['sc-radio-view'],
 
   /**
+    The WAI-ARIA role for a group of radio buttons. This property's value
+    should not be changed.
+
+    @property {String}
+  */
+  ariaRole: 'radiogroup',
+
+  /**
+  If items property is a hash, specify which property will function as
+  the ariaLabeledBy with this itemAriaLabeledByKey property.ariaLabeledBy is used
+  as the WAI-ARIA attribute for the radio view. This property is assigned to
+  'aria-labelledby' attribute, which defines a string value that labels the
+  element. Used to support voiceover.  It should be assigned a non-empty string,
+  if the 'aria-labelledby' attribute has to be set for the element.
+
+    @property {String}
+  */
+  itemAriaLabeledByKey: null,
+
+  /**
+    If items property is a hash, specify which property will function as
+    the ariaLabeled with this itemAriaLabelKey property.ariaLabel is used
+    as the WAI-ARIA attribute for the radio view. This property is assigned to
+    'aria-label' attribute, which defines a string value that labels the
+    element. Used to support voiceover.  It should be assigned a non-empty string,
+    if the 'aria-label' attribute has to be set for the element.
+
+    @property {String}
+  */
+  itemAriaLabelKey: null,
+
+  /**
     The value of the currently selected item, and which will be checked in the 
     UI. This can be either a string or an array with strings for checking 
     multiple values.
@@ -141,7 +173,7 @@ SC.RadioView = SC.View.extend(SC.Control,
     // Force regeneration of buttons
     this._renderAsFirstTime = YES;
   
-    this.notifyPropertyChange('_displayItems');
+    this.notifyPropertyChange('displayItems');
   },
 
   // ..........................................................
@@ -150,108 +182,16 @@ SC.RadioView = SC.View.extend(SC.Control,
   /** 
     The display properties for radio buttons are the value and _displayItems.
   */
-  displayProperties: ['value', '_displayItems'],
+  displayProperties: ['displayItems', 'isEnabled', 'layoutDirection'],
+  renderDelegateName: 'radioGroupRenderDelegate',
 
-  render: function(context, firstTime) {
-    var items = this.get('_displayItems'),
-        value = this.get('value'),
-        isArray = SC.isArray(value),
-        item, idx, icon, name, width, itemsLength, url,
-        className, disabled, sel, labelText,
-        selectionState, selectionStateClassNames;
-
-    context.addClass(this.get('layoutDirection'));
-
-    // isArray is set only when there are two active checkboxes 
-    // which can only happen with mixed state
-    if (isArray && value.length <= 0) {
-      value = value[0];
-      isArray = NO;
-    }
-
-    // if necessary, regenerate the radio buttons
-    if (this._renderAsFirstTime) {
-      firstTime = YES;
-      this._renderAsFirstTime = NO;
-    }
-
-    if (firstTime) {
-      context.attr('role', 'radiogroup');
-      // generate tags from this.
-      name = SC.guidFor(this); // name for this group
-      itemsLength = items.length;
-      for (idx = 0; idx < itemsLength; idx++) {
-        item = items[idx];
-
-        // get the icon from the item, if one exists...
-        icon = item[3];
-        if (icon) {
-          url = (icon.indexOf('/') >= 0) ? icon: SC.BLANK_IMAGE_URL;
-          className = (url === icon) ? '': icon;
-          icon = '<img src="' + url + '" class="icon ' + className + '" alt="" />';
-        } else icon = '';
-
-        if (item) {
-          sel = (isArray) ? (value.indexOf(item[1]) >= 0) : (value === item[1]);
-        } else {
-          sel = NO;
-        }
-        selectionStateClassNames = this._getSelectionStateClassNames(item, sel, value, isArray, false);
-
-        labelText = this.escapeHTML ? SC.RenderContext.escapeHTML(item[0]) : item[0];
-        
-        width = item[4];
-        
-        context.push('<div class="sc-radio-button ',
-                    selectionStateClassNames, '" ',
-                    width ? 'style="width: ' + width + 'px;" ' : '',
-                    'aria-checked="', sel ? 'true':'false','" ',
-                    'role="radio"' , ' index="', idx,'">',
-                    '<span class="button"></span>',
-                    '<span class="sc-button-label">', 
-                    icon, labelText, '</span></div>');
-      }
-
-    } else {
-      // update the selection state on all of the DOM elements.  The options are
-      // sel or mixed.  These are used to display the proper setting...
-      this.$('.sc-radio-button').forEach(function(button) {
-
-        button = this.$(button);
-        idx = parseInt(button.attr('index'), 0);
-        item = (idx >= 0) ? items[idx] : null;
-
-        if (item) {
-          sel = (isArray) ? (value.indexOf(item[1]) >= 0) : (value === item[1]);
-        } else {
-          sel = NO;
-        }
-        
-        width = item[4];
-        if (width) button.width(width);
-        
-        selectionState = this._getSelectionStateClassNames(item, sel, value, isArray, true);
-        button.attr('aria-checked', sel ? 'true': 'false');
-        // set class of label
-        button.setClass(selectionState);
-
-        // avoid memory leaks
-        idx = selectionState = null;
-      },
-      this);
-    }
-  },
-
-  /** @private - 
-    Will iterate the items property to return an array with items that is 
-    indexed in the following structure:
-      [0] => Title (or label)
-      [1] => Value
-      [2] => Enabled (YES default)
-      [3] => Icon (image URL)
+  /** @private
+    Data Sources for radioRenderDelegates, as required by radioGroupRenderDelegate.
   */
-  _displayItems: function() {
-    var items = this.get('items'), 
+  displayItems: function() {
+    var items = this.get('items'),
+        viewValue = this.get('value'),
+        isArray = SC.isArray(viewValue),
         loc = this.get('localize'),
         titleKey = this.get('itemTitleKey'),
         valueKey = this.get('itemValueKey'),
@@ -259,8 +199,11 @@ SC.RadioView = SC.View.extend(SC.Control,
         isHorizontal = this.get('layoutDirection') === SC.LAYOUT_HORIZONTAL,
         isEnabledKey = this.get('itemIsEnabledKey'), 
         iconKey = this.get('itemIconKey'),
-        ret = [], max = (items)? items.get('length') : 0,
-        item, title, width, value, idx, isArray, isEnabled, icon;
+        ariaLabeledByKey = this.get('itemAriaLabeledByKey'),
+        ariaLabelKey = this.get('itemAriaLabelKey'),
+        ret = this._displayItems || [], max = (items)? items.get('length') : 0,
+        item, title, width, value, idx, isEnabled, icon, sel, active,
+        ariaLabeledBy, ariaLabel;
     
     for(idx=0;idx<max;idx++) {
       item = items.objectAt(idx); 
@@ -294,50 +237,54 @@ SC.RadioView = SC.View.extend(SC.Control,
           icon = item.get ? item.get(iconKey) : item[iconKey];
         } else icon = null;
 
+        if (ariaLabeledByKey) {
+          ariaLabeledBy = item.get ? item.get(ariaLabeledByKey) : item[ariaLabeledByKey];
+        } else ariaLabeledBy = null;
+
+        if (ariaLabelKey) {
+          ariaLabel = item.get ? item.get(ariaLabelKey) : item[ariaLabelKey];
+        } else ariaLabel = null;
+
         // if item is nil, use somedefaults...
       } else {
         title = value = icon = null;
         isEnabled = NO;
       }
+      
+      if (item) {
+        sel = (isArray) ? (viewValue.indexOf(value) >= 0) : (viewValue === value);
+      } else {
+        sel = NO;
+      }
 
       // localize title if needed
       if (loc) title = title.loc();
-      ret.push([title, value, isEnabled, icon, width]);
+      ret.push(SC.Object.create({
+        title: title,
+        icon: icon,
+        width: width,
+        value: value,
+        
+        isEnabled: isEnabled,
+        isSelected: (isArray && viewValue.indexOf(value) >= 0 && viewValue.length === 1) || (viewValue === value),
+        isMixed: (isArray && viewValue.indexOf(value) >= 0),
+        isActive: this._activeRadioButton === idx,
+        ariaLabeledBy: ariaLabeledBy,
+        ariaLabel: ariaLabel,
+        theme: this.get('theme'),
+        renderState: {}
+      }));
     }
 
     return ret; // done!
-  }.property('items', 'itemTitleKey', 'itemWidthKey', 'itemValueKey', 'itemIsEnabledKey', 'localize', 'itemIconKey').cacheable(),
+  }.property('value', 'items', 'itemTitleKey', 'itemWidthKey', 'itemValueKey', 'itemIsEnabledKey', 'localize', 'itemIconKey','itemAriaLabeledByKey', 'itemAriaLabelKey').cacheable(),
 
-  /** @private - 
-    Will figure out what class names to assign each radio button.
-    This method can be invoked either as part of render() either when:
-    1. firstTime is set and we need to assign the class names as a string
-    2. we already have the DOM rendered but we just need to update class names
-       assigned to the the input field parent
-  */
-  _getSelectionStateClassNames: function(item, sel, value, isArray, shouldReturnObject) {
-    var classNames, key;
 
-    // now set class names
-    classNames = {
-      sel: (sel && !isArray),
-      mixed: (sel && isArray),
-      disabled: (!item[2])
-    };
-
-    if (shouldReturnObject) {
-      return classNames;
-    } else {
-      // convert object values to string
-      var classNameArray = [];
-      for (key in classNames) {
-        if (!classNames.hasOwnProperty(key)) continue;
-        if (classNames[key]) classNameArray.push(key);
-      }
-      return classNameArray.join(" ");
-    }
-  },
-
+  acceptsFirstResponder: function() {
+    if(!SC.SAFARI_FOCUS_BEHAVIOR) return this.get('isEnabled');
+    else return NO;
+  }.property('isEnabled'),
+  
   /**
     If the user clicks on of the items mark it as active on mouseDown unless
     is disabled.
@@ -347,17 +294,17 @@ SC.RadioView = SC.View.extend(SC.Control,
   */
   mouseDown: function(evt) {
     if (!this.get('isEnabled')) return YES;
-    var target = evt.target;
-    while (target) {
-      if (target.className && target.className.indexOf('sc-radio-button') > -1) break;
-      target = target.parentNode;
+    
+    var delegate = this.get('renderDelegate'), proxy = this.get('renderDelegateProxy');
+    var index = delegate.indexForEvent(proxy, this.$(), evt);
+    
+    this._activeRadioButton = index;
+    
+    if (index !== undefined) {
+      this.get('displayItems')[index].set('isActive', YES);
+      delegate.updateRadioAtIndex(proxy, this.$(), index);
     }
-    if (!target) return NO;
-
-    target = this.$(target);
-    if (target.hasClass('disabled')) return YES;
-    target.addClass('active');
-    this._activeRadioButton = target;
+    
     // even if radiobuttons are not set to get firstResponder, allow default 
     // action, that way textfields loose focus as expected.
     evt.allowDefault();
@@ -371,27 +318,23 @@ SC.RadioView = SC.View.extend(SC.Control,
   */
   mouseUp: function(evt) {
     if (!this.get('isEnabled')) return YES;
-    var active = this._activeRadioButton,
-    target = evt.target,
-    items = this.get('_displayItems'),
-    index,
-    item;
 
-    if (active) {
-      active.removeClass('active');
-      this._activeRadioButton = null;
-    } else return YES;
-
-    while (target) {
-      if (target.className && target.className.indexOf('sc-radio-button') > -1) break;
-      target = target.parentNode;
+    var delegate = this.get('renderDelegate'), proxy = this.get('renderDelegateProxy'),
+        displayItems = this.get('displayItems');
+    var index = delegate.indexForEvent(proxy, this.$(), evt);
+    
+    if (this._activeRadioButton !== undefined && index !== this._activeRadioButton) {
+      displayItems[this._activeRadioButton].set('isActive', NO);
+      delegate.updateRadioAtIndex(proxy, this.$(), this._activeRadioButton);
     }
-    target = this.$(target);
-    if (target[0] !== active[0] || target.hasClass('disabled')) return YES;
-
-    index = parseInt(target.attr('index'), 0);
-    item = items[index];
-    this.set('value', item[1]);
+    
+    this._activeRadioButton = undefined;
+    
+    if (index !== undefined) {
+      displayItems[index].set('isActive', NO);
+      delegate.updateRadioAtIndex(proxy, this.$(), index);
+      this.set('value', displayItems[index].value);
+    }
   },
 
   touchStart: function(evt) {

@@ -11,10 +11,8 @@
   @extends SC.Record
   @version 0.1
 */
-CinnamonDolceLatte.Comment = SC.ChildRecord.extend(
+CinnamonDolceLatte.Comment = SC.Record.extend(
 /** @scope CinnamonDolceLatte.Comment.prototype */ {
-	
-		childRecordNamespace: CinnamonDolceLatte,
 		comment: SC.Record.attr(String, {isRequired: YES}),
 		commentator: SC.Record.attr(String, {isRequired: YES}),
 		date_created: SC.Record.attr(SC.DateTime),

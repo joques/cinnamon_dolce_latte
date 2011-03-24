@@ -14,12 +14,8 @@ CinnamonDolceLatte.disciplineArrayController = SC.ArrayController.create(
 /** @scope CinnamonDolceLatte.disciplineArrayController.prototype */ {
 	
 	addDiscipline: function() {
-		// Normally, I should make sure that the guid is unique
-		var discipline;
-		
-		discipline = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Discipline, {
-			name: "New Discipline",
-			topics: []
+		var discipline = CinnamonDolceLatte.store.createRecord(CinnamonDolceLatte.Discipline, {
+			name: "New Discipline"
 		});
 		
 		return YES;

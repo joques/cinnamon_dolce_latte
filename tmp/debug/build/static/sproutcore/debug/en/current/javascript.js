@@ -7,7 +7,7 @@
 // ==========================================================================
 
 // test
-var SC = SC || {} ;
+window.SC = window.SC || {};
 
 // Note:  We won't use SC.T_* here because those constants might not yet be
 //        defined.
@@ -15,7 +15,7 @@ SC._mapDisplayNamesUseHashForSeenTypes = ['object', 'number', 'boolean', 'array'
 
 
 SC.mapDisplayNames = function(obj, level, path, seenHash, seenArray) {
-  if (!SC.browser.safari) return ;
+  if (!SC.browser.webkit) return ;
 
   // Lazily instantiate the hash of types we'll use a hash for the "have we
   // seen this before?" structure.  (Some types are not safe to put in a hash
@@ -114,6 +114,8 @@ SC.mapDisplayNames = function(obj, level, path, seenHash, seenArray) {
 };
 
 
+/* >>>>>>>>>> BEGIN __sc_chance.js */
+
 /* >>>>>>>>>> BEGIN source/invoke_once_last_debugging.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
@@ -126,7 +128,7 @@ SC.mapDisplayNames = function(obj, level, path, seenHash, seenArray) {
 // invokeOnce and invokeLast) to record which code scheduled the
 // invokeOnce/invokeLast targets/methods.
 
-var SC = SC || {} ;
+window.SC = window.SC || {};
 
 
 // Declaring the variable will make it easier for people who want to enter it
@@ -135,6 +137,7 @@ if (!SC.LOG_RUNLOOP_INVOCATIONS) SC.LOG_RUNLOOP_INVOCATIONS = false;
 
 
 SC.addInvokeOnceLastDebuggingInfo = function() {
+  return;
   
   SC.ObserverSet.add = function(target, method, context, originatingTarget, originatingMethod, originatingStack) {
     var targetGuid = (target) ? SC.guidFor(target) : "__this__";
@@ -152,12 +155,10 @@ SC.addInvokeOnceLastDebuggingInfo = function() {
     // context is really useful sometimes but not used that often so this
     // implementation is intentionally lazy.
     if (context !== undefined) {
-      if (!methods.contexts) methods.contexts = {} ;
-      methods.contexts[SC.guidFor(method)] = context ;
+      var contexts = methods.contexts || (methods.contexts = {}) ;
+      contexts[SC.guidFor(method)] = context ;
     }
-
-    this._membersCacheIsValid = NO ;
-
+    
     // THIS IS THE PORTION THAT DIFFERS FROM THE STANDARD IMPLEMENTATION
     
     // Recording the calling object/function can be a useful debugging tool.
@@ -218,7 +219,7 @@ SC.addInvokeOnceLastDebuggingInfo = function() {
               // If we didn't capture information for this invocation, just
               // report what we can.  (We assume we'll always have all three
               // hashes or none.)
-              console.log("Invoking runloop-scheduled method %@ on %@, but we didn’t capture information about who scheduled it…".fmt(mName, target));
+              SC.Logger.log("Invoking runloop-scheduled method %@ on %@, but we didn’t capture information about who scheduled it…".fmt(mName, target));
             }
             else {
               originatingTargets = originatingTargets[originatingKey];             // Could be one target or an array of them
@@ -229,7 +230,7 @@ SC.addInvokeOnceLastDebuggingInfo = function() {
               // scheduled this target/method?  If so, display them all nicely.
               // Otherwise, optimize our output for only one.
               if (originatingMethods  &&  SC.typeOf(originatingMethods) === SC.T_ARRAY) {
-                console.log("Invoking runloop-scheduled method %@ on %@, which was scheduled by multiple target/method pairs:".fmt(mName, target));
+                SC.Logger.log("Invoking runloop-scheduled method %@ on %@, which was scheduled by multiple target/method pairs:".fmt(mName, target));
               
                 var i, len,
                   originatingTarget,
@@ -241,13 +242,13 @@ SC.addInvokeOnceLastDebuggingInfo = function() {
                   originatingMethod = originatingMethod.displayName || originatingMethod;
                   originatingStack  = originatingStacks[i];
   
-                  console.log("[%@]  originated by target %@,  method %@,  stack:".fmt(i, originatingTarget, originatingMethod), originatingStack);
+                  SC.Logger.log("[%@]  originated by target %@,  method %@,  stack:".fmt(i, originatingTarget, originatingMethod), originatingStack);
                 }
               }
               else {
                 var originatingMethodName = originatingMethods.displayName || originatingMethods;
 
-                console.log("Invoking runloop-scheduled method %@ on %@.  Originated by target %@,  method %@,  stack: ".fmt(mName, target, originatingTargets, originatingMethodName), originatingStacks);
+                SC.Logger.log("Invoking runloop-scheduled method %@ on %@.  Originated by target %@,  method %@,  stack: ".fmt(mName, target, originatingTargets, originatingMethodName), originatingStacks);
               }
             }
           }
@@ -376,5 +377,3 @@ SC.addInvokeOnceLastDebuggingInfo = function() {
   
 };
 
-/* >>>>>>>>>> BEGIN bundle_loaded.js */
-; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/debug');

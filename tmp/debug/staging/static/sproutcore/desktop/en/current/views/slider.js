@@ -24,14 +24,15 @@ SC.SliderView = SC.View.extend(SC.Control,
 /** @scope SC.SliderView.prototype */ {
   
   classNames: 'sc-slider-view',
-  
-  /** 
-    The DOM element that displays the handle.  This element will have its
-    top-left corner updated to reflect the current state of the slider.  Use
-    margin-offsets to properly position your handle over this location.
+
+  /**
+    The WAI-ARIA role for slider view. This property's value should not be
+    changed.
+
+    @property {String}
   */
-  handleSelector: 'img.sc-handle',
-  
+  ariaRole: 'slider',
+
   /**
     Bind this to the current value of the progress bar.  Note that by default 
     an empty value will disable the progress bar and a multiple value too make 
@@ -81,11 +82,13 @@ SC.SliderView = SC.View.extend(SC.Control,
   // INTERNAL PROPERTIES
   // 
   
-  displayProperties: 'value minimum maximum'.w(),
+  displayProperties: 'displayValue minimum maximum step frame'.w(),
+
+  // The name of the render delegate which is creating and maintaining
+  // the DOM associated with instances of this view
+  renderDelegateName: 'sliderRenderDelegate',
   
-  render: function(context, firstTime) {
-    arguments.callee.base.apply(this,arguments);
-    
+  displayValue: function() {
     var min = this.get('minimum'),
         max = this.get('maximum'),
         value = this.get('value'),
@@ -102,20 +105,8 @@ SC.SliderView = SC.View.extend(SC.Control,
     // determine the percent across
     if(value!==0) value = Math.floor((value - min) / (max - min) * 100);
     
-    if(firstTime) {
-      var blankImage = SC.BLANK_IMAGE_URL;
-      context.push('<span class="sc-inner">',
-                    '<span class="sc-leftcap"></span>',
-                    '<span class="sc-rightcap"></span>',
-                    '<img src="', blankImage, 
-                    '" class="sc-handle" style="left: ', value, '%" />',
-                    '</span>');
-    }
-    else {
-      this.$(this.get('handleSelector')).css('left', value + "%");
-    }
-    
-  },
+    return value;
+  }.property('value', 'minimum', 'maximum', 'step').cacheable(),
   
   _isMouseDown: NO,
   
@@ -123,7 +114,7 @@ SC.SliderView = SC.View.extend(SC.Control,
     if (!this.get('isEnabled')) return YES; // nothing to do...
     this.set('isActive', YES);
     this._isMouseDown = YES ;
-    return this._triggerHandle(evt, true);
+    return this._triggerHandle(evt, YES);
   },
   
   // mouseDragged uses same technique as mouseDown.
@@ -170,7 +161,7 @@ SC.SliderView = SC.View.extend(SC.Control,
   */
   _triggerHandle: function(evt, firstEvent) {
     var width = this.get('frame').width,
-        min = this.get('minimum'), max=this.get('maximum'),  
+        min = this.get('minimum'), max=this.get('maximum'),
         step = this.get('step'), v=this.get('value'), loc;
         
     if(firstEvent){    
@@ -180,19 +171,33 @@ SC.SliderView = SC.View.extend(SC.Control,
       loc = evt.pageX-this._evtDiff;
     }
     
-    // constrain loc to 8px on either side (left to allow knob overhang)
-    loc = Math.max(Math.min(loc,width-8), 8) - 8;
-    width -= 16 ; // reduce by margin
-    
     // convert to percentage
-    loc = loc / width ;
+    loc = Math.max(0, Math.min(loc / width, 1));
     
+    // if the location is NOT in the general vicinity of the slider, we assume
+    // that the mouse pointer or touch is in the center of where the knob should be.
+    // otherwise, if we are starting, we need to do extra to add an offset
+    if (firstEvent) {
+      var value = this.get("value");
+      value = (value - min) / (max - min);
+      
+      // if the value and the loc are within 16px
+      if (Math.abs(value * width - loc * width) < 16) this._offset = value - loc;
+      else this._offset = 0;
+    }
+    
+    // add offset and constrain
+    loc = Math.max(0, Math.min(loc + this._offset, 1));
+
     // convert to value using minimum/maximum then constrain to steps
     loc = min + ((max-min)*loc);
     if (step !== 0) loc = Math.round(loc / step) * step ;
-
+    
     // if changes by more than a rounding amount, set v.
-    if (Math.abs(v-loc)>=0.01) this.set('value', loc); // adjust 
+    if (Math.abs(v-loc)>=0.01) {
+      this.set('value', loc); // adjust 
+    }
+    
     return YES ;
   },
   
@@ -208,7 +213,7 @@ SC.SliderView = SC.View.extend(SC.Control,
       this._isFocused = YES ;
       this.becomeFirstResponder();
       if (this.get('isVisibleInWindow')) {
-        this.$()[0].focus();
+        this.$().focus();
       }
     }
   },
@@ -220,7 +225,7 @@ SC.SliderView = SC.View.extend(SC.Control,
   keyDown: function(evt) {
 
      // handle tab key
-     if (evt.which === 9) {
+     if (evt.which === 9 || evt.keyCode === 9) {
        var view = evt.shiftKey ? this.get('previousValidKeyView') : this.get('nextValidKeyView');
        if(view) view.becomeFirstResponder();
        else evt.allowDefault(); 
