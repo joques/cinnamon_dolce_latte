@@ -1,11 +1,10 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            portions copyright @2009 Apple Inc.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
-
-/*global test */
+/*global test Q$ */
 
 // TODO: IMPROVE CODE QUALITY.  This code was put together quickly in order to
 // test the SproutCore framework.  It does not match up to the project's 
@@ -17,22 +16,20 @@
   You can use this class in test mode to easily create a palette with views
   configured in different ways.
   
-  h1. Example
+  # Example
   
-  {{{
-    var pane = SC.ControlTestPane.design()
-      .add('basic', SC.CheckboxView.design({ title: "Hello World" }))
-      .add('disabled', SC.CheckboxView.design({
-        title: "Hello World", isEnabled: NO
-      }));
+      var pane = SC.ControlTestPane.design()
+        .add('basic', SC.CheckboxView.design({ title: "Hello World" }))
+        .add('disabled', SC.CheckboxView.design({
+          title: "Hello World", isEnabled: NO
+        }));
       
-    module("CheckboxView UI", pane);
+      module("CheckboxView UI", pane);
     
-    test("basic", function() {
-      var view = pane.view('basic');
-      ok(view.get('isEnabled'), 'should be enabled');
-    });
-  }}}
+      test("basic", function() {
+        var view = pane.view('basic');
+        ok(view.get('isEnabled'), 'should be enabled');
+      });
   
   @extends SC.Pane
   @since SproutCore 1.0
@@ -46,19 +43,28 @@ SC.ControlTestPane = SC.Pane.extend(
   /**
     The starting top location for the first row.  This will increment as 
     views are added to the pane.
+    
+    @type Number
+    @default 0
   */
-  top:       0,
+  top: 0,
   
   /**
     The default height of each row.  This will be used for a view unless you
     manually specify a height in the view's layout.
+    
+    @type Number
+    @default 20
   */
-  height:    20,
+  height: 20,
   
   /**
     The default padding added to the edges and between each row.
+    
+    @type Number
+    @default 4
   */
-  padding:   4,
+  padding: 4,
 
   /**
     Retrieves the test sample view that was added with the passed key name.
@@ -72,6 +78,7 @@ SC.ControlTestPane = SC.Pane.extend(
     return this.childViews[idx].childViews[0]; 
   },
   
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
     if (!this._views) this._views = {};
@@ -169,6 +176,9 @@ SC.ControlTestPane.standardSetup = function() {
 /**
   Convenience method.  Returns the view with the given name on the current
   pane instance if there is one.
+  
+  @param {String} keyName the key used to register the view.
+  @returns {SC.View} view instance
 */
 SC.ControlTestPane.view = function(viewKey) {
   var pane = this._pane || this._showPane ;

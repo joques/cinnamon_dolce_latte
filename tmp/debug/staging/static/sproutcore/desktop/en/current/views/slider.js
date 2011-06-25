@@ -1,7 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -82,7 +82,15 @@ SC.SliderView = SC.View.extend(SC.Control,
   // INTERNAL PROPERTIES
   // 
   
-  displayProperties: 'displayValue minimum maximum step frame'.w(),
+  displayProperties: ['displayValue', 'ariaValue', 'minimum', 'maximum', 'step', 'frame'],
+
+  /**
+   @property
+   The raw, unchanged value to be provided to screen readers and the like.
+  */
+  ariaValue: function() {
+    return this.get('value');
+  }.property('value').cacheable(),
 
   // The name of the render delegate which is creating and maintaining
   // the DOM associated with instances of this view
@@ -203,8 +211,8 @@ SC.SliderView = SC.View.extend(SC.Control,
   
   /** tied to the isEnabled state */
   acceptsFirstResponder: function() {
-    if(!SC.SAFARI_FOCUS_BEHAVIOR) return this.get('isEnabled');
-    else return NO;
+    if (SC.FOCUS_ALL_CONTROLS) { return this.get('isEnabled'); }
+    return NO;
   }.property('isEnabled'),
   
   willBecomeKeyResponderFrom: function(keyView) {

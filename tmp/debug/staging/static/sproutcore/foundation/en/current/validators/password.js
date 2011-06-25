@@ -1,7 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -51,7 +51,7 @@ SC.Validator.Password = SC.Validator.extend(
   // update field states
   updateFields: function(form,valid) {
     if (!this.fields || this.fields.length === 0) return true ;
-    var err = "Invalid.Password".loc();
+    var err = SC.String.loc("Invalid.Password");
     var topField = this._field ;
     this.fields.forEach(function(f) {
       var msg = (valid) ? null : ((f == topField) ? err : '') ;

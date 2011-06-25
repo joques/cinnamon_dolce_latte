@@ -48,6 +48,7 @@ CinnamonDolceLatte.DisciplineDataSource = SC.DataSource.extend(
 			// In case you use local queries
 	    store.loadRecords(CinnamonDolceLatte.Discipline, response.get('body'));
 	    store.dataSourceDidFetchQuery(query);
+			console.log(response.get('body'));
 	
 			// Alternatively, this is how to handle the remote queries 
 	   // var storeKeys = store.loadRecords(CinnamonDolceLatte.Discipline, response.get('body'));

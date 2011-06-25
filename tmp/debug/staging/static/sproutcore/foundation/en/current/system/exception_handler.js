@@ -1,11 +1,13 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 /**
+  @namespace
+
   If an exception is thrown during execution of your SproutCore app, this
   object will be given the opportunity to handle it.
 
@@ -20,9 +22,9 @@
 
   @since SproutCore 1.5
 */
-
 SC.ExceptionHandler = {
 
+  /** @private */
   enabled: (SC.buildMode !== 'debug'),
 
   /**
@@ -82,7 +84,8 @@ SC.ExceptionHandler = {
   /**
     YES if an exception was thrown and the error dialog is visible.
 
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   isShowingErrorDialog: NO
 };

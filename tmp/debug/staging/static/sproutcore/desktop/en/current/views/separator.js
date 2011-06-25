@@ -1,8 +1,10 @@
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 
 /**
   @class
@@ -16,21 +18,35 @@
 SC.SeparatorView = SC.View.extend(
 /** @scope SC.SeparatorView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-separator-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-separator-view'],
+  
+  /**
+    @type String
+    @default 'span'
+    @see SC.View#tagName
+  */
   tagName: 'span',
 
   /** 
-    Select the direction of the separator line.  Must be one of SC.LAYOUT_VERTICAL or SC.LAYOUT_HORIZONTAL.
+    Select the direction of the separator line. Possible values:
     
-    @property {String}
+      - SC.LAYOUT_VERTICAL
+      - SC.LAYOUT_HORIZONTAL
+    
+    @type String
+    @default SC.LAYOUT_HORIZONTAL
   */
   layoutDirection: SC.LAYOUT_HORIZONTAL,
 
+  /** @private */
   render: function(context, firstTime) {
     if(firstTime) context.push('<span></span>');
-	  context.addClass(this.get('layoutDirection'));
+    context.addClass(this.get('layoutDirection'));
   }
-
-
 
 });

@@ -1,9 +1,11 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+sc_require('system/string');
 
 SC.VALIDATE_OK = YES;
 SC.VALIDATE_NO_CHANGE = NO;
@@ -116,7 +118,7 @@ SC.Validator = SC.Object.extend(
   */
   validateError: function(form, field) { 
     return SC.$error(
-      "Invalid.General(%@)".loc(field.get('fieldValue')),
+      SC.String.loc("Invalid.General(%@)", field.get('fieldValue')),
       field.get('fieldKey')) ; 
   },
 
@@ -279,7 +281,7 @@ SC.Validator.mixin(/** @scope SC.Validator */ {
       }
       
       // convert the validatorKey name into a class.
-      validatorKey = validatorKey.classify() ;
+      validatorKey = SC.String.classify(validatorKey);
       var validatorClass = SC.Validator[validatorKey] ;
       if (SC.none(validatorClass)) {
         throw "validator %@ not found for %@".fmt(validatorKey, field) ;

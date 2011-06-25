@@ -1,7 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -18,57 +18,65 @@
   to "checkbox", the way the checkbox renders (including DOM) will actually
   be different than SC.ButtonView's.
   
-  @extends SC.FieldView
+  @extends SC.ButtonView
   @since SproutCore 1.0
 */
-SC.CheckboxView = SC.ButtonView.extend(SC.StaticLayout, SC.Button,
-  /** @scope SC.CheckboxView.prototype */ {
+SC.CheckboxView = SC.ButtonView.extend(SC.StaticLayout,
+/** @scope SC.CheckboxView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-checkbox-view', 'sc-checkbox-control']
+    @see SC.View#classNames
+  */
   classNames: ['sc-checkbox-view', 'sc-checkbox-control'],
+
+  /**
+    @type String
+    @default 'label'
+    @see SC.View#tagName
+  */
   tagName: 'label',
 
   /**
-    The WAI-ARIA role of checkbox. This property's value should not be
-    changed.
+    The WAI-ARIA role of checkbox.
 
-    @property {String}
+    @type String
+    @readOnly
   */
   ariaRole: 'checkbox',
 
-  /**
-    The WAI-ARIA attribute for the checkbox. This property is assigned to
-    'aria-labelledby' attribute, which defines a string value that labels the
-    checkbox element. Used to support voiceover.It should be assigned a non-empty
-    string, if the 'aria-labelledby' attribute has to be set for the element.
-
-    @property {String}
-  */
-  ariaLabeledBy: null,
-
-  /**
-    The WAI-ARIA attribute for the checkbox. This property is assigned to
-    'aria-label' attribute, which defines a string value that labels the
-    checkbox element. Used to support voiceover. It is used when it is not
-    possible to have a visible label on the screen. It should be assigned a non-empty
-    string, if the 'aria-label' attribute has to be set for the element.
-
-    @property {String}
-  */
-  ariaLabel: null,
-
   // no special theme for Checkbox; button defaults to 'square', so we have to stop that.
   themeName: null,
+  
+  /**
+    @type String
+    @default 'checkboxRenderDelegate'
+  */
   renderDelegateName: 'checkboxRenderDelegate',
 
-  /* Ellipsis is disabled by default to allow multiline text */
+  /**
+    Ellipsis is disabled by default to allow multiline text
+    
+    @type Boolean
+    @default NO
+  */
   needsEllipsis: NO,
   
+  /**
+    YES if `isEnabled` is YES, NO otherwise
+    
+    @type Boolean
+    @default NO
+    @observes isEnabled
+  */
   acceptsFirstResponder: function() {
-    if(!SC.SAFARI_FOCUS_BEHAVIOR) return this.get('isEnabled');
-    else return NO;
+    if (SC.FOCUS_ALL_CONTROLS) { return this.get('isEnabled'); }
+    return NO;
   }.property('isEnabled'),
   
   
+  /** @private */
   mouseDown: function(evt) {
     if(!this.get('isEnabled')) return YES;
     this.set('isActive', YES);
@@ -79,12 +87,12 @@ SC.CheckboxView = SC.ButtonView.extend(SC.StaticLayout, SC.Button,
     return YES;
   },
   
+  /** @private */
   mouseUp: function(evt) {
     this.set('isActive', NO);
     this._isMouseDown = NO;
 
-    if(!this.get('isEnabled') || 
-      (evt && evt.target && !this.$().within(evt.target))) {
+    if(!this.get('isEnabled')) {
       return YES;
     }
     var val = this.get('value');
@@ -99,10 +107,12 @@ SC.CheckboxView = SC.ButtonView.extend(SC.StaticLayout, SC.Button,
   },
   
   
+  /** @private */
   touchStart: function(evt) {
     return this.mouseDown(evt);
   },
   
+  /** @private */
   touchEnd: function(evt) {
     return this.mouseUp(evt);
   }

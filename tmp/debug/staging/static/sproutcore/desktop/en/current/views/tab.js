@@ -1,14 +1,31 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 sc_require('views/segmented');
 
+/**
+  @static
+  @type String
+  @constant
+*/
 SC.TOP_LOCATION = 'top';
+
+/**
+  @static
+  @type String
+  @constant
+*/
 SC.TOP_TOOLBAR_LOCATION = 'top-toolbar';
+
+/**
+  @static
+  @type String
+  @constant
+*/
 SC.BOTTOM_LOCATION = 'bottom';
 
 /** 
@@ -24,8 +41,18 @@ SC.BOTTOM_LOCATION = 'bottom';
 SC.TabView = SC.View.extend(
 /** @scope SC.TabView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-tab-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-tab-view'],
   
+  /**
+    @type Array
+    @default ['nowShowing']
+    @see SC.View#displayProperties
+  */
   displayProperties: ['nowShowing'],
 
   // ..........................................................
@@ -34,27 +61,85 @@ SC.TabView = SC.View.extend(
 
  /** 
     Set nowShowing with the page you want to display.
+    
+    @type String
+    @default null
   */
   nowShowing: null,
   
+  /**
+    @type Array
+    @default []
+  */
   items: [],
   
+  /**
+    @type Boolean
+    @default YES
+  */
   isEnabled: YES,
   
+  /**
+    @type String
+    @default null
+  */
   itemTitleKey: null,
+  
+  /**
+    @type String
+    @default null
+  */
   itemValueKey: null,
+  
+  /**
+    @type String
+    @default null
+  */
   itemIsEnabledKey: null,
+  
+  /**
+    @type String
+    @default null
+  */
   itemIconKey: null,
+  
+  /**
+    @type String
+    @default null
+  */
   itemWidthKey: null,
+  
+  /**
+    @type String
+    @default null
+  */
   itemToolTipKey: null,
+  
+  /**
+    @type Number
+    @default SC.REGULAR_BUTTON_HEIGHT
+  */
   tabHeight: SC.REGULAR_BUTTON_HEIGHT,
   
+  /**
+    Possible values:
+    
+      - SC.TOP_LOCATION
+      - SC.TOP_TOOLBAR_LOCATION
+      - SC.BOTTOM_LOCATION
+    
+    @type String
+    @default SC.TOP_LOCATION
+  */
   tabLocation: SC.TOP_LOCATION,
   
   /** 
     If set, then the tab location will be automatically saved in the user
     defaults.  Browsers that support localStorage will automatically store
     this information locally.
+    
+    @type String
+    @default null
   */
   userDefaultKey: null,
   
@@ -64,6 +149,7 @@ SC.TabView = SC.View.extend(
   // 
   
   // forward important changes on to child views
+  /** @private */
   _tab_nowShowingDidChange: function() {
     var v = this.get('nowShowing');
     this.get('containerView').set('nowShowing',v);
@@ -71,6 +157,7 @@ SC.TabView = SC.View.extend(
     return this ;
   }.observes('nowShowing'),
 
+  /** @private */
   _tab_saveUserDefault: function() {
     // if user default is set, save also
     var v = this.get('nowShowing');
@@ -80,6 +167,7 @@ SC.TabView = SC.View.extend(
     }
   }.observes('nowShowing'),
   
+  /** @private */
   _tab_itemsDidChange: function() {
     this.get('segmentedView').set('items', this.get('items'));
     return this ;    
@@ -93,6 +181,7 @@ SC.TabView = SC.View.extend(
     this._tab_nowShowingDidChange()._tab_itemsDidChange();
   },
 
+  /** @private */
   awake: function() {
     arguments.callee.base.apply(this,arguments);  
     var defaultKey = this.get('userDefaultKey');
@@ -104,20 +193,22 @@ SC.TabView = SC.View.extend(
 
   },
   
+  /** @private */
   createChildViews: function() {
     var childViews  = [], view, containerView, layout,
         tabLocation = this.get('tabLocation'),
         tabHeight   = this.get('tabHeight');
-    
-    layout = (tabLocation === SC.TOP_LOCATION) ?
-             { top: tabHeight/2+1, left: 0, right: 0, bottom: 0 } :
-             (tabLocation === SC.TOP_TOOLBAR_LOCATION) ?
-             { top: tabHeight+1, left: 0, right: 0, bottom: 0 } :
-             { top: 0, left: 0, right: 0, bottom: tabHeight-1 } ;
-    
-    containerView = this.containerView.extend(SC.Border, {
+
+    if (tabLocation === SC.TOP_LOCATION) {
+      layout = { top: tabHeight/2+1, left: 0, right: 0, bottom: 0, border: 1 };
+    } else if (tabLocation === SC.TOP_TOOLBAR_LOCATION) {
+      layout = { top: tabHeight+1, left: 0, right: 0, bottom: 0, border: 1 };
+    } else {
+      layout = { top: 0, left: 0, right: 0, bottom: (tabHeight/2) - 1, border: 1 };
+    }
+
+    containerView = this.containerView.extend({
       layout: layout,
-      borderStyle: SC.BORDER_BLACK,
       //adding the role
       ariaRole: 'tabpanel'
     });
@@ -150,6 +241,7 @@ SC.TabView = SC.View.extend(
         this.invokeOnce(this.updateLayerIfNeeded) ;
       }.observes('value'),
 
+      /** @private */
       init: function() {
         // before we setup the rest of the view, copy key config properties 
         // from the owner view...
@@ -176,11 +268,19 @@ SC.TabView = SC.View.extend(
     The containerView managed by this tab view.  Note that TabView uses a 
     custom container view.  You can access this view but you cannot change 
     it.
+    
+    @type SC.View
+    @default SC.ContainerView
+    @readOnly
   */
   containerView: SC.ContainerView.extend({ renderDelegateName: 'wellRenderDelegate' }),
   
+  /**
+    @type SC.View
+    @default SC.SegmentedView
+  */
   segmentedView: SC.SegmentedView
   
 }) ;
 
-SC._TAB_ITEM_KEYS = 'itemTitleKey itemValueKey itemIsEnabledKey itemIconKey itemWidthKey itemToolTipKey itemActionKey itemTargetKey'.w();
+SC._TAB_ITEM_KEYS = ['itemTitleKey', 'itemValueKey', 'itemIsEnabledKey', 'itemIconKey', 'itemWidthKey', 'itemToolTipKey', 'itemActionKey', 'itemTargetKey'];

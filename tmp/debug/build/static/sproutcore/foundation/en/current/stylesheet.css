@@ -1,5 +1,5 @@
 /* SC.Benchmark */
-/* line 4, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 4, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-pane {
   -webkit-box-shadow: 0px 0px 5px black;
   background: white;
@@ -7,28 +7,28 @@
   z-index: 10000;
 }
 
-/* line 11, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 11, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-pane .sc-scroll-view {
   border: 1px solid #ddd;
 }
 
-/* line 16, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 16, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-graph {
   width: 100%;
   height: 100%;
 }
 
-/* line 22, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 22, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-label-view.sc-regular-size.sc-benchmark-title {
   font-size: 16px;
 }
 
-/* line 27, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 27, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-emphasis {
   font-weight: bold;
 }
 
-/* line 32, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 32, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-top {
   height: 20px;
   left: 0px;
@@ -44,7 +44,7 @@
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
 }
 
-/* line 48, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 48, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-tick {
   width: 1px;
   height: 2000px;
@@ -53,7 +53,7 @@
   background-color: #ccc;
 }
 
-/* line 57, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 57, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-tick-label {
   width: 40px;
   position: absolute;
@@ -63,7 +63,7 @@
   white-space: nowrap;
 }
 
-/* line 67, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 67, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-bar {
   height: 16px;
   position: absolute;
@@ -81,7 +81,7 @@
   z-index: 2;
 }
 
-/* line 86, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 86, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-row {
   position: absolute;
   left: 0px;
@@ -89,7 +89,7 @@
   height: 30px;
 }
 
-/* line 94, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 94, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-row.even {
   background-color: #ddd;
   opacity: 0.4;
@@ -98,19 +98,19 @@
   -moz-opacity: 0.4;
 }
 
-/* line 103, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 103, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .no-min-width {
   min-width: 20px !important;
 }
 
-/* line 107, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 107, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-event {
   position: absolute;
   z-index: 1;
   width: 2px;
 }
 
-/* line 113, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 113, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-event:hover {
   -webkit-border-radius: 5px;
   border: 2px solid white;
@@ -118,48 +118,48 @@
   background-color: red;
 }
 
-/* line 120, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 120, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-event.idx0 {
   background: blue;
 }
 
-/* line 124, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 124, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-event.idx1 {
   background: red;
 }
 
-/* line 128, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 128, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-event.idx2 {
   background: green;
 }
 
-/* line 132, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 132, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-event.idx3 {
   background: orange;
 }
 
-/* line 136, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 136, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-event.idx4 {
   background: purple;
 }
 
-/* line 140, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 140, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-event.idx5 {
   background: #ee82ee;
 }
 
-/* line 144, ././tmp/chance/5f044a2f37114993979e5316dc158653.scss */
+/* line 144, ././tmp/chance/79cd8ba32032d149a2bbca9e9d82f143.scss */
 .sc-benchmark-event.idx6 {
   background: #800000;
 }
 
 /* SC.ButtonView */
-/* line 4, ././tmp/chance/58f96ef58ccf43810e8f64c4b8d0307c.scss */
+/* line 4, ././tmp/chance/5658992eeb11f2c5ba4527b6dbece851.scss */
 .sc-button-view.sc-static-layout {
   margin: 0 4px;
 }
 
-/* line 8, ././tmp/chance/58f96ef58ccf43810e8f64c4b8d0307c.scss */
+/* line 8, ././tmp/chance/5658992eeb11f2c5ba4527b6dbece851.scss */
 .sc-button-view {
   display: inline-block;
   vertical-align: middle;
@@ -169,7 +169,7 @@
   -moz-border-radius: 3px;
 }
 
-/* line 17, ././tmp/chance/58f96ef58ccf43810e8f64c4b8d0307c.scss */
+/* line 17, ././tmp/chance/5658992eeb11f2c5ba4527b6dbece851.scss */
 .sc-button-view .sc-button-inner {
   position: relative;
   display: block;
@@ -177,7 +177,7 @@
   text-align: center;
 }
 
-/* line 24, ././tmp/chance/58f96ef58ccf43810e8f64c4b8d0307c.scss */
+/* line 24, ././tmp/chance/5658992eeb11f2c5ba4527b6dbece851.scss */
 .sc-button-view label {
   position: relative;
   display: block;
@@ -185,7 +185,7 @@
   text-align: center;
 }
 
-/* line 31, ././tmp/chance/58f96ef58ccf43810e8f64c4b8d0307c.scss */
+/* line 31, ././tmp/chance/5658992eeb11f2c5ba4527b6dbece851.scss */
 .sc-button-view img {
   vertical-align: middle;
   margin-right: 2px;
@@ -194,24 +194,31 @@
   left: -2px;
 }
 
-/* line 39, ././tmp/chance/58f96ef58ccf43810e8f64c4b8d0307c.scss */
+/* line 39, ././tmp/chance/5658992eeb11f2c5ba4527b6dbece851.scss */
 .ie7 .sc-button-view {
   display: inline;
 }
 
-/* line 2, ././tmp/chance/37483d0276b012590606fe2d59cc59fd.scss */
+/* line 2, ././tmp/chance/1f17567099c3c2de719c6cda17037d66.scss */
+.sc-button-view.sc-checkbox-view img {
+  margin-right: 4px;
+  top: -1px;
+  left: 0;
+}
+
+/* line 2, ././tmp/chance/9e759a4edf7f093dbfd95b815c0ca7de.scss */
 .sc-view.sc-control-test-pane {
   border: 1px #888 solid;
   overflow-y: auto;
   background: white;
 }
 
-/* line 8, ././tmp/chance/37483d0276b012590606fe2d59cc59fd.scss */
+/* line 8, ././tmp/chance/9e759a4edf7f093dbfd95b815c0ca7de.scss */
 .sc-view.sc-control-test-pane .sc-view.wrapper {
   border: 1px #ccc solid;
 }
 
-/* line 5, ././tmp/chance/54519c04358f1d018ded1561952e82fb.scss */
+/* line 5, ././tmp/chance/5ba2b9dadbe0a99ba7cc0834c90394a0.scss */
 .mozilla .sc-view .sc-text-field-view.inline-editor .border,
 .webkit .sc-view .sc-text-field-view.inline-editor .border,
 .msie .sc-view .sc-text-field-view.inline-editor .border,
@@ -221,49 +228,55 @@
   border: none;
 }
 
-/* line 11, ././tmp/chance/54519c04358f1d018ded1561952e82fb.scss */
+/* line 11, ././tmp/chance/5ba2b9dadbe0a99ba7cc0834c90394a0.scss */
 .mozilla .sc-view .sc-text-field-view.inline-editor.focus {
   outline-offset: 0px;
 }
 
 /* SC.LabelView */
-/* line 4, ././tmp/chance/e744caceded7ff74da1ac72b7864a899.scss */
+/* line 4, ././tmp/chance/1beedd06f1020616575d32ed4587b668.scss */
+.sc-label-view {
+  font-weight: normal;
+  text-align: left;
+}
+
+/* line 9, ././tmp/chance/1beedd06f1020616575d32ed4587b668.scss */
 .sc-label-view.sc-large-size {
   font-size: 18px;
   line-height: 24px;
 }
 
-/* line 9, ././tmp/chance/e744caceded7ff74da1ac72b7864a899.scss */
+/* line 14, ././tmp/chance/1beedd06f1020616575d32ed4587b668.scss */
 .sc-label-view.sc-regular-size {
   font-size: 12px;
   line-height: 19px;
 }
 
-/* line 14, ././tmp/chance/e744caceded7ff74da1ac72b7864a899.scss */
+/* line 19, ././tmp/chance/1beedd06f1020616575d32ed4587b668.scss */
 .sc-label-view.sc-small-size {
   font-size: 11px;
   line-height: 14px;
 }
 
-/* line 19, ././tmp/chance/e744caceded7ff74da1ac72b7864a899.scss */
+/* line 24, ././tmp/chance/1beedd06f1020616575d32ed4587b668.scss */
 .sc-label-view.sc-tiny-size {
   font-size: 9px;
   line-height: 12px;
 }
 
-/* line 24, ././tmp/chance/e744caceded7ff74da1ac72b7864a899.scss */
+/* line 29, ././tmp/chance/1beedd06f1020616575d32ed4587b668.scss */
 .sc-label-view.disabled {
   color: #999;
   color: rgba(50, 50, 50, 0.5);
 }
 
-/* line 29, ././tmp/chance/e744caceded7ff74da1ac72b7864a899.scss */
+/* line 34, ././tmp/chance/1beedd06f1020616575d32ed4587b668.scss */
 .sc-label-view img.icon {
   position: relative;
   vertical-align: middle;
 }
 
-/* line 34, ././tmp/chance/e744caceded7ff74da1ac72b7864a899.scss */
+/* line 39, ././tmp/chance/1beedd06f1020616575d32ed4587b668.scss */
 .sc-label-view .sc-hint {
   position: absolute;
   top: 3px;
@@ -275,14 +288,24 @@
   font-size: 12px;
 }
 
+/* line 2, ././tmp/chance/1f56f83a0b6c87006f34b5618834fd54.scss */
+.sc-button-label {
+  vertical-align: top;
+}
+
+/* line 6, ././tmp/chance/1f56f83a0b6c87006f34b5618834fd54.scss */
+.sc-button-label img {
+  margin-right: 4px;
+}
+
 /* SC.StaticLayout Support */
-/* line 4, ././tmp/chance/b5a626e9417466575dab4b1352ff3dc6.scss */
+/* line 4, ././tmp/chance/efb771f41a4abe118ef770e78e8964ee.scss */
 .sc-static-layout, .sc-view.sc-static-layout {
   position: relative;
 }
 
 /* Common SC.TextFieldView styles - needed to work properly */
-/* line 4, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 4, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-view .sc-text-field-view {
   border: none;
   z-index: 100;
@@ -290,13 +313,13 @@
   background: white;
 }
 
-/* line 12, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 12, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .safari .sc-view .sc-text-field-view.focus {
   outline: auto 7px -webkit-focus-ring-color;
   outline-offset: -2px;
 }
 
-/* line 17, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 17, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .mozilla .sc-view .sc-text-field-view.focus {
   outline-color: -moz-mac-focusring;
   outline-offset: -5px;
@@ -304,12 +327,12 @@
   outline-width: 3px;
 }
 
-/* line 24, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 24, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .msie .sc-view .sc-text-field-view.focus {
   outline: 1px dotted;
 }
 
-/* line 28, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 28, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-text-field-view .border {
   position: absolute;
   top: 0px;
@@ -318,22 +341,22 @@
   right: 0px;
 }
 
-/* line 38, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 38, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .mozilla .sc-view .sc-text-field-view .border {
   -moz-appearance: textfield;
 }
 
-/* line 42, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 42, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .msie .sc-view .sc-text-field-view .border {
   border: 1px inset;
 }
 
-/* line 46, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 46, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .safari .sc-text-field-view .border {
   -webkit-appearance: textfield;
 }
 
-/* line 52, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 52, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-view .sc-text-field-view .padding {
   top: 0px;
   left: 3px;
@@ -342,17 +365,17 @@
   position: absolute;
 }
 
-/* line 60, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 60, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-view .sc-text-field-view.text-area .padding {
   right: 0px;
 }
 
-/* line 65, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 65, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-view .sc-text-field-view .sc-text-field-accessory-view {
   z-index: 2;
 }
 
-/* line 69, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 69, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-text-field-view input {
   position: absolute;
   top: 0px;
@@ -367,26 +390,26 @@
   vertical-align: middle;
 }
 
-/* line 83, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 83, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-text-field-view input {
   border: none;
   outline: none;
   -webkit-appearance: none;
 }
 
-/* line 89, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 89, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .msie .sc-text-field-view input.field {
   padding-bottom: 1px;
 }
 
-/* line 93, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 93, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-text-field-view textarea {
   border: none;
   outline: none;
   -webkit-appearance: none;
 }
 
-/* line 100, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 100, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-text-field-view textarea {
   position: absolute;
   top: 0px;
@@ -401,13 +424,13 @@
   overflow: auto;
 }
 
-/* line 115, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 115, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .msie .sc-text-field-view textarea.field,
 .mozilla .sc-text-field-view textarea.field {
   height: 100%;
 }
 
-/* line 120, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 120, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-text-field-view .sc-hint {
   z-index: 1;
   position: absolute;
@@ -420,7 +443,7 @@
   font-size: 12px;
 }
 
-/* line 132, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 132, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-text-field-view.text-area .sc-hint {
   top: 2px;
   left: 3px;
@@ -428,13 +451,14 @@
   bottom: 2px;
 }
 
-/* line 140, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 140, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-text-field-view.focus .sc-hint,
 .sc-text-field-view.not-empty .sc-hint {
   display: none;
 }
 
-/* line 144, ././tmp/chance/532550fef5a37cf89c61e2e429facb7c.scss */
+/* line 144, ././tmp/chance/dc7f389e86ad3885d7d9974162a26f57.scss */
 .sc-text-field-view.sc-hint .field {
   color: #B3B3B3 !important;
 }
+

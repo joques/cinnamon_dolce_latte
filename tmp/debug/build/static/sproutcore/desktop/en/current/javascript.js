@@ -18,7 +18,7 @@ SC.stringsFor('English', {
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -29,28 +29,78 @@ SC.stringsFor('English', {
   
   Usually it is best to leave this property set to NO in order to prever the
   user from inadvertantly losing data by pressing the backspace key.
-  
-  @property {Boolean}
+
+  @static
+  @type Boolean
+  @default NO
 */
 SC.allowsBackspaceToPreviousPage = NO;
 
+/**
+  @type String
+  @static
+  @constant
+*/
+SC.HORIZONTAL_ORIENTATION = 'horizontal';
+
+/**
+  @type String
+  @static
+  @constant
+*/
+SC.VERTICAL_ORIENTATION = 'vertical' ;
+
 /* >>>>>>>>>> BEGIN __sc_chance.js */
 if (typeof CHANCE_SLICES === 'undefined') var CHANCE_SLICES = [];CHANCE_SLICES = CHANCE_SLICES.concat([]);
-/* >>>>>>>>>> BEGIN source/system/drag.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
 
-SC.DRAG_LINK = 0x0004; SC.DRAG_COPY = 0x0001; SC.DRAG_MOVE = 0x0002;
-SC.DRAG_NONE = 0x0000; SC.DRAG_ANY = 0x000F; SC.DRAG_DATA = 0x0008; // includes SC.DRAG_REORDER
+/* >>>>>>>>>> BEGIN source/system/drag.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
+
+/**
+  @static
+*/
+SC.DRAG_LINK = 0x0004;
+
+/**
+  @static
+*/
+SC.DRAG_COPY = 0x0001;
+
+/**
+  @static
+*/
+SC.DRAG_MOVE = 0x0002;
+
+/**
+  @static
+*/
+SC.DRAG_NONE = 0x0000;
+
+/**
+  @static
+*/
+SC.DRAG_ANY = 0x000F;
+
+/**
+  @static
+*/
+SC.DRAG_DATA = 0x0008; // includes SC.DRAG_REORDER
+
+/**
+  @static
+*/
 SC.DRAG_AUTOSCROLL_ZONE_THICKNESS = 20;
 
-// Add draggable and scrollable support to SC.View
 SC.View.reopen(
   /** @scope SC.View.prototype */ {
 
+  /** @private */
   init: function(original) {
     original();
 
@@ -61,6 +111,7 @@ SC.View.reopen(
     if (this.get('isScrollable')) { SC.Drag.addScrollableView(this) ; }
   }.enhance(),
 
+  /** @private */
   destroy: function(original) {
     // unregister for drags
     if (this.get('isDropTarget')) { SC.Drag.removeDropTarget(this) ; }
@@ -80,45 +131,45 @@ SC.View.reopen(
   user releases the mouse button. 
   
   To initiate a drag, you should call SC.Drag.start() with the options below
-  specified in a hash. Pass the ones you need to get the drag you want:  
+  specified in a hash. Pass the ones you need to get the drag you want:
   
-  - *event: (req)* The mouse event/touch that triggered the drag.  This will be used
-    to position the element.
+    - *event: (req)* The mouse event/touch that triggered the drag.  This will be used
+      to position the element.
   
-  - *source: (req)* The drag source object that should be consulted during 
-    the drag operations. This is usually the container view that initiated 
-    the drag.
+    - *source: (req)* The drag source object that should be consulted during 
+      the drag operations. This is usually the container view that initiated 
+      the drag.
   
-  - *dragView: *  Optional view that will be used as the source image for the
-    drag. The drag operation will clone the DOM elements for this view and
-    parent them under the drag pane, which has the class name 'sc-ghost-view'.
-    The drag view is not moved from its original location during a drag.
-    If the dragView is not provided, the source is used as dragView.
+    - *dragView:*  Optional view that will be used as the source image for the
+      drag. The drag operation will clone the DOM elements for this view and
+      parent them under the drag pane, which has the class name 'sc-ghost-view'.
+      The drag view is not moved from its original location during a drag.
+      If the dragView is not provided, the source is used as dragView.
   
-  - *ghost:  YES | NO*  If NO, the drag view image will show, but the source 
-    dragView will not be hidden.  Set to YES to make it appear that the 
-    dragView itself is being dragged around.
+    - *ghost:  YES | NO*  If NO, the drag view image will show, but the source 
+      dragView will not be hidden.  Set to YES to make it appear that the 
+      dragView itself is being dragged around.
   
-  - *slideBack: YES | NO*  If YES and the drag operation is cancelled, the 
-    dragView will slide back to its source origin.
+    - *slideBack: YES | NO*  If YES and the drag operation is cancelled, the 
+      dragView will slide back to its source origin.
   
-  - *origin:*  If passed, this will be used as the origin point for the 
-    ghostView when it slides back.  You normally do not need to pass this 
-    unless the ghost view does not appear in the main UI.
+    - *origin:*  If passed, this will be used as the origin point for the 
+      ghostView when it slides back.  You normally do not need to pass this 
+      unless the ghost view does not appear in the main UI.
   
-  - *data:* Optional hash of data types and values.  You can use this to pass 
-    a static set of data instead of providing a dataSource.  If you provide
-    a dataSource, it will be used instead.
+    - *data:* Optional hash of data types and values.  You can use this to pass 
+      a static set of data instead of providing a dataSource.  If you provide
+      a dataSource, it will be used instead.
   
-  - *dataSource:*  Optional object that will provide the data for the drag to 
-    be consumed by the drop target.  If you do not pass this parameter or the 
-    data hash, then the source object will be used if it implements the 
-    SC.DragDataSource protocol.
+    - *dataSource:*  Optional object that will provide the data for the drag to 
+      be consumed by the drop target.  If you do not pass this parameter or the 
+      data hash, then the source object will be used if it implements the 
+      SC.DragDataSource protocol.
   
-  - *anchorView:* if you pass this optional view, then the drag will only be 
-    allowed to happen within this view.  The ghostView will actually be added 
-    as a child of this view during the drag.  Normally the anchorView is the 
-    window.
+    - *anchorView:* if you pass this optional view, then the drag will only be 
+      allowed to happen within this view.  The ghostView will actually be added 
+      as a child of this view during the drag.  Normally the anchorView is the 
+      window.
   
   @extends SC.Object
 */
@@ -152,7 +203,7 @@ SC.Drag = SC.Object.extend(
   ghostActsLikeCursor: NO,
   
   /**  
-    The view that was used as the source of the ghostView.  
+    The view that was used as the source of the ghostView.
     
     The drag view is not moved from its original location during a drag.
     Instead, the DOM content of the view is cloned and managed by the 
@@ -227,7 +278,7 @@ SC.Drag = SC.Object.extend(
     on your dragEntered() and prepareForDragOperation() methods to determine 
     if you can handle any of the data types offered up by the drag source.
     
-    @property {Array} available data types
+    @type Array
   */
   dataTypes: function() {
     // first try to use the data source.
@@ -254,7 +305,7 @@ SC.Drag = SC.Object.extend(
   /**
     Checks for a named data type in the drag.
     
-    @param dataType {String} the data type
+    @param {String} dataType the data type
     @returns {Boolean} YES if data type is present in dataTypes array.
   */
   hasDataType: function(dataType) {
@@ -383,8 +434,15 @@ SC.Drag = SC.Object.extend(
 	    if (evt.makeTouchResponder) {
 	      // Should use invokeLater if I can figure it out
 	      var self = this;
-	      SC.Timer.schedule({ target: evt, action: function(){ if (!evt.hasEnded) evt.makeTouchResponder(self, YES); }, interval: 1 });
-	    } else {
+	      SC.Timer.schedule({ 
+	        target: evt, 
+	        action: function() { 
+	          if (!evt.hasEnded) evt.makeTouchResponder(self, YES);
+	        }, 
+	        interval: 1
+	      });
+	    } 
+	    else {
 	      // notify root responder that a drag is in process
 	      this.ghostView.rootResponder.dragDidStart(this, evt) ;
 	    }
@@ -395,6 +453,7 @@ SC.Drag = SC.Object.extend(
     
     // let all drop targets know that a drag has started
     var ary = this._dropTargets() ;
+    
     for (var idx=0, len=ary.length; idx<len; idx++) {
       ary[idx].tryToPerform('dragStarted', this, evt) ;
     }
@@ -435,6 +494,7 @@ SC.Drag = SC.Object.extend(
   // PRIVATE PROPERTIES AND METHODS
   //
 
+  /** @private */
   touchStart: function(evt) {
     return YES;
   },
@@ -568,6 +628,7 @@ SC.Drag = SC.Object.extend(
     this._dragInProgress = NO ; // required by autoscroll (invoked by a timer)
   },
 
+  /** @private */
   touchEnd: function(evt){
     this.mouseUp(evt);
   },
@@ -623,16 +684,15 @@ SC.Drag = SC.Object.extend(
     loc.y -= this.ghostOffset.y ;
     var gV = this.ghostView;
     if(gV) {
-      gV.adjust({ top: loc.y, left: loc.x }) ;   
+      gV.adjust({ top: loc.y, left: loc.x }) ;
       gV.invokeOnce('updateLayout') ;
     }
   },
   
-  /**
+  /** @private
     YES if the ghostView has been manually hidden.
     
-    @private 
-    @type {Boolean}
+    @type Boolean
     @default NO
   */
   _ghostViewHidden: NO,
@@ -975,7 +1035,7 @@ SC.Drag.mixin(
     @param {SC.View} target a view implementing the SC.DropTarget protocol
   */
   addDropTarget: function(target) {
-    this._dropTargets[SC.guidFor(target)] = target ;
+    this._dropTargets[SC.guidFor(target)] = target;
   },
   
   /**
@@ -987,7 +1047,7 @@ SC.Drag.mixin(
     @param {SC.View} target A previously registered drop target
   */
   removeDropTarget: function(target) {
-    delete this._dropTargets[SC.guidFor(target)] ;
+    delete this._dropTargets[SC.guidFor(target)];
   },
   
   /**
@@ -997,7 +1057,7 @@ SC.Drag.mixin(
     @param {SC.View} target The view that should be auto-scrolled
   */
   addScrollableView: function(target) {
-    this._scrollableViews[SC.guidFor(target)] = target ;  
+    this._scrollableViews[SC.guidFor(target)] = target;
   },
   
   /**
@@ -1007,19 +1067,20 @@ SC.Drag.mixin(
     @param {SC.View} target A previously registered scrollable view
   */
   removeScrollableView: function(target) {
-    delete this._scrollableViews[SC.guidFor(target)] ;  
+    delete this._scrollableViews[SC.guidFor(target)];
   }
   
 });
 
 /* >>>>>>>>>> BEGIN source/debug/drag.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
 
-require('system/drag') ;
+sc_require('system/drag') ;
 
 SC.Drag.mixin(
 /** @scope SC.Drag */ {
@@ -1054,12 +1115,15 @@ SC.Drag.mixin(
   }
 
 });
+
 /* >>>>>>>>>> BEGIN source/mixins/border.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 
 SC.BORDER_BEZEL  = 'sc-bezel-border';
 SC.BORDER_BLACK  = 'sc-black-border';
@@ -1070,6 +1134,10 @@ SC.BORDER_NONE   = null ;
 
 /**
   @namespace
+  @deprecated
+
+  The SC.Border mixin has be deprecated in favour of applying border properties
+  to an SC.View's layout object. See {@link SC.View#layout}.
 
   The Border mixin can be applied to any view to give it a visual border.
   In addition to specifying the mixin itself, you should specify the border
@@ -1083,20 +1151,21 @@ SC.BORDER_NONE   = null ;
 
   SproutCore pre-defines several useful border styles including:
 
-- SC.BORDER_BEZEL  - displays an inlaid bezel
-- SC.BORDER_BLACK  - displays a black border
-- SC.BORDER_GRAY   - displays a gray border
-- SC.BORDER_TOP    - displays a border on the top only
-- SC.BORDER_BOTTOM - displays a border on the bottom only
-- SC.BORDER_NONE   - disables the border
+    - SC.BORDER_BEZEL  - displays an inlaid bezel
+    - SC.BORDER_BLACK  - displays a black border
+    - SC.BORDER_GRAY   - displays a gray border
+    - SC.BORDER_TOP    - displays a border on the top only
+    - SC.BORDER_BOTTOM - displays a border on the bottom only
+    - SC.BORDER_NONE   - disables the border
 
   @since SproutCore 1.0
 */
 SC.Border = {
+
   /**
     The thickness of the top border.
 
-    @property {Number}
+    @type Number
     @commonTask Border Dimensions
   */
   borderTop: 0,
@@ -1104,7 +1173,7 @@ SC.Border = {
   /**
     The thickness of the right border.
 
-    @property {Number}
+    @type Number
     @commonTask Border Dimensions
   */
   borderRight: 0,
@@ -1112,7 +1181,7 @@ SC.Border = {
   /**
     The thickness of the bottom border.
 
-    @property {Number}
+    @type Number
     @commonTask Border Dimensions
   */
   borderBottom: 0,
@@ -1120,7 +1189,7 @@ SC.Border = {
   /**
     The thickness of the left border.
 
-    @property {Number}
+    @type Number
     @commonTask Border Dimensions
   */
   borderLeft: 0,
@@ -1128,12 +1197,13 @@ SC.Border = {
   /**
     The style of the border. You may specify a color string (like 'red' or
     '#fff'), a CSS class name, or one of:
-- SC.BORDER_BEZEL
-- SC.BORDER_BLACK
-- SC.BORDER_GRAY
-- SC.BORDER_TOP
-- SC.BORDER_BOTTOM
-- SC.BORDER_NONE
+
+      - SC.BORDER_BEZEL
+      - SC.BORDER_BLACK
+      - SC.BORDER_GRAY
+      - SC.BORDER_TOP
+      - SC.BORDER_BOTTOM
+      - SC.BORDER_NONE
 
     If you specify a CSS class name, it must end in "-border".
   */
@@ -1187,6 +1257,7 @@ SC.Border = {
     }
   },
 
+  /** @private */
   _sc_border_borderDimensionsDidChange: function(){
     var borderTop     = this.get('borderTop'),
         borderRight   = this.get('borderRight'),
@@ -1208,11 +1279,21 @@ SC.mixin(SC.Border, {
 });
 
 /* >>>>>>>>>> BEGIN source/mixins/collection_fast_path.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 /** 
+  @namespace
+  
   An experimental CollectionView mixin that makes it extremely fast under
   certain circumstances, including for mobile devices.
 */
 SC.CollectionFastPath = {
+
   //
   // ITEM VIEW CLASS/INSTANCE MANAGEMENT
   //
@@ -1224,6 +1305,8 @@ SC.CollectionFastPath = {
     Returns the pool for a given example view.
     
     The pool is calculated based on the guid for the example view class.
+    
+    @param {SC.View} exampleView
   */
   poolForExampleView: function(exampleView) {
     var poolKey = "_pool_" + SC.guidFor(exampleView);
@@ -1234,6 +1317,9 @@ SC.CollectionFastPath = {
   /**
     Creates an item view from a given example view, configuring it with basic settings
     and the supplied attributes.
+    
+    @param {SC.View} exampleView
+    @param {Hash} attrs
   */
   createItemViewFromExampleView: function(exampleView, attrs) {
     // create the example view
@@ -1252,6 +1338,10 @@ SC.CollectionFastPath = {
     return ret;
   },
   
+  /**
+    @param {SC.View} itemView
+    @param {Hash} attrs
+  */
   configureItemView: function(itemView, attrs) {
     // set settings. Self explanatory.
     itemView.beginPropertyChanges();
@@ -1272,6 +1362,9 @@ SC.CollectionFastPath = {
   
   /**
     Configures a pooled view, calling .awakeFromPool if it is defined.
+
+    @param {SC.View} itemView
+    @param {Hash} attrs
   */
   wakePooledView: function(itemView, attrs) {
     // configure
@@ -1284,6 +1377,9 @@ SC.CollectionFastPath = {
   /**
     Gets an item view from an example view, from a pool if possible, and otherwise
     by generating it.
+    
+    @param {SC.View} exampleView
+    @param {Hash} attrs
   */
   allocateItemView: function(exampleView, attrs) {
     // we will try to get it from a pool. This will fill ret. If ret is not
@@ -1313,6 +1409,8 @@ SC.CollectionFastPath = {
     This is called for one of two purposes: to release a view that is no longer displaying,
     or to release an older cached version of a view that needed to be replaced because the
     example view changed.
+
+    @param {SC.View} itemView
   */
   releaseItemView: function(itemView) {
     // if it is not poolable, there is not much we can do.
@@ -1327,10 +1425,8 @@ SC.CollectionFastPath = {
     if (itemView.hibernateInPool) itemView.hibernateInPool(pool, this);
   },
   
-  /**
+  /** @private
     Returns YES if the item at the index is a group.
-    
-    @private
   */
   contentIndexIsGroup: function(view, content, index) {
     var contentDelegate = this.get("contentDelegate");
@@ -1346,8 +1442,7 @@ SC.CollectionFastPath = {
     return isGroupView;
   },
   
-  /**
-    @private
+  /** @private
     Determines the example view for a content index. There are two optional parameters that will
     speed things up: contentObject and isGroupView. If you don't supply them, they must be computed.
   */
@@ -1372,15 +1467,12 @@ SC.CollectionFastPath = {
     return ExampleView;
   },
   
-  /**
+  /** @private
     This may seem somewhat awkward, but it is for memory performance: this fills in a hash
     YOU provide with the properties for the given content index.
     
     Properties include both the attributes given to the view and some CollectionView tracking
     properties, most importantly the exampleView.
-    
-    
-    @private
   */
   setAttributesForItem: function(item, index, attrs) {
     var del = this.get('contentDelegate'), 
@@ -1408,15 +1500,11 @@ SC.CollectionFastPath = {
     if (!attrs.layout) attrs.layout = ExampleView.prototype.layout;
   },
   
-  
-  
-  
   //
   // ITEM LOADING/DOM MANAGEMENT
   //
   
-  /**
-    @private
+  /** @private
     Returns mapped item views for the supplied item.
   */
   mappedViewsForItem: function(item, map) {
@@ -1424,8 +1512,7 @@ SC.CollectionFastPath = {
     return map[SC.guidFor(item)];
   },
   
-  /**
-    @private
+  /** @private
     Returns the mapped view for an item at the specified index. 
   */
   mappedViewForItem: function(item, idx, map) {
@@ -1435,8 +1522,7 @@ SC.CollectionFastPath = {
     return m[idx];
   },
   
-  /**
-    @private
+  /** @private
     Maps a view to an item/index combination.
   */
   mapView: function(item, index, view, map) {
@@ -1453,7 +1539,7 @@ SC.CollectionFastPath = {
     imap._length++;
   },
   
-  /**
+  /** @private
     Unmaps a view from an item/index combination.
   */
   unmapView: function(item, index, map) {
@@ -1478,6 +1564,8 @@ SC.CollectionFastPath = {
     Returns the item view for the given content index.
     NOTE: THIS WILL ADD THE VIEW TO DOM TEMPORARILY (it will be cleaned if
           it is not used). As such, use sparingly.
+
+    @param {Number} index
   */
   itemViewForContentIndex: function(index) {
     var content = this.get("content");
@@ -1502,8 +1590,7 @@ SC.CollectionFastPath = {
     return view;
   },
   
-  /**
-    @private
+  /** @private
     Returns the nearest item view index to the supplied index mapped to the item.
   */
   nearestMappedViewIndexForItem: function(item, index, map) {
@@ -1530,8 +1617,7 @@ SC.CollectionFastPath = {
     return nearest;
   },
   
-  /**
-    @private
+  /** @private
     Remaps the now showing views to their new indexes (if they have moved).
   */
   remapItemViews: function(nowShowing) {
@@ -1598,6 +1684,9 @@ SC.CollectionFastPath = {
   
   /**
     Reloads.
+
+    @param {SC.IndexSet} nowShowing
+    @param {Boolean} scrollOnly
   */
   reloadIfNeeded: function(nowShowing, scrollOnly) {
     var content = this.get("content"), invalid;
@@ -1654,6 +1743,8 @@ SC.CollectionFastPath = {
   
   /**
     Loops through remove queue and removes.
+
+    @param {Hash} oldMap
   */
   processRemovals: function(oldMap) {
     var content = this.get("content");
@@ -1673,8 +1764,7 @@ SC.CollectionFastPath = {
     }
   },
   
-  /**
-    @private
+  /** @private
     Loops through update queue and... updates.
   */
   processUpdates: function(invalid) {
@@ -1689,8 +1779,7 @@ SC.CollectionFastPath = {
     }, this);
   },
   
-  /**
-    @private
+  /** @private
     Loops through add queue and, well, adds.
   */
   processAdds: function() {
@@ -1706,8 +1795,7 @@ SC.CollectionFastPath = {
     }
   },
   
-  /**
-  @private
+  /** @private
     Clear all DOM pools.
   */
   clearDOMPools: function() {
@@ -1717,10 +1805,13 @@ SC.CollectionFastPath = {
     }
   },
   
+  /**
+    @type Number
+    @default 10
+  */
   domPoolSize: 10,
   
-  /**
-  @private
+  /** @private
     Clears a specific DOM pool.
   */
   clearDOMPool: function(pool) {
@@ -1741,8 +1832,7 @@ SC.CollectionFastPath = {
     pool.length = Math.min(pool.length, this.domPoolSize);
   },
   
-  /**
-  @private
+  /** @private
     Returns the DOM pool for the given exampleView.
   */
   domPoolForExampleView: function(exampleView) {
@@ -1752,8 +1842,7 @@ SC.CollectionFastPath = {
     return pool;
   },
   
-  /**
-  @private
+  /** @private
     Tries to find an item for the given example view in a dom pool.
     If one could not be found, returns null.
   */
@@ -1765,8 +1854,7 @@ SC.CollectionFastPath = {
     return view;
   },
   
-  /**
-    @private
+  /** @private
     Sends a view to a DOM pool.
   */
   sendToDOMPool: function(view) {
@@ -1778,8 +1866,7 @@ SC.CollectionFastPath = {
     if (view.sleepInDOMPool) view.sleepInDOMPool();
   },
   
-  /**
-  @private
+  /** @private
     Adds an item view (grabbing the actual item from one of the pools if possible).
   */
   addItemView: function(exampleView, object, index) {
@@ -1820,8 +1907,7 @@ SC.CollectionFastPath = {
     return view;
   },
   
-  /**
-  @private
+  /** @private
     Removes an item view.
   */
   removeItemView: function(current) {
@@ -1857,17 +1943,19 @@ SC.CollectionFastPath = {
   },
   
   
-  /**
+  /** @private
     Tells ScrollView that this should receive live updates during touch scrolling.
     We are so fast, aren't we?
   */
   _lastTopUpdate: 0,
+
+  /** @private */
   _lastLeftUpdate: 0,
+
+  /** @private */
   _tolerance: 100,
   
-  /**
-    The fast-path that computes a special 
-  */
+  /** @private */
   touchScrollDidChange: function(left, top) {
     // prevent getting too many in close succession.
     if (Date.now() - this._lastTouchScrollTime < 25) return;
@@ -1907,15 +1995,13 @@ SC.CollectionFastPath = {
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 /**
   @namespace
 
-  TODO: Add full description of SC.CollectionGroup
-  
   Any view you want to use as a group view in a collection must include this
   mixin.
   
@@ -1923,6 +2009,11 @@ SC.CollectionFastPath = {
 */
 SC.CollectionGroup = {
   
+  /**
+    @type Array
+    @default ['sc-collection-group']
+    @see SC.View#classNames
+  */
   classNames: ['sc-collection-group']
   
 };
@@ -1931,58 +2022,60 @@ SC.CollectionGroup = {
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
-
 
 
 /** 
   @namespace
   
-  CollectionRowDelegates are consulted by SC.ListView and SC.TableView to 
-  control the height of rows, including specifying custom heights for 
-  specific rows.  
+  CollectionRowDelegates are consulted by SC.ListView and SC.TableView to
+  control the height of rows, including specifying custom heights for
+  specific rows.
   
-  You can implement a custom row height in one of two ways.  
-  
+  You can implement a custom row height in one of two ways.
 */
 SC.CollectionRowDelegate = {
 
-  /** walk like a duck */
+  /**
+    Walk like a duck.
+  
+    @type Boolean
+    @default YES
+  */
   isCollectionRowDelegate: YES,
   
   /**
-    Default item height. Size of an item without spacing or padding. 
-    Unless you implement some custom row height 
+    Size of an item without spacing or padding.
+    Unless you implement some custom row height
     support, this row height will be used for all items.
     
-    @property
     @type Number
+    @default 18
   */
   itemHeight: 18,
   
   /**
-    Default row spacing. This inserts empty space between rows that you can use for borders.
+    This inserts empty space between rows that you can use for borders.
     
-    @property
     @type Number
+    @default 0
   */
   rowSpacing: 0,
   
   /**
-    Default row padding. This is useful if you are using a custom item view that needs to be padded.
+    This is useful if you are using a custom item view that needs to be padded.
     This value is added to the top and bottom of the itemHeight.
     
-    @property
     @type Number
+    @default 0
   */
   rowPadding: 0,
   
   /**
     Total row height used for calculation. Equal to itemHeight + twice rowPadding.
     
-    @property
     @type Number
   */
   rowHeight: function(key, value) {
@@ -1998,11 +2091,10 @@ SC.CollectionRowDelegate = {
   }.property('itemHeight', 'rowPadding'),
 
   /**
-    Index set of rows that should have a custom row height.  If you need 
-    certains rows to have a custom row height, then set this property to a 
+    Index set of rows that should have a custom row height. If you need
+    certains rows to have a custom row height, then set this property to a
     non-null value.  Otherwise leave it blank to disable custom row heights.
     
-    @property
     @type SC.IndexSet
   */
   customRowHeightIndexes: null,
@@ -2020,15 +2112,16 @@ SC.CollectionRowDelegate = {
     @returns {Number} row height
   */
   contentIndexRowHeight: function(view, content, contentIndex) {
-    return this.get('rowHeight');    
+    return this.get('rowHeight');
   }
+
 };
 
 /* >>>>>>>>>> BEGIN source/mixins/collection_view_delegate.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -2056,14 +2149,19 @@ SC.CollectionRowDelegate = {
 SC.CollectionViewDelegate = {
 
   /**
-    Used to detect the mixin by SC.CollectionView
+    Walk like a duck. Used to detect the mixin by SC.CollectionView.
+    
+    @type Boolean
+    @default YES
+    @constant
   */
   isCollectionViewDelegate: YES,
-  
+
+
   // ..........................................................
   // SELECTION
   // 
-  
+
   /**
     This method will be called anytime the collection view is about to
     change the selection in response to user mouse clicks or keyboard events.
@@ -2077,11 +2175,11 @@ SC.CollectionViewDelegate = {
     @returns {SC.IndexSet} Actual allow selection index set
   */
   collectionViewSelectionForProposedSelection: function(view, sel) {
-    return sel ;
+    return sel;
   },
 
   /**
-    Called by the collection when attempting to select an item.  Return the 
+    Called by the collection when attempting to select an item.  Return the
     actual indexes you want to allow to be selected.  Return null to disallow
     the change.  The default allows all selection.
     
@@ -2090,13 +2188,13 @@ SC.CollectionViewDelegate = {
     @param {Boolean} extend YES if the indexes will extend existing sel
     @returns {SC.IndexSet} allowed index set
   */
-  collectionViewShouldSelectIndexes: function (view, indexes, extend) { 
-    return indexes; 
+  collectionViewShouldSelectIndexes: function (view, indexes, extend) {
+    return indexes;
   },
-  
+
   /**
-    Called by the collection when attempting to deselect an item.  Return the 
-    actual indexes you want to allow to be deselected.  Return null to 
+    Called by the collection when attempting to deselect an item.  Return the
+    actual indexes you want to allow to be deselected.  Return null to
     disallow the change.  The default allows all selection.
     
     Note that you should not modify the passed in IndexSet.  clone it instead.
@@ -2105,14 +2203,15 @@ SC.CollectionViewDelegate = {
     @param {SC.IndexSet} indexes the indexes to be selected
     @returns {SC.IndexSet} allowed index set
   */
-  collectionViewShouldDeselectIndexes: function (view, indexes) { 
-    return indexes; 
+  collectionViewShouldDeselectIndexes: function (view, indexes) {
+    return indexes;
   },
+
 
   // ..........................................................
   // EDIT OPERATIONS
   // 
-  
+
   /**
     Called by the collection view whenever the deleteSelection() method is
     called.  You can implement this method to get fine-grained control over
@@ -2125,19 +2224,19 @@ SC.CollectionViewDelegate = {
     @param {SC.IndexSet} indexes proposed index set of items to delete.
     @returns {SC.IndexSet} index set allowed to delete or null.
   */
-  collectionViewShouldDeleteIndexes: function(view, indexes) { 
-    return indexes; 
+  collectionViewShouldDeleteIndexes: function(view, indexes) {
+    return indexes;
   },
-  
+
   /**
     Called by the collection view to actually delete the selected items.
     
-    The default behavior will use standard array operators to delete the 
-    indexes from the array.  You can implement this method to provide your own 
+    The default behavior will use standard array operators to delete the
+    indexes from the array. You can implement this method to provide your own
     deletion method.
     
     If you simply want to control the items to be deleted, you should instead
-    implement collectionViewShouldDeleteItems().  This method will only be 
+    implement collectionViewShouldDeleteItems(). This method will only be
     called if canDeleteContent is YES and collectionViewShouldDeleteIndexes()
     returns a non-empty index set
     
@@ -2150,39 +2249,42 @@ SC.CollectionViewDelegate = {
 
     if (SC.typeOf(content.destroyAt) === SC.T_FUNCTION) {
       content.destroyAt(indexes);
-      view.selectPreviousItem(NO, 1) ;
+      view.selectPreviousItem(NO, 1);
       return YES ;
-      
     } else if (SC.typeOf(content.removeAt) === SC.T_FUNCTION) {
       content.removeAt(indexes);
-      view.selectPreviousItem(NO, 1) ;
+      view.selectPreviousItem(NO, 1);
       return YES;
-      
-    } else return NO ;
+    } else {
+      return NO;
+    }
   },
-  
+
+
   // ..........................................................
   // DRAGGING
   // 
   
   /**
     Called by the collection view just before it starts a drag to give you
-    an opportunity to decide if the drag should be allowed. 
+    an opportunity to decide if the drag should be allowed.
     
-    You can use this method to implement fine-grained control over when a 
-    drag will be allowed and when it will not be allowed.  For example, you
+    You can use this method to implement fine-grained control over when a
+    drag will be allowed and when it will not be allowed. For example, you
     may enable content reordering but then implement this method to prevent
     reordering of certain items in the view.
     
     The default implementation always returns YES.
     
-    @param view {SC.CollectionView} the collection view
+    @param {SC.CollectionView} view the collection view
     @returns {Boolean} YES to alow, NO to prevent it
   */
-  collectionViewShouldBeginDrag: function(view) { return YES; },
-  
+  collectionViewShouldBeginDrag: function(view) {
+    return YES;
+  },
+
   /**
-    Called by the collection view just before it starts a drag so that 
+    Called by the collection view just before it starts a drag so that
     you can provide the data types you would like to support in the data.
     
     You can implement this method to return an array of the data types you
@@ -2198,11 +2300,13 @@ SC.CollectionViewDelegate = {
     
     The default returns an empty array.
     
-    @param view {SC.CollectionView} the collection view to begin dragging.
+    @param {SC.CollectionView} view the collection view to begin dragging.
     @returns {Array} array of supported data types.
   */
-  collectionViewDragDataTypes: function(view) { return []; },
-  
+  collectionViewDragDataTypes: function(view) {
+    return [];
+  },
+
   /**
     Called by a collection view when a drag concludes to give you the option
     to provide the drag data for the drop.
@@ -2213,64 +2317,55 @@ SC.CollectionViewDelegate = {
     
     The default implementation returns null.
     
-    @param view {SC.CollectionView} 
-      the collection view that initiated the drag
-
+    @param view {SC.CollectionView} the collection view that initiated the drag
     @param dataType {String} the data type to provide
     @param drag {SC.Drag} the drag object
     @returns {Object} the data object or null if the data could not be provided.
   */
-  collectionViewDragDataForType: function(view, drag, dataType) {  
-    return null ;
+  collectionViewDragDataForType: function(view, drag, dataType) {
+    return null;
   },
-  
+
   /**
-    Called once during a drag the first time view is entered. Return all 
+    Called once during a drag the first time view is entered. Return all
     possible drag operations OR'd together.
     
-    @param {SC.CollectionView} view
-      the collection view that initiated the drag
-
-    @param {SC.Drag} drag
-      the drag object
-    
-    @param {Number} proposedDragOperations
-      proposed logical OR of allowed drag operations.
-
+    @param {SC.CollectionView} view the collection view that initiated the drag
+    @param {SC.Drag} drag the drag object
+    @param {Number} proposedDragOperations proposed logical OR of allowed drag operations.
     @returns {Number} the allowed drag operations. Defaults to op
   */
   collectionViewComputeDragOperations: function(view, drag, proposedDragOperations) {
-    return proposedDragOperations ;
+    return proposedDragOperations;
   },
-  
+
   /**
     Called by the collection view during a drag to let you determine the
     kind and location of a drop you might want to accept.
     
     You can override this method to implement fine-grained control over how
     and when a dragged item is allowed to be dropped into a collection view.
-
-    This method will be called by the collection view both to determine in 
+    
+    This method will be called by the collection view both to determine in
     general which operations you might support and specifically the operations
     you would support if the user dropped an item over a specific location.
     
-    If the proposedDropOperation parameter is SC.DROP_ON or SC.DROP_BEFORE, 
-    then the proposedInsertionPoint will be a non-negative value and you 
-    should determine the specific operations you will support if the user 
+    If the proposedDropOperation parameter is SC.DROP_ON or SC.DROP_BEFORE,
+    then the proposedInsertionPoint will be a non-negative value and you
+    should determine the specific operations you will support if the user
     dropped the drag item at that point.
     
-    If you do not like the proposed drop operation or insertion point, you 
+    If you do not like the proposed drop operation or insertion point, you
     can override these properties as well by setting the proposedDropOperation
     and proposedInsertionIndex properties on the collection view during this
-    method.  These properties are ignored all other times.
+    method. These properties are ignored all other times.
     
-    @param view {SC.CollectionView} the collection view
-    @param drag {SC.Drag} the current drag object
-    @param op {Number} proposed logical OR of allowed drag operations.
-    @param proposedInsertionIndex {Number} an index into the content array 
-      representing the proposed insertion point.
-    @param proposedDropOperation {String} the proposed drop operation.  Will be one of SC.DROP_ON, SC.DROP_BEFORE, or SC.DROP_ANY.
-    @returns the allowed drag operation.  Defaults to op
+    @param {SC.CollectionView} view the collection view
+    @param {SC.Drag} drag the current drag object
+    @param {Number} op proposed logical OR of allowed drag operations.
+    @param {Number} proposedInsertionIndex an index into the content array representing the proposed insertion point.
+    @param {String} proposedDropOperation the proposed drop operation. Will be one of SC.DROP_ON, SC.DROP_BEFORE, or SC.DROP_ANY.
+    @returns the allowed drag operation. Defaults to op
   */
   collectionViewValidateDragOperation: function(view, drag, op, proposedInsertionIndex, proposedDropOperation) {
     // don't allow dropping on by default
@@ -2283,24 +2378,26 @@ SC.CollectionViewDelegate = {
     determine if you want to even allow the drag operation to go through.
     
     You should actually make changes to the data model if needed here and
-    then return the actual drag operation that was performed.  If you return
+    then return the actual drag operation that was performed. If you return
     SC.DRAG_NONE and the dragOperation was SC.DRAG_REORDER, then the default
     reorder behavior will be provided by the collection view.
     
-    @param view {SC.CollectionView}
-    @param drag {SC.Drag} the current drag object
-    @param op {Number} proposed logical OR of allowed drag operations.
-    @param proposedInsertionIndex {Number} an index into the content array representing the proposed insertion point.
-    @param proposedDropOperation {String} the proposed drop operation.  Will be one of SC.DROP_ON, SC.DROP_BEFORE, or SC.DROP_ANY.
-    @returns the allowed drag operation.  Defaults to proposedDragOperation
+    @param {SC.CollectionView} view
+    @param {SC.Drag} drag the current drag object
+    @param {Number} op proposed logical OR of allowed drag operations.
+    @param {Number} proposedInsertionIndex an index into the content array representing the proposed insertion point.
+    @param {String} proposedDropOperation the proposed drop operation.  Will be one of SC.DROP_ON, SC.DROP_BEFORE, or SC.DROP_ANY.
+    @returns the allowed drag operation. Defaults to proposedDragOperation
   */
   collectionViewPerformDragOperation: function(view, drag, op, proposedInsertionIndex, proposedDropOperation) {
-    return SC.DRAG_NONE ;
+    return SC.DRAG_NONE;
   },
   
   /**
     Renders a drag view for the passed content indexes. If you return null
     from this, then a default drag view will be generated for you.
+    
+    The default implementation returns null.
     
     @param {SC.CollectionView} view
     @param {SC.IndexSet} dragContent
@@ -2315,18 +2412,21 @@ SC.CollectionViewDelegate = {
     like a cursor instead of the default implementation. This sets the view 
     origin to be the location of the mouse cursor.
     
-    @property {Boolean} ghost view acts like a cursor
+    @type Boolean
+    @default NO
   */
   ghostActsLikeCursor: NO
   
 };
 
 /* >>>>>>>>>> BEGIN source/mixins/navigation_builder.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 
 /**
   @namespace
@@ -2336,10 +2436,15 @@ SC.CollectionViewDelegate = {
   
   Building in and out animates the view in and out to and from the left and right.
 */
-
 SC.NavigationBuilder = {
-  /*@scope SC.NavigationBuilder.prototype */ // YOU LIE! But it helps docs.
-  
+
+  /**
+    Walk like a duck.
+    
+    @type Boolean
+    @default YES
+    @constant
+  */
   isNavigationBuilder: YES,
   
   /**
@@ -2347,6 +2452,9 @@ SC.NavigationBuilder = {
     transitions hash if one exists, or become the transitions hash otherwise.
     
     If NO, it uses the (hard-coded) defaults.
+    
+    @type Boolean
+    @default NO
   */
   navigationTransitions: NO,
   
@@ -2378,8 +2486,7 @@ SC.NavigationBuilder = {
     if (SC.Animatable) SC.mixin(this.transitions, navigationTransitions);
   },
   
-  /**
-    @private
+  /** @private
     Determines metrics of the view. This may be adapted to work with non-CSS transforms in future...
   */
   metrics: function() {
@@ -2387,8 +2494,7 @@ SC.NavigationBuilder = {
     return f;
   },
   
-  /**
-    @private
+  /** @private
     Applies the supplied CSS transform.
   */
   transform: function(pos) {
@@ -2399,9 +2505,6 @@ SC.NavigationBuilder = {
     }
   },
   
-  /**
-    Builds in the navigation.
-  */
   buildInNavigation: function() {
     // set initial state
     var metrics = this.metrics();
@@ -2446,22 +2549,28 @@ SC.NavigationBuilder = {
     Called when the transitions finish.
   */
   navigationBuildDidFinish: function() {
-    if (this.isBuildingIn) this.buildInDidFinish();
-    else if (this.isBuildingOut) this.buildOutDidFinish();
+    if (this.isBuildingIn) {
+      this.buildInDidFinish();
+    } else if (this.isBuildingOut) {
+      this.buildOutDidFinish();
+    }
   }
   
 } ;
 
 
 /* >>>>>>>>>> BEGIN source/mixins/scrollable.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 
 /**
   @namespace
+  @deprecated
 
   Any views you implement that are scrollable should include this mixin to
   provide basic support for scrolling actions.  You can also override any 
@@ -2472,35 +2581,42 @@ SC.NavigationBuilder = {
   info.
   
   Note that isScrollable must always be true.
-
 */
 SC.Scrollable = {
   
-//@if(debug)
+
   initMixin: function() {
     SC.Logger.warn("SC.Scrollable is deprecated and will be removed in a future version of SproutCore.  Consider pulling the mixin into your own app if you want to keep using it.");
   },
-//@endif 
+ 
 
   /** Informs the view system that the receiver is scrollable.
-  
+
     Must always be true.
+
+    @property {Boolean}
+    @default YES
+    @constant
   */
   isScrollable: true,
 
   /** 
     Amount to scroll one vertical line.
   
-    Used by the default implementation of scrollDownLine() and scrollUpLine().  Defaults
-    to 20px.
+    Used by the default implementation of scrollDownLine() and scrollUpLine().
+    
+    @property {Number}
+    @default 20
   */
   verticalLineScroll: 20,
   
   /**
     Amount to scroll one horizontal line.
   
-    Used by the default implementation of scrollLeftLine() and scrollRightLine(). Defaults
-    to 20px.
+    Used by the default implementation of scrollLeftLine() and scrollRightLine().
+    
+    @property {Number}
+    @default 20
   */
   horizontalLineScroll: 20,
   
@@ -2511,7 +2627,7 @@ SC.Scrollable = {
     current innerFrame height.
   */
   verticalPageScroll: function() {
-    return this.get('innerFrame').height ;
+    return this.get('innerFrame').height;
   }.property('innerFrame'),
   
   /**
@@ -2521,31 +2637,33 @@ SC.Scrollable = {
     to current innerFrame width.
   */
   horizontalPageScroll: function() {
-    return this.get('innerFrame').width ;  
+    return this.get('innerFrame').width ;
   }.property('innerFrame'),
   
   /**
-    Returns true if the receiver has enough vertical content to require 
+    Returns true if the receiver has enough vertical content to require
     scrolling.
     
-    If you do not want to allow vertical scrolling, override this to be false 
+    If you do not want to allow vertical scrolling, override this to be false
     and set the appropriate CSS.
     
+    @field {Boolean}
   */
   hasVerticalScroller: function() {
-    return this.get('scrollFrame').height > this.get('innerFrame').height ;
+    return this.get('scrollFrame').height > this.get('innerFrame').height;
   }.property('scrollFrame'),
   
   /**
-    Returns true if the receiver has enough horizontal content to require 
+    Returns true if the receiver has enough horizontal content to require
     scrolling.
     
-    If you do not want to allow horizontal scrolling, override this to be 
+    If you do not want to allow horizontal scrolling, override this to be
     false and set the appropriate CSS.
     
+    @field {Boolean}
   */
   hasHorizontalScroller: function() {
-    return this.get('scrollFrame').width > this.get('innerFrame').width ;
+    return this.get('scrollFrame').width > this.get('innerFrame').width;
   }.property('scrollFrame'),
 
   /**
@@ -2575,9 +2693,12 @@ SC.Scrollable = {
 
   /**
     Scrolls the receiver to the specified x,y coordinate
+    
+    @param {Number} x
+    @param {Number} y
   */
   scrollTo: function(x,y) {
-    this.set('scrollFrame', { x: 0-x, y: 0-y }) ;  
+    this.set('scrollFrame', { x: 0-x, y: 0-y });
   },
   
   /**
@@ -2585,10 +2706,9 @@ SC.Scrollable = {
     
     Frame must be relative to the receiver's offsetParent.
     
-    @param {SC.ClassicView} view the view you want to make visible
+    @param {SC.View} view the view you want to make visible
   */
   scrollToVisible: function(view) {
-
     // get frames and convert them to proper offsets
     var f = this.get('innerFrame') ;
     var sf = this.get('scrollFrame') ;
@@ -2709,11 +2829,13 @@ SC.Scrollable = {
 
 
 /* >>>>>>>>>> BEGIN source/panes/modal.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 
 /** @class
 
@@ -2723,26 +2845,30 @@ SC.Scrollable = {
   panes.
   
   A modal pane is automatically appended when a pane with isModal set to
-  YES is made visible and removed when the same pane is hidden.  The only 
-  purpose of the ModalPane is to absorb mouse events so that they cannot 
-  filter through to the underlying content. 
+  YES is made visible and removed when the same pane is hidden.  The only
+  purpose of the ModalPane is to absorb mouse events so that they cannot
+  filter through to the underlying content.
   
   @extends SC.Pane
   @since SproutCore 1.0
 */
-SC.ModalPane = SC.Pane.extend({
+SC.ModalPane = SC.Pane.extend(
+/** @scope SC.ModalPane.prototype */{
   
+  /**
+    @type Array
+    @default ['sc-modal']
+    @see SC.View#classNames
+  */
   classNames: 'sc-modal',
   
-  /** @private cover the entire screen */
-  layout: { top: 0, left: 0, bottom: 0, right: 0 },
-
+  /** @private */
   _openPaneCount: 0,
   
-  /** 
+  /** @private
     Called by a pane just before it appends itself.   The modal pane can
     make itself visible first if needed.
-
+    
     @param {SC.Pane} pane the pane
     @returns {SC.ModalPane} receiver
   */
@@ -2752,7 +2878,7 @@ SC.ModalPane = SC.Pane.extend({
     return this ;    
   },
   
-  /**
+  /** @private
     Called by a pane just after it removes itself.  The modal pane can remove
     itself if needed.   Modal panes only remove themselves when an equal 
     number of paneWillAppend() and paneDidRemove() calls are received.
@@ -2768,44 +2894,38 @@ SC.ModalPane = SC.Pane.extend({
     }
   },
   
-  /** 
-    If owner pane implements modalPaneDidClick(), call it on mouse down.
-  */
+  /** @private */
   mouseDown: function(evt) {
     var owner = this.get('owner');
     if (owner && owner.modalPaneDidClick) owner.modalPaneDidClick(evt);
   },
   
+  /** @private */
   touchStart: function(evt) {
     this.mouseDown(evt);
   }
 });
 
 /* >>>>>>>>>> BEGIN source/panes/panel.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
 
 sc_require('panes/modal');
-
-/** 
-  Shadow views from top-left corner clockwise
-*/
 
 /** @class
 
   Most SproutCore applications need modal panels. The default way to use the 
   panel pane is to simply add it to your page like this:
   
-  {{{
-    SC.PanelPane.create({
-      layout: { width: 400, height: 200, centerX: 0, centerY: 0 },
-      contentView: SC.View.extend({
-      })
-    }).append();
-  }}}
+      SC.PanelPane.create({
+        layout: { width: 400, height: 200, centerX: 0, centerY: 0 },
+        contentView: SC.View.extend({
+        })
+      }).append();
   
   This will cause your panel to display.  The default layout for a Panel 
   is to cover the entire document window with a semi-opaque background, and to 
@@ -2815,52 +2935,52 @@ sc_require('panes/modal');
   @author Erich Ocean
   @since SproutCore 1.0
 */
-SC.PanelPane = SC.Pane.extend({
+SC.PanelPane = SC.Pane.extend(
+/** @scope SC.PanelPane.prototype */ {
 
-  layout: { left:0, right:0, top:0, bottom:0 },
+  /**
+    @type Array
+    @default ['sc-panel']
+    @see SC.View#classNames
+  */
   classNames: ['sc-panel'],
+  
+  /**
+    @type Boolean
+    @default YES
+    @see SC.Pane#acceptsKeyPane
+  */
   acceptsKeyPane: YES,
 
   /**
-    The WAI-ARIA role for panel pane. This property's value should not be
-    changed.
+    The WAI-ARIA role for panel pane.
 
-    @property {String}
+    @type String
+    @default 'dialog'
+    @constant
   */
   ariaRole: 'dialog',
 
   /**
-    The WAI-ARIA attribute for the panel pane. This property is assigned to
-    'aria-labelledby' attribute, which defines a string value that labels the
-    element. Used to support voiceover. It should be assigned a non-empty string,
-    if the 'aria-labelledby' attribute has to be set for the element.
+    The WAI-ARIA label for the panel. Screen readers will use this to tell
+    the user a name for the panel.
 
-    @property {String}
+    @type String
   */
-  ariaLabeledBy: null,
-
-  /**
-    The WAI-ARIA attribute for the panel pane. This property is assigned to
-    'aria-describedby' attribute.Used to support voiceover. It is intended to
-    provide additional detail that some users might need. It should be assigned
-    a non-empty string, if the 'aria-describedby' attribute has to be set for
-    the element.
-
-    @property {String}
-  */
-  ariaDescribedBy: null,
+  ariaLabel: null,
 
   /**
     Indicates that a pane is modal and should not allow clicks to pass
-    though to panes underneath it.  This will usually cause the pane to show
+    though to panes underneath it. This will usually cause the pane to show
     the modalPane underneath it.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   isModal: YES,
 
   /**
-    The modal pane to place behind this pane if this pane is modal.  This 
+    The modal pane to place behind this pane if this pane is modal. This
     must be a subclass or an instance of SC.ModalPane.
   */
   modalPane: SC.ModalPane.extend({
@@ -2874,14 +2994,18 @@ SC.PanelPane = SC.Pane.extend({
   /**
     Set this to the view you want to act as the content within the panel.
     
-    @property {SC.View}
+    @type SC.View
+    @default null
   */
   contentView: null,
   contentViewBindingDefault: SC.Binding.single(),
   
+  /**
+    @param {SC.View} newContent
+  */
   replaceContent: function(newContent) {
     this.removeAllChildren() ;
-    if (newContent) this.appendChild(newContent) ;
+    if (newContent) this.appendChild(newContent);
   },
 
   /** @private */
@@ -2896,8 +3020,8 @@ SC.PanelPane = SC.Pane.extend({
 
   
   /**
-    Invoked whenever the content property changes.  This method will simply
-    call replaceContent.  Override replaceContent to change how the view is
+    Invoked whenever the content property changes. This method will simply
+    call replaceContent. Override replaceContent to change how the view is
     swapped out.
   */
   contentViewDidChange: function() {
@@ -2911,7 +3035,8 @@ SC.PanelPane = SC.Pane.extend({
   /**
     The name of the theme's SC.PanelPane render delegate.
 
-    @property {String}
+    @type String
+    @default 'panelRenderDelegate'
   */
   renderDelegateName: 'panelRenderDelegate',
 
@@ -2973,30 +3098,51 @@ SC.PanelPane = SC.Pane.extend({
     return ret ;
   },
 
-  render: function(context, firstTime) {
-    arguments.callee.base.apply(this,arguments);
-    var ariaLabeledBy   = this.get('ariaLabeledBy'),
-        ariaDescribedBy = this.get('ariaDescribedBy');
-
-    //addressing accessibility
-    if(firstTime) {
-      if(ariaLabeledBy && ariaLabeledBy !== "") {
-        context.attr('aria-labelledby', ariaLabeledBy);
-      }
-      if(ariaDescribedBy && ariaDescribedBy !== "") {
-       context.attr('aria-describedby', ariaDescribedBy);
-      }
-    }
-  }
+  displayProperties: ['ariaLabel']
 });
 
 /* >>>>>>>>>> BEGIN source/views/button.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+/**
+  @static
+  @constant
+  @type String
+*/
+SC.TOGGLE_BEHAVIOR = 'toggle';
+
+/**
+  @static
+  @constant
+  @type String
+*/
+SC.PUSH_BEHAVIOR =   'push';
+
+/**
+  @static
+  @constant
+  @type String
+*/
+SC.TOGGLE_ON_BEHAVIOR = 'on';
+
+/**
+  @static
+  @constant
+  @type String
+*/
+SC.TOGGLE_OFF_BEHAVIOR = 'off';
+
+/**
+  @static
+  @constant
+  @type String
+*/
+SC.HOLD_BEHAVIOR = 'hold';
 
 /** @class
 
@@ -3012,17 +3158,26 @@ SC.PanelPane = SC.Pane.extend({
 
   @extends SC.View
   @extends SC.Control
-  @extends SC.Button
   @since SproutCore 1.0
 */
-SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
+SC.ButtonView = SC.View.extend(SC.Control,
 /** @scope SC.ButtonView.prototype */ {
 
   /**
-    The HTML representation of SC.ButtonView contains the 'sc-button-view'
-    class.
+    Tied to the isEnabled state
+    
+    @type Boolean
+    @default YES
+  */
+  acceptsFirstResponder: function() {
+    if (SC.FOCUS_ALL_CONTROLS) { return this.get('isEnabled'); }
+    return NO;
+  }.property('isEnabled'),
 
-    @property {Array}
+  /**
+    @type Array
+    @default ['sc-button-view']
+    @see SC.View#classNames
   */
   classNames: ['sc-button-view'],
 
@@ -3030,26 +3185,169 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     The theme to apply to the button. By default, a subtheme with the name of
     'square' is created for backwards-compatibility.
 
-    @property {String}
+    @type String
+    @default 'square'
   */
   themeName: 'square',
+
+
+  // ..........................................................
+  // Value Handling
+  // 
+  
+  /**
+    Used to automatically update the state of the button view for toggle style
+    buttons.
+
+    for toggle style buttons, you can set the value and it will be used to
+    update the isSelected state of the button view.  The value will also
+    change as the user selects or deselects.  You can control which values
+    the button will treat as isSelected by setting the toggleOnValue and 
+    toggleOffValue.  Alternatively, if you leave these properties set to
+    YES or NO, the button will do its best to convert a value to an 
+    appropriate state:
+  
+      - null, false, 0  -> isSelected = false
+      - any other single value -> isSelected = true
+      - array -> if all values are the same state: that state.  otherwise MIXED.
+    
+    @type Object
+    @default null
+  */  
+  value: null,
+
+  /**
+    Value of a selected toggle button.
+    
+    For a toggle button, set this to any object value you want. The button
+    will be selected if the value property equals the targetValue. If the
+    value is an array of multiple items that contains the targetValue, then
+    the button will be set to a mixed state.
+    
+    default is YES
+    
+    @type Boolean|Object
+    @default YES
+  */
+  toggleOnValue: YES,
+
+  /**
+    Value of an unselected toggle button.
+    
+    For a toggle button, set this to any object value you want.  When the
+    user toggle's the button off, the value of the button will be set to this
+    value.
+    
+    @type Boolean|Object
+    @default NO
+  */
+  toggleOffValue: NO,
+
+
+  // ..........................................................
+  // Title Handling
+  // 
+  
+  /**
+    If YES, then the title will be localized.
+    
+    @type Boolean
+    @default NO
+  */
+  localize: NO,
+  
+  /** @private */
+  localizeBindingDefault: SC.Binding.bool(),
+
+  /**
+    The button title.  If localize is YES, then this should be the localization key to display.  Otherwise, this will be the actual string displayed in the title.  This property is observable and bindable.
+    
+    @type String
+    @default ""
+  */
+  title: "",
+
+  /**
+    If set, the title property will be updated automatically
+    from the content using the key you specify.
+    
+    @type String
+    @default null
+  */
+  contentTitleKey: null,
+  
+  /**
+    The button icon. Set this to either a URL or a CSS class name (for
+    spriting). Note that if you pass a URL, it must contain at
+    least one slash to be detected as such.
+    
+    @type String
+    @default null
+  */
+  icon: null,
+
+  /**
+    If you set this property, the icon will be updated automatically from the
+    content using the key you specify.
+    
+    @type String
+    @default null
+  */
+  contentIconKey: null,
+
+  /**
+    If YES, button will attempt to display an ellipsis if the title cannot
+    fit inside of the visible area. This feature is not available on all
+    browsers.
+    
+    @type Boolean
+    @default YES
+  */
+  needsEllipsis: YES,
+  
+  /**
+    This is generated by localizing the title property if necessary.
+    
+    @type String
+    @observes 'title'
+    @observes 'localize'
+  */
+  displayTitle: function() {
+    var ret = this.get('title');
+    return (ret && this.get('localize')) ? SC.String.loc(ret) : (ret || '');
+  }.property('title','localize').cacheable(),
+  
+  /**
+    The key equivalent that should trigger this button on the page.
+    
+    @type String
+    @default null
+  */
+  keyEquivalent: null,
+
+
+  // ..........................................................
+  // BEHAVIOR
+  // 
 
   /**
     The behavioral mode of this button.
 
     Possible values are:
-    - *SC.PUSH_BEHAVIOR* Pressing the button will trigger an action tied to the
-      button. Does not change the value of the button.
-    - *SC.TOGGLE_BEHAVIOR* Pressing the button will invert the current value of
-      the button. If the button has a mixed value, it will be set to true.
-    - *SC.TOGGLE_ON_BEHAVIOR* Pressing the button will set the current state to
-      true no matter the previous value.
-    - *SC.TOGGLE_OFF_BEHAVIOR* Pressing the button will set the current state to
-      false no matter the previous value.
-    - *SC.HOLD_BEHAVIOR* Pressing the button will cause the action to repeat at a
-      regular interval specifed by 'holdInterval'
 
-    @property {String}
+      - *SC.PUSH_BEHAVIOR* Pressing the button will trigger an action tied to the
+        button. Does not change the value of the button.
+      - *SC.TOGGLE_BEHAVIOR* Pressing the button will invert the current value of
+        the button. If the button has a mixed value, it will be set to true.
+      - *SC.TOGGLE_ON_BEHAVIOR* Pressing the button will set the current state to
+        true no matter the previous value.
+      - *SC.TOGGLE_OFF_BEHAVIOR* Pressing the button will set the current state to
+        false no matter the previous value.
+      - *SC.HOLD_BEHAVIOR* Pressing the button will cause the action to repeat at a
+        regular interval specifed by 'holdInterval'
+
+    @type String
+    @default SC.PUSH_BEHAVIOR
   */
   buttonBehavior: SC.PUSH_BEHAVIOR,
 
@@ -3057,7 +3355,8 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     If buttonBehavior is SC.HOLD_BEHAVIOR, this specifies, in milliseconds,
     how often to trigger the action. Ignored for other behaviors.
 
-    @property {Number}
+    @type Number
+    @default 100
   */
   holdInterval: 100,
 
@@ -3067,7 +3366,8 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     This is the same as setting the keyEquivalent to 'return'.  This will also
     apply the "def" classname to the button.
 
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   isDefault: NO,
   isDefaultBindingDefault: SC.Binding.oneWay().bool(),
@@ -3076,7 +3376,8 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     If YES, then this button will be triggered when you hit escape.
     This is the same as setting the keyEquivalent to 'escape'.
 
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   isCancel: NO,
   isCancelBindingDefault: SC.Binding.oneWay().bool(),
@@ -3098,7 +3399,8 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     clicked.  It is generally better to use the target/action approach and
     to implement your code in a controller of some type.
 
-    @property {String}
+    @type String
+    @default null
   */
   action: null,
 
@@ -3110,20 +3412,60 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     null, then the button will search the responder chain for a view that
     implements the action when the button is pressed instead.
 
-    @property {Object}
+    @type Object
+    @default null
   */
   target: null,
 
-  /**
-    If YES, use a focus ring.
-    
-    TODO: When is this property ever changed? Is this redundant with
+  /*
+    TODO When is this property ever changed? Is this redundant with
     render delegates since it can now be turned on on a theme-by-theme
     basis? --TD
+  */
+  /**
+    If YES, use a focus ring.
 
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   supportFocusRing: NO,
+
+  // ..........................................................
+  // Auto Resize Support
+  // 
+  //
+  // These properties are provided so that SC.AutoResize can be mixed in
+  // to enable automatic resizing of the button.
+  //
+
+  /** @private */
+  supportsAutoResize: YES,
+
+  /*
+    TODO get this from the render delegate so other elements may be used.
+  */
+  /** @private */
+  autoResizeLayer: function() {
+    return this.get('layer');
+  }.property('layer').cacheable(),
+
+  /** @private */
+  autoResizeText: function() {
+    return this.get('displayTitle');
+  }.property('displayTitle').cacheable(),
+
+  /**
+    The padding to add to the measured size of the text to arrive at the measured
+    size for the view.
+
+    SC.ButtonView gets this from its render delegate, but if not supplied, defaults
+    to 10.
+
+    @default 10
+    @type Number
+  */
+  autoResizePadding: SC.propertyFromRenderDelegate('autoResizePadding', 10),
+
 
   // TODO: What the hell is this? --TD
   _labelMinWidthIE7: 0,
@@ -3138,7 +3480,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     Does nothing if the button is disabled.
 
     @param {Event} evt
-    @returns {Boolean} success/failure of the request
+    @returns {Boolean} YES if successful, NO otherwise
   */
   triggerActionAfterDelay: function(evt) {
     // If this button is disabled, we have nothing to do
@@ -3173,6 +3515,9 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
   */
   didTriggerAction: function() {},
 
+  /*
+    TODO Why is this not set by the theme? --TD
+  */
   /**
     The minimum width the button title should consume.  This property is used
     when generating the HTML styling for the title itself.  The default
@@ -3182,15 +3527,16 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     Note that the title width does not exactly match the width of the button
     itself.  Extra padding added by the theme can impact the final total
     size.
-    
-    TODO: Why is this not set by the theme? --TD
 
-    @property {Number}
+    @type Number
+    @default 80
   */
   titleMinWidth: 80,
 
+
   // ................................................................
   // INTERNAL SUPPORT
+  //
 
   /** @private - save keyEquivalent for later use */
   init: function() {
@@ -3203,10 +3549,18 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     if (keyEquivalent) {
       this._defaultKeyEquivalent = keyEquivalent;
     }
+
+    // if value is not null, update isSelected to match value.  If value is
+    // null, we assume you may be using isSelected only.  
+    if (!SC.none(this.get('value'))) this._button_valueDidChange();
   },
 
   /**
     The WAI-ARIA role of the button.
+    
+    @type String
+    @default 'button'
+    @readOnly
   */
   ariaRole: 'button',
 
@@ -3214,11 +3568,15 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
   // isCancel and isDefault also cause a refresh but this is implemented as
   // a separate observer (see below)
 
-  /** @private
+  /**
     The following properties affect how SC.ButtonView is rendered, and will
     cause the view to be rerendered if they change.
     
-    @property {Array}
+    @type Array
+    @default [
+      'icon', 'displayTitle', 'value', 'displayToolTip', 'isDefault', 'isCancel', 
+      'escapeHTML', 'needsEllipsis', 'hint', 'titleMinWidth', 'supportFocusRing'
+    ]
   */
   displayProperties: [
     'icon', 'displayTitle', 'value', 'displayToolTip', 'isDefault', 'isCancel', 
@@ -3232,9 +3590,144 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     In this case, the 'button' property will be retrieved from the theme and
     set to the render delegate of this view.
     
-    @property {String}
+    @type String
+    @default 'buttonRenderDelegate'
   */
   renderDelegateName: 'buttonRenderDelegate',
+
+  /**
+    Updates the value, title, and icon keys based on the content object, if
+    set.
+    
+    @type {Object} target the target of the object that changed
+    @type {String} key name of property that changed
+    @returns {SC.ButtonView} receiver
+  */
+  contentPropertyDidChange: function(target, key) {
+    var del = this.get('displayDelegate'), 
+        content = this.get('content'), value ;
+
+    var valueKey = this.getDelegateProperty('contentValueKey', del) ;
+    if (valueKey && (key === valueKey || key === '*')) {
+      this.set('value', content ? (content.get ? content.get(valueKey) : content[valueKey]) : null) ;
+    }
+
+    var titleKey = this.getDelegateProperty('contentTitleKey', del) ;
+    if (titleKey && (key === titleKey || key === '*')) {
+      this.set('title', content ? (content.get ? content.get(titleKey) : content[titleKey]) : null) ;
+    }
+
+    var iconKey = this.getDelegateProperty('contentIconKey', del);
+    if (iconKey && (key === iconKey || key === '*')) {
+      this.set('icon', content ? (content.get ? content.get(iconKey) : content[iconKey]) : null) ;
+    }
+    
+    return this ;
+  },
+
+  /** @private - when title changes, dirty display. */
+  _button_displayObserver: function() {
+    this.displayDidChange();
+  }.observes('title', 'icon', 'value'),
+
+  /**
+    Handle a key equivalent if set.  Trigger the default action for the 
+    button.  Depending on the implementation this may vary.
+    
+    @param {String} keystring
+    @param {SC.Event} evt
+    @returns {Boolean}  YES if handled, NO otherwise
+  */
+  performKeyEquivalent: function(keystring, evt) {
+    //If this is not visible
+    if (!this.get('isVisibleInWindow')) return NO;
+
+    if (!this.get('isEnabled')) return NO;
+    var equiv = this.get('keyEquivalent');
+
+    // button has defined a keyEquivalent and it matches!
+    // if triggering succeeded, true will be returned and the operation will 
+    // be handeled (i.e performKeyEquivalent will cease crawling the view 
+    // tree)
+    if (equiv) {
+      if (equiv === keystring) return this.triggerAction(evt);
+    
+    // should fire if isDefault OR isCancel.  This way if isDefault AND 
+    // isCancel, responds to both return and escape
+    } else if ((this.get('isDefault') && (keystring === 'return')) ||
+        (this.get('isCancel') && (keystring === 'escape'))) {
+          return this.triggerAction(evt);
+    }
+
+    return NO; // did not handle it; keep searching
+  },
+
+  // ..........................................................
+  // VALUE <-> isSelected STATE MANAGEMNT
+  // 
+
+  /**
+    This is the standard logic to compute a proposed isSelected state for a
+    new value.  This takes into account the toggleOnValue/toggleOffValue 
+    properties, among other things.  It may return YES, NO, or SC.MIXED_STATE.
+    
+    @param {Object} value
+    @returns {Boolean} return state
+  */
+  computeIsSelectedForValue: function(value) {
+    var targetValue = this.get('toggleOnValue'), state, next ;
+    
+    if (SC.typeOf(value) === SC.T_ARRAY) {
+
+      // treat a single item array like a single value
+      if (value.length === 1) {
+        state = (value[0] == targetValue) ;
+        
+      // for a multiple item array, check the states of all items.
+      } else {
+        state = null;
+        value.find(function(x) {
+          next = (x == targetValue) ;
+          if (state === null) {
+            state = next ;
+          } else if (next !== state) state = SC.MIXED_STATE ;
+          return state === SC.MIXED_STATE ; // stop when we hit a mixed state.
+        });
+      }
+      
+    // for single values, just compare to the toggleOnValue...use truthiness
+    } else {
+      if(value === SC.MIXED_STATE) state = SC.MIXED_STATE;
+      else state = (value === targetValue) ;
+    }
+    return state ;
+  },
+
+  /** @private
+    Whenever the button value changes, update the selected state to match.
+  */
+  _button_valueDidChange: function() {
+    var value = this.get('value'),
+        state = this.computeIsSelectedForValue(value);
+    this.set('isSelected', state) ; // set new state...
+  }.observes('value'),
+  
+  /** @private
+    Whenever the selected state is changed, make sure the button value is also updated.  Note that this may be called because the value has just changed.  In that case this should do nothing.
+  */
+  _button_isSelectedDidChange: function() {
+    var newState = this.get('isSelected'),
+        curState = this.computeIsSelectedForValue(this.get('value'));
+    
+    // fix up the value, but only if computed state does not match.
+    // never fix up value if isSelected is set to MIXED_STATE since this can
+    // only come from the value.
+    if ((newState !== SC.MIXED_STATE) && (curState !== newState)) {
+      var valueKey = (newState) ? 'toggleOnValue' : 'toggleOffValue' ;
+      this.set('value', this.get(valueKey));
+    }
+  }.observes('isSelected'),
+
 
   /** @private
     Used to store the keyboard equivalent.
@@ -3243,7 +3736,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     keyEquivalent property to 'return'. This cached value is used to restore
     the keyEquivalent property if isDefault is set back to NO.
     
-    @property {String}
+    @type String
   */
   _defaultKeyEquivalent: null,
 
@@ -3286,7 +3779,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
       }
     }
 
-    return YES ;
+    return YES;
   },
 
   /** @private
@@ -3324,6 +3817,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     return YES ;
   },
 
+  /** @private */
   touchStart: function(touch){
     var buttonBehavior = this.get('buttonBehavior');
 
@@ -3346,6 +3840,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     return YES;
   },
 
+  /** @private */
   touchesDragged: function(evt, touches) {
     if (!this.touchIsInBoundary(evt)) {
       if (!this._touch_exited) this.set('isActive', NO);
@@ -3359,6 +3854,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     return YES;
   },
 
+  /** @private */
   touchEnd: function(touch){
     this._touch_exited = NO;
     this.set('isActive', NO); // track independently in case isEnabled has changed
@@ -3372,7 +3868,6 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     touch.preventDefault();
     return YES ;
   },
-
 
   /** @private */
   keyDown: function(evt) {
@@ -3390,12 +3885,13 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     return NO;
   },
 
-  /** @private  Perform an action based on the behavior of the button.
+  /** @private
+    Perform an action based on the behavior of the button.
 
-   - toggle behavior: switch to on/off state
-   - on behavior: turn on.
-   - off behavior: turn off.
-   - otherwise: invoke target/action
+     - toggle behavior: switch to on/off state
+     - on behavior: turn on.
+     - off behavior: turn off.
+     - otherwise: invoke target/action
   */
   _action: function(evt, skipHoldRepeat) {
     switch(this.get('buttonBehavior')) {
@@ -3465,8 +3961,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
   },
 
   /** @private */
-  _hasLegacyActionHandler: function()
-  {
+  _hasLegacyActionHandler: function() {
     var action = this.get('action');
     if (action && (SC.typeOf(action) === SC.T_FUNCTION)) return true;
     if (action && (SC.typeOf(action) === SC.T_STRING) && (action.indexOf('.') != -1)) return true;
@@ -3486,12 +3981,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     }
   },
 
-  /** tied to the isEnabled state */
-  acceptsFirstResponder: function() {
-    if(!SC.SAFARI_FOCUS_BEHAVIOR) return this.get('isEnabled');
-    else return NO;
-  }.property('isEnabled'),
-
+  /** @private */
   willBecomeKeyResponderFrom: function(keyView) {
     // focus the text field.
     if (!this._isFocused) {
@@ -3503,10 +3993,12 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     }
   },
 
+  /** @private */
   willLoseKeyResponderTo: function(responder) {
     if (this._isFocused) this._isFocused = NO ;
   },
 
+  /** @private */
   didAppendToDocument: function() {
     if(parseInt(SC.browser.msie, 0)===7 && this.get('useStaticLayout')){
       var layout = this.get('layout'),
@@ -3533,14 +4025,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
 
 }) ;
 
-// ..........................................................
-// CONSTANTS
-//
-SC.TOGGLE_BEHAVIOR = 'toggle';
-SC.PUSH_BEHAVIOR =   'push';
-SC.TOGGLE_ON_BEHAVIOR = 'on';
-SC.TOGGLE_OFF_BEHAVIOR = 'off';
-SC.HOLD_BEHAVIOR = 'hold';
+
 
 /**
   The delay after which "click" behavior should transition to "click and hold"
@@ -3554,35 +4039,43 @@ SC.ButtonView.CLICK_AND_HOLD_DELAY = SC.browser.msie ? 600 : 300;
 
 SC.REGULAR_BUTTON_HEIGHT=24;
 
-SC.ButtonView.hasGivenDeprecationWarning = NO;
+
 
 /* >>>>>>>>>> BEGIN source/panes/alert.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 sc_require('panes/panel');
 sc_require('views/button');
-/** 
-  button1 : 1st button from the right. default:OK
-  button2 : 2nd button from the right. Optional. Could be Cancel or 2nd action.
-  button3 : 1st button from the left. Optional. Could be Cancel or alternative option.
-*/
+
 /** 
   Passed to delegate when alert pane is dismissed by pressing button 1
+  
+  @static
+  @type String
+  @default 'button1'
 */
 SC.BUTTON1_STATUS = 'button1';
 
 /** 
   Passed to delegate when alert pane is dismissed by pressing button 2
+  
+  @static
+  @type String
+  @default 'button2'
 */
 SC.BUTTON2_STATUS = 'button2';
 
 /** 
   Passed to delegate when alert pane is dismissed by pressing button 3
+  
+  @static
+  @type String
+  @default 'button3'
 */
 SC.BUTTON3_STATUS = 'button3';
 
@@ -3591,151 +4084,196 @@ SC.BUTTON3_STATUS = 'button3';
   
   Alert panes are a simple way to provide modal messaging that otherwise 
   blocks the user's interaction with your application.  Alert panes are 
-  useful for showing important error messages and confirmation dialogs.  They
+  useful for showing important error messages and confirmation dialogs. They
   provide a better user experience than using the OS-level alert dialogs.
   
-  h1. Displaying an Alert Pane
+  # Displaying an Alert Pane
   
-  The easiest way to display an alert pane is to use one of the various 
+  The easiest way to display an alert pane is to use one of the various
   class methods defined on SC.AlertPane, passing the message and an optional
-  detailed description and caption.  
+  detailed description and caption.
   
-  There are four variations of this method can you can invoke:  
+  There are four variations of this method can you can invoke:
   
-  - *warn()* - displays an alert pane with a warning icon to the left.
-  - *error()* - displays an alert with an error icon to the left
-  - *info()* - displays an alert with an info icon to the left
-  - *plain()* - displays an alert w/o any icon
-  - *show()* - displays an alert with a customizable icon to the left
+    - *warn()* - displays an alert pane with a warning icon to the left.
+    - *error()* - displays an alert with an error icon to the left
+    - *info()* - displays an alert with an info icon to the left
+    - *plain()* - displays an alert w/o any icon
+    - *show()* - displays an alert with a customizable icon to the left
   
   In addition to passing a message, description and caption, you can also customize
-  the title of the button 1 (OK) and add an optional button 2 and 3 (Cancel or Extra).  Just
-  pass these titles of these buttons to enable them or null to disable then.
+  the title of the button 1 (OK) and add an optional button 2 and 3 (Cancel or Extra).
   
-  Additionally, you can pass a delegate object as the last parameter.  This
-  delegate's 'alertPaneDidDismiss()' method will be called when the pane
+    - button1 - 1st button from the right. default:OK
+    - button2 - 2nd button from the right. Optional. Could be Cancel or 2nd action.
+    - button3 - 1st button from the left. Optional. Could be Cancel or alternative option.
+  
+  Additionally, you can define a delegate object.  This delegate's 
+  'alertPaneDidDismiss()' method will be called when the pane
   is dismissed, passing the pane instance and a key indicating which 
   button was pressed.
   
-  h1. Examples
+  # Examples
   
   Show a simple AlertPane with an OK button:
   
-  {{{
-    SC.AlertPane.warn("Could not load calendar", "Your internet connection may be unavailable or our servers may be down.  Try again in a few minutes.");
-  }}}
+      SC.AlertPane.warn({
+        message: "Could not load calendar",
+        description: "Your internet connection may be unavailable or our servers may be down.",
+        caption: "Try again in a few minutes."
+      });
   
-  Show an AlertPane with a customized OK title (title will be 'Try Again'):
+  Show an AlertPane with a customized OK title (title will be 'Try Again') and
+  custom action:
   
-  {{{
-    SC.AlertPane.warn("Could not load calendar", "Your internet connection may be unavailable or our servers may be down.  Try again in a few minutes.", "Try Again");
-  }}}
+      SC.AlertPane.warn({
+        message: "Could not load calendar",
+        description: "Your internet connection may be unavailable or our servers may be down.",
+        caption: "Try again in a few minutes.",
+        buttons: [
+          { title: "Try Again" }
+        ]
+      });
   
   Show an AlertPane with a custom OK, a Cancel button and an Extra button, 
   each with custom titles.  Also, pass a delegate that will be invoked when
   the user's dismisses the dialog.
   
-  {{{
-
-    MyApp.calendarController = SC.Object.create({
-      alertPaneDidDismiss: function(pane, status) {
-        switch(status) {
-          case SC.BUTTON1_STATUS:
-            this.tryAgain();
-            break;
+      MyApp.calendarController = SC.Object.create({
+        alertPaneDidDismiss: function(pane, status) {
+          switch(status) {
+            case SC.BUTTON1_STATUS:
+              this.tryAgain();
+              break;
             
-          case SC.BUTTON2_STATUS:
-            // do nothing
-            break;
+            case SC.BUTTON2_STATUS:
+              // do nothing
+              break;
             
-          case SC.BUTTON3_STATUS:
-            this.showMoreInfo();
-            break;
-        }
-      },
-      
-      ...
-    });
+            case SC.BUTTON3_STATUS:
+              this.showMoreInfo();
+              break;
+          }
+        },
+        ...
+      });
     
-    SC.AlertPane.warn("Could not load calendar", "Your internet connection may be unavailable or our servers may be down.  Try again in a few minutes.", "Try Again", "Cancel", "More Info...", MyApp.calendarController);
-  }}}
+    
+      SC.AlertPane.warn({
+        message: "Could not load calendar",
+        description: "Your internet connection may be unavailable or our servers may be down.",
+        caption: "Try again in a few minutes.",
+        delegate: MyApp.calendarController,
+        buttons: [
+          { title: "Try Again" },
+          { title: "Cancel" },
+          { title: "More Info…" }
+        ]
+      });
+  
+  Instead of using the delegate pattern above, you can also specify a target
+  and an action, similar to SC.ButtonView.
+  
+      SC.AlertPane.warn({
+        message: "Could not load calendar",
+        description: "Your internet connection may be unavailable or our servers may be down.",
+        caption: "Try again in a few minutes.",
+        buttons: [
+          { 
+            title: "OK", 
+            action: "didClickOK",
+            target: MyApp.calendarController
+          }
+        ]
+      });
+  
+  Also note that in addition to passing the action as a string of the method
+  name that will be invoked, you can also give a function reference as the
+  action.
+  
   
   @extends SC.PanelPane
   @since SproutCore 1.0
 */
-SC.AlertPane = SC.PanelPane.extend({
-
-  classNames: 'sc-alert',
+SC.AlertPane = SC.PanelPane.extend(
+/** @scope SC.AlertPane.prototype */{
 
   /**
-    The WAI-ARIA role for alert pane. This property's value should not be
-    changed.
+    @type Array
+    @default ['sc-alert']
+    @see SC.View#classNames
+  */
+  classNames: ['sc-alert'],
 
-    @property {String}
+  /**
+    The WAI-ARIA role for alert pane.
+    
+    @type String
+    @default 'alertdialog'
+    @constant
   */
   ariaRole: 'alertdialog',
 
   /**
-    The WAI-ARIA attribute for the alert pane. This property is assigned to
-    'aria-labelledby' attribute, which defines a string value that labels the
-    element. Used to support voiceover. It should be assigned a non-empty string,
-    if the 'aria-labelledby' attribute has to be set for the element.
-
-    @property {String}
-  */
-  ariaLabeledBy: null,
-
-  /**
-    The WAI-ARIA attribute for the alert pane. This property is assigned to
-    'aria-describedby' attribute.Used to support voiceover. It is intended to
-    provide additional detail that some users might need. It should be assigned
-    a non-empty string, if the 'aria-describedby' attribute has to be set for
-    the element.
-
-    @property {String}
-  */
-  ariaDescribedBy: null,
-
-  /**
-    The delegate to notify when the pane is dismissed.  If you set a 
-    delegate, it should respond to the method:
+    If defined, the delegate is notified when the pane is dismissed. If you have 
+    set specific button actions, they will be called on the delegate object
     
-    {{{
-      alertPaneDidDismiss: function(pane, status)
-    }}}
+    The method to be called on your delegate will be:
     
-    The status will be on of SC.BUTTON1_STATUS, SC.BUTTON2_STATUS or SC.BUTTON3_STATUS
+        alertPaneDidDismiss: function(pane, status) {}
+    
+    The status will be one of SC.BUTTON1_STATUS, SC.BUTTON2_STATUS or SC.BUTTON3_STATUS
     depending on which button was clicked.
     
-    @property {Object}
+    @type Object
+    @default null
   */
   delegate: null,
-
+  
   /**
-    The icon URL or class name.  If you do not set this, an alert icon will
+    The icon URL or class name. If you do not set this, an alert icon will
     be shown instead.
     
-    @property {String}
+    @type String
+    @default 'sc-icon-alert-48'
   */
   icon: 'sc-icon-alert-48',
 
   /**
-    The primary message to display.  This message will appear in large bold
+    The primary message to display. This message will appear in large bold
     type at the top of the alert.
     
-    @property {String}
+    @type String
+    @default ""
   */
   message: "",
 
   /**
-    An optional detailed decription.  Use this string to provide further 
+    The ARIA label for the alert is the message, by default.
+    
+    @field {String}
+  */
+  ariaLabel: function() {
+    return this.get('message');
+  }.property('message').cacheable(),
+
+  /**
+    An optional detailed decription. Use this string to provide further
     explanation of the condition and, optionally, ways the user can resolve
     the problem.
     
-    @property {String}
+    @type String
+    @default ""
   */
   description: "",
   
+  /**
+    An escaped and formatted version of the description property.
+    
+    @field
+    @type String
+    @observes description
+  */
   displayDescription: function() {
     var desc = this.get('description');
     if (!desc || desc.length === 0) return desc ;
@@ -3745,14 +4283,22 @@ SC.AlertPane = SC.PanelPane.extend({
   }.property('description').cacheable(),
 
   /**
-    An optional detailed caption.  Use this string to provide further 
+    An optional detailed caption. Use this string to provide further
     fine print explanation of the condition and, optionally, ways the user can resolve
     the problem.
     
-    @property {String}
+    @type String
+    @default ""
   */
   caption: "",
   
+  /**
+    An escaped and formatted version of the caption property.
+    
+    @field
+    @type String
+    @observes caption
+  */
   displayCaption: function() {
     var caption = this.get('caption');
     if (!caption || caption.length === 0) return caption ;
@@ -3762,33 +4308,38 @@ SC.AlertPane = SC.PanelPane.extend({
   }.property('caption').cacheable(),
   
   /**
-    The button view for the button 1 (OK).
+    The button view for button 1 (OK).
     
-    @property {SC.ButtonView}
+    @type SC.ButtonView
   */
-  buttonOne: SC.outlet('contentView.childViews.1.childViews.1'),
-
+  button1: SC.outlet('contentView.childViews.1.childViews.1'),
+    
   /**
     The button view for the button 2 (Cancel).
     
-    @property {SC.ButtonView}
+    @type SC.ButtonView
   */
-  buttonTwo: SC.outlet('contentView.childViews.1.childViews.0'),
-
+  button2: SC.outlet('contentView.childViews.1.childViews.0'),
+    
   /**
     The button view for the button 3 (Extra).
     
-    @property {SC.ButtonView}
+    @type SC.ButtonView
   */
-  buttonThree: SC.outlet('contentView.childViews.2.childViews.0'),
-
+  button3: SC.outlet('contentView.childViews.2.childViews.0'),
+    
   /**
     The view for the button 3 (Extra) wrapper.
     
-    @property {SC.View}
+    @type SC.View
   */
   buttonThreeWrapper: SC.outlet('contentView.childViews.2'),
   
+  /**
+    @type Hash
+    @default { top : 0.3, centerX: 0, width: 500 }
+    @see SC.View#layout
+  */
   layout: { top : 0.3, centerX: 0, width: 500 },
 
   /** @private - internal view that is actually displayed */
@@ -3802,11 +4353,11 @@ SC.AlertPane = SC.PanelPane.extend({
       SC.View.extend(SC.StaticLayout, {
         classNames: ['info'],
 
+        /** @private */
         render: function(context, firstTime) {
           var pane = this.get('pane');
-          var blank = SC.BLANK_IMAGE_URL ;
           if(pane.get('icon') == 'blank') context.addClass('plain');
-          context.push('<img src="'+blank+'" class="icon '+pane.get('icon')+'" />');
+          context.push('<img src="'+SC.BLANK_IMAGE_URL+'" class="icon '+pane.get('icon')+'" />');
           context.begin('h1').attr('class', 'header').text(pane.get('message') || '').end();
           context.push(pane.get('displayDescription') || '');
           context.push(pane.get('displayCaption') || '');
@@ -3819,35 +4370,34 @@ SC.AlertPane = SC.PanelPane.extend({
         layout: { bottom: 13, height: 24, right: 18, width: 466 },
         childViews: ['cancelButton', 'okButton'],
         classNames: ['text-align-right'],
-        cancelButton : SC.ButtonView.extend({
-            useStaticLayout: YES,
-            actionKey: SC.BUTTON2_STATUS,
-            localize: YES,
-            titleMinWidth: 64,
-            layout: { right: 5, height: 'auto', width: 'auto', bottom: 0 },
-            theme: 'capsule',
-            title: "Cancel", 
-            isCancel: YES,
-            action: "dismiss",
-            isVisible: NO
-          }),
-
-        okButton : SC.ButtonView.extend({
-            useStaticLayout: YES,
-            actionKey: SC.BUTTON1_STATUS,
-            localize: YES,
-            titleMinWidth: 64,
-            layout: { left: 0, height: 'auto', width: 'auto', bottom: 0 },
-            theme: 'capsule',
-            title: "OK", 
-            isDefault: YES,
-            action: "dismiss"
-          })
+        
+        cancelButton: SC.ButtonView.extend({
+          useStaticLayout: YES,
+          actionKey: SC.BUTTON2_STATUS,
+          localize: YES,
+          titleMinWidth: 64,
+          layout: { right: 5, height: 'auto', width: 'auto', bottom: 0 },
+          theme: 'capsule',
+          isCancel: YES,
+          action: "dismiss",
+          isVisible: NO
+        }),
+        
+        okButton: SC.ButtonView.extend({
+          useStaticLayout: YES,
+          actionKey: SC.BUTTON1_STATUS,
+          localize: YES,
+          titleMinWidth: 64,
+          layout: { left: 0, height: 'auto', width: 'auto', bottom: 0 },
+          theme: 'capsule',
+          isDefault: YES,
+          action: "dismiss",
+          isVisible: NO
+        })
       }),
       
       SC.View.extend({
         layout: { bottom: 13, height: 24, left: 18, width: 150 },
-        isVisible: NO,
         childViews: [
           SC.ButtonView.extend({
             useStaticLayout: YES,
@@ -3856,7 +4406,6 @@ SC.AlertPane = SC.PanelPane.extend({
             titleMinWidth: 64,
             layout: { left: 0, height: 'auto', width: 'auto', bottom: 0 },
             theme: 'capsule',
-            title: "Extra", 
             action: "dismiss",
             isVisible: NO
           })]
@@ -3864,14 +4413,40 @@ SC.AlertPane = SC.PanelPane.extend({
   }),
 
   /**
-    Action triggered whenever any button is pressed.  Notifies any delegate
-    and then hides the alert pane.
+    Action triggered whenever any button is pressed. Also the hides the 
+    alertpane itself.
+    
+    This will trigger the following chain of events:
+    1. If a delegate was given, and it has alertPaneDidDismiss it will be called
+    2. Otherwise it will look for the action of the button and call:
+       a) The action function reference if one was given
+       b) The action method on the target if one was given
+       c) If both a and b are missing, call the action on the rootResponder
+    
+    @param {SC.View} sender - the button view that was clicked
   */
   dismiss: function(sender) {
-    var del = this.delegate;
+    var del = this.delegate,
+        rootResponder, action, target;
+    
     if (del && del.alertPaneDidDismiss) {
       del.alertPaneDidDismiss(this, sender.get('actionKey'));
     }
+    else if(action = (sender && sender.get('customAction'))) {
+      if(SC.typeOf(action)===SC.T_FUNCTION) {
+        action.call(action);
+      }
+      else if(target = sender.get('target')) {
+        target.tryToPerform(action);
+      }
+      else {
+        rootResponder = this.getPath('pane.rootResponder');
+        if(rootResponder) {
+          rootResponder.sendAction(action, del, this);
+        }
+      }
+    }
+    
     this.remove(); // hide alert
   },
   
@@ -3882,161 +4457,200 @@ SC.AlertPane = SC.PanelPane.extend({
   alertInfoDidChange: function() {
     var v = this.getPath('contentView.childViews.0');
     if (v) v.displayDidChange(); // re-render message
-  }.observes('icon', 'message', 'displayDescription', 'displayCaption'),
+  }.observes('icon', 'message', 'displayDescription', 'displayCaption')
 
-
-  render: function(context, firstTime) {
-    arguments.callee.base.apply(this,arguments);
-    var ariaLabeledBy   = this.get('ariaLabeledBy'),
-        ariaDescribedBy = this.get('ariaDescribedBy');
-
-    //addressing accessibility
-    if(firstTime) {
-      if(ariaLabeledBy && ariaLabeledBy !== "") {
-        context.attr('aria-labelledby', ariaLabeledBy);
-      }
-      if(ariaDescribedBy && ariaDescribedBy !== "") {
-       context.attr('aria-describedby', ariaDescribedBy);
-      }
-    }
-  }
 });
 
-/** @private
-  internal method normalizes arguments for processing by helper methods.
-*/
-SC.AlertPane._normalizeArguments = function(args) {
-  args = SC.A(args); // convert to real array
-  var len = args.length, delegate = args[len-1];
-  if (SC.typeOf(delegate) !== SC.T_STRING) {
-    args[len-1] = null;
-  } else delegate = null ;
-  args[7] = delegate ;
-  return args ;
-};
-
-/**
-  Displays a new alert pane according to the passed parameters.  Every 
-  parameter except for the message is optional.  You can always pass the 
-  delegate as the last parameter and it will be used, even if you omit items
-  in between.
+SC.AlertPane.mixin(
+/** @scope SC.AlertPane */{
   
-  If you need to pass other parameters but you want to omit some others 
-  in between, pass null and the related UI item will be hidden
-  
-  Note that if you pass an icon, it should be 48 x 48 in size.
-  
-  @param {String} message the primary message
-  @param {String} description an optional detailed description
-  @param {String} caption an optional detailed fine print caption
-  @param {String} button1Title optional unlocalized title for button 1 (OK)
-  @param {String} button2Title optional unlocalized title for button 2 (Cancel)
-  @param {String} button3Title optional unlocalized title for button 3 (extra)
-  @param {String} iconUrl optional URL or class name for icon.
-  @param {Object} delegate optional delegate to notify when pane is dismissed
-  @returns {SC.AlertPane} new alert pane
-*/
-SC.AlertPane.show = function(message, description, caption, button1Title, button2Title, button3Title, iconUrl, delegate) {
-  
-  // get the delegate and normalize the rest of the params
-  var args = this._normalizeArguments(arguments);
-  
-  // create basic AlertPane
-  var ret = this.create({
-    message: args[0] || '',
-    description: args[1] || null,
-    caption: args[2] || null,
-    icon: args[6] || 'sc-icon-alert-48',
-    delegate: args[7]
-  });
-  
-  // customize buttons as needed
-  var buttonKeys = 'buttonOne buttonTwo buttonThree'.w(), button, title;
-  for(var idx=0;idx<3;idx++) {
-    button = ret.get(buttonKeys[idx]);
-    title = args[idx + 3];
-    if (title) {
-      button.set('title', title).set('isVisible', YES);
-      if(title=='?') button.set('titleMinWidth', 0);
-      if (idx==2) {
-        var button_wrapper = ret.get('buttonThreeWrapper');
-        button_wrapper.set('isVisible', YES);
-      }
+  /**
+    Show a dialog with a given set of hash attributes:
+    
+        SC.AlertPane.show({
+          message: "Could not load calendar",
+          description: "Your internet connection may be unavailable or our servers may be down.",
+          caption: "Try again in a few minutes.",
+          delegate: MyApp.calendarController
+        });
+    
+    See more examples for how to configure buttons and individual actions in the 
+    documentation for the SC.AlertPane class.
+    
+    @param {Hash} args
+    @return {SC.AlertPane} the pane shown
+  */
+  show: function(args) {
+    // normalize the arguments if this is a deprecated call
+    args = SC.AlertPane._argumentsCall.apply(this, arguments);
+    
+    var pane = this.create(args), 
+        idx = 0, 
+        buttons = args.buttons,
+        buttonView, title, action, target;
+    
+    if(buttons) {
+      buttons.forEach(function(button) {
+        idx++;
+        buttonView = pane.get('button%@'.fmt(idx));
+        
+        title = button.title;
+        action = button.action;
+        target = button.target;
+        
+        buttonView.set('title'.fmt(idx), title);
+        if(action) buttonView.set('customAction'.fmt(idx), action);
+        if(target) buttonView.set('target'.fmt(idx), target);
+        buttonView.set('isVisible', !!title);
+      });
     }
+    else {
+      // if there are no buttons defined, just add the standard OK button
+      buttonView = pane.get('button1');
+      buttonView.set('title', "OK");
+      buttonView.set('isVisible', YES);
+    }
+    
+    var show = pane.append(); // make visible.
+    pane.adjust('height', pane.childViews[0].$().height());
+    pane.updateLayout();
+    return show;
+  },
+  
+  /**
+    Same as show() just that it uses sc-icon-alert-48 CSS classname
+    as the dialog icon
+    
+    @param {Hash} args
+    @return {SC.AlertPane} the pane shown
+  */
+  warn: function(args) {
+    // normalize the arguments if this is a deprecated call
+    args = SC.AlertPane._argumentsCall.apply(this, arguments);
+    
+    args.icon = 'sc-icon-alert-48';
+    return this.show(args);
+  },
+  
+  /**
+    Same as show() just that it uses sc-icon-info-48 CSS classname
+    as the dialog icon
+    
+    @param {Hash} args
+    @return {SC.AlertPane} the pane shown
+  */
+  info: function(args) {
+    // normalize the arguments if this is a deprecated call
+    args = SC.AlertPane._argumentsCall.apply(this, arguments);
+    
+    args.icon = 'sc-icon-info-48';
+    return this.show(args);
+  },
+  
+  /**
+    Same as show() just that it uses sc-icon-error-48 CSS classname
+    as the dialog icon
+    
+    @param {Hash} args
+    @return {SC.AlertPane} the pane shown
+  */
+  error: function(args) {
+    // normalize the arguments if this is a deprecated call
+    args = SC.AlertPane._argumentsCall.apply(this, arguments);
+    
+    args.icon = 'sc-icon-error-48';
+    return this.show(args);
+  },
+  
+  /**
+    Same as show() just that it uses blank CSS classname
+    as the dialog icon
+    
+    @param {Hash} args
+    @return {SC.AlertPane} the pane shown
+  */
+  plain: function(args) {
+    // normalize the arguments if this is a deprecated call
+    args = SC.AlertPane._argumentsCall.apply(this, arguments);
+    
+    args.icon = 'blank';
+    return this.show(args);
+  },
+  
+  /** @private
+    Set properties to new structure for call that use the old arguments 
+    structure.
+    
+    Deprecated API but is preserved for now for backwards compatibility.
+    
+    @deprecated
+  */
+  _argumentsCall: function(args) {
+    var ret = args;
+    if(SC.typeOf(args)!==SC.T_HASH) {
+      
+      SC.debug('SC.AlertPane has changed the signatures for show(), info(), warn(), error() and plain(). Please update accordingly.');
+      
+      var normalizedArgs = this._normalizeArguments(arguments);
+      
+      // now convert it to the new format for show()
+      ret = {
+        message: normalizedArgs[0],
+        description: normalizedArgs[1],
+        caption: normalizedArgs[2],
+        delegate: normalizedArgs[7],
+        icon: (normalizedArgs[6] || 'sc-icon-alert-48')
+      };
+      
+      // set buttons if there are any (and check if it's a string, since last
+      // argument could be the delegate object)
+      if(SC.typeOf(normalizedArgs[3])===SC.T_STRING || SC.typeOf(normalizedArgs[4])===SC.T_STRING || SC.typeOf(normalizedArgs[5])===SC.T_STRING) {
+        ret.buttons = [
+          { title: normalizedArgs[3] },
+          { title: normalizedArgs[4] },
+          { title: normalizedArgs[5] }
+        ];
+      }
+      
+    }
+    return ret;
+  },
+  
+  /** @private
+    internal method normalizes arguments for processing by helper methods.
+  */
+  _normalizeArguments: function(args) {
+    args = SC.A(args); // convert to real array
+    var len = args.length, delegate = args[len-1];
+    if (SC.typeOf(delegate) !== SC.T_STRING) {
+      args[len-1] = null;
+    } else delegate = null ;
+    args[7] = delegate ;
+    return args ;
   }
-  var show = ret.append() ; // make visible.
-  ret.adjust('height', ret.childViews[0].$().height()) ;
-  ret.updateLayout() ;
-  return show ;
-};
-
-/**
-  Displays a warning alert pane.  See SC.AlertPane.show() for complete details. 
   
-  @returns {SC.AlertPane} the pane
-*/
-SC.AlertPane.warn = function(message, description, caption, button1Title, button2Title, button3Title, delegate) {
-  var args = this._normalizeArguments(arguments);
-  args[6] = 'sc-icon-alert-48';
-  return this.show.apply(this, args);
-};
-
-
-/**
-  Displays a info alert pane.  See SC.AlertPane.show() for complete details. 
-  
-  @returns {SC.AlertPane} the pane
-*/
-SC.AlertPane.info = function(message, description, caption, button1Title, button2Title, button3Title, delegate) {
-  var args = this._normalizeArguments(arguments);
-  args[6] = 'sc-icon-info-48';
-  return this.show.apply(this, args);
-};
-
-/**
-  Displays a error allert pane.  See SC.AlertPane.show() for complete details. 
-  
-  @returns {SC.AlertPane} the pane
-*/
-SC.AlertPane.error = function(message, description, caption, button1Title, button2Title, button3Title, delegate) {
-  var args = this._normalizeArguments(arguments);
-  args[6] = 'sc-icon-error-48';
-  return this.show.apply(this, args);
-};
-
-/**
-  Displays a plain all-text allert pane w/o icon.  See SC.AlertPane.show() for complete details. 
-  
-  @returns {SC.AlertPane} the pane
-*/
-SC.AlertPane.plain = function(message, description, caption, button1Title, button2Title, button3Title, delegate) {
-  var args = this._normalizeArguments(arguments);
-  args[6] = 'blank';
-  return this.show.apply(this, args);
-};
+});
 
 /* >>>>>>>>>> BEGIN source/panes/palette.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            portions copyright @2009 Apple Inc.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 sc_require('panes/panel');
 
-/**
+/** @class
   Displays a non-modal, default positioned, drag&drop-able palette pane.
 
   The default way to use the palette pane is to simply add it to your page like this:
   
-  {{{
-    SC.PalettePane.create({
-      layout: { width: 400, height: 200, right: 0, top: 0 },
-      contentView: SC.View.extend({
-      })
-    }).append();
-  }}}
+      SC.PalettePane.create({
+        layout: { width: 400, height: 200, right: 0, top: 0 },
+        contentView: SC.View.extend({
+        })
+      }).append();
   
   This will cause your palette pane to display.
   
@@ -4048,30 +4662,53 @@ sc_require('panes/panel');
   @extends SC.PanelPane
   @since SproutCore 1.0
 */
-SC.PalettePane = SC.PanelPane.extend({
+SC.PalettePane = SC.PanelPane.extend(
+/** @scope SC.PalettePane.prototype */ {
   
-  classNames: 'sc-palette',
+  /**
+    @type Array
+    @default ['sc-palette']
+    @see SC.View#classNames
+  */
+  classNames: ['sc-palette'],
   
-  /** Palettes are not modal by default */
+  /**
+    Palettes are not modal by default
+    
+    @type Boolean
+    @default NO
+  */
   isModal: NO,
   
-  /** Do not show smoke behind palettes */
+  /**
+    @type SC.View
+    @default SC.ModalPane
+  */
   modalPane: SC.ModalPane,
   
+  /**
+    @type Boolean
+    @default NO
+  */
   isAnchored: NO,
   
+  /** @private */
   _mouseOffsetX: null,
+
+  /** @private */
   _mouseOffsetY: null,
 
-  /** @private - drag&drop palette to new position. */
+  /** @private
+    Drag & drop palette to new position.
+  */
   mouseDown: function(evt) {
-    
     var f=this.get('frame');
     this._mouseOffsetX = f ? (f.x - evt.pageX) : 0;
     this._mouseOffsetY = f ? (f.y - evt.pageY) : 0;
     return YES;
   },
 
+  /** @private */
   mouseDragged: function(evt) {
     if(!this.isAnchored) {
       this.set('layout', { width: this.layout.width, height: this.layout.height, left: this._mouseOffsetX + evt.pageX, top: this._mouseOffsetY + evt.pageY });
@@ -4080,25 +4717,25 @@ SC.PalettePane = SC.PanelPane.extend({
     return YES;
   },
   
+  /** @private */
   touchStart: function(evt){
     return this.mouseDown(evt);
   },
   
+  /** @private */
   touchesDragged: function(evt){
     return this.mouseDragged(evt);
   }
-  
- 
+
 });
 
 /* >>>>>>>>>> BEGIN source/panes/picker.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            portions copyright @2009 Apple Inc.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
-
 
 sc_require('panes/palette');
 
@@ -4117,200 +4754,246 @@ sc_require('panes/palette');
           perfect bottom (3) > perfect right (0) > perfect left (1) > perfect top (2)
           fallback to perfect bottom (3)
 */
+
+/**
+  @type String
+  @constant
+  @static
+*/
 SC.PICKER_MENU = 'menu';
+
+/**
+  @type String
+  @constant
+  @static
+*/
 SC.PICKER_FIXED = 'fixed';
+
+/**
+  @type String
+  @constant
+  @static
+*/
 SC.PICKER_POINTER = 'pointer';
+
+/**
+  @type String
+  @constant
+  @static
+*/
 SC.PICKER_MENU_POINTER = 'menu-pointer';
+
 /** 
-  Pointer layout for perfect right/left/top/bottom
+  Pointer layout for perfect right/left/top/bottom.
+
+  @constant
+  @static
 */
 SC.POINTER_LAYOUT = ["perfectRight", "perfectLeft", "perfectTop", "perfectBottom"];
 
 /**
   @class
   
-  Display a non-modal pane that automatically repositions around a view so as 
-  to remain visible. 
+  Display a non-modal pane that automatically repositions around a view so as
+  to remain visible.
   
-  An `SC.PickerPane` repositions around the view to which it is anchored as the 
-  browser window is resized so as to ensure the pane's content remains visible. 
-  A picker pane is useful for displaying supplementary information and does not 
-  block the user's interaction with other UI elements. Picker panes typically 
+  An `SC.PickerPane` repositions around the view to which it is anchored as the
+  browser window is resized so as to ensure the pane's content remains visible.
+  A picker pane is useful for displaying supplementary information and does not
+  block the user's interaction with other UI elements. Picker panes typically
   provide a better user experience than modal panels.
 
-  An `SC.PickerPane` repositions itself according to the optional `preferMatrix` 
-  argument passed in the `.popup()` method call. The `preferMatrix` either 
-  specifies an offset-based arrangement behavior or a position-based arrangement 
+  An `SC.PickerPane` repositions itself according to the optional `preferMatrix`
+  argument passed in the `.popup()` method call. The `preferMatrix` either
+  specifies an offset-based arrangement behavior or a position-based arrangement
   behavior depending on the `preferType` argument in the `.popup()` call.
-             
+
   The simplest way to create and display a picker pane:
-  
-  {{{
-    SC.PickerPane.create({ 
-        layout: { width: 400, height: 200 }, 
+
+      SC.PickerPane.create({
+        layout: { width: 400, height: 200 },
         contentView: SC.View.extend({})
-    }).popup(someView);
-  }}}
+      }).popup(someView);
   
-  This displays the `SC.PickerPane` anchored to `someView`. 
-      
-  h2. Positioning
+  This displays the `SC.PickerPane` anchored to `someView`.
+
+  ## Positioning
   
-  Picker pane positioning can be classified into two broad categories: 
-  offset-based and position-based. 
-  
-  h3. Offset-based
-    
-  When `preferType` is unspecified, `SC.PICKER_MENU` or `SC.PICKER_FIXED`, then 
-  the `preferMatrix` array describes the offset that is used to position the 
+  Picker pane positioning can be classified into two broad categories:
+  offset-based and position-based.
+
+  ### Offset-based
+
+  When `preferType` is unspecified, `SC.PICKER_MENU` or `SC.PICKER_FIXED`, then
+  the `preferMatrix` array describes the offset that is used to position the
   pane below the anchor. The offset is described by an array of three values,
-  defaulting to `[1, 4, 3]`. The first value controls the x offset and the second 
-  value the y offset. The third value can be `0` (right) or `3` (bottom), 
-  controlling whether the origin of the pane is further offset by the width 
-  (in the case of 0) or the height (in the case of 3) of the anchor.  
+  defaulting to `[1, 4, 3]`. The first value controls the x offset and the second
+  value the y offset. The third value can be `0` (right) or `3` (bottom),
+  controlling whether the origin of the pane is further offset by the width
+  (in the case of 0) or the height (in the case of 3) of the anchor.
   
+  ### Position-based
   
-  h3. Position-based
-  
-  When `preferType` is `SC.PICKER_POINTER` or `SC.PICKER_MENU_POINTER`, then 
-  the `preferMatrix` specifies the sides in the order in which you want the 
-  `SC.PickerPane` to try to arrange itself around the view to which it is 
-  anchored. The fifth element in the `preferMatrix` specifies which side the 
-  `SC.PickerPane` should display on when there isn't enough space around any 
+  When `preferType` is `SC.PICKER_POINTER` or `SC.PICKER_MENU_POINTER`, then
+  the `preferMatrix` specifies the sides in the order in which you want the
+  `SC.PickerPane` to try to arrange itself around the view to which it is
+  anchored. The fifth element in the `preferMatrix` specifies which side the
+  `SC.PickerPane` should display on when there isn't enough space around any
   of the preferred sides.
   
-  Anchor sides are defined by their index in `SC.POINTER_LAYOUT`, where right 
+  Anchor sides are defined by their index in `SC.POINTER_LAYOUT`, where right
   is `0`, left is `1`, top is `2`, and bottom is `3`.
   
-  For example, the `preferMatrix` of `[3, 0, 1, 2, 2]` says: "Display below the 
-  anchor (3); if there isn't enough space then display to the right of the anchor (0). 
-  If there isn't enough space either below or to the right of the anchor, then appear 
-  to the left (1), unless there is also no space on the left, in which case display 
+  For example, the `preferMatrix` of `[3, 0, 1, 2, 2]` says: "Display below the
+  anchor (3); if there isn't enough space then display to the right of the anchor (0).
+  If there isn't enough space either below or to the right of the anchor, then appear
+  to the left (1), unless there is also no space on the left, in which case display
   above the anchor (2)."
   
-  h2. Position Rules
+  ## Position Rules
   
-  When invoking `.popup()` you can optionally specify a picker position rule with 
-  the `preferType` argument. 
+  When invoking `.popup()` you can optionally specify a picker position rule with
+  the `preferType` argument.
   
-  If no `preferType` is specified, the picker pane is displayed just below the anchor. 
-  The pane will reposition automatically for optimal visibility, ensuring the top-left 
+  If no `preferType` is specified, the picker pane is displayed just below the anchor.
+  The pane will reposition automatically for optimal visibility, ensuring the top-left
   corner is visible.
   
   These position rules have the following behaviors:
   
-  h3.  `SC.PICKER_MENU`
+  ### `SC.PICKER_MENU`
   
-  Positioning is offset-based, with `preferMatrix` defaulting to `[1, 4, 3]`. 
-  Furthermore, a minimum left and right padding to window, of 7px and 8px, respectively, 
+  Positioning is offset-based, with `preferMatrix` defaulting to `[1, 4, 3]`.
+  Furthermore, a minimum left and right padding to window, of 7px and 8px, respectively,
   is enforced.
   
   
-  h3. `SC.PICKER_FIXED`
+  ### `SC.PICKER_FIXED`
   
-  Positioning is offset-based, with `preferMatrix` defaulting to `[1, 4, 3]` and 
+  Positioning is offset-based, with `preferMatrix` defaulting to `[1, 4, 3]` and
   skipping `fitPositionToScreen`.
   
   
-  h3. `SC.PICKER_POINTER`
+  ### `SC.PICKER_POINTER`
   
-  Positioning is position-based, with `preferMatrix` defaulting to `[0, 1, 2, 3, 2]`, 
+  Positioning is position-based, with `preferMatrix` defaulting to `[0, 1, 2, 3, 2]`,
   i.e. right > left > top > bottom; fallback to top.
   
   
-  h3. `SC.PICKER_MENU_POINTER`
+  ### `SC.PICKER_MENU_POINTER`
   
-  Positioning is position-based, with `preferMatrix` defaulting to `[3, 0, 1, 2, 3]`, 
+  Positioning is position-based, with `preferMatrix` defaulting to `[3, 0, 1, 2, 3]`,
   i.e. bottom, right, left, top; fallback to bottom.
   
   
   
-  h2. Examples
+  ## Examples
   
   Examples for applying popular customized picker position rules:
   
-  1. default:   
-  {{{
-    SC.PickerPane.create({
-      layout: { width: 400, height: 200 },
-      contentView: SC.View.extend({})
-    }).popup(anchor);
-  }}}
+  ### default:
 
-  2. menu below the anchor with default `preferMatrix` of `[1,4,3]`:   
-  {{{
-    SC.PickerPane.create({
-      layout: { width: 400, height: 200 },
-      contentView: SC.View.extend({})
-    }).popup(anchor, SC.PICKER_MENU);
-  }}}
+      SC.PickerPane.create({
+        layout: { width: 400, height: 200 },
+        contentView: SC.View.extend({})
+      }).popup(anchor);
 
-  3. menu on the right side of anchor with custom `preferMatrix` of `[2,6,0]`:   
-  {{{
-    SC.PickerPane.create({
-      layout: { width: 400, height: 200 },
-      contentView: SC.View.extend({})
-    }).popup(anchor, SC.PICKER_MENU, [2,6,0]);
-  }}}
+  ### menu below the anchor with default `preferMatrix` of `[1,4,3]`:
 
-  4. fixed below the anchor with default `preferMatrix` of `[1,4,3]`:   
-  {{{
-    SC.PickerPane.create({
-      layout: { width: 400, height: 200 },
-      contentView: SC.View.extend({})
-    }).popup(anchor, SC.PICKER_FIXED);
-  }}}
+      SC.PickerPane.create({
+        layout: { width: 400, height: 200 },
+        contentView: SC.View.extend({})
+      }).popup(anchor, SC.PICKER_MENU);
 
-  5. fixed on the right side of anchor with `preferMatrix` of `[-22,-17,0]`:   
-  {{{
-    SC.PickerPane.create({
-      layout: { width: 400, height: 200 },
-      contentView: SC.View.extend({})
-    }).popup(anchor, SC.PICKER_FIXED, [-22,-17,0]);
-  }}}
+  ### menu on the right side of anchor with custom `preferMatrix` of `[2,6,0]`:
 
-  6. pointer with default `preferMatrix` of `[0,1,2,3,2]`:   
-  {{{
-    SC.PickerPane.create({
-      layout: { width: 400, height: 200 },
-      contentView: SC.View.extend({})
-    }).popup(anchor, SC.PICKER_POINTER);
-  }}}
+      SC.PickerPane.create({
+        layout: { width: 400, height: 200 },
+        contentView: SC.View.extend({})
+      }).popup(anchor, SC.PICKER_MENU, [2,6,0]);
+
+  ### fixed below the anchor with default `preferMatrix` of `[1,4,3]`:
+
+      SC.PickerPane.create({
+        layout: { width: 400, height: 200 },
+        contentView: SC.View.extend({})
+      }).popup(anchor, SC.PICKER_FIXED);
+
+  ### fixed on the right side of anchor with `preferMatrix` of `[-22,-17,0]`:
+
+      SC.PickerPane.create({
+        layout: { width: 400, height: 200 },
+        contentView: SC.View.extend({})
+      }).popup(anchor, SC.PICKER_FIXED, [-22,-17,0]);
+
+  ### pointer with default `preferMatrix` of `[0,1,2,3,2]`:
+
+      SC.PickerPane.create({
+        layout: { width: 400, height: 200 },
+        contentView: SC.View.extend({})
+      }).popup(anchor, SC.PICKER_POINTER);
   
   Positioning: right (0) > left (1) > top (2) > bottom (3). Fallback to top (2).
 
-  7. pointer with custom `preferMatrix` of `[3,0,1,2,2]`:   
-  {{{
-    SC.PickerPane.create({
-      layout: { width: 400, height: 200 },
-      contentView: SC.View.extend({})
-    }).popup(anchor, SC.PICKER_POINTER, [3,0,1,2,2]);
-  }}}
+  ### pointer with custom `preferMatrix` of `[3,0,1,2,2]`:
+
+      SC.PickerPane.create({
+        layout: { width: 400, height: 200 },
+        contentView: SC.View.extend({})
+      }).popup(anchor, SC.PICKER_POINTER, [3,0,1,2,2]);
 
   Positioning: bottom (3) > right (0) > left (1) > top (2). Fallback to top (2).
 
-  8. menu-pointer with default `preferMatrix` of `[3,0,1,2,3]`:
-  {{{
-    SC.PickerPane.create({
-      layout: { width: 400, height: 200 },
-      contentView: SC.View.extend({})
-    }).popup(anchor, SC.PICKER_MENU_POINTER);
-  }}}
+  ### menu-pointer with default `preferMatrix` of `[3,0,1,2,3]`:
+
+      SC.PickerPane.create({
+        layout: { width: 400, height: 200 },
+        contentView: SC.View.extend({})
+      }).popup(anchor, SC.PICKER_MENU_POINTER);
   
   Positioning: bottom (3) > right (0) > left (1) > top (2). Fallback to bottom (3).
  
   @extends SC.PalettePane
   @since SproutCore 1.0
 */
-SC.PickerPane = SC.PalettePane.extend( /** @scope SC.PickerPane.prototype */ {
+SC.PickerPane = SC.PalettePane.extend(
+/** @scope SC.PickerPane.prototype */ {
   
-  classNames: 'sc-picker',
+  /**
+    @type Array
+    @default ['sc-picker']
+    @see SC.View#classNames
+  */
+  classNames: ['sc-picker'],
+  
+  /**
+    @type Boolean
+    @default YES
+  */
   isAnchored: YES,
   
+  /**
+    @type Boolean
+    @default YES
+  */
   isModal: YES,
   
+  /**
+    @type String
+    @default 'perfectRight'
+  */
   pointerPos: 'perfectRight',
+
+  /**
+    @type Number
+    @default 0
+  */
   pointerPosX: 0,
+
+  /**
+    @type Number
+    @default 0
+  */
   pointerPosY: 0,
   
   /**
@@ -4318,52 +5001,91 @@ SC.PickerPane = SC.PalettePane.extend( /** @scope SC.PickerPane.prototype */ {
     triggered your picker to show.  You can use this to properly position your 
     picker.
     
-    @property {Object}
+    @type HTMLElement
+    @default null
   */
   anchorElement: null,
 
-  /**
+  /** @private
     anchor rect calculated by computeAnchorRect from init popup
 
-    @property {Hash}
+    @type Hash
+    @default null
   */
   anchorCached: null,
   
   /**
     popular customized picker position rule
     
-    @property {String}
+    @type String
+    @default null
   */
   preferType: null,
   
   /**
     default/custom offset or position pref matrix for specific preferType
     
-    @property {String}
+    @type String
+    @default null
   */
   preferMatrix: null,
 
   /**
     default/custom offset of pointer for picker-pointer or pointer-menu
 
-    @property {Array}
+    @type Array
+    @default null
   */
   pointerOffset: null,
 
   /**
     default offset of extra-right pointer for picker-pointer or pointer-menu
 
-    @property Number
+    @type Number
+    @default 0
   */
   extraRightOffset: 0,
+  
+  /**
+    The target object to invoke the remove action on when the user clicks off the 
+    picker that is to be removed.
+
+    If you set this target, the action will be called on the target object
+    directly when the user clicks off the picker. If you leave this property 
+    set to null, then the button will search the responder chain for a view that
+    implements the action when the button is pressed instead.
+
+    @type Object
+    @default null
+  */
+  removeTarget: null,
+  
+  /**
+    The name of the action you want triggered when the user clicks off the
+    picker pane that is to be removed. 
+    
+    This property is used in conjunction with the removeTarget property to execute
+    a method when the user clicks off the picker pane.  
+
+    If you do not set a target, then clicking off the picker pane will cause the
+    responder chain to search for a view that implements the action you name
+    here, if one was provided. 
+    
+    Note that this property is optional. If no explicit value is provided then the 
+    picker pane will perform the default action which is to simply remove itself.
+
+    @type String
+    @default null
+  */
+  removeAction: null,
 
   /**
-    Displays a new picker pane according to the passed parameters.
-    Every parameter except for the anchorViewOrElement is optional.
-  
-    @param {Object} anchorViewOrElement view or element to anchor to
-    @param {String} preferType optional apply picker position rule
-    @param {Array} preferMatrix optional apply custom offset or position pref matrix for specific preferType
+    Displays a new picker pane.
+
+    @param {SC.View|HTMLElement} anchorViewOrElement view or element to anchor to
+    @param {String} [preferType] apply picker position rule
+    @param {Array} [preferMatrix] apply custom offset or position pref matrix for specific preferType
+    @param {Number} [pointerOffset]
     @returns {SC.PickerPane} receiver
   */
   popup: function(anchorViewOrElement, preferType, preferMatrix, pointerOffset) {
@@ -4474,7 +5196,7 @@ SC.PickerPane = SC.PalettePane.extend( /** @scope SC.PickerPane.prototype */ {
     }
     else {
       // Only really old versions will have to go through this code path.
-      ret   = SC.viewportOffset(anchor); // get x & y
+      ret   = SC.offset(anchor); // get x & y
       cq    = SC.$(anchor);
       ret.width = cq.outerWidth();
       ret.height = cq.outerHeight();
@@ -4794,17 +5516,36 @@ SC.PickerPane = SC.PalettePane.extend( /** @scope SC.PickerPane.prototype */ {
     }
   },
   
+  /**
+    @type Array
+    @default ['preferType','pointerPos','pointerPosY']
+    @see SC.View#displayProperties
+  */
   displayProperties: ['preferType','pointerPos','pointerPosY'],
 
+  /**
+    @type String
+    @default 'pickerRenderDelegate'
+  */
   renderDelegateName: 'pickerRenderDelegate',
 
   /** @private - click away picker. */
   modalPaneDidClick: function(evt) {
-    var f = this.get("frame");
-    if(!this.clickInside(f, evt)) this.remove();
+    var f = this.get('frame'),
+        target = this.get('removeTarget') || null,
+        action = this.get('removeAction'),
+        rootResponder = this.get('rootResponder');
+        
+    if (!this.clickInside(f, evt)) {
+      if (action) {
+        rootResponder.sendAction(action, target, this, this, null, this);
+      } else this.remove();
+    }
+    
     return YES ; 
   },
 
+  /** @private */
   mouseDown: function(evt) {
     return this.modalPaneDidClick(evt);
   },
@@ -4819,12 +5560,11 @@ SC.PickerPane = SC.PalettePane.extend( /** @scope SC.PickerPane.prototype */ {
   },
 
   /** 
-    Invoked by the root responder. Re-position picker whenever the window resizes. 
+    Invoked by the root responder. Re-position picker whenever the window resizes.
   */
   windowSizeDidChange: function(oldSize, newSize) {
     this.positionPane();
   },
-  
   
   remove: function(){
     if(this.get('isVisibleInWindow') && this.get('isPaneAttached')) this._showOverflow();
@@ -4844,12 +5584,12 @@ SC.PickerPane = SC.PalettePane.extend( /** @scope SC.PickerPane.prototype */ {
     if(windowSize.width>=minWidth && windowSize.height>=minHeight){
       SC.PICKERS_OPEN++;
       //console.log(this.toString()+" "+SC.PICKERS_OPEN);
-      if(SC.PICKERS_OPEN > 0) body.css('overflow', 'hidden');           
+      if(SC.PICKERS_OPEN > 0) body.css('overflow', 'hidden');
     }
   },
 
   /** @private
-    Internal method to show the overflow on the body to make sure we don't 
+    Internal method to show the overflow on the body to make sure we don't
     show scrollbars when the picker has shadows, as it's really anoying.
   */
   _showOverflow: function(){
@@ -4870,31 +5610,74 @@ SC.PickerPane = SC.PalettePane.extend( /** @scope SC.PickerPane.prototype */ {
 // show/hide the body overflow.
 SC.PICKERS_OPEN = 0;
 
+/**
+  @static
+*/
 SC.PickerPane.PICKER_POINTER_OFFSET = [9, -9, -18, 18];
+
+/**
+  @static
+*/
 SC.PickerPane.PICKER_EXTRA_RIGHT_OFFSET = 20;
 
+/**
+  @static
+*/
 SC.PickerPane.TINY_PICKER_MENU_POINTER_OFFSET = [9, -9, -18, 18];
+
+/**
+  @static
+*/
 SC.PickerPane.TINY_PICKER_MENU_EXTRA_RIGHT_OFFSET = 12;
 
+/**
+  @static
+*/
 SC.PickerPane.SMALL_PICKER_MENU_POINTER_OFFSET = [9, -9, -8, 8];
+
+/**
+  @static
+*/
 SC.PickerPane.SMALL_PICKER_MENU_EXTRA_RIGHT_OFFSET = 11;
 
+/**
+  @static
+*/
 SC.PickerPane.REGULAR_PICKER_MENU_POINTER_OFFSET = [9, -9, -12, 12];
-SC.PickerPane.REGULAR_PICKER_MENU_EXTRA_RIGHT_OFFSET = 13;
+
+/**
+  @static
+*/
 SC.PickerPane.REGULAR_PICKER_MENU_EXTRA_RIGHT_OFFSET = 12;
 
+/**
+  @static
+*/
 SC.PickerPane.LARGE_PICKER_MENU_POINTER_OFFSET = [9, -9, -16, 16];
+
+/**
+  @static
+*/
 SC.PickerPane.LARGE_PICKER_MENU_EXTRA_RIGHT_OFFSET = 17;
 
+/**
+  @static
+*/
 SC.PickerPane.HUGE_PICKER_MENU_POINTER_OFFSET = [9, -9, -18, 18];
+
+/**
+  @static
+*/
 SC.PickerPane.HUGE_PICKER_MENU_EXTRA_RIGHT_OFFSET = 12;
 
 /* >>>>>>>>>> BEGIN source/views/separator.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 
 /**
   @class
@@ -4908,22 +5691,36 @@ SC.PickerPane.HUGE_PICKER_MENU_EXTRA_RIGHT_OFFSET = 12;
 SC.SeparatorView = SC.View.extend(
 /** @scope SC.SeparatorView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-separator-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-separator-view'],
+  
+  /**
+    @type String
+    @default 'span'
+    @see SC.View#tagName
+  */
   tagName: 'span',
 
   /** 
-    Select the direction of the separator line.  Must be one of SC.LAYOUT_VERTICAL or SC.LAYOUT_HORIZONTAL.
+    Select the direction of the separator line. Possible values:
     
-    @property {String}
+      - SC.LAYOUT_VERTICAL
+      - SC.LAYOUT_HORIZONTAL
+    
+    @type String
+    @default SC.LAYOUT_HORIZONTAL
   */
   layoutDirection: SC.LAYOUT_HORIZONTAL,
 
+  /** @private */
   render: function(context, firstTime) {
     if(firstTime) context.push('<span></span>');
-	  context.addClass(this.get('layoutDirection'));
+    context.addClass(this.get('layoutDirection'));
   }
-
-
 
 });
 
@@ -4931,9 +5728,10 @@ SC.SeparatorView = SC.View.extend(
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 sc_require('views/button') ;
 sc_require('views/separator') ;
 
@@ -4946,26 +5744,41 @@ sc_require('views/separator') ;
   @since SproutCore 1.0
 */
 SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
-/** @scope SC.MenuItemView.prototype */{
+/** @scope SC.MenuItemView.prototype */ {
 
-  displayProperties: ['title', 'isEnabled', 'isSeparator'],
-
+  /**
+    @type Array
+    @default ['sc-menu-item']
+    @see SC.View#classNames
+  */
   classNames: ['sc-menu-item'],
 
   /**
-    The WAI-ARIA role for menu items. This property's value should not be
-    changed.
+    @type Array
+    @default ['title', 'isEnabled', 'isSeparator']
+    @see SC.View#displayProperties
+  */
+  displayProperties: ['title', 'isEnabled', 'isSeparator'],
 
-    @property {String}
+
+  /**
+    The WAI-ARIA role for menu items.
+
+    @type String
+    @default 'menuitem'
+    @readOnly
   */
   ariaRole: 'menuitem',
 
+  /**
+    @type Boolean
+    @default YES
+  */
   escapeHTML: YES,
 
   /**
-    @private
-    @property
-    @type {Boolean}
+    @type Boolean
+    @default YES
   */
   acceptsFirstResponder: YES,
   
@@ -4973,13 +5786,16 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     IE only attribute to block bluring of other controls
 
     @type Boolean
+    @default YES
   */
   blocksIEDeactivate: YES,
 
   /**
-    Disable context menu.
+    @type Boolean
+    @default NO
   */
   isContextMenuEnabled: NO,
+
 
   // ..........................................................
   // KEY PROPERTIES
@@ -4989,22 +5805,25 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     The content object the menu view will display.
 
     @type Object
+    @default null
   */
   content: null,
 
   /**
-    YES if this menu item represents a separator.
+    YES if this menu item represents a separator, NO otherwise.
 
-    @property {Boolean}
+    @field
+    @type Boolean
+    @observes content
   */
   isSeparator: function() {
     return this.getContentProperty('itemSeparatorKey') === YES;
   }.property('content').cacheable(),
 
   /**
-    Whether the menu item is enabled.
-
-    @property {Boolean}
+    @field
+    @type Boolean
+    @observes content.isEnabled
   */
   isEnabled: function() {
     return this.getContentProperty('itemIsEnabledKey') !== NO &&
@@ -5014,7 +5833,9 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
   /**
     This menu item's submenu, if it exists.
 
-    @property {SC.MenuView}
+    @field
+    @type SC.MenuView
+    @observes content
   */
   subMenu: function() {
     var content = this.get('content'), menuItems, parentMenu;
@@ -5045,23 +5866,21 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
   }.property('content').cacheable(),
 
   /**
-    Whether or not this menu item has a submenu.
-
-    @property {Boolean}
+    @type Boolean
+    @default NO
+    @observes subMenu
   */
   hasSubMenu: function() {
     return !!this.get('subMenu');
   }.property('subMenu').cacheable(),
 
-  /**
-    @private
-  */
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
     this.contentDidChange();
   },
 
-  /**
+  /** @private
     Fills the passed html-array with strings that can be joined to form the
     innerHTML of the receiver element.  Also populates an array of classNames
     to set on the outer element.
@@ -5122,7 +5941,7 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     context = context.end();
   },
 
-  /**
+  /** @private
    Generates the image used to represent the image icon. override this to
    return your own custom HTML
 
@@ -5145,7 +5964,7 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     context.begin('img').addClass('image').addClass(className).attr('src', url).end() ;
   },
 
-  /**
+  /** @private
    Generates the label used to represent the menu item. override this to
    return your own custom HTML
 
@@ -5161,19 +5980,18 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     context.push("<span class='value ellipsis'>"+label+"</span>") ;
   },
 
-  /**
+  /** @private
    Generates the string used to represent the branch arrow. override this to
    return your own custom HTML
 
    @param {SC.RenderContext} context the render context
    @returns {void}
   */
-
   renderBranch: function(context) {
     context.push('<span class="has-branch"></span>') ;
   },
 
-  /**
+  /** @private
    Generates the string used to represent the short cut keys. override this to
    return your own custom HTML
 
@@ -5188,9 +6006,6 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
   /**
     This method will check whether the current Menu Item is still
     selected and then create a submenu accordignly.
-
-    @param {}
-    @returns void
   */
   showSubMenu: function() {
     var subMenu = this.get('subMenu') ;
@@ -5202,15 +6017,23 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     this._subMenuTimer = null;
   },
 
+  /**
+    The title from the content property.
+    
+    @field
+    @type String
+    @observes content.title
+  */
   title: function() {
     var ret = this.getContentProperty('itemTitleKey'),
         localize = this.getPath('parentMenu.localize');
 
-    if (localize && ret) ret = ret.loc();
+    if (localize && ret) ret = SC.String.loc(ret);
 
     return ret||'';
   }.property('content.title').cacheable(),
 
+  /** @private */
   getContentProperty: function(property) {
     var content = this.get('content'),
         menu = this.get('parentMenu');
@@ -5220,10 +6043,12 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     }
   },
 
+
   //..........................................
   // Mouse Events Handling
   //
 
+  /** @private */
   mouseUp: function(evt) {
     // SproutCore's event system will deliver the mouseUp event to the view
     // that got the mouseDown event, but for menus we want to track the mouse,
@@ -5279,9 +6104,8 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     return YES;
   },
 
-  /**
+  /** @private
     Actually sends the action of the menu item to the target.
-    @private
   */
   sendAction: function() {
     var action = this.getContentProperty('itemActionKey'),
@@ -5303,29 +6127,27 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     // Legacy support for actions that are functions
     if (SC.typeOf(action) === SC.T_FUNCTION) {
       action.apply(target, [rootMenu]);
-      //@if(debug)
+      
       SC.Logger.warn('Support for menu item action functions has been deprecated. Please use target and action.');
-      //@endif
+      
     } else {
       responder = this.getPath('pane.rootResponder') || SC.RootResponder.responder;
 
       if (responder) {
         // Send the action down the responder chain
-        responder.sendAction(action, target, this);
+        responder.sendAction(action, target, rootMenu);
       }
     }
 
   },
 
-  /**
+  /** @private
     Toggles the focus class name on the menu item layer to quickly flash the
     highlight. This indicates to the user that a selection has been made.
 
     This is initially called by performAction(). flashHighlight then keeps
     track of how many flashes have occurred, and calls itself until a maximum
     has been reached.
-
-    @private
   */
   flashHighlight: function() {
     var flashCounter = this._flashCounter, layer = this.$();
@@ -5372,8 +6194,6 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
 
   /** @private
     Set the focus based on whether the current menu item is selected or not.
-
-    @returns Boolean
   */
   mouseExited: function(evt) {
     var parentMenu, timer;
@@ -5400,23 +6220,28 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
     return YES ;
   },
 
+  /** @private */
   touchStart: function(evt){
     this.mouseEntered(evt);
     return YES;
   },
 
+  /** @private */
   touchEnd: function(evt){
     return this.mouseUp(evt);
   },
 
+  /** @private */
   touchEntered: function(evt){
     return this.mouseEntered(evt);
   },
 
+  /** @private */
   touchExited: function(evt){
     return this.mouseExited(evt);
   },
 
+  /** @private */
   checkMouseLocation: function() {
     var subMenu = this.get('subMenu'), parentMenu = this.get('parentMenu'),
         currentMenuItem, previousMenuItem;
@@ -5437,8 +6262,6 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
 
   /** @private
     Call the moveUp function on the parent Menu
-
-    @returns Boolean
   */
   moveUp: function(sender,evt) {
     var menu = this.get('parentMenu') ;
@@ -5450,8 +6273,6 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
 
   /** @private
     Call the moveDown function on the parent Menu
-
-    @returns Boolean
   */
   moveDown: function(sender,evt) {
     var menu = this.get('parentMenu') ;
@@ -5463,8 +6284,6 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
 
   /** @private
     Call the function to create a branch
-
-    @returns Boolean
   */
   moveRight: function(sender,evt) {
     this.showSubMenu() ;
@@ -5525,8 +6344,6 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
   /**
     Close the parent Menu and remove the focus of the current Selected
     Menu Item
-
-    @returns void
   */
   closeParent: function() {
     this.$().removeClass('focus') ;
@@ -5546,9 +6363,7 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
   // CONTENT OBSERVING
   //
 
-  /**
-    @private
-
+  /** @private
     Add an observer to ensure that we invalidate our cached properties
     whenever the content object’s associated property changes.
   */
@@ -5571,9 +6386,7 @@ SC.MenuItemView = SC.View.extend(SC.ContentDisplay,
   }.observes('content'),
 
 
-  /**
-    @private
-
+  /** @private
     Invalidate our cached property whenever the content object’s associated
     property changes.
   */
@@ -5636,12 +6449,13 @@ SC.MenuItemView._contentPropertyToMenuItemPropertyMapping = {
 /* >>>>>>>>>> BEGIN source/panes/menu.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
-require('panes/picker');
-require('views/menu_item');
+
+sc_require('panes/picker');
+sc_require('views/menu_item');
 
 /**
   @class
@@ -5676,7 +6490,7 @@ require('views/menu_item');
     var menuItems = [
       { title: 'Menu Item', keyEquivalent: 'ctrl_shift_n' },
       { title: 'Checked Menu Item', isChecked: YES, keyEquivalent: 'ctrl_a' },
-      { title: 'Selected Menu Item', keyEquivalent: 'backspace' },
+      { title: 'Selected Menu Item', keyEquivalent: ['backspace', 'delete'] },
       { isSeparator: YES },
       { title: 'Menu Item with Icon', icon: 'inbox', keyEquivalent: 'ctrl_m' },
       { title: 'Menu Item with Icon', icon: 'folder', keyEquivalent: 'ctrl_p' }
@@ -5695,19 +6509,25 @@ require('views/menu_item');
   @extends SC.PickerPane
   @since SproutCore 1.0
 */
-
 SC.MenuPane = SC.PickerPane.extend(
 /** @scope SC.MenuPane.prototype */ {
 
+  /**
+    @property {Array}
+    @default ['sc-menu']
+    @see SC.View#classNames
+  */
   classNames: ['sc-menu'],
 
   /**
-    The WAI-ARIA role for menu pane. This property's value should not be
-    changed.
+    The WAI-ARIA role for menu pane.
 
     @property {String}
+    @default 'menu'
+    @constant
   */
   ariaRole: 'menu',
+
 
   // ..........................................................
   // PROPERTIES
@@ -5719,7 +6539,8 @@ SC.MenuPane = SC.PickerPane.extend(
     various itemKey properties to tell the menu how to extract the information
     it needs.
 
-    @type String
+    @property {Array}
+    @default []
   */
   items: [],
 
@@ -5730,15 +6551,23 @@ SC.MenuPane = SC.PickerPane.extend(
     menuHeightPadding, and submenuOffsetX if you don't explicitly set these
     properties.
 
-    Your theme can override the default values for each control size. For
-    example, to set the height of menu items for small menus, you could set
+    Your theme can override the default values for each control size by specifying
+    them in the `menuRenderDelegate`. For example:
+
     {{{
-      SC.MenuPane.SMALL_MENU_ITEM_HEIGHT = 10;
+        MyTheme.menuRenderDelegate = SC.BaseTheme.menuRenderDelegate.create({
+          'sc-tiny-size': {
+            itemHeight: 20,
+            itemSeparatorHeight: 9,
+            menuHeightPadding: 6,
+            submenuOffsetX: 2
+          }
+        });
     }}}
 
     Changing the controlSize once the menu is instantiated has no effect.
 
-    @type String
+    @property {String}
     @default SC.REGULAR_CONTROL_SIZE
   */
   controlSize: SC.REGULAR_CONTROL_SIZE,
@@ -5752,10 +6581,10 @@ SC.MenuPane = SC.PickerPane.extend(
     If you don't specify a value, the item height will be inferred from
     controlSize.
 
-    @type Number
-    @default null
+    @property {Number}
+    @default itemHeight from theme if present, or 20.
   */
-  itemHeight: null,
+  itemHeight: SC.propertyFromRenderDelegate('itemHeight', 20),
 
   /**
     The height of separator menu items.
@@ -5766,16 +6595,17 @@ SC.MenuPane = SC.PickerPane.extend(
     If you don't specify a value, the height of the separator menu items will
     be inferred from controlSize.
 
-    @type Number
-    @default null
+    @property {Number}
+    @default itemSeparatorHeight from theme, or 9.
   */
-  itemSeparatorHeight: null,
+  itemSeparatorHeight: SC.propertyFromRenderDelegate('itemSeparatorHeight', 9),
 
   /**
-    The height of the menu pane.  This is updated every time menuItemViews
+    The height of the menu pane. This is updated every time menuItemViews
     is recalculated.
 
-    @type Number
+    @property {Number}
+    @default 0
     @isReadOnly
   */
   menuHeight: 0,
@@ -5790,10 +6620,10 @@ SC.MenuPane = SC.PickerPane.extend(
     If you don't specify a value, the padding will be inferred from the
     controlSize.
 
-    @type Number
-    @default null
+    @property {Number}
+    @default menuHeightPadding from theme, or 6
   */
-  menuHeightPadding: null,
+  menuHeightPadding: SC.propertyFromRenderDelegate('menuHeightPadding', 6),
 
   /**
     The amount of offset x while positioning submenu.
@@ -5801,10 +6631,10 @@ SC.MenuPane = SC.PickerPane.extend(
     If you don't specify a value, the padding will be inferred from the
     controlSize.
 
-    @type Number
-    @default null
+    @property {Number}
+    @default submenuOffsetX from theme, or 2
   */
-  submenuOffsetX: null,
+  submenuOffsetX: SC.propertyFromRenderDelegate('submenuOffsetX', 2),
 
   /**
     The last menu item to be selected by the user.
@@ -5812,7 +6642,7 @@ SC.MenuPane = SC.PickerPane.extend(
     You can place an observer on this property to be notified when the user
     makes a selection.
 
-    @type SC.Object
+    @property {SC.Object}
     @default null
     @isReadOnly
   */
@@ -5825,8 +6655,8 @@ SC.MenuPane = SC.PickerPane.extend(
     set here for each item in the @items@ array. You may provide your own
     subclass for this property to display the customized content.
 
+    @property {SC.View}
     @default SC.MenuItemView
-    @type SC.View
   */
   exampleView: SC.MenuItemView,
 
@@ -5846,6 +6676,7 @@ SC.MenuPane = SC.PickerPane.extend(
     YES if this menu pane was generated by a parent SC.MenuPane.
 
     @type Boolean
+    @default NO
     @isReadOnly
   */
   isSubMenu: NO,
@@ -5871,8 +6702,12 @@ SC.MenuPane = SC.PickerPane.extend(
   
   /**
     Disable context menu.
+    
+    @property {Boolean}
+    @default NO
   */
   isContextMenuEnabled: NO,
+
 
   // ..........................................................
   // METHODS
@@ -5885,10 +6720,9 @@ SC.MenuPane = SC.PickerPane.extend(
     anchor itself to the view, and intelligently reposition itself if the
     contents of the menu exceed the available space.
 
-    @param SC.View anchorViewOrElement the view or element to which the menu
+    @param {SC.View} anchorViewOrElement the view or element to which the menu
     should anchor.
-    @param preferMatrix The prefer matrix used to position the pane.
-    (optional)
+    @param {Array} (preferMatrix) The prefer matrix used to position the pane.
   */
   popup: function(anchorViewOrElement, preferMatrix) {
     var anchor;
@@ -6002,7 +6836,8 @@ SC.MenuPane = SC.PickerPane.extend(
   itemSeparatorKey: 'separator',
 
   /**
-    The name of the property that contains the target for the action that is triggered when the user clicks the menu item.
+    The name of the property that contains the target for the action that is 
+    triggered when the user clicks the menu item.
 
     Note that this property is ignored if the menu item has a submenu.
 
@@ -6082,7 +6917,7 @@ SC.MenuPane = SC.PickerPane.extend(
     @isReadOnly
     @property Array
   */
-  menuItemKeys: 'itemTitleKey itemValueKey itemIsEnabledKey itemIconKey itemSeparatorKey itemActionKey itemCheckboxKey itemShortCutKey itemHeightKey itemSubMenuKey itemKeyEquivalentKey itemTargetKey'.w(),
+  menuItemKeys: ['itemTitleKey', 'itemValueKey', 'itemIsEnabledKey', 'itemIconKey', 'itemSeparatorKey', 'itemActionKey', 'itemCheckboxKey', 'itemShortCutKey', 'itemHeightKey', 'itemSubMenuKey', 'itemKeyEquivalentKey', 'itemTargetKey'],
 
   // ..........................................................
   // INTERNAL PROPERTIES
@@ -6122,69 +6957,11 @@ SC.MenuPane = SC.PickerPane.extend(
     @private
   */
   init: function() {
-    switch (this.get('controlSize')) {
-      case SC.TINY_CONTROL_SIZE:
-        this.setIfNull('itemHeight', SC.MenuPane.TINY_MENU_ITEM_HEIGHT);
-        this.setIfNull('itemSeparatorHeight', SC.MenuPane.TINY_MENU_ITEM_SEPARATOR_HEIGHT);
-        this.setIfNull('menuHeightPadding', SC.MenuPane.TINY_MENU_HEIGHT_PADDING);
-        this.setIfNull('submenuOffsetX', SC.MenuPane.TINY_SUBMENU_OFFSET_X);
-        break;
-      case SC.SMALL_CONTROL_SIZE:
-        this.setIfNull('itemHeight', SC.MenuPane.SMALL_MENU_ITEM_HEIGHT);
-        this.setIfNull('itemSeparatorHeight', SC.MenuPane.SMALL_MENU_ITEM_SEPARATOR_HEIGHT);
-        this.setIfNull('menuHeightPadding', SC.MenuPane.SMALL_MENU_HEIGHT_PADDING);
-        this.setIfNull('submenuOffsetX', SC.MenuPane.SMALL_SUBMENU_OFFSET_X);
-        break;
-      case SC.REGULAR_CONTROL_SIZE:
-        this.setIfNull('itemHeight', SC.MenuPane.REGULAR_MENU_ITEM_HEIGHT);
-        this.setIfNull('itemSeparatorHeight', SC.MenuPane.REGULAR_MENU_ITEM_SEPARATOR_HEIGHT);
-        this.setIfNull('menuHeightPadding', SC.MenuPane.REGULAR_MENU_HEIGHT_PADDING);
-        this.setIfNull('submenuOffsetX', SC.MenuPane.REGULAR_SUBMENU_OFFSET_X);
-        break;
-      case SC.LARGE_CONTROL_SIZE:
-        this.setIfNull('itemHeight', SC.MenuPane.LARGE_MENU_ITEM_HEIGHT);
-        this.setIfNull('itemSeparatorHeight', SC.MenuPane.LARGE_MENU_ITEM_SEPARATOR_HEIGHT);
-        this.setIfNull('menuHeightPadding', SC.MenuPane.LARGE_MENU_HEIGHT_PADDING);
-        this.setIfNull('submenuOffsetX', SC.MenuPane.LARGE_SUBMENU_OFFSET_X);
-        break;
-      case SC.HUGE_CONTROL_SIZE:
-        this.setIfNull('itemHeight', SC.MenuPane.HUGE_MENU_ITEM_HEIGHT);
-        this.setIfNull('itemSeparatorHeight', SC.MenuPane.HUGE_MENU_ITEM_SEPARATOR_HEIGHT);
-        this.setIfNull('menuHeightPadding', SC.MenuPane.HUGE_MENU_HEIGHT_PADDING);
-        this.setIfNull('submenuOffsetX', SC.MenuPane.HUGE_SUBMENU_OFFSET_X);
-        break;
-    }
-
-    return arguments.callee.base.apply(this,arguments);
+   return arguments.callee.base.apply(this,arguments);
   },
 
-  /**
-    Helper method that only sets a property if it is null.
-
-    @param {String} key the property to set
-    @param {Object} value
-    @private
-  */
-  setIfNull: function(key, value) {
-    if (this.get(key) === null) {
-      this.set(key, value);
-    }
-  },
-
+  displayProperties: ['controlSize'],
   renderDelegateName: 'menuRenderDelegate',
-
-  /** @private
-    The render method is responsible for adding the control size class
-    name to the menu pane.
-
-    @param {SC.RenderContext} context the render context
-    @param {Boolean} firstTime YES if this is creating a layer
-  */
-  render: function(context, firstTime) {
-    context.addClass(this.get('controlSize'));
-
-    return arguments.callee.base.apply(this,arguments);
-  },
 
   /**
     Creates the child scroll view, and sets its contentView to a new
@@ -6283,7 +7060,6 @@ SC.MenuPane = SC.PickerPane.extend(
         len;
 
     if (!items) return views; // return an empty array
-
     heightKey = this.get('itemHeightKey');
     separatorKey = this.get('itemSeparatorKey');
     defaultHeight = this.get('itemHeight');
@@ -6313,7 +7089,15 @@ SC.MenuPane = SC.PickerPane.extend(
 
       keyEquivalent = item.get(keyEquivalentKey);
       if (keyEquivalent) {
-        this._keyEquivalents[keyEquivalent] = view;
+        // if array, apply each one for this view
+        if(SC.typeOf(keyEquivalent)===SC.T_ARRAY) {
+          keyEquivalent.forEach(function(keyEq) {
+            this._keyEquivalents[keyEq] = view;
+          }, this);
+        }
+        else {
+          this._keyEquivalents[keyEquivalent] = view;
+        }
       }
     }
 
@@ -6743,34 +7527,6 @@ SC._menu_fetchItem = function(k) {
   return this.get ? this.get(k) : this[k] ;
 };
 
-/**
-  Default metrics for the different control sizes.
-*/
-SC.MenuPane.TINY_MENU_ITEM_HEIGHT = 10;
-SC.MenuPane.TINY_MENU_ITEM_SEPARATOR_HEIGHT = 2;
-SC.MenuPane.TINY_MENU_HEIGHT_PADDING = 2;
-SC.MenuPane.TINY_SUBMENU_OFFSET_X = 0;
-
-SC.MenuPane.SMALL_MENU_ITEM_HEIGHT = 16;
-SC.MenuPane.SMALL_MENU_ITEM_SEPARATOR_HEIGHT = 7;
-SC.MenuPane.SMALL_MENU_HEIGHT_PADDING = 4;
-SC.MenuPane.SMALL_SUBMENU_OFFSET_X = 2;
-
-SC.MenuPane.REGULAR_MENU_ITEM_HEIGHT = 20;
-SC.MenuPane.REGULAR_MENU_ITEM_SEPARATOR_HEIGHT = 9;
-SC.MenuPane.REGULAR_MENU_HEIGHT_PADDING = 6;
-SC.MenuPane.REGULAR_SUBMENU_OFFSET_X = 2;
-
-SC.MenuPane.LARGE_MENU_ITEM_HEIGHT = 60;
-SC.MenuPane.LARGE_MENU_ITEM_SEPARATOR_HEIGHT = 20;
-SC.MenuPane.LARGE_MENU_HEIGHT_PADDING = 0;
-SC.MenuPane.LARGE_SUBMENU_OFFSET_X = 4;
-
-SC.MenuPane.HUGE_MENU_ITEM_HEIGHT = 20;
-SC.MenuPane.HUGE_MENU_ITEM_SEPARATOR_HEIGHT = 9;
-SC.MenuPane.HUGE_MENU_HEIGHT_PADDING = 0;
-SC.MenuPane.HUGE_SUBMENU_OFFSET_X = 0;
-
 // If a menu pane exceeds the height of the viewport, it will
 // be truncated to fit. This value determines the amount by which
 // the menu will be offset from the top and bottom of the viewport.
@@ -6780,9 +7536,11 @@ SC.MenuPane.VERTICAL_OFFSET = 23;
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+sc_require('views/button');
 
 /**
   @class
@@ -6797,27 +7555,24 @@ SC.MenuPane.VERTICAL_OFFSET = 23;
   @version 1.0
   @author Mohammed Ashik
 */
-sc_require('views/button');
-
 SC.SelectButtonView = SC.ButtonView.extend(
 /** @scope SC.SelectButtonView.prototype */ {
 
+  /**
+    @type Boolean
+    @default YES
+  */
   escapeHTML: YES,
 
   /**
     An array of items that will be form the menu you want to show.
 
-    @property
-    @type {Array}
+    @type Array
+    @default []
   */
   objects: [],
 
-  /**
-    Binding default for an array of objects
-
-    @property
-    @default SC.Binding.multiple()
-  */
+  /** @private */
   objectsBindingDefault: SC.Binding.multiple(),
 
   /**
@@ -6825,8 +7580,7 @@ SC.SelectButtonView = SC.ButtonView.extend(
     menu item will be pulled from the object using the named property.
     if this is null, the collection objects themselves will be used.
 
-    @property
-    @type {String}
+    @type String
     @default: null
   */
   nameKey: null,
@@ -6836,8 +7590,7 @@ SC.SelectButtonView = SC.ButtonView.extend(
     be used to sort the objects.  If this is not set, then nameKey will
     be used.
 
-    @property
-    @type: {String}
+    @property String}
     @default: null
   */
   sortKey: null,
@@ -6847,27 +7600,31 @@ SC.SelectButtonView = SC.ButtonView.extend(
      as the value for the options popup.  If you don't set this, then the
      objects themselves will be used as the value.
 
-     @property
-     @type {String}
+     @type String
      @default null
   */
   valueKey: null,
 
   /**
      Key used to extract icons from the objects array
+     
+     @type String
+     @default null
   */
   iconKey: null,
 
   /**
     Key used to indicate if the item is to be enabled
-   */
+    
+    @type String
+    @default "isEnabled"
+  */
   isEnabledKey: "isEnabled",
 
   /**
     If true, the empty name will be localized.
 
-    @property
-    @type {Boolean}
+    @type Boolean
     @default YES
   */
   localize: YES,
@@ -6876,21 +7633,22 @@ SC.SelectButtonView = SC.ButtonView.extend(
     if true, it means that no sorting will occur, objects will appear
     in the same order as in the array
 
-    @property
-    @type {Boolean}
+    @type Boolean
     @default YES
   */
   disableSort: YES,
 
   /**
-
     @property
     @default ['select-button']
+    @see SC.View#classNames
   */
   classNames: ['select-button'],
 
   /**
     Menu attached to the selectButton
+    
+    @type SC.View
     @default SC.MenuView
   */
   menu : null,
@@ -6898,8 +7656,8 @@ SC.SelectButtonView = SC.ButtonView.extend(
   /**
     Menu item list
 
-    @property
-    @type:{Array}
+    @type Array
+    @default []
   */
   itemList: [],
 
@@ -6907,8 +7665,7 @@ SC.SelectButtonView = SC.ButtonView.extend(
     Property to set the index of the selected menu item. This in turn
     is used to calculate the preferMatrix.
 
-    @property
-    @type {Number}
+    @type Number
     @default null
   */
   itemIdx: null,
@@ -6916,16 +7673,16 @@ SC.SelectButtonView = SC.ButtonView.extend(
   /**
      Current Value of the selectButton
 
-     @property
+     @type Object
      @default null
   */
-  value: null ,
+  value: null,
 
   /**
     if this property is set to 'YES', a checbox is shown next to the
     selected menu item.
 
-    @private
+    @type Boolean
     @default YES
   */
   checkboxEnabled: YES,
@@ -6933,47 +7690,39 @@ SC.SelectButtonView = SC.ButtonView.extend(
   /**
     Set this property to required display positon of separator from bottom
 
-    @private
     @default null
   */
   separatorPosition: null,
 
-  /**
+  /** @private
     Default value of the select button.
      This will be the first item from the menu item list.
-
-    @private
   */
   _defaultVal: null,
 
-  /**
+  /** @private
     Default title of the select button.
      This will be the title corresponding to the _defaultVal.
-
-    @private
   */
   _defaultTitle: null,
 
-  /**
+  /** @private
     Default icon of the select button.
      This will be the icon corresponding to the _defaultVal.
-
-    @private
   */
   _defaultIcon: null,
 
   /**
-    @private
-
-    The button theme will be popup
+    @property {String|SC.Theme}
+    @default 'popup'
   */
   theme: 'popup',
 
   /**
     Render method gets triggered when these properties change
 
-    @property
-    @type{SC.Array}
+    @type Array
+    @default ['icon', 'value','controlSize','objects', 'objects.[]']
   */
   displayProperties: ['icon', 'value','controlSize','objects', 'objects.[]'],
 
@@ -6983,10 +7732,8 @@ SC.SelectButtonView = SC.ButtonView.extend(
     the button. The value at the second index(0) changes based on the
     postion(index) of the menu item in the menu pane.
 
-    @property
-    @type {Array}
+    @type Array
     @default null
-
   */
   preferMatrix: null,
 
@@ -6995,55 +7742,54 @@ SC.SelectButtonView = SC.ButtonView.extend(
      This has to be accounted for while calculating the actual
      width of the button
 
-    @property
-    @type {Number}
+    @type Number
     @default 28
   */
   SELECT_BUTTON_SPRITE_WIDTH: 28,
 
-  /**
+  /** @private
     Binds the button's selection state to the menu's visibility.
-
-    @private
   */
   isActiveBinding: '*menu.isVisibleInWindow',
 
-  /**
+  /** @private
     If this property is set to 'YES', the menu pane will be positioned
     below the anchor.
-
-    @private
-    @default NO
   */
   isDefaultPosition: NO,
 
-  /**
+  /** @private
     lastMenuWidth is the width of the last menu which was created from
     the objects of this select button.
-
-    @private
   */
   lastMenuWidth: null,
 
   /**
     customView used to draw the menu
+    
+    @type SC.View
+    @default null
   */
   customView: null,
 
   /**
-    css classes applied to customView
+    CSS classes applied to customView
+    
+    @type String
+    @default null
   */
   customViewClassName: null,
 
   /**
     customView menu offset width
+    
+    @type Number
+    @default 0
   */
   customViewMenuOffsetWidth: 0,
 
   /**
-    This is a property for enabling/disabling ellipsis
-
-    @private
+    @type Boolean
     @default YES
   */
   needsEllipsis: YES,
@@ -7052,29 +7798,29 @@ SC.SelectButtonView = SC.ButtonView.extend(
     This property allows you at add extra padding to the height
     of the menu pane.
 
+    @type Number
     @default 0
-    @property {Number} heightPadding for menu pane.
   */
   menuPaneHeightPadding: 0,
 
   /**
     This is a property to enable/disable focus rings in buttons.
     For select_button we are making it a default.
-
+    
+    @type Boolean
     @default YES
   */
   supportFocusRing: YES,
   
   /**
-    Disable context menu.
+    @type Boolean
+    @default NO
   */
   isContextMenuEnabled: NO,
   
 
-  /**
+  /**@private
     Left Alignment based on the size of the button
-
-    @private
   */
   leftAlign: function() {
     switch (this.get('controlSize')) {
@@ -7096,7 +7842,7 @@ SC.SelectButtonView = SC.ButtonView.extend(
     override this method to implement your own sorting of the menu. By
     default, menu items are sorted using the value shown or the sortKey
 
-    @param{SC.Array} objects the unsorted array of objects to display.
+    @param {SC.Array} objects the unsorted array of objects to display.
     @returns sorted array of objects
   */
   sortObjects: function(objects) {
@@ -7110,15 +7856,11 @@ SC.SelectButtonView = SC.ButtonView.extend(
         return (a<b) ? -1 : ((a>b) ? 1 : 0) ;
       }) ;
     }
-    return objects ;
+    return objects;
   },
 
-  /**
-    render method
-
-    @private
-  */
-  render: function(context,firstTime) {
+  /** @private */
+  render: function(context, firstTime) {
     arguments.callee.base.apply(this,arguments);
     var layoutWidth, objects, len, nameKey, iconKey, valueKey, checkboxEnabled,
       currentSelectedVal, shouldLocalize, separatorPosition, itemList, isChecked,
@@ -7166,7 +7908,7 @@ SC.SelectButtonView = SC.ButtonView.extend(
         object.get(nameKey) : object[nameKey]) : object.toString() ;
 
       // localize name if specified.
-      name = shouldLocalize? name.loc() : name ;
+      name = shouldLocalize? SC.String.loc(name) : name ;
 
       //Get the icon value
       icon = iconKey ? (object.get ?
@@ -7257,13 +7999,13 @@ SC.SelectButtonView = SC.ButtonView.extend(
 
   },
   
-  /**
-    Compares the the two values. 
+  /** @private
+    Compares the the two values.
     
     This function can be overridden if the value of the Select Button field 
     is an object.
   */
-  _equals: function (value1, value2) {
+  _equals: function(value1, value2) {
     var ret = YES;
     if (value1 && SC.typeOf(value1) === SC.T_HASH && 
         value2 && SC.typeOf(value2) === SC.T_HASH) {
@@ -7275,14 +8017,12 @@ SC.SelectButtonView = SC.ButtonView.extend(
     return ret;
   }, 
 
-  /**
+  /** @private
     Button action handler
-
-    @private
+    
     @param {DOMMouseEvent} evt mouseup event that triggered the action
   */
-  _action: function( evt )
-  {
+  _action: function(evt) {
     var buttonLabel, menuWidth, scrollWidth, lastMenuWidth, offsetWidth,
       items, elementOffsetWidth, largestMenuWidth, item, element, idx,
       value, itemList, menuControlSize, menuHeightPadding, customView,
@@ -7421,7 +8161,6 @@ SC.SelectButtonView = SC.ButtonView.extend(
 
   /**
      Action method for the select button menu items
-
   */
   displaySelectedItem: function(menuView) {
     var currentItem = this.getPath('menu.selectedItem');
@@ -7501,9 +8240,7 @@ SC.SelectButtonView = SC.ButtonView.extend(
     }
   },
 
-  /**
-    @private
-
+  /** @private
     Holding down the button should display the menu pane.
   */
   mouseDown: function(evt) {
@@ -7592,16 +8329,14 @@ SC.SelectButtonView = SC.ButtonView.extend(
     return YES;
   },
 
-  /**
+  /** @private
     Override mouseExited to not remove the active state on mouseexit.
   */
   mouseExited: function() {
     return YES;
   },
 
-  /**
-    @private
-
+  /** @private
     Handle Key event - Down arrow key
   */
   keyDown: function(event) {
@@ -7613,9 +8348,7 @@ SC.SelectButtonView = SC.ButtonView.extend(
     }
   },
 
-  /**
-    @private
-
+  /** @private
     Pressing the Up or Down arrow key should display the menu pane
   */
   interpretKeyEvents: function(event) {
@@ -7630,7 +8363,9 @@ SC.SelectButtonView = SC.ButtonView.extend(
     return arguments.callee.base.apply(this,arguments);
   },
 
-  /** Function overridden - tied to the isEnabled state */
+  /** @private
+    Function overridden - tied to the isEnabled state
+  */
   acceptsFirstResponder: function() {
     return this.get('isEnabled');
   }.property('isEnabled'),
@@ -7643,58 +8378,134 @@ SC.SelectButtonView = SC.ButtonView.extend(
 
   }.observes('isSelected'),
   
-  didAppendToDocument: function() {
-  }
+  /** @private */
+  didAppendToDocument: function() {}
 
 }) ;
 
 /**
-  Default metrics for the different control sizes.
+  @static
+  @default 0
 */
 SC.SelectButtonView.TINY_OFFSET_X = 0;
+
+/**
+  @static
+  @default 0
+*/
 SC.SelectButtonView.TINY_OFFSET_Y = 0;
+
+/**
+  @static
+  @default 0
+*/
 SC.SelectButtonView.TINY_POPUP_MENU_WIDTH_OFFSET = 0;
 
+
+/**
+  @static
+  @default -18
+*/
 SC.SelectButtonView.SMALL_OFFSET_X = -18;
+
+/**
+  @static
+  @default 3
+*/
 SC.SelectButtonView.SMALL_OFFSET_Y = 3;
+
+/**
+  @static
+  @default 7
+*/
 SC.SelectButtonView.SMALL_POPUP_MENU_WIDTH_OFFSET = 7;
 
+
+/**
+  @static
+  @default -17
+*/
 SC.SelectButtonView.REGULAR_OFFSET_X = -17;
+
+/**
+  @static
+  @default 3
+*/
 SC.SelectButtonView.REGULAR_OFFSET_Y = 3;
+
+/**
+  @static
+  @default 4
+*/
 SC.SelectButtonView.REGULAR_POPUP_MENU_WIDTH_OFFSET = 4;
 
+
+/**
+  @static
+  @default -17
+*/
 SC.SelectButtonView.LARGE_OFFSET_X = -17;
+
+/**
+  @static
+  @default 6
+*/
 SC.SelectButtonView.LARGE_OFFSET_Y = 6;
+
+/**
+  @static
+  @default 3
+*/
 SC.SelectButtonView.LARGE_POPUP_MENU_WIDTH_OFFSET = 3;
 
+
+/**
+  @static
+  @default 0
+*/
 SC.SelectButtonView.HUGE_OFFSET_X = 0;
+
+/**
+  @static
+  @default 0
+*/
 SC.SelectButtonView.HUGE_OFFSET_Y = 0;
+
+/**
+  @static
+  @default 0
+*/
 SC.SelectButtonView.HUGE_POPUP_MENU_WIDTH_OFFSET = 0;
 
+
+/**
+  @static
+  @default -2
+*/
 SC.SelectButtonView.MENU_WIDTH_OFFSET = -2;
 
 /* >>>>>>>>>> BEGIN source/panes/sheet.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            portions copyright @2009 Apple Inc.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 sc_require('panes/panel');
 
 /**
+  @class
+  
   Displays a modal sheet pane that animates from the top of the viewport.
 
   The default way to use the sheet pane is to simply add it to your page like this:
 
-  {{{
-    SC.SheetPane.create({
-      layout: { width: 400, height: 200, centerX: 0 },
-      contentView: SC.View.extend({
-      })
-    }).append();
-  }}}
+      SC.SheetPane.create({
+        layout: { width: 400, height: 200, centerX: 0 },
+        contentView: SC.View.extend({
+        })
+      }).append();
 
   This will cause your sheet panel to display.  The default layout for a Sheet
   is to cover the entire document window with a semi-opaque background, and to
@@ -7705,21 +8516,33 @@ sc_require('panes/panel');
   @author Evin Grano
   @author Tom Dale
 */
-SC.SheetPane = SC.PanelPane.extend({
-  classNames: 'sc-sheet',
+SC.SheetPane = SC.PanelPane.extend(
+/** @scope SC.SheetPane.prototype */{
+  
+  /**
+    @type Array
+    @default ['sc-sheet']
+    @see SC.View#classNames
+  */
+  classNames: ['sc-sheet'],
 
-  /** Do not show smoke behind palettes */
+  /**
+    @type SC.View
+    @default SC.ModalPane
+  */
   modalPane: SC.ModalPane,
 
   /**
     Speed of transition.  Should be expressed in msec.
 
-    @property {Number}
+    @type Number
+    @default 200
   */
   transitionDuration: 200,
   
   _state: 'NO_VIEW', // no view
   
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
     
@@ -7777,7 +8600,7 @@ SC.SheetPane = SC.PanelPane.extend({
     return this;
   },
 
-  /**
+  /** @private
     Once the pane has been rendered out to the DOM, begin the animation.
   */
   paneDidAttach: function() {
@@ -7788,6 +8611,7 @@ SC.SheetPane = SC.PanelPane.extend({
     return ret;
   },
 
+  /** @private */
   slideDown: function(){
     // setup other general state
     this._state   = SC.SheetPane.ANIMATING;
@@ -7802,6 +8626,7 @@ SC.SheetPane = SC.PanelPane.extend({
     }
   },
 
+  /** @private */
   slideUp: function(){
     // setup other general state
     this._state   = SC.SheetPane.ANIMATING;
@@ -7817,6 +8642,7 @@ SC.SheetPane = SC.PanelPane.extend({
     }
   },
 
+  /** @private */
   _complete: function() {
     var dir = this._direction;
 
@@ -7839,11 +8665,17 @@ SC.SheetPane = SC.PanelPane.extend({
     this.updateLayout();
   },
   
-  // Needed because of the runLoop and that it is animated...must lose focus because will break if selection is change on text fields that don't move.
+  /** @private
+    Needed because of the runLoop and that it is animated...
+    must lose focus because will break if selection is change
+    on text fields that don't move.
+  */
   blurTo: function(pane) { this.setFirstResponder(''); },
 
-  /** @private - called while the animation runs.  Will move the content view down until it is in position and then set the layout to the content layout
-   */
+  /** @private
+    Called while the animation runs. Will move the content view
+    down until it is in position and then set the layout to the content layout
+  */
   tick: function() {
     this._timer = null ; // clear out
 
@@ -7873,9 +8705,11 @@ SC.SheetPane = SC.PanelPane.extend({
     target.updateLayout();
     return this;
   }
+
 });
 
-SC.SheetPane.mixin( /** @scope SC.SheetPane */ {
+SC.SheetPane.mixin(
+/** @scope SC.SheetPane */ {
   
   ANIMATABLE_AVAILABLE: NO,
   
@@ -7890,14 +8724,14 @@ SC.SheetPane.mixin( /** @scope SC.SheetPane */ {
 });
 
 /* >>>>>>>>>> BEGIN source/protocols/drag_data_source.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
 
-require('system/drag') ;
-
+sc_require('system/drag') ;
 
 /**
   @namespace
@@ -7908,44 +8742,48 @@ require('system/drag') ;
 */
 SC.DragDataSource = {
 
-  /** @property
+  /**
     Implement this property as an array of data types you want to support
     for drag operations.
+
+    @type Array
+    @default []
   */
   dragDataTypes: [],
 
   /**
     Implement this method to return the data in the format passed.  Return
     null if the requested data type cannot be generated.
-  
+    
     @param {SC.Drag} drag The Drag instance managing this drag.
     @param {Object} dataType The proposed dataType to return.  This will 
       always be one of the data types declared in dragDataTypes.
     
     @returns The data object for the specified type
   */
-  dragDataForType: function(drag, dataType) { return null; }
-  
+  dragDataForType: function(drag, dataType) {
+    return null;
+  }
+
 };
 
 
-
 /* >>>>>>>>>> BEGIN source/protocols/drag_source.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
 
-require('system/drag') ;
+sc_require('system/drag') ;
 
 /**
-  @mixin
+  @namespace
 
   The DragSource protocol is used to dynamically generate multiple types of
   data from a single object.  You must implement this protocol if you want to
   provide the data for a drag event.
-
 */
 SC.DragSource = {
 
@@ -7954,29 +8792,32 @@ SC.DragSource = {
     Return a bitwise OR'd mask of the drag operations allowed on the
     specified target.  If you don't care about the target, just return a
     constant value.
-  
+    
+    The default implementation returns SC.DRAG_NONE
+    
     @param {SC.View} dropTarget The proposed target of the drop.
     @param {SC.Drag} drag The SC.Drag instance managing this drag.
-  
   */
-  dragSourceOperationMaskFor: function(drag, dropTarget) { return SC.DRAG_NONE ; },
+  dragSourceOperationMaskFor: function(drag, dropTarget) {
+    return SC.DRAG_NONE;
+  },
   
   /**
     If this property is set to NO or is not implemented, then the user may
     modify the drag operation by changing the modifier keys they have 
     pressed.
     
-    @returns {Boolean}
+    @type Boolean
+    @default NO
   */
   ignoreModifierKeysWhileDragging: NO,
     
-  /**  
+  /**
     This method is called when the drag begins. You can use this to do any
     visual highlighting to indicate that the receiver is the source of the 
     drag.
-  
+    
     @param {SC.Drag} drag The Drag instance managing this drag.
-  
     @param {Point} loc The point in *window* coordinates where the drag 
       began.  You can use convertOffsetFromView() to convert this to local 
       coordinates.
@@ -7986,41 +8827,37 @@ SC.DragSource = {
   /**
     This method is called whenever the drag image is moved.  This is
     similar to the dragUpdated() method called on drop targets.
-
+    
     @param {SC.Drag} drag The Drag instance managing this drag.
-
     @param {Point} loc  The point in *window* coordinates where the drag 
       mouse is.  You can use convertOffsetFromView() to convert this to local 
       coordinates.
   */
   dragDidMove: function(drag, loc) {},
   
-  /**  
+  /**
     This method is called when the drag ended. You can use this to do any
     cleanup.  The operation is the actual operation performed on the drag.
-  
+    
     @param {SC.Drag} drag The drag instance managing the drag.
-  
-    @param {Point} loc The point in WINDOW coordinates where the drag 
-      ended. 
-  
-    @param {DragOp} op The drag operation that was performed. One of 
+    @param {Point} loc The point in WINDOW coordinates where the drag
+      ended.
+    @param {DragOp} op The drag operation that was performed. One of
       SC.DRAG_COPY, SC.DRAG_MOVE, SC.DRAG_LINK, or SC.DRAG_NONE.
-  
   */
   dragDidEnd: function(drag, loc, op) {}
-  
-} ;
 
+};
 
 /* >>>>>>>>>> BEGIN source/protocols/drop_target.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
 
-require('system/drag');
+sc_require('system/drag');
 
 /**
   @mixin
@@ -8033,18 +8870,18 @@ require('system/drag');
   The general call sequence for all drop targets is (in pseudo-Ragel, regex
   format):
   
-  dragStarted
-  (
-    computeDragOperations+
-    (
-      dragEntered
-      dragUpdated
-      ( computeDragOperations | dragUpdated )*
-      ( acceptDragOperation performDragOperation? )? // mouseUp
-      dragExited
-    )*
-  )*
-  dragEnded
+      dragStarted
+      (
+        computeDragOperations+
+        (
+          dragEntered
+          dragUpdated
+          ( computeDragOperations | dragUpdated )*
+          ( acceptDragOperation performDragOperation? )? // mouseUp
+          dragExited
+        )*
+      )*
+      dragEnded
   
   Thus, every drop target will have its dragStarted and dragEnded methods called 
   once during every drag session. computeDragOperations, if called at all, may be 
@@ -8061,6 +8898,10 @@ SC.DropTarget = {
     Drop targets must be specially registered in order to receive drop
     events.  SproutCore knows to register your view when this property
     is true on view creation.
+    
+    @type Boolean
+    @default YES
+    @constant
   */  
   isDropTarget: YES,
 
@@ -8072,7 +8913,7 @@ SC.DropTarget = {
     The default implementation does nothing.
     
     @param {SC.Drag} drag The current drag object.
-    @param {SC.Event}   evt  The most recent mouse move event.  Use to get location 
+    @param {SC.Event} evt The most recent mouse move event.  Use to get location 
   */
   dragStarted: function(drag, evt) {},
   
@@ -8148,10 +8989,13 @@ SC.DropTarget = {
     @param {SC.Drag} drag The current drag object
     @param {SC.Event} evt The most recent mouse move event.  Use to get 
       location 
+    
     @returns {DragOps} A mask of all the drag operations allowed or 
       SC.DRAG_NONE
   */
-  computeDragOperations: function(drag, evt) { return SC.DRAG_NONE; },
+  computeDragOperations: function(drag, evt) {
+    return SC.DRAG_NONE;
+  },
   
   /**
     Called when the user releases the mouse.
@@ -8168,7 +9012,9 @@ SC.DropTarget = {
     
     @return {Boolean} YES if operation is OK, NO to cancel.
   */  
-  acceptDragOperation: function(drag, op) { return YES; },
+  acceptDragOperation: function(drag, op) {
+    return YES;
+  },
   
   /**
     Called to actually perform the drag operation.
@@ -8186,16 +9032,20 @@ SC.DropTarget = {
     
     @return {DragOp} Drag Operation actually performed
   */
-  performDragOperation: function(drag, op) { return SC.DRAG_NONE; }
+  performDragOperation: function(drag, op) {
+    return SC.DRAG_NONE;
+  }
   
 };
 
 /* >>>>>>>>>> BEGIN source/protocols/responder.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 
 /** @static
 
@@ -8495,16 +9345,45 @@ SC.ResponderProtocol = {
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
+
 /**
-  Renders and updates the HTML representation of SC.ButtonView.
+  Renders and updates the HTML representation of a button.
 */
 SC.BaseTheme.buttonRenderDelegate = SC.RenderDelegate.create({
   name: 'button',
-  
+
+  //
+  // SIZE DEFINITIONS
+  //
+  'sc-small-size': {
+    height: 18,
+    autoResizePadding: 15
+  },
+
+  'sc-regular-size': {
+    height: 24,
+    autoResizePadding: 20
+  },
+
+  'sc-huge-size': {
+    height: 30,
+    autoResizePadding: 30
+  },
+
+  'sc-jumbo-size': {
+    height: 44,
+    autoResizePadding: 50
+  },
+
+
+  //
+  // RENDERING LOGIC
+  //
+
   /**
     Called when we need to create the HTML that represents the button.
 
@@ -8512,55 +9391,43 @@ SC.BaseTheme.buttonRenderDelegate = SC.RenderDelegate.create({
     @param {SC.RenderContext} context the render context instance
   */
   render: function(dataSource, context) {
-    var theme             = dataSource.get('theme'),
-        minWidth          = dataSource.get('titleMinWidth'),
-        toolTip           = dataSource.get('displayToolTip'),
-        view              = dataSource.get('view'),
-        isSelected        = dataSource.get('isSelected'),
-        isActive          = dataSource.get('isActive'),
-        isPopUpButton     = NO,
-        menu              = view.get('menu');
+    this.addSizeClassName(dataSource, context);
 
-        if(menu) {
-          isPopUpButton = YES;
-        }
+    var labelContent,
+        toolTip     = dataSource.get('toolTip'),
+        isSelected  = dataSource.get('isSelected') || NO,
+        isActive    = dataSource.get('isActive') || NO,
+        labelId     = SC.guidFor(dataSource) + '-label';
 
-    var labelContent;
+    context.setClass({
+      'icon': !!dataSource.get('icon') || NO,
+      'def': dataSource.get('isDefault'),
+      'cancel': dataSource.get('isCancel'),
+      'active': isActive,
+      'sel': isSelected
+    });
 
-    context.setClass('icon', !!dataSource.get('icon') || 0);    
-    context.setClass('def', dataSource.get('isDefault') || 0);
-    context.setClass('cancel', dataSource.get('isCancel') || 0);
-    
     if (toolTip) {
       context.attr('title', toolTip);
       context.attr('alt', toolTip);
     }
 
-    // addressing accessibility
-    context.attr('aria-pressed', isActive);
-    if(isPopUpButton) {
-      context.attr('aria-haspopup', isPopUpButton.toString());
-    }
-    
-    // Specify a minimum width for the inner part of the button.
-    minWidth = (minWidth ? "style='min-width: " + minWidth + "px'" : '');
-    context = context.push("<span class='sc-button-inner' " + minWidth + ">");
+    this.includeSlices(dataSource, context, SC.THREE_SLICE);
+
+    // accessibility
+    context.attr('aria-pressed', isActive.toString());
+    context.attr('aria-labelledby', labelId);
 
     // Create the inner label element that contains the text and, optionally,
     // an icon.
-    context = context.begin('label').addClass('sc-button-label');
-    
-    // NOTE: we don't add the label class names because button styles its own label.
-    theme.labelRenderDelegate.render(dataSource, context);
+    context = context.begin('label').addClass('sc-button-label').id(labelId);
+    dataSource.get('theme').labelRenderDelegate.render(dataSource, context);
     context = context.end();
-    
-    context.push("</span>");
 
     if (dataSource.get('supportFocusRing')) {
-      context.push('<div class="focus-ring">',
-                    '<div class="focus-left"></div>',
-                    '<div class="focus-middle"></div>',
-                    '<div class="focus-right"></div></div>');
+      context = context.begin('div').addClass('focus-ring');
+      this.includeSlices(dataSource, context, SC.THREE_SLICE);
+      context = context.end();
     }
   },
 
@@ -8572,39 +9439,30 @@ SC.BaseTheme.buttonRenderDelegate = SC.RenderDelegate.create({
     @param {SC.RenderContext} jquery the jQuery object representing the HTML representation of the button
   */
   update: function(dataSource, jquery) {
-    var theme         = dataSource.get('theme'),
-        isSelected    = dataSource.get('isSelected'),
-        isActive      = dataSource.get('isActive'),
-        view          = dataSource.get('view'),
-        menu          = view.get('menu'),
-        isPopUpButton = NO;
+    this.updateSizeClassName(dataSource, jquery);
 
-        if(menu) {
-          isPopUpButton = YES;
-        }
-
-    if (dataSource.get('isActive')) jquery.addClass('active');
-    if (dataSource.get('isDefault')) jquery.addClass('default');
-    if (dataSource.get('isCancel')) jquery.addClass('cancel');
-    if (dataSource.get('icon')) jquery.addClass('icon');
-
-    // addressing accessibility
-    jquery.attr('aria-pressed', isActive);
-    if(isPopUpButton) {
-      jquery.attr('aria-haspopup', isPopUpButton.toString());
+    if (dataSource.get('isActive')) {
+      jquery.addClass('active');
     }
-    theme.labelRenderDelegate.update(dataSource, jquery.find('label'));
+
+    jquery.attr('aria-pressed', dataSource.get('isActive').toString());
+
+    jquery.setClass('icon', !!dataSource.get('icon') || NO);
+    jquery.setClass('def', dataSource.get('isDefault') || NO);
+    jquery.setClass('cancel', dataSource.get('isCancel') || NO);
+
+    dataSource.get('theme').labelRenderDelegate.update(dataSource, jquery.find('label'));
   }
-  
 });
 
 /* >>>>>>>>>> BEGIN source/render_delegates/checkbox.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
-// License:   Licened under MIT license (see license.js)
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 
 /**
   Renders and updates DOM representations of a checkbox (just the box,
@@ -8630,27 +9488,26 @@ SC.BaseTheme.checkboxRenderDelegate = SC.RenderDelegate.create({
   name: 'checkbox',
   
   render: function(dataSource, context) {
-    var theme = dataSource.get('theme'),
-        view  = dataSource.get('view'),
-        ariaLabel,ariaLabeledBy;
+    this.addSizeClassName(dataSource, context);
 
-    if(view) {
-      ariaLabel     = view.get('ariaLabel');
-      ariaLabeledBy = view.get('ariaLabeledBy');
-    }
+    var theme = dataSource.get('theme'),
+        ariaLabel, labelId;
+
+    // the label id is used so we can set the aria labelledby attribute
+    labelId = SC.guidFor(dataSource) + "-label";
 
     var isSelected = dataSource.get('isSelected') || NO;
     var isActive = dataSource.get('isActive');
     var isDisabled = !dataSource.get('isEnabled');
 
+    var ariaIsSelected;
+    if (isSelected === SC.MIXED_STATE) ariaIsSelected = 'mixed';
+    else if (isSelected) ariaIsSelected = 'true';
+    else ariaIsSelected = 'false';
+
     context.attr('role', 'checkbox');
-    context.attr('aria-checked', isSelected.toString());
-    if(ariaLabeledBy && ariaLabeledBy !== "") {
-      context.attr('aria-labelledby', ariaLabeledBy);
-    }
-    if(ariaLabel && ariaLabel !== "") {
-      context.attr('aria-label', ariaLabel);
-    }
+    context.attr('aria-checked', ariaIsSelected);
+    context.attr('aria-labelledby', labelId);
 
     context.setClass({
       'sel': isSelected,
@@ -8660,36 +9517,33 @@ SC.BaseTheme.checkboxRenderDelegate = SC.RenderDelegate.create({
     
     context.push('<span class = "button"></span>');
     
-    context = context.begin('span').addClass('label');
+    context = context.begin('span').addClass('label').id(labelId);
     theme.labelRenderDelegate.render(dataSource, context);
     context = context.end();
   },
   
   update: function(dataSource, jquery) {
-    var theme = dataSource.get('theme'),
-        view  = dataSource.get('view'),
-        ariaLabel,ariaLabeledBy;
+    this.updateSizeClassName(dataSource, jquery);
 
-    if(view) {
-      ariaLabel     = view.get('ariaLabel');
-      ariaLabeledBy = view.get('ariaLabeledBy');
-    }
+    var theme = dataSource.get('theme');
 
     var isSelected = dataSource.get('isSelected');
     var isActive = dataSource.get('isActive');
     var isDisabled = !dataSource.get('isEnabled');
 
+    var ariaIsSelected;
+    if (isSelected === SC.MIXED_STATE) ariaIsSelected = 'mixed';
+    else if (isSelected) ariaIsSelected = 'true';
+    else ariaIsSelected = 'false';
+
     // address accessibility
-    jquery.attr('aria-checked', isSelected.toString());
-    if(ariaLabeledBy && ariaLabeledBy !== "") {
-      jquery.attr('aria-labelledby', ariaLabeledBy);
-    }
-    if(ariaLabel && ariaLabel !== "") {
-      jquery.attr('aria-label', ariaLabel);
-    }
+    jquery.attr('aria-checked', ariaIsSelected);
+
+    // NOTE: the other properties were already set in render, and should not
+    // need to be changed.
 
     theme.labelRenderDelegate.update(dataSource, jquery.find('span.label'));
-    
+
     // add class names
     jquery.setClass({
       'sel': isSelected,
@@ -8700,13 +9554,15 @@ SC.BaseTheme.checkboxRenderDelegate = SC.RenderDelegate.create({
 });
 
 
+
 /* >>>>>>>>>> BEGIN source/render_delegates/collection.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 
 // collections don't need their own rendering; however, in future, constants
 // like the row height will likely be specified on the render delegate.
@@ -8729,29 +9585,26 @@ SC.BaseTheme.collectionRenderDelegate = SC.RenderDelegate.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
-// License:   Licened under MIT license (see license.js)
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 
 SC.BaseTheme.disclosureRenderDelegate = SC.RenderDelegate.create({
   name: 'disclosure',
   
   render: function(dataSource, context) {
+    this.addSizeClassName(dataSource, context);
+
     var theme = dataSource.get('theme'),
         value = dataSource.get('value'),
-        title = dataSource.get('title'),
-        view = dataSource.get('view'),
-        ariaLabel;
+        title = dataSource.get('title');
 
-    if(view) {
-      ariaLabel = view.get('ariaLabel');
-    }
+    var labelId = SC.guidFor(dataSource) + "-label";
 
     //addresing accessibility
     context.attr('aria-expanded', value);
-    if(ariaLabel && ariaLabel !== ""){
-      context.attr('aria-label', ariaLabel);
-    }
+    context.attr('aria-labelledby', labelId);
 
     if (dataSource.get('isSelected')) context.addClass('sel');
     
@@ -8761,27 +9614,20 @@ SC.BaseTheme.disclosureRenderDelegate = SC.RenderDelegate.create({
     
     context.push('<img src = "' + SC.BLANK_IMAGE_URL + '" class = "disclosure button ' + state + '" />');
     
-    context = context.begin('span').addClass('sc-button-label');
+    context = context.begin('span').addClass('sc-button-label').id(labelId);
     theme.labelRenderDelegate.render(dataSource, context);
     context = context.end();
   },
   
   update: function(dataSource, jquery) {
+    this.updateSizeClassName(dataSource, jquery);
+
     var theme = dataSource.get('theme'),
         value = dataSource.get('value'),
-        title = dataSource.get('title'),
-        view = dataSource.get('view'),
-        ariaLabel;
-
-    if(view) {
-      ariaLabel = view.get('ariaLabel');
-    }
+        title = dataSource.get('title');
 
     //addresing accessibility
     jquery.attr('aria-expanded', value);
-    if(ariaLabel && ariaLabel !== ""){
-      jquery.attr('aria-label', ariaLabel);
-    }
 
     if (dataSource.get('isSelected')) jquery.addClass('sel');
 
@@ -8800,9 +9646,10 @@ SC.BaseTheme.disclosureRenderDelegate = SC.RenderDelegate.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 
 SC.THREE_SLICE = ['left', 'middle', 'right'];
 
@@ -8812,7 +9659,7 @@ SC.NINE_SLICE = [
   'bottom-left', 'bottom', 'bottom-right'
 ];
 
-SC.mixin(SC.RenderDelegate.prototype, {
+SC.RenderDelegate.reopen({
   /*@scope SC.RenderDelegate.prototype*/
   
   /**
@@ -8831,44 +9678,68 @@ SC.mixin(SC.RenderDelegate.prototype, {
     }
   }
 });
+
 /* >>>>>>>>>> BEGIN source/render_delegates/image_button.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
-// License:   Licened under MIT license (see license.js)
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 
 SC.BaseTheme.imageButtonRenderDelegate = SC.RenderDelegate.create({
   name: 'image-button',
+
   render: function(dataSource, context) {
-    var image = dataSource.get('image');
+    var image = dataSource.get('image'),
+        toolTip = dataSource.get('toolTip');
+
+    // render controlSize
+    this.addSizeClassName(dataSource, context);
 
     context.addClass('no-min-width');
-    if (image) {
-      context.push("<div class='img "+image+"'></div>");
+
+    if (toolTip) {
+      context.attr('title', toolTip);
+      context.attr('alt', toolTip);
     }
 
-    else {
+    if (image) {
+      context.push("<div class='img "+image+"'></div>");
+    } else {
       context.push("<div class='img'></div>");
     }
   },
 
   update: function(dataSource, $) {
+    var image, toolTip;
+
+    this.updateSizeClassName(dataSource, $);
+
+    if (dataSource.didChangeFor('imageButtonRenderDelegate', 'toolTip')) {
+      toolTip = dataSource.get('toolTip');
+
+      $.attr('title', toolTip);
+      $.attr('alt', toolTip);
+    }
+
     if (dataSource.didChangeFor('imageButtonRenderDelegate', 'image')) {
-      var image = dataSource.get('image');
+      image = dataSource.get('image');
 
       $.children()[0].className = 'img '+image;
     }
   }
 });
+
 /* >>>>>>>>>> BEGIN source/render_delegates/master_detail.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 
 /**
   Border between the two panes of the MasterDetail.
@@ -8895,77 +9766,28 @@ SC.BaseTheme.masterDetailRenderDelegate = SC.RenderDelegate.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
+
 SC.BaseTheme.panelRenderDelegate = SC.RenderDelegate.create({
   name: 'panel',
-
-  render: function(dataSource, context) {
-    context.push(
-      "<div class='middle'></div>",
-      "<div class='top-left-edge'></div>",
-      "<div class='top-edge'></div>",
-      "<div class='top-right-edge'></div>",
-      "<div class='right-edge'></div>",
-      "<div class='bottom-right-edge'></div>",
-      "<div class='bottom-edge'></div>",
-      "<div class='bottom-left-edge'></div>",
-      "<div class='left-edge'></div>"
-    );
-  },
-  
-  update: function() {
-    // We never update child views. They get to do that on their own.
-  }
-});
-
-/* >>>>>>>>>> BEGIN source/render_delegates/menu.js */
-// ==========================================================================
-// Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
-// License:   Licened under MIT license (see license.js)
-// ==========================================================================
-
-sc_require('render_delegates/panel');
-
-// because render delegates are instances and therefore not, currently,
-// subclassable, this is line-for-line the same render delegate as pickerRenderDelegate.
-// this is obviously not optimal.
-SC.BaseTheme.menuRenderDelegate = SC.RenderDelegate.create({
-  name: 'menu',
   
   render: function(dataSource, context) {
-    var panelRenderDelegate = dataSource.get('theme').panelRenderDelegate;
+    context = context.begin('div').addClass('panel-background');
+    this.includeSlices(dataSource, context, SC.NINE_SLICE);
+    context = context.end();
 
-    panelRenderDelegate.render(dataSource, context);
-
-    var preferType = dataSource.get('preferType');
-    var pointerPosition = dataSource.get('pointerPos');
-    var pointerPositionY = dataSource.get('pointerPosY');
-
-    if (preferType == SC.PICKER_POINTER || preferType == SC.PICKER_MENU_POINTER) {
-      context.push('<div class="sc-pointer ' + pointerPosition + '" style="margin-top: ' + pointerPositionY + 'px"></div>');
-      context.addClass(pointerPosition);
-    }
+    // the label for the panel could change...
+    var ariaLabel = dataSource.get('ariaLabel');
+    context.attr('aria-label', ariaLabel || '');
   },
-  
-  update: function(dataSource, $) {
-    var panelRenderDelegate = dataSource.get('theme').panelRenderDelegate;
-    panelRenderDelegate.update(dataSource, $);
-    
-    var preferType = dataSource.get('preferType');
-    var pointerPosition = dataSource.get('pointerPos');
-    var pointerPositionY = dataSource.get('pointerPosY');
 
-    if (preferType == SC.PICKER_POINTER || preferType == SC.PICKER_MENU_POINTER) {
-      var el = $.find('.sc-pointer');
-      el.attr('class', "sc-pointer "+pointerPosition);
-      el.attr('style', "margin-top: "+pointerPositionY+"px");
-      $.addClass(pointerPosition);
-    }
+  update: function(dataSource, jQuery) {
+    // the label for the panel could change...
+    var ariaLabel = dataSource.get('ariaLabel');
+    jQuery.attr('aria-label', ariaLabel || '');
 
   }
 });
@@ -8974,9 +9796,10 @@ SC.BaseTheme.menuRenderDelegate = SC.RenderDelegate.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
-// License:   Licened under MIT license (see license.js)
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 sc_require('render_delegates/panel');
 
 SC.BaseTheme.pickerRenderDelegate = SC.RenderDelegate.create({
@@ -9015,19 +9838,100 @@ SC.BaseTheme.pickerRenderDelegate = SC.RenderDelegate.create({
   }
 });
 
+/* >>>>>>>>>> BEGIN source/render_delegates/menu.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
+sc_require('render_delegates/picker');
+
+// This is the same as a pickerRenderDelegate, but is named 'menu' instead.
+SC.BaseTheme.menuRenderDelegate = SC.BaseTheme.pickerRenderDelegate.create({
+  name: 'menu',
+
+  render: function(orig, dataSource, context) {
+    this.addSizeClassName(dataSource, context);
+    orig(dataSource, context);
+  }.enhance(),
+
+  update: function(orig, dataSource, jquery) {
+    this.updateSizeClassName(dataSource, jquery);
+    orig(dataSource, jquery);
+  }.enhance(),
+
+  itemHeight: 20,
+  itemSeparatorHeight: 9,
+  menuHeightPadding: 6,
+  submenuOffsetX: 2,
+
+  verticalOffset: 23,
+
+  'sc-tiny-size': {
+    itemHeight: 10,
+    itemSeparatorHeight: 2,
+    menuHeightPadding: 2,
+    submenuOffsetX: 0
+  },
+
+  'sc-small-size': {
+    itemHeight: 16,
+    itemSeparatorHeight: 7,
+    menuHeightPadding: 4,
+    submenuOffsetX: 2
+  },
+
+  'sc-large-size': {
+    itemHeight: 60,
+    itemSeparatorHeight: 20,
+    menuHeightPadding: 0,
+    submenuOffsetX: 4
+  },
+
+  // pretty sure these sizes are wrong, but I copied them from their original
+  // values so... please fix.
+  'sc-huge-size': {
+    itemHeight: 20,
+    itemSeparatorHeight: 9,
+    menuHeightPadding: 0,
+    submenuOffsetX: 0
+  }
+});
+
+/* >>>>>>>>>> BEGIN source/render_delegates/popup_button.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
+
+/**
+ * Renders and updates the HTML representation of a popup button.
+ */
+SC.BaseTheme.popupButtonRenderDelegate = SC.RenderDelegate.create({
+  render: function(dataSource, context) {
+    context.attr('aria-haspopup', 'true');
+    dataSource.get('theme').buttonRenderDelegate.render(dataSource, context);
+  },
+
+  update: function(dataSource, jQuery) {
+    dataSource.get('theme').buttonRenderDelegate.update(dataSource, jQuery);
+  }
+});
+
 /* >>>>>>>>>> BEGIN source/render_delegates/progress.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-SC.BaseTheme.PROGRESS_ANIMATED_BACKGROUND_MATRIX = [];
-SC.BaseTheme.PROGRESS_OFFSET_RANGE = 24;
-
 /**
-  @class
   Renders and updates DOM representations of progress bars.
   
   Parameters
@@ -9037,170 +9941,87 @@ SC.BaseTheme.PROGRESS_OFFSET_RANGE = 24;
   - isIndeterminate
   - isRunning
   - isEnabled
-  - value (from 0 to 1)
-  
-  There are a few other properties supported for backwards-compatibility
-  with certain ProgressView implementations; these ProgressViews should
-  be updated to match the new API. These properties will trigger deprecation
-  warnings.
+  - value
   
   Theme Constants
   -------------------------------------
-  Note that, unlike render delegate parameters, which are mostly standardized,
-  the theme constants can vary by the theme and the theme's method of rendering
-  the control.
-  
-  - PROGRESS_ANIMATED_BACKGROUND_MATRIX: Set to the matrix used for 
-    background image position for animation. 
-    [1st image y-location, offset, total number of images]
-  
-  - PROGRESS_OFFSET_RANGE: The value of the progress inner offset range. 
-    Should be the same as width of image. Default it to 24.
-  
+  Ace's progressRenderDelegate's rendering process is not affected by 
+  any theme constants.
 */
 SC.BaseTheme.progressRenderDelegate = SC.RenderDelegate.create({
+  name: 'progress',
+  
   render: function(dataSource, context) {
-    var theme    = dataSource.get('theme'),
+    this.addSizeClassName(dataSource, context);
+
+    var theme = dataSource.get('theme'),
         valueMax = dataSource.get('maximum'),
         valueMin = dataSource.get('minimum'),
-        valueNow = dataSource.get('value');
-    
-    var inner, animatedBackground, value = dataSource.get('value') * 100, 
-        cssString, backPosition,
-        isIndeterminate = dataSource.get('isIndeterminate'),
-        isRunning = dataSource.get('isRunning'),
-        isEnabled = dataSource.get('isEnabled'),
-        offsetRange = theme.PROGRESS_OFFSET_RANGE,
-        offset = (isIndeterminate && isRunning) ? 
-                (Math.floor(Date.now()/75)%offsetRange-offsetRange) : 0;
+        valueNow = dataSource.get('ariaValue');
 
-    //addressing accessibility
+    var value;
+    if (dataSource.get('isIndeterminate')) {
+      value = 120;
+    } else {
+      value = dataSource.get('value');
+    }
+
+    // make accessible
     context.attr('aria-valuemax', valueMax);
     context.attr('aria-valuemin', valueMin);
     context.attr('aria-valuenow', valueNow);
     context.attr('aria-valuetext', valueNow);
-      
-    // offsetRange from dataSource only supported for backwards-compatibility
-    if (dataSource.get('offsetRange')) {
-      if (!this._hasGivenOffsetRangeDeprecationWarning) {
-        console.warn(
-          "The 'offsetRange' property for progressRenderDelegate is deprecated. " +
-          "Please override the value on your theme, instead, by setting " +
-          "its PROGRESS_OFFSET_RANGE property."
-        );
-      }
-      this._hasGivenOffsetRangeDeprecationWarning = YES;
-      
-      offsetRange = dataSource.get('offsetRange');
-    }
-  
-    var classNames = {
-      'sc-indeterminate': isIndeterminate,
+
+    
+    context.setClass({
+      indeterminate: dataSource.get('isIndeterminate'),
+      running: dataSource.get('isRunning'),
+      disabled: !dataSource.get('isEnabled'),
       'sc-empty': (value <= 0),
       'sc-complete': (value >= 100)
-    };
+    });
     
-    // compute value for setting the width of the inner progress
-    if (!isEnabled) {
-      value = "0%" ;
-    } else if (isIndeterminate) {
-      value = "120%";
-    } else {
-      value = value + "%";
-    }
+    context = context.begin('div').addClass('track');
+    this.includeSlices(dataSource, context, SC.THREE_SLICE);
+    context = context.end();
     
-    var classString = this._createClassNameString(classNames);
-    context.push('<div class="sc-inner ', classString, '" style="width: ', 
-                  value, ';left: ', offset, 'px;">',
-                  '<div class="sc-inner-head">','</div>',
-                  '<div class="sc-inner-tail"></div></div>',
-                  '<div class="sc-outer-head"></div>',
-                  '<div class="sc-outer-tail"></div>');
+    context = context.begin('div').addClass('content');
+    context.css('width', (value * 100) + "%");
+    this.includeSlices(dataSource, context, SC.THREE_SLICE);
+    context = context.end();
   },
   
   update: function(dataSource, $) {
-    
-    var theme    = dataSource.get('theme'),
-        valueNow = dataSource.get('value');
-    
-    var inner, value, cssString, backPosition,
-        animatedBackground = theme.PROGRESS_ANIMATED_BACKGROUND_MATRIX,
-        isIndeterminate = dataSource.get('isIndeterminate'),
-        isRunning = dataSource.get('isRunning'),
-        isEnabled = dataSource.get('isEnabled'),
-        offsetRange = dataSource.get('offsetRange'),
-        offset = (isIndeterminate && isRunning) ? 
-                (Math.floor(Date.now()/75)%offsetRange-offsetRange) : 0;
-  
-    // compute value for setting the width of the inner progress
-    if (!isEnabled) {
-      value = "0%" ;
-    } else if (isIndeterminate) {
-      value = "120%";
-    } else {
-      value = (dataSource.get('value') * 100) + "%";
-    }
+    this.updateSizeClassName(dataSource, $);
 
-    var classNames = {
-      'sc-indeterminate': isIndeterminate,
-      'sc-empty': (value <= 0),
-      'sc-complete': (value >= 100)
-    };
-    
-    //addressing accessibility
+    var theme = dataSource.get('theme'),
+        valueMax = dataSource.get('maximum'),
+        valueMin = dataSource.get('minimum'),
+        valueNow = dataSource.get('ariaValue');
+
+    // make accessible
+    $.attr('aria-valuemax', valueMax);
+    $.attr('aria-valuemin', valueMin);
     $.attr('aria-valuenow', valueNow);
     $.attr('aria-valuetext', valueNow);
-    
-    $.setClass(classNames);
-    inner = $.find('.sc-inner');
-    
-    // animatedBackground from dataSource only supported for backwards-compatibility
-    if (dataSource.get('animatedBackgroundMatrix')) {
-      if (!this._hasGivenAnimatedBackgroundDeprecationWarning) {
-        console.warn(
-          "The 'animatedBackgroundMatrix' property for progressRenderDelegate " +
-          "is deprecated. Please override the value on your theme by setting " +
-          "its PROGRESS_ANIMATED_BACKGROUND_MATRIX property."
-        );
-      }
-      
-      this._hasGivenAnimatedBackgroundDeprecationWarning = YES;
-      
-      animatedBackground = dataSource.get('animatedBackgroundMatrix');
+
+
+    var value;
+    if (dataSource.get('isIndeterminate')) {
+      value = 120;
+    } else {
+      value = dataSource.get('value');
     }
+
+    $.setClass({
+      indeterminate: dataSource.get('isIndeterminate'),
+      running: dataSource.get('isRunning'),
+      disabled: !dataSource.get('isEnabled'),
+      'sc-empty': (value <= 0),
+      'sc-complete': (value >= 100)
+    });
     
-    if (!animatedBackground) {
-      animatedBackground = theme.PROGRESS_ANIMATED_BACKGROUND_MATRIX;
-    }
-    
-    cssString = "width: "+value+"; ";
-    cssString = cssString + "left: "+offset+"px; ";
-    if (animatedBackground.length === 3 ) {
-      inner.css('backgroundPosition', '0px -'+ 
-              (animatedBackground[0] + 
-              animatedBackground[1]*this._currentBackground)+'px');
-      if(this._currentBackground===animatedBackground[2]-1
-         || this._currentBackground===0){
-        this._nextBackground *= -1;
-      }
-      this._currentBackground += this._nextBackground;
-      
-      cssString = cssString + "backgroundPosition: "+backPosition+"px; ";
-      //Instead of using css() set attr for faster perf.
-      inner.attr('style', cssString);
-    }else{
-      inner.attr('style', cssString);
-    }
-  },
-  
-  
-  _createClassNameString: function(classNames) {
-    var classNameArray = [], key;
-    for(key in classNames) {
-      if(!classNames.hasOwnProperty(key)) continue;
-      if(classNames[key]) classNameArray.push(key);
-    }
-    return classNameArray.join(" ");
+    $.find('.content').css('width', (value * 100) + "%");
   }
 });
 
@@ -9208,7 +10029,7 @@ SC.BaseTheme.progressRenderDelegate = SC.RenderDelegate.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -9236,14 +10057,13 @@ SC.BaseTheme.radioRenderDelegate = SC.RenderDelegate.create({
   name: 'radio',
   
   render: function(dataSource, context) {
+    this.addSizeClassName(dataSource, context);
+
     var theme = dataSource.get('theme');
     
     var isSelected = dataSource.get('isSelected'),
         width = dataSource.get('width'),
-        title = dataSource.get('title'),
-        value = dataSource.get('value'),
-        ariaLabeledBy = dataSource.get('ariaLabeledBy'),
-        ariaLabel     = dataSource.get('ariaLabel');
+        labelId = SC.guidFor(dataSource) + '-label';
 
     context.setClass({
       active: dataSource.get('isActive'),
@@ -9255,31 +10075,26 @@ SC.BaseTheme.radioRenderDelegate = SC.RenderDelegate.create({
     //accessing accessibility
     context.attr('role', 'radio');
     context.attr('aria-checked', isSelected);
-    if(ariaLabel && ariaLabel !== "") {
-      context.attr('aria-label', ariaLabel);
-    }
-    if(ariaLabeledBy && ariaLabeledBy !== "") {
-      context.attr('aria-labelledby', ariaLabeledBy);
-    }
+    context.attr('aria-labelledby', labelId);
+    context.attr('aria-disabled', dataSource.get('isEnabled') ? 'false' : 'true');
 
     if (width) context.css('width', width);
-    
+
     context.push('<span class = "button"></span>');
-    
-    context = context.begin('span').addClass('sc-button-label');
+
+    context = context.begin('span').addClass('sc-button-label').id(labelId);
     theme.labelRenderDelegate.render(dataSource, context);
     context = context.end();
   },
-  
+
   update: function(dataSource, jquery) {
+    this.updateSizeClassName(dataSource, jquery);
+
     var theme = dataSource.get('theme');
-    
+
     var isSelected = dataSource.get('isSelected'),
         width = dataSource.get('width'),
-        title = dataSource.get('title'),
-        value = dataSource.get('value'),
-        ariaLabeledBy = dataSource.get('ariaLabeledBy'),
-        ariaLabel     = dataSource.get('ariaLabel');
+        value = dataSource.get('value');
 
     jquery.setClass({
       active: dataSource.get('isActive'),
@@ -9287,16 +10102,11 @@ SC.BaseTheme.radioRenderDelegate = SC.RenderDelegate.create({
       sel: dataSource.get('isSelected'),
       disabled: !dataSource.get('isEnabled')
     });
-    
+
+    jquery.attr('aria-disabled', dataSource.get('isEnabled') ? 'false' : 'true');
     jquery.attr('aria-checked', isSelected);
-    if(ariaLabel !== ""){
-      jquery.attr('aria-label', ariaLabel);
-    }
-    if(ariaLabeledBy !== "") {
-      jquery.attr('aria-labelledby', ariaLabeledBy);
-    }
     jquery.css('width', width ? width : null);
-    
+
     theme.labelRenderDelegate.update(dataSource, jquery.find('.sc-button-label'));
   }
 });
@@ -9305,9 +10115,10 @@ SC.BaseTheme.radioRenderDelegate = SC.RenderDelegate.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 
 /**
   @class
@@ -9333,6 +10144,8 @@ SC.BaseTheme.radioGroupRenderDelegate = SC.RenderDelegate.create({
   name: 'radio-group',
   
   render: function(dataSource, context) {
+    this.addSizeClassName(dataSource, context);
+
     var theme = dataSource.get('theme'),
         name = SC.guidFor(this),
         items = dataSource.get('items'), idx, len = items.length, item;
@@ -9340,6 +10153,7 @@ SC.BaseTheme.radioGroupRenderDelegate = SC.RenderDelegate.create({
     
     context.addClass(dataSource.get('layoutDirection'));
     context.attr('role', 'radiogroup');
+    context.attr('aria-disabled', dataSource.get('isEnabled') ? 'false' : 'true');
     
     for (idx = 0; idx < len; idx++) {
       item = items[idx];
@@ -9362,11 +10176,14 @@ SC.BaseTheme.radioGroupRenderDelegate = SC.RenderDelegate.create({
   },
   
   update: function(dataSource, jquery) {
+    this.updateSizeClassName(dataSource, jquery);
+
     var theme = dataSource.get('theme'),
         name = SC.guidFor(this),
         items = dataSource.get('items'), idx, len = items.length, item;
     
     jquery.addClass(dataSource.get('layoutDirection'));
+    jquery.attr('aria-disabled', dataSource.get('isEnabled') ? 'false' : 'true');
     
     if (dataSource.get('renderState').radioCount !== len) {
       // just regenerate if the count has changed. It would be better
@@ -9416,15 +10233,17 @@ SC.BaseTheme.radioGroupRenderDelegate = SC.RenderDelegate.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 
 /**
   Renders and updates the HTML representation of a segment child view within
   SC.SegmentedView.
 */
-SC.BaseTheme.segmentRenderDelegate = SC.Object.create({
+SC.BaseTheme.segmentRenderDelegate = SC.RenderDelegate.create({
+  name: 'segment',
 
   render: function(dataSource, context) {
     var theme = dataSource.get('theme'),
@@ -9438,6 +10257,7 @@ SC.BaseTheme.segmentRenderDelegate = SC.Object.create({
       'sc-last-segment': dataSource.get('isLastSegment'),
       'sc-overflow-segment': dataSource.get('isOverflowSegment')
     };
+
     if (!SC.none(dataSource.get('index'))) classes['sc-segment-' + dataSource.get('index')] = YES;
     context.setClass(classes);
 
@@ -9473,14 +10293,15 @@ SC.BaseTheme.segmentRenderDelegate = SC.Object.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 /**
   Renders and updates the HTML representation of SC.SegmentedView.
 */
-SC.BaseTheme.segmentedRenderDelegate = SC.Object.create({
+SC.BaseTheme.segmentedRenderDelegate = SC.RenderDelegate.create({
+  name: 'segmented',
 
   /*
     We render everything external to the segments and let each segment use it's own render
@@ -9489,10 +10310,12 @@ SC.BaseTheme.segmentedRenderDelegate = SC.Object.create({
     */
   render: function(dataSource, context) {
     // Use text-align to align the segments
+    this.addSizeClassName(dataSource, context);
     context.addStyle('text-align', dataSource.get('align'));
   },
 
   update: function(dataSource, jquery) {
+    this.updateSizeClassName(dataSource, jquery);
     jquery.css('text-align', dataSource.get('align'));
   },
 
@@ -9536,8 +10359,8 @@ SC.BaseTheme.segmentedRenderDelegate = SC.Object.create({
       rect = segmentLayer.getBoundingClientRect();
 
       // Convert client rect into standard rect
-      rect.x = rect.left;
-      rect.y = rect.top;
+      // Remake the rect since IE8 won't let us modify the boundingClientRect
+      rect = { x: rect.left, y: rect.top, width: (rect.right-rect.left), height: (rect.bottom - rect.top) };
 
       // Return the index early if found
       if (SC.pointInRect(point, rect)) return i;
@@ -9552,7 +10375,7 @@ SC.BaseTheme.segmentedRenderDelegate = SC.Object.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licened under MIT license (see license.js)
 // ==========================================================================
 
@@ -9572,17 +10395,12 @@ SC.BaseTheme.sliderRenderDelegate = SC.RenderDelegate.create({
   name: 'slider',
   
   render: function(dataSource, context) {
-    var blankImage  = SC.BLANK_IMAGE_URL,
+    this.addSizeClassName(dataSource, context);
+
+    var blankImage = SC.BLANK_IMAGE_URL,
         valueMax    = dataSource.get('maximum'),
         valueMin    = dataSource.get('minimum'),
-        valueNow    = dataSource.get('value');
-
-    context.push('<span class="sc-inner">',
-                  '<span class="sc-leftcap"></span>',
-                  '<span class="sc-rightcap"></span>',
-                  '<img src="', blankImage, 
-                  '" class="sc-handle" style="left: ', dataSource.get('value'), '%" />',
-                  '</span>');
+        valueNow    = dataSource.get('ariaValue');
 
     //addressing accessibility
     context.attr('aria-valuemax', valueMax);
@@ -9591,19 +10409,47 @@ SC.BaseTheme.sliderRenderDelegate = SC.RenderDelegate.create({
     context.attr('aria-valuetext', valueNow);
     context.attr('aria-orientation', 'horizontal');
 
+    context = context.begin('span').addClass('track');
+    this.includeSlices(dataSource, context, SC.THREE_SLICE);
+    context = context.end();
+
+    context.push(
+      '<img src="', blankImage, 
+      '" class="sc-handle" style="left: ', dataSource.get('value'), '%" />',
+      '</span>'
+    );
+
+    dataSource.get('renderState')._cachedHandle = null;
   },
   
   update: function(dataSource, jquery) {
+    this.updateSizeClassName(dataSource, jquery);
 
-    var valueNow    = dataSource.get('value');
-
-    if (dataSource.didChangeFor('sliderRenderDelegate', 'value')) {
-      jquery.find(".sc-handle").css('left', dataSource.get('value') + "%");
-    }
+    var valueMax    = dataSource.get('maximum'),
+        valueMin    = dataSource.get('minimum'),
+        valueNow    = dataSource.get('ariaValue');
 
     //addressing accessibility
+    jquery.attr('aria-valuemax', valueMax);
+    jquery.attr('aria-valuemin', valueMin);
     jquery.attr('aria-valuenow', valueNow);
     jquery.attr('aria-valuetext', valueNow);
+    jquery.attr('aria-orientation', 'horizontal');
+
+    if (dataSource.didChangeFor('sliderRenderDelegate', 'value')) {
+      var handle = dataSource.get('renderState')._cachedHandle;
+      if (!handle) {
+        handle = dataSource.get('renderState')._cachedHandle = jquery.find('.sc-handle');
+      }
+
+      var frame = dataSource.get('frame'), value = dataSource.get('value');
+      if (frame && SC.platform.supportsCSS3DTransforms) {
+        value = (value / 100) * frame.width;
+        handle[0].style.cssText = "-webkit-transform: translate3d(" + value + "px,0,0);";
+      } else {
+        handle.css('left', value + "%");
+      }
+    }
   }
   
 });
@@ -9612,7 +10458,7 @@ SC.BaseTheme.sliderRenderDelegate = SC.RenderDelegate.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -9621,7 +10467,7 @@ SC.BaseTheme.SourceList = SC.BaseTheme.subtheme('source-list');
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -9641,24 +10487,14 @@ SC.BaseTheme.toolbarRenderDelegate = SC.RenderDelegate.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-// the 'well'-styled container
-SC.BaseTheme.wellRenderDelegate = SC.Object.create({
+SC.BaseTheme.wellRenderDelegate = SC.RenderDelegate.create({
   name: 'well',
-  
   render: function(dataSource, context) {
-    context.push("<div class='top-left-edge'></div>",
-      "<div class='top-edge'></div>",
-      "<div class='top-right-edge'></div>",
-      "<div class='right-edge'></div>",
-      "<div class='bottom-right-edge'></div>",
-      "<div class='bottom-edge'></div>",
-      "<div class='bottom-left-edge'></div>",
-      "<div class='left-edge'></div>",
-      "<div class='content-background'></div>");
+    this.includeSlices(dataSource, context, SC.NINE_SLICE);
   },
   
   update: function() {
@@ -9670,11 +10506,11 @@ SC.BaseTheme.wellRenderDelegate = SC.Object.create({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-SC.BaseTheme.workspaceRenderDelegate = SC.Object.create({
+SC.BaseTheme.workspaceRenderDelegate = SC.RenderDelegate.create({
   name: 'workspace',
   
   render: function() {
@@ -9686,11 +10522,13 @@ SC.BaseTheme.workspaceRenderDelegate = SC.Object.create({
   }
 });
 /* >>>>>>>>>> BEGIN source/system/key_bindings.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 
 // Key Bindings are used to map a keyboard input to an action message on a
 // responder.  These bindings are most useful when implementing sophisticated
@@ -9728,13 +10566,16 @@ SC.BASE_KEY_BINDINGS = {
 
 
 /* >>>>>>>>>> BEGIN source/system/undo_manager.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
 
-require('core');
+/*
+  TODO More docs for this class
+*/
 
 /**
   @class
@@ -9743,7 +10584,7 @@ require('core');
   do is to make sure that you register a function with this manager to undo
   every change you make.  You can then invoke the undo/redo methods to do it.
   
-  h4. USING THE UNDOMANAGER
+  ## Using SC.UndoManager
   
   Typically you create an undo manager inside on of your controllers.  Then,
   whenever you are about to perform an action on your model object, all you
@@ -9753,29 +10594,28 @@ require('core');
   Besure the undo function you register also saves undo functions.  This makes
   redo possible.
   
-  More docs TBD.
-  
   @extends SC.Object
 */
 SC.UndoManager = SC.Object.extend(
-/** @scope SC.UndoManager.prototype */
-{
+/** @scope SC.UndoManager.prototype */ {
 
   /** 
-    (Property) Name of the next undo action name.  
-  
     Use this property to build your Undo menu name.
     
+    @field
+    @type String
+    @default null
   */
   undoActionName: function() { 
     return this.undoStack ? this.undoStack.name : null ;
   }.property('undoStack'),
   
   /** 
-    (Property) Name of the next return action name.  
-  
     Use this property to build your Redo menu name.
     
+    @field
+    @type String
+    @default null
   */
   redoActionName: function() { 
     return this.redoStack ? this.redoStack.name : null ;
@@ -9785,43 +10625,57 @@ SC.UndoManager = SC.Object.extend(
     True if there is an undo action on the stack.
     
     Use to validate your menu item.
+    
+    @field
+    @type Boolean
+    @default NO
   */
   canUndo: function() { 
-    return this.undoStack != null; 
+    // instead of this.undoStack !== null && this.undoStack !== undefined
+    return this.undoStack != null;
   }.property('undoStack'),
   
   /** 
-    True if there is an redo action on the stack.
+    True if there is an redo action on the stack. Use to validate your menu item.
     
-    Use to validate your menu item.
+    @field
+    @type Boolean
+    @default NO
   */
   canRedo: function() { 
+    // instead of this.redoStack !== null && this.redoStack !== undefined
     return this.redoStack != null; 
   }.property('redoStack'),
   
-  /**  
-    Tries to undo the last action.  
-  
-    Returns true if succeeded.  Fails if an undo group is currently open.
+  /**
+    Tries to undo the last action. Fails if an undo group is currently open.
+    
+    @returns {Boolean} YES if suceeded, NO otherwise.
   */
-  undo: function() { this._undoOrRedo('undoStack','isUndoing'); },
-  
-  /**  
-    Tries to redo the last action.  
-  
-    Returns true if succeeded.  Fails if an undo group is currently open.
-  */
-  redo: function() { this._undoOrRedo('redoStack','isRedoing'); },
+  undo: function() {
+    this._undoOrRedo('undoStack','isUndoing');
+  },
   
   /**
-    True if the manager is currently undoing events. 
+    Tries to redo the last action. Fails if a redo group is currently open.
+    
+    @returns {Boolean} YES if suceeded, NO otherwise.
   */
-  isUndoing: false, 
+  redo: function() {
+    this._undoOrRedo('redoStack','isRedoing');
+  },
   
   /**
-    True if the manager is currently redoing events.
+    @type Boolean
+    @default NO
   */
-  isRedoing: false, 
+  isUndoing: NO,
+  
+  /**
+    @type Boolean
+    @default NO
+  */
+  isRedoing: NO, 
   
   /** @private */
   groupingLevel: 0,
@@ -9854,6 +10708,8 @@ SC.UndoManager = SC.Object.extend(
     
     When you are finished performing the action, balance this with a call to
     endUndoGroup().
+    
+    @param {String} name
   */
   beginUndoGroup: function(name) {
     // is a group already active? Just increment the counter.
@@ -9869,7 +10725,12 @@ SC.UndoManager = SC.Object.extend(
     }
   },
  
-  /** end the undo group.  see beginUndoGroup() */
+  /**
+    @throws {Error} If there is no active group
+    
+    @param {String} name
+    @see beginUndoGroup()
+  */
   endUndoGroup: function(name) {
     // if more than one groups are active, just decrement the counter.
     if (!this._activeGroup) raise("endUndoGroup() called outside group.") ;
@@ -9884,9 +10745,13 @@ SC.UndoManager = SC.Object.extend(
   },
 
   /**
-    Change the name of the current undo group.  
-  
+    Change the name of the current undo group.
+    
     Normally you don't want to do this as it will effect the whole group.
+    
+    @param {String} name
+    
+    @throws {Error} If there is no active group
   */
   setActionName: function(name) {
     if (!this._activeGroup) raise("setActionName() called outside group.") ;
@@ -9896,8 +10761,18 @@ SC.UndoManager = SC.Object.extend(
   // --------------------------------
   // PRIVATE
   //
-  _activeGroup: null, undoStack: null, redoStack: null, 
-  _undoOrRedo: function(stack,state) {
+  
+  /** @private */
+  _activeGroup: null,
+  
+  /** @private */
+  undoStack: null,
+  
+  /** @private */
+  redoStack: null, 
+  
+  /** @private */
+  _undoOrRedo: function(stack, state) {
     if (this._activeGroup) return false ;
     if (this.get(stack) == null) return true; // noting to do.
 
@@ -9920,7 +10795,7 @@ SC.UndoManager = SC.Object.extend(
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -9937,57 +10812,65 @@ SC.UndoManager = SC.Object.extend(
   to "checkbox", the way the checkbox renders (including DOM) will actually
   be different than SC.ButtonView's.
   
-  @extends SC.FieldView
+  @extends SC.ButtonView
   @since SproutCore 1.0
 */
-SC.CheckboxView = SC.ButtonView.extend(SC.StaticLayout, SC.Button,
-  /** @scope SC.CheckboxView.prototype */ {
+SC.CheckboxView = SC.ButtonView.extend(SC.StaticLayout,
+/** @scope SC.CheckboxView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-checkbox-view', 'sc-checkbox-control']
+    @see SC.View#classNames
+  */
   classNames: ['sc-checkbox-view', 'sc-checkbox-control'],
+
+  /**
+    @type String
+    @default 'label'
+    @see SC.View#tagName
+  */
   tagName: 'label',
 
   /**
-    The WAI-ARIA role of checkbox. This property's value should not be
-    changed.
+    The WAI-ARIA role of checkbox.
 
-    @property {String}
+    @type String
+    @readOnly
   */
   ariaRole: 'checkbox',
 
-  /**
-    The WAI-ARIA attribute for the checkbox. This property is assigned to
-    'aria-labelledby' attribute, which defines a string value that labels the
-    checkbox element. Used to support voiceover.It should be assigned a non-empty
-    string, if the 'aria-labelledby' attribute has to be set for the element.
-
-    @property {String}
-  */
-  ariaLabeledBy: null,
-
-  /**
-    The WAI-ARIA attribute for the checkbox. This property is assigned to
-    'aria-label' attribute, which defines a string value that labels the
-    checkbox element. Used to support voiceover. It is used when it is not
-    possible to have a visible label on the screen. It should be assigned a non-empty
-    string, if the 'aria-label' attribute has to be set for the element.
-
-    @property {String}
-  */
-  ariaLabel: null,
-
   // no special theme for Checkbox; button defaults to 'square', so we have to stop that.
   themeName: null,
+  
+  /**
+    @type String
+    @default 'checkboxRenderDelegate'
+  */
   renderDelegateName: 'checkboxRenderDelegate',
 
-  /* Ellipsis is disabled by default to allow multiline text */
+  /**
+    Ellipsis is disabled by default to allow multiline text
+    
+    @type Boolean
+    @default NO
+  */
   needsEllipsis: NO,
   
+  /**
+    YES if `isEnabled` is YES, NO otherwise
+    
+    @type Boolean
+    @default NO
+    @observes isEnabled
+  */
   acceptsFirstResponder: function() {
-    if(!SC.SAFARI_FOCUS_BEHAVIOR) return this.get('isEnabled');
-    else return NO;
+    if (SC.FOCUS_ALL_CONTROLS) { return this.get('isEnabled'); }
+    return NO;
   }.property('isEnabled'),
   
   
+  /** @private */
   mouseDown: function(evt) {
     if(!this.get('isEnabled')) return YES;
     this.set('isActive', YES);
@@ -9998,12 +10881,12 @@ SC.CheckboxView = SC.ButtonView.extend(SC.StaticLayout, SC.Button,
     return YES;
   },
   
+  /** @private */
   mouseUp: function(evt) {
     this.set('isActive', NO);
     this._isMouseDown = NO;
 
-    if(!this.get('isEnabled') || 
-      (evt && evt.target && !this.$().within(evt.target))) {
+    if(!this.get('isEnabled')) {
       return YES;
     }
     var val = this.get('value');
@@ -10018,10 +10901,12 @@ SC.CheckboxView = SC.ButtonView.extend(SC.StaticLayout, SC.Button,
   },
   
   
+  /** @private */
   touchStart: function(evt) {
     return this.mouseDown(evt);
   },
   
+  /** @private */
   touchEnd: function(evt) {
     return this.mouseUp(evt);
   }
@@ -10032,12 +10917,27 @@ SC.CheckboxView = SC.ButtonView.extend(SC.StaticLayout, SC.Button,
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            portions copyright @2009 Apple Inc.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
+
+/**
+  @static
+  @constant
+*/
 SC.LIST_ITEM_ACTION_CANCEL = 'sc-list-item-cancel-action';
+
+/**
+  @static
+  @constant
+*/
 SC.LIST_ITEM_ACTION_REFRESH = 'sc-list-item-cancel-refresh';
+
+/**
+  @static
+  @constant
+*/
 SC.LIST_ITEM_ACTION_EJECT = 'sc-list-item-cancel-eject';
 
 /**
@@ -10053,23 +10953,27 @@ SC.LIST_ITEM_ACTION_EJECT = 'sc-list-item-cancel-eject';
 
   @extends SC.View
   @extends SC.Control
-  @extends SC.Editable
+  @extends SC.InlineEditable
   @extends SC.StaticLayout
   @since SproutCore 1.0
 */
-SC.ListItemView = SC.View.extend(
-    SC.InlineEditable,
-    SC.Control,
+SC.ListItemView = SC.View.extend(SC.InlineEditable, SC.Control,
 /** @scope SC.ListItemView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-list-item-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-list-item-view'],
 
+  /**
+    @type Array
+    @default ['disclosureState', 'escapeHTML']
+    @see SC.View#displayProperties
+  */
   displayProperties: ['disclosureState', 'escapeHTML'],
 
-
-  init: function() {
-    arguments.callee.base.apply(this,arguments);
-  },
 
   // ..........................................................
   // KEY PROPERTIES
@@ -10079,6 +10983,7 @@ SC.ListItemView = SC.View.extend(
     The content object the list item will display.
 
     @type SC.Object
+    @default null
   */
   content: null,
 
@@ -10090,7 +10995,8 @@ SC.ListItemView = SC.View.extend(
     in a ListView, this property would be 0.
 
     @type Number
-    @isReadOnly
+    @default null
+    @readOnly
   */
   contentIndex: null,
 
@@ -10099,6 +11005,9 @@ SC.ListItemView = SC.View.extend(
 
     If false, the icon on the list item view will be hidden.  Otherwise,
     space will be left for the icon next to the list item view.
+    
+    @type Boolean
+    @default NO
   */
   hasContentIcon: NO,
 
@@ -10107,6 +11016,9 @@ SC.ListItemView = SC.View.extend(
 
     If false, the icon on the list item view will be hidden.  Otherwise,
     space will be left for the icon next to the list item view.
+    
+    @type Boolean
+    @default NO
   */
   hasContentRightIcon: NO,
 
@@ -10115,6 +11027,9 @@ SC.ListItemView = SC.View.extend(
     arrow.
 
     If false, the space for the branch arrow will be collapsed.
+    
+    @type Boolean
+    @default NO
   */
   hasContentBranch: NO,
 
@@ -10123,13 +11038,17 @@ SC.ListItemView = SC.View.extend(
 
     The checkbox will only be visible if this key is not null.
 
-    @type {String}
+    @type String
+    @default null
   */
   contentCheckboxKey: null,
 
   /**
     The URL or CSS class name to use for the icon. This is only used if
     contentIconKey is null, or returns null from the delegate.
+    
+    @type String
+    @default null
   */
   icon: null,
 
@@ -10138,12 +11057,18 @@ SC.ListItemView = SC.View.extend(
 
     This property will be checked on the content object to determine the
     icon to display.  It must return either a URL or a CSS class name.
+    
+    @type String
+    @default NO
   */
   contentIconKey: null,
 
   /**
     The URL or CSS class name to use for the right icon. This is only used if
     contentRightIconKey is null, or returns null from the delegate.
+    
+    @type String
+    @default null
   */
   rightIcon: null,
 
@@ -10152,6 +11077,9 @@ SC.ListItemView = SC.View.extend(
 
     This property will be checked on the content object to determine the
     icon to display.  It must return either a URL or a CSS class name.
+    
+    @type String
+    @default null
   */
   contentRightIconKey: null,
 
@@ -10159,6 +11087,9 @@ SC.ListItemView = SC.View.extend(
     (displayDelegate) The name of the property used for label itself
 
     If null, then the content object itself will be used..
+    
+    @type String
+    @default null
   */
   contentValueKey: null,
 
@@ -10167,6 +11098,9 @@ SC.ListItemView = SC.View.extend(
     You should only disable this option if you are sure you will only
     display content that is already escaped and you need the added
     performance gain.
+    
+    @type Boolean
+    @default YES
   */
   escapeHTML: YES,
 
@@ -10176,6 +11110,9 @@ SC.ListItemView = SC.View.extend(
 
     The count will only be visible if this property is not null and the
     returned value is not 0.
+    
+    @type String
+    @default null
   */
   contentUnreadCountKey: null,
 
@@ -10186,30 +11123,40 @@ SC.ListItemView = SC.View.extend(
 
     If this is null, then the branch view will be completely hidden.
     Otherwise space will be allocated for it.
+    
+    @type String
+    @default null
   */
   contentIsBranchKey: null,
-
-
-  /**
-    YES if the item view is currently editing.
-  */
-  isEditing: NO,
-
+  
   /**
     Indent to use when rendering a list item with an outline level > 0.  The
     left edge of the list item will be indented by this amount for each
     outline level.
+    
+    @type Number
+    @default 16
   */
   outlineIndent: 16,
 
   /**
     Outline level for this list item.  Usually set by the collection view.
+    
+    @type Number
+    @default 0
   */
   outlineLevel: 0,
 
   /**
     Disclosure state for this list item.  Usually set by the collection view
-    when the list item is created.
+    when the list item is created. Possible values:
+    
+      - SC.LEAF_NODE
+      - SC.BRANCH_OPEN
+      - SC.BRANCH_CLOSED
+    
+    @type String
+    @default SC.LEAF_NODE
   */
   disclosureState: SC.LEAF_NODE,
 
@@ -10219,6 +11166,7 @@ SC.ListItemView = SC.View.extend(
   */
   validator: null,
 
+  /** @private */
   contentPropertyDidChange: function() {
     //if (this.get('isEditing')) this.discardEditing() ;
     if (this.get('contentIsEditable') !== this.contentIsEditable()) {
@@ -10229,40 +11177,37 @@ SC.ListItemView = SC.View.extend(
   },
 
   /**
-    Determines if content is editable or not.  Checkboxes and other related
+    Determines if content is editable or not. Checkboxes and other related
     components will render disabled if an item is not editable.
+    
+    @field
+    @type Boolean
+    @observes content
   */
   contentIsEditable: function() {
     var content = this.get('content');
     return content && (content.get ? content.get('isEditable')!==NO : NO);
   }.property('content').cacheable(),
-
-
+  
+  /**
+    @type Object
+    @default SC.InlineTextFieldDelegate
+  */
+  inlineEditorDelegate: SC.InlineTextFieldDelegate,
+  
   /**
     Finds and retrieves the element containing the label.  This is used
     for inline editing.  The default implementation returns a CoreQuery
     selecting any label elements.   If you override renderLabel() you
     probably need to override this as well.
 
-    @returns {SC.CoreQuery} CQ object selecting label elements
+    @returns {jQuery} jQuery object selecting label elements
   */
   $label: function() {
-    return this.$('label') ;
+    return this.$('label');
   },
 
-  /**
-    Generates the html string used to represent the action item for your
-    list item.  override this to return your own custom HTML
-
-    @param {SC.RenderContext} context the render context
-    @param {String} actionClassName the name of the action item
-    @returns {void}
-  */
-  renderAction: function(context, actionClassName){
-    context.push('<img src="',SC.BLANK_IMAGE_URL,'" class="action" />');
-  },
-
-  /**
+  /** @private
     Determines if the event occured inside an element with the specified
     classname or not.
   */
@@ -10310,11 +11255,10 @@ SC.ListItemView = SC.View.extend(
   },
 
   /** @private
-  mouseDown is handled only for clicks on the checkbox view or or action
-  button.
+    mouseDown is handled only for clicks on the checkbox view or or action
+    button.
   */
   mouseDown: function(evt) {
-
     // if content is not editable, then always let collection view handle the
     // event.
     if (!this.get('contentIsEditable')) return NO ;
@@ -10341,6 +11285,7 @@ SC.ListItemView = SC.View.extend(
     return NO ; // let the collection view handle this event
   },
 
+  /** @private */
   mouseUp: function(evt) {
     var ret= NO, del, checkboxKey, content, state, idx, set;
 
@@ -10401,6 +11346,7 @@ SC.ListItemView = SC.View.extend(
     return ret ;
   },
 
+  /** @private */
   mouseMoved: function(evt) {
     if (this._isMouseDownOnCheckbox && this._isInsideCheckbox(evt)) {
       this._addCheckboxActiveState() ;
@@ -10424,23 +11370,28 @@ SC.ListItemView = SC.View.extend(
    return NO ;
   },
 
+  /** @private */
   touchStart: function(evt){
     return this.mouseDown(evt);
   },
 
+  /** @private */
   touchEnd: function(evt){
     return this.mouseUp(evt);
   },
 
+  /** @private */
   touchEntered: function(evt){
     return this.mouseEntered(evt);
   },
 
+  /** @private */
   touchExited: function(evt){
     return this.mouseExited(evt);
   },
 
 
+  /** @private */
   _addCheckboxActiveState: function() {
     if (this.get('isEnabled')) {
       if (this._checkboxRenderDelegate) {
@@ -10456,6 +11407,7 @@ SC.ListItemView = SC.View.extend(
     }
   },
 
+  /** @private */
   _removeCheckboxActiveState: function() {
     if (this._checkboxRenderer) {
       var source = this._checkboxRenderSource;
@@ -10469,6 +11421,7 @@ SC.ListItemView = SC.View.extend(
     }
   },
 
+  /** @private */
   _addDisclosureActiveState: function() {
     if (this.get('isEnabled')) {
       if (this._disclosureRenderDelegate) {
@@ -10484,6 +11437,7 @@ SC.ListItemView = SC.View.extend(
     }
   },
 
+  /** @private */
   _removeDisclosureActiveState: function() {
     if (this._disclosureRenderer) {
       var source = this._disclosureRenderSource;
@@ -10496,15 +11450,17 @@ SC.ListItemView = SC.View.extend(
     }
   },
 
+  /** @private */
   _addRightIconActiveState: function() {
    this.$('img.right-icon').setClass('active', YES);
   },
 
+  /** @private */
   _removeRightIconActiveState: function() {
    this.$('img.right-icon').removeClass('active');
   },
 
-  /**
+  /** @private
     Returns true if a click is on the label text itself to enable editing.
 
     Note that if you override renderLabel(), you probably need to override
@@ -10533,22 +11489,17 @@ SC.ListItemView = SC.View.extend(
    return NO;
   },
 
-  beginEditing: function() {
-    if (this.get('isEditing')) return YES ;
-    //if (!this.get('contentIsEditable')) return NO ;
-    return this._beginEditing(YES);
-  },
-
-  _beginEditing: function(scrollIfNeeded) {
-    var content   = this.get('content'),
-        del       = this.get('displayDelegate'),
-        labelKey  = this.getDelegateProperty('contentValueKey', del),
-        parent    = this.get('parentView'),
-        pf        = parent ? parent.get('frame') : null,
-        el        = this.$label(),
-        validator = this.get('validator'),
-        f, v, offset, oldLineHeight, fontSize, top, lineHeight, escapeHTML,
-        lineHeightShift, targetLineHeight, ret ;
+  /*
+    Edits the label portion of the list item. If scrollIfNeeded is YES, will
+    scroll to the item before editing it.
+    
+    @params {Boolean} if the parent scroll view should be scrolled to this item
+      before editing begins
+    @returns {Boolean} YES if successful
+  */
+  beginEditing: function(original, scrollIfNeeded) {
+    var el        = this.$label(),
+        parent    = this.get('parentView');
 
     // if possible, find a nearby scroll view and scroll into view.
     // HACK: if we scrolled, then wait for a loop and get the item view again
@@ -10558,28 +11509,42 @@ SC.ListItemView = SC.View.extend(
       var collectionView = this.get('owner'), idx = this.get('contentIndex');
       this.invokeLast(function() {
         var item = collectionView.itemViewForContentIndex(idx);
-        if (item && item._beginEditing) item._beginEditing(NO);
+        if (item && item.beginEditing) item.beginEditing(NO);
       });
       return YES; // let the scroll happen then begin editing...
     }
 
-    // nothing to do...
-    if (!parent || !el || el.get('length')===0) return NO ;
-    v = (labelKey && content && content.get) ? content.get(labelKey) : null ;
+    else if (!parent || !el || el.get('length')===0) return NO ;
+
+    else return original();
+  }.enhance(),
+
+  /*
+    Configures the editor to overlay the label properly.
+  */
+  inlineEditorWillBeginEditing: function(editor, editable, value) {
+    var content   = this.get('content'),
+        del       = this.get('displayDelegate'),
+        labelKey  = this.getDelegateProperty('contentValueKey', del),
+        parent    = this.get('parentView'),
+        el        = this.$label(),
+        validator = this.get('validator'),
+        f, v, offset, fontSize, top, lineHeight, escapeHTML,
+        lineHeightShift, targetLineHeight, ret ;
+
+    v = (labelKey && content) ? (content.get ? content.get(labelKey) : content[labelKey]) : content;
 
     f = this.computeFrameWithParentFrame(null);
-    offset = SC.viewportOffset(el[0]);
 
     // if the label has a large line height, try to adjust it to something
     // more reasonable so that it looks right when we show the popup editor.
-    oldLineHeight = el.css('lineHeight');
+    lineHeight = this._oldLineHeight = el.css('lineHeight');
     fontSize = el.css('fontSize');
     top = this.$().css('top');
 
     if (top) top = parseInt(top.substring(0,top.length-2),0);
     else top =0;
 
-    lineHeight = oldLineHeight;
     lineHeightShift = 0;
 
     if (fontSize && lineHeight) {
@@ -10590,82 +11555,74 @@ SC.ListItemView = SC.View.extend(
       } else oldLineHeight = null ;
     }
 
+    el = el[0];
+    offset = SC.offset(el);
+
     f.x = offset.x;
     f.y = offset.y+top + lineHeightShift ;
-    f.height = el[0].offsetHeight ;
-    f.width = el[0].offsetWidth ;
+    f.height = el.offsetHeight ;
+    f.width = el.offsetWidth ;
 
     escapeHTML = this.get('escapeHTML');
 
-    ret = SC.InlineTextFieldView.beginEditing({
-      frame: f,
-      exampleElement: el,
-      delegate: this,
+    editor.set({
       value: v,
+      exampleFrame: f,
+      exampleElement: el,
       multiline: NO,
       isCollection: YES,
       validator: validator,
-      escapeHTML: escapeHTML,
-      pane: this.get('pane'),
-      layout: this.get('layout')
+      escapeHTML: escapeHTML
     }) ;
-
-    // restore old line height for original item if the old line height
-    // was saved.
-    if (oldLineHeight) el.css({ lineHeight: oldLineHeight }) ;
-
-    // Done!  If this failed, then set editing back to no.
-    return ret ;
   },
-
-  commitEditing: function() {
-   if (!this.get('isEditing')) return YES ;
-   return SC.InlineTextFieldView.commitEditing();
-  },
-
-  discardEditing: function() {
-   if (!this.get('isEditing')) return YES ;
-   return SC.InlineTextFieldView.discardEditing();
-  },
-
 
   /** @private
     Allow editing.
   */
   inlineEditorShouldBeginEditing: function(inlineEditor) {
-    return YES ;
+    return YES;
   },
 
   /** @private
    Hide the label view while the inline editor covers it.
   */
-  inlineEditorDidBeginEditing: function(inlineEditor) {
-   var el = this.$label() ;
-   this._oldOpacity = el.css('opacity');
-   el.css('opacity', 0.0) ;
-  },
+  inlineEditorDidBeginEditing: function(original, inlineEditor, value, editable) {
+    original(inlineEditor, value, editable);
 
-  inlineEditorShouldEndEditing: function(inlineEditor, finalValue) {
-   return YES ;
-  },
+    var el = this.$label() ;
+    this._oldOpacity = el.css('opacity');
+    el.css('opacity', 0.0) ;
+
+    // restore old line height for original item if the old line height 
+    // was saved.
+    if (this._oldLineHeight) el.css({ lineHeight: this._oldLineHeight }) ;
+  }.enhance(),
 
   /** @private
    Update the field value and make it visible again.
   */
-  inlineEditorDidEndEditing: function(inlineEditor, finalValue) {
-    this.set('isEditing', NO) ;
-
+  inlineEditorDidCommitEditing: function(editor, finalValue, editable) {
     var content = this.get('content') ;
     var del = this.displayDelegate ;
     var labelKey = this.getDelegateProperty('contentValueKey', del) ;
-    if (labelKey && content && content.set) {
-     content.set(labelKey, finalValue) ;
+
+    if(labelKey && content) {
+      if(content.set) content.set(labelKey, finalValue);
+      else content[labelKey] = finalValue;
     }
 
-    this.$label().css("opacity", this._oldOpacity);
+    else this.set('content', finalValue);
 
     this.displayDidChange();
+
+    this._endEditing();
   },
+
+  _endEditing: function(original) {
+    this.$label().css('opacity', this._oldOpacity);
+
+    original();
+  }.enhance(),
 
   /** @private
     Fills the passed html-array with strings that can be joined to form the
@@ -10957,7 +11914,7 @@ SC.ListItemView._deprecatedRenderWarningHasBeenIssued = false;
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -10967,24 +11924,26 @@ sc_require('views/list_item');
 /**
   Special drag operation passed to delegate if the collection view proposes
   to perform a reorder event.
+  
+  @static
+  @constant
 */
-SC.DRAG_REORDER = 0x0010 ;
+SC.DRAG_REORDER = 0x0010;
 
-/** Indicates that selection points should be selected using horizontal 
-  orientation.
+/**
+  @static
+  @static
+  @default NO
 */
-SC.HORIZONTAL_ORIENTATION = 'horizontal';
+SC.BENCHMARK_RELOAD = NO;
 
-/** Selection points should be selected using vertical orientation. */
-SC.VERTICAL_ORIENTATION = 'vertical' ;
-
-SC.BENCHMARK_RELOAD = NO ;
+/*
+  TODO Document SC.CollectionView
+*/
 
 /**
   @class 
 
-  TODO: Document SC.CollectionView
-  
   Renders a collection of views from a source array of model objects.
    
   The CollectionView is the root view class for rendering collections of 
@@ -11004,13 +11963,32 @@ SC.BENCHMARK_RELOAD = NO ;
   @extends SC.CollectionContent
   @since SproutCore 0.9
 */
-SC.CollectionView = SC.View.extend(
-  SC.CollectionViewDelegate,
-  SC.CollectionContent,
+SC.CollectionView = SC.View.extend(SC.CollectionViewDelegate, SC.CollectionContent,
 /** @scope SC.CollectionView.prototype */ {
   
+  /**
+    @type Array
+    @default ['sc-collection-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-collection-view'],
   
+  /**
+    @type Array
+    @default ['isFirstResponder', 'isEnabled', 'isActive']
+  */
+  displayProperties: ['isFirstResponder', 'isEnabled', 'isActive'],
+
+  /**
+    @type String
+    @default 'collectionRenderDelegate'
+  */
+  renderDelegateName: 'collectionRenderDelegate',
+  
+  /**
+    @type Number
+    @default 200
+  */
   ACTION_DELAY: 200,
   
   // ......................................
@@ -11018,7 +11996,10 @@ SC.CollectionView = SC.View.extend(
   //
   
   /**
-    If YES, uses the VERY EXPERIMENTAL fast CollectionView path.
+    If YES, uses the experimental fast CollectionView path.
+    
+    @type Boolean
+    @default NO
   */
   useFastPath: NO,
   
@@ -11036,7 +12017,8 @@ SC.CollectionView = SC.View.extend(
     Usually you will want to bind this property to a controller property 
     that actually contains the array of objects you to display.
     
-    @type {SC.Array}
+    @type SC.Array
+    @default null
   */
   content: null,
   
@@ -11046,8 +12028,8 @@ SC.CollectionView = SC.View.extend(
   /**
     The current length of the content.
     
-    @property
-    @type {Numer}
+    @type Number
+    @default 0
   */
   length: 0,
   
@@ -11064,8 +12046,10 @@ SC.CollectionView = SC.View.extend(
     To change the nowShowing index set, you must create a new index set and 
     apply it.
     
-    @property
-    @type {SC.IndexSet}
+    @field
+    @type SC.IndexSet
+    @observes length
+    @observes clippingFrame
   */
   nowShowing: function() {
     return this.computeNowShowing();
@@ -11079,7 +12063,8 @@ SC.CollectionView = SC.View.extend(
     Any item views representing content objects in this set will have their 
     isSelected property set to YES automatically.
     
-    @type {SC.SelectionSet}
+    @type SC.SelectionSet
+    @default null
   */
   selection: null,
   
@@ -11090,7 +12075,8 @@ SC.CollectionView = SC.View.extend(
     have items in your selectedIndexes property, they will still be reflected
     visually.
     
-    @type {Boolean}
+    @type Boolean
+    @default YES
   */
   isSelectable: YES,
   
@@ -11098,14 +12084,15 @@ SC.CollectionView = SC.View.extend(
   isSelectableBindingDefault: SC.Binding.bool(),
   
   /**
-    Enable or disable the view.  
+    Enable or disable the view.
     
     The collection view will set the isEnabled property of its item views to
     reflect the same view of this property.  Whenever isEnabled is false,
     the collection view will also be not selectable or editable, regardless of 
     the settings for isEditable & isSelectable.
     
-    @type {Boolean}
+    @type Boolean
+    @default YES
   */
   isEnabled: YES,
   
@@ -11120,7 +12107,8 @@ SC.CollectionView = SC.View.extend(
     the user will not be able to reorder, add, or delete items regardless of 
     the canReorderContent and canDeleteContent and isDropTarget properties.
     
-    @type {Boolean}
+    @type Boolean
+    @default YES
   */
   isEditable: YES,
   
@@ -11134,7 +12122,8 @@ SC.CollectionView = SC.View.extend(
     If you also accept drops, this will allow the user to drop items into 
     specific points in the list.  Otherwise items will be added to the end.
     
-    @type {Boolean}
+    @type Boolean
+    @default NO
   */
   canReorderContent: NO,
   
@@ -11147,7 +12136,8 @@ SC.CollectionView = SC.View.extend(
     If true the user will be allowed to delete selected items using the delete
     key.  Otherwise deletes will not be permitted.
     
-    @type {Boolean}
+    @type Boolean
+    @default NO
   */
   canDeleteContent: NO,
   
@@ -11159,7 +12149,7 @@ SC.CollectionView = SC.View.extend(
     This will only work if isEditable is YES and the item view implements 
     the beginEditing() method.
     
-    @type {Boolean}
+    @type Boolean
   */
   canEditContent: NO,
   
@@ -11173,7 +12163,8 @@ SC.CollectionView = SC.View.extend(
     cause it to be registered as a drop target, activating the other drop 
     machinery.
     
-    @type {Boolean}
+    @type Boolean
+    @default NO
   */
   isDropTarget: NO,
   
@@ -11184,7 +12175,8 @@ SC.CollectionView = SC.View.extend(
     click behavior.  Command modifiers will be ignored and instead clicking
     once will select an item and clicking on it again will deselect it.
     
-    @type {Boolean}
+    @type Boolean
+    @default NO
   */
   useToggleSelection: NO,
   
@@ -11200,8 +12192,9 @@ SC.CollectionView = SC.View.extend(
     
     Use this if you are using the collection view as a menu of items.
     
-    @property {Boolean}
-  */  
+    @type Boolean
+    @default NO
+  */
   actOnSelect: NO,
   
   
@@ -11212,10 +12205,11 @@ SC.CollectionView = SC.View.extend(
     
     In some UI scenarios, you might want to prevent selection until
     the mouse is released, so you can perform, for instance, a drag operation
-    without actually selecting the target item.  
+    without actually selecting the target item.
     
-    @property {Boolean}
-  */  
+    @type Boolean
+    @default YES
+  */
   selectOnMouseDown: YES,
   
   /**
@@ -11229,9 +12223,9 @@ SC.CollectionView = SC.View.extend(
     For best results, the view you set here should understand the following 
     properties:
     
-    - *content* The content object from the content array your view should display
-    - *isEnabled* True if the view should appear enabled
-    - *isSelected* True if the view should appear selected
+      - *content* The content object from the content array your view should display
+      - *isEnabled* True if the view should appear enabled
+      - *isSelected* True if the view should appear selected
     
     In general you do not want your child views to actually respond to mouse 
     and keyboard events themselves.  It is better to let the collection view 
@@ -11241,7 +12235,8 @@ SC.CollectionView = SC.View.extend(
     you should be sure to actually call the same method on the collection view 
     to give it the chance to perform its own selection housekeeping.
     
-    @property {SC.View}
+    @type SC.View
+    @default SC.ListItemView
   */
   exampleView: SC.ListItemView,
   
@@ -11249,7 +12244,8 @@ SC.CollectionView = SC.View.extend(
     If set, this key will be used to get the example view for a given
     content object.  The exampleView property will be ignored.
     
-    @property {String}
+    @type String
+    @default null
   */
   contentExampleViewKey: null,
 
@@ -11264,7 +12260,8 @@ SC.CollectionView = SC.View.extend(
     If you leave this set to null then the regular example view will be used
     with the isGroupView property set to YES on the item view.
     
-    @property {SC.View}
+    @type SC.View
+    @default null
   */
   groupExampleView: null,
   
@@ -11272,7 +12269,8 @@ SC.CollectionView = SC.View.extend(
     If set, this key will be used to get the example view for a given
     content object.  The groupExampleView property will be ignored.
     
-    @property {String}
+    @type String
+    @default null
   */
   contentGroupExampleViewKey: null,
   
@@ -11293,7 +12291,8 @@ SC.CollectionView = SC.View.extend(
     deprecated for future use.  You should generally use the responder chain 
     to handle your action for you.
     
-    @property {String}
+    @type String
+    @default null
   */  
   action: null,
   
@@ -11308,7 +12307,8 @@ SC.CollectionView = SC.View.extend(
     This property is ignored if you use the deprecated approach of making the
     action property a function.
     
-    @property {String|Object}
+    @type String|Object
+    @default null
   */
   target: null,
   
@@ -11328,12 +12328,16 @@ SC.CollectionView = SC.View.extend(
     view.  You can also ignore this property if you like.  The collection view
     itself does not use this property to impact rendering.
     
-    @property {String}
+    @type String
+    @default null
   */
   contentValueKey: null,
   
   /**
     Enables keyboard-based navigate, deletion, etc. if set to true.
+    
+    @type Boolean
+    @default NO
   */
   acceptsFirstResponder: NO,
   
@@ -11342,6 +12346,7 @@ SC.CollectionView = SC.View.extend(
     add/remove an 'active' class name to the root element.
     
     @type Boolean
+    @default NO
   */
   isActive: NO,
   
@@ -11354,6 +12359,7 @@ SC.CollectionView = SC.View.extend(
     different than 0.
     
     @type Number
+    @default 0
   */  
   calculatedHeight: 0,
   
@@ -11365,6 +12371,7 @@ SC.CollectionView = SC.View.extend(
     different than 0.
     
     @type Number
+    @default 0
   */
   calculatedWidth: 0,
   
@@ -11384,7 +12391,9 @@ SC.CollectionView = SC.View.extend(
     
     @returns {Hash} layout properties
   */
-  computeLayout: function() { return null; },
+  computeLayout: function() {
+    return null;
+  },
   
   /**
     Override to compute the layout of the itemView for the content at the 
@@ -11396,7 +12405,7 @@ SC.CollectionView = SC.View.extend(
     @returns {Hash} a view layout
   */
   layoutForContentIndex: function(contentIndex) {
-    return null ;
+    return null;
   },
   
   /**
@@ -11405,7 +12414,9 @@ SC.CollectionView = SC.View.extend(
     
     This is used by the default contentIndexesInRect() implementation.
     
-    @property {SC.Range}
+    @field
+    @type SC.IndexSet
+    @observes length
   */
   allContentIndexes: function() {
     return SC.IndexSet.create(0, this.get('length')).freeze();
@@ -11418,8 +12429,6 @@ SC.CollectionView = SC.View.extend(
     nowShowing range after a scroll.
     
     Override this method to implement incremental rendering.
-    
-    The default simply returns the current content length.
     
     @param {Rect} rect the visible rect
     @returns {SC.IndexSet} now showing indexes
@@ -11449,7 +12458,7 @@ SC.CollectionView = SC.View.extend(
       if (max > len) r = r.copy().remove(len, max-len).freeze();
     }
     
-    return r ;
+    return r;
   },
   
   /** 
@@ -11470,8 +12479,7 @@ SC.CollectionView = SC.View.extend(
     
     @returns {void}
   */
-  showInsertionPoint: function(itemView, dropOperation) {
-  },
+  showInsertionPoint: function(itemView, dropOperation) {},
   
   /**
     Override to hide the insertion point when a drag ends.
@@ -11487,8 +12495,8 @@ SC.CollectionView = SC.View.extend(
     
     @returns {void}
   */
-  hideInsertionPoint: function() {
-  },
+  hideInsertionPoint: function() {},
+  
   
   // ..........................................................
   // DELEGATE SUPPORT
@@ -11509,7 +12517,8 @@ SC.CollectionView = SC.View.extend(
     automatically set as the delegate.  Usually you will work with a 
     CollectionView in this way rather than setting a delegate explicitly.
     
-    @type {SC.CollectionViewDelegate}
+    @type SC.CollectionViewDelegate
+    @default null
   */
   delegate: null,
   
@@ -11518,8 +12527,8 @@ SC.CollectionView = SC.View.extend(
     will be either the delegate, content, or the collection view itself, 
     whichever implements the SC.CollectionViewDelegate mixin.
     
-    @property
-    @type {Object}
+    @field
+    @type Object
   */
   selectionDelegate: function() {
     var del = this.get('delegate'), content = this.get('content');
@@ -11532,8 +12541,8 @@ SC.CollectionView = SC.View.extend(
     the content will usually also be the content delegate, though you 
     could implement your own delegate if you prefer.
     
-    @property
-    @type {Object}
+    @field
+    @type Object
   */
   contentDelegate: function() {
     var del = this.get('delegate'), content = this.get('content');
@@ -11549,6 +12558,7 @@ SC.CollectionView = SC.View.extend(
   _contentGroupIndexes: function() {
     return this.get('contentDelegate').contentGroupIndexes(this, this.get('content'));
   }.property('contentDelegate', 'content').cacheable(),
+  
   
   // ..........................................................
   // CONTENT CHANGES
@@ -11592,9 +12602,7 @@ SC.CollectionView = SC.View.extend(
     @param {SC.IndexSet} indexes the indexes in the content array affected
     @returns {void}
   */
-  contentPropertyDidChange: function(target, key, indexes) {
-    // Default Does Nothing
-  },
+  contentPropertyDidChange: function(target, key, indexes) {},
   
   /**
     Called whenever the view needs to updates it's contentRangeObserver to 
@@ -11626,7 +12634,7 @@ SC.CollectionView = SC.View.extend(
       content.updateRangeObserver(observer, nowShowing);
     } else {
       var func = this.contentRangeDidChange;
-      observer = content.addRangeObserver(nowShowing, this, func, null);      
+      observer = content.addRangeObserver(nowShowing, this, func, null);
       this._cv_contentRangeObserver = observer ;
     }
     
@@ -11637,7 +12645,7 @@ SC.CollectionView = SC.View.extend(
     observer.  This is called whenever the content array changes.  You will 
     not usually call this method yourself but you may override it if you 
     provide your own range observer behavior.
-
+    
     Note that if you override this method you should probably also override
     updateRangeObserver() to create or update a range oberver as needed.
     
@@ -11668,17 +12676,17 @@ SC.CollectionView = SC.View.extend(
   /** @private
     Whenever content property changes to a new value:
     
-     - remove any old observers 
-     - setup new observers (maybe wait until end of runloop to do this?)
-     - recalc height/reload content
-     - set content as delegate if delegate was old content
-     - reset selection
-     
+      - remove any old observers 
+      - setup new observers (maybe wait until end of runloop to do this?)
+      - recalc height/reload content
+      - set content as delegate if delegate was old content
+      - reset selection
+    
     Whenever content array mutates:
     
-     - possibly stop observing property changes on objects, observe new objs
-     - reload effected item views
-     - update layout for receiver
+      - possibly stop observing property changes on objects, observe new objs
+      - reload effected item views
+      - update layout for receiver
   */
   _cv_contentDidChange: function() {
     var content = this.get('content'),
@@ -11711,10 +12719,8 @@ SC.CollectionView = SC.View.extend(
   // 
   
   /** @private
-  
     The indexes that need to be reloaded.  Must be one of YES, NO, or an
     SC.IndexSet.
-  
   */
   _invalidIndexes: NO,
   
@@ -11757,8 +12763,8 @@ SC.CollectionView = SC.View.extend(
     Note that this method will also invoke two other callback methods if you
     define them on your subclass:
     
-    - *willReload()* is called just before the items are reloaded
-    - *didReload()* is called jsut after items are reloaded
+      - *willReload()* is called just before the items are reloaded
+      - *didReload()* is called jsut after items are reloaded
     
     You can use these two methods to setup and teardown caching, which may
     reduce overall cost of a reload.  Each method will be passed an index set
@@ -11958,15 +12964,20 @@ SC.CollectionView = SC.View.extend(
     
     return this ;
   },
-  
-  displayProperties: 'isFirstResponder isEnabled isActive'.w(),
-  renderDelegateName: 'collectionRenderDelegate',
-    
 
+  /** @private */
   _TMP_ATTRS: {},
-  _COLLECTION_CLASS_NAMES: 'sc-collection-item'.w(),
-  _GROUP_COLLECTION_CLASS_NAMES: 'sc-collection-item sc-group-item'.w(),
+
+  /** @private */
+  _COLLECTION_CLASS_NAMES: ['sc-collection-item'],
+
+  /** @private */
+  _GROUP_COLLECTION_CLASS_NAMES: ['sc-collection-item', 'sc-group-item'],
+
+  /** @private */
   _VIEW_POOL: null,
+
+  /** @private */
   _GROUP_VIEW_POOL: null,
   
   /**
@@ -12134,6 +13145,7 @@ SC.CollectionView = SC.View.extend(
     return this.itemViewForContentIndex(this.get('content').indexOf(object));
   },
   
+  /** @private */
   _TMP_LAYERID: [],
   
   /**
@@ -12285,12 +13297,10 @@ SC.CollectionView = SC.View.extend(
   // 
   
   /** @private 
-
     Called whenever the selection object is changed to a new value.  Begins
     observing the selection for changes.
-    
   */
-  _cv_selectionDidChange: function() {  
+  _cv_selectionDidChange: function() {
     var sel  = this.get('selection'),
         last = this._cv_selection,
         func = this._cv_selectionContentDidChange;
@@ -12304,10 +13314,8 @@ SC.CollectionView = SC.View.extend(
   }.observes('selection'),
 
   /** @private
-  
     Called whenever the selection object or its content changes.  This will
     repaint any items that changed their selection state.
-  
   */
   _cv_selectionContentDidChange: function() {
     var sel  = this.get('selection'),
@@ -12413,13 +13421,12 @@ SC.CollectionView = SC.View.extend(
     @returns {SC.CollectionView} receiver
   */
   select: function(indexes, extend) {
-
     var content = this.get('content'),
         del     = this.get('selectionDelegate'),
         groupIndexes = this.get('_contentGroupIndexes'),
         sel;
         
-    if(!this.get('isSelectable')) return this;
+    if(!this.get('isSelectable') || !this.get('isEnabled')) return this;
 
     // normalize
     if (SC.typeOf(indexes) === SC.T_NUMBER) {
@@ -12465,19 +13472,18 @@ SC.CollectionView = SC.View.extend(
     return this;
   },
   
-  /** 
-    Primtive to remove the indexes from the selection.  
+  /**
+    Primtive to remove the indexes from the selection.
     
     @param {Number|SC.IndexSet} indexes index or indexes to select
     @returns {SC.CollectionView} receiver
   */
   deselect: function(indexes) {
-
     var sel     = this.get('selection'),
         content = this.get('content'),
         del     = this.get('selectionDelegate');
         
-    if(!this.get('isSelectable')) return this;
+    if(!this.get('isSelectable') || !this.get('isEnabled')) return this;
     if (!sel || sel.get('length')===0) return this; // nothing to do
         
     // normalize
@@ -12503,15 +13509,14 @@ SC.CollectionView = SC.View.extend(
    delegate. If a non-selectable item is found, the index is skipped. If
    no item is found, selection index is returned unmodified.
 
-   Return value will always be in the range of the bottom of the current 
-   selection index and the proposed index.   
+   Return value will always be in the range of the bottom of the current
+   selection index and the proposed index.
    
    @param {Number} proposedIndex the desired index to select
    @param {Number} bottom optional bottom of selection use as fallback
    @returns {Number} next selectable index. 
   */
   _findNextSelectableItemFromIndex: function(proposedIndex, bottom) {
-    
     var lim     = this.get('length'),
         range   = SC.IndexSet.create(), 
         content = this.get('content'),
@@ -12552,7 +13557,6 @@ SC.CollectionView = SC.View.extend(
    
    @param {Integer} proposedIndex the desired index to select
    @returns {Integer} the previous selectable index. This will always be in the range of the top of the current selection index and the proposed index.
-   @private
   */
   _findPreviousSelectableItemFromIndex: function(proposedIndex, top) {
     var range   = SC.IndexSet.create(), 
@@ -12597,15 +13601,15 @@ SC.CollectionView = SC.View.extend(
     
     Selection does not wrap around.
     
-    @param extend {Boolean} (Optional) If true, the selection will be extended 
-      instead of replaced.  Defaults to false.
-    @param numberOfItems {Integer} (Optional) The number of previous to be 
+    @param {Boolean} [extend] If true, the selection will be extended 
+      instead of replaced. Defaults to false.
+    @param {Integer} [numberOfItems] The number of previous to be 
       selected.  Defaults to 1
-      @returns {SC.CollectionView} receiver
+    @returns {SC.CollectionView} receiver
   */
   selectPreviousItem: function(extend, numberOfItems) {
-    if (SC.none(numberOfItems)) numberOfItems = 1 ;
-    if (SC.none(extend)) extend = false ;
+    if (SC.none(numberOfItems)) numberOfItems = 1;
+    if (SC.none(extend)) extend = false;
     
     var sel     = this.get('selection'),
         content = this.get('content');
@@ -12660,10 +13664,10 @@ SC.CollectionView = SC.View.extend(
     
     Selection does not wrap around.
     
-    @param extend {Boolean} (Optional) If true, the selection will be extended 
-      instead of replaced.  Defaults to false.
-    @param numberOfItems {Integer} (Optional) The number of items to be 
-      selected.  Defaults to 1.
+    @param {Boolean} [extend] If true, the selection will be extended 
+      instead of replaced. Defaults to false.
+    @param {Integer} [numberOfItems] The number of items to be 
+      selected. Defaults to 1.
     @returns {SC.CollectionView} receiver
   */
   selectNextItem: function(extend, numberOfItems) {
@@ -12977,8 +13981,6 @@ SC.CollectionView = SC.View.extend(
     return true ;
   },
 
-  
-  
   /** @private
     if content value is editable and we have one item selected, then edit.
     otherwise, invoke action.
@@ -13034,21 +14036,14 @@ SC.CollectionView = SC.View.extend(
     @returns {Boolean} Usually YES.
   */
   mouseDown: function(ev) {
-    
-    // When the user presses the mouse down, we don't do much just yet.
-    // Instead, we just need to save a bunch of state about the mouse down
-    // so we can choose the right thing to do later.
-    
-    
-    // find the actual view the mouse was pressed down on.  This will call
-    // hitTest() on item views so they can implement non-square detection
-    // modes. -- once we have an item view, get its content object as well.
     var itemView      = this.itemViewForEvent(ev),
         content       = this.get('content'),
         contentIndex  = itemView ? itemView.get('contentIndex') : -1, 
-        info, anchor, sel, isSelected, modifierKeyPressed,
+        info, anchor, sel, isSelected, modifierKeyPressed, didSelect = NO,
         allowsMultipleSel = content.get('allowsMultipleSelection');
-        
+
+    if (!this.get('isEnabled')) return contentIndex > -1;
+
     info = this.mouseDownInfo = {
       event:        ev,  
       itemView:     itemView,
@@ -13069,11 +14064,18 @@ SC.CollectionView = SC.View.extend(
         isSelected = sel && sel.containsObject(itemView.get('content')) ;
 
         if (isSelected) {
-          this.deselect(contentIndex) ;
+          this.deselect(contentIndex);
         } else if (!allowsMultipleSel) {
-          this.select(contentIndex, NO) ;
+          this.select(contentIndex, NO);
+          didSelect = YES;
         } else {
-          this.select(contentIndex, YES) ;
+          this.select(contentIndex, YES);
+          didSelect = YES;
+        }
+        
+        if (didSelect && this.get('actOnSelect')) {
+          // handle actions on editing
+          this._cv_performSelectAction(itemView, ev);
         }
       }
       
@@ -13136,20 +14138,21 @@ SC.CollectionView = SC.View.extend(
   
   /** @private */
   mouseUp: function(ev) {
-    
-    var view   = this.itemViewForEvent(ev),
-        info   = this.mouseDownInfo,
-        content       = this.get('content'),
-        contentIndex, sel, isSelected, canEdit, itemView, idx,
+    var view = this.itemViewForEvent(ev),
+        info = this.mouseDownInfo,
+        content = this.get('content'),
+        contentIndex = view ? view.get('contentIndex') : -1,
+        sel, isSelected, canEdit, itemView, idx,
         allowsMultipleSel = content.get('allowsMultipleSelection');
-        
+
+    if (!this.get('isEnabled')) return contentIndex > -1;
+
     if (this.get('useToggleSelection')) {
       // Return if clicked outside of elements or if toggle was handled by mouseDown
       if (!view || this.get('selectOnMouseDown')) return NO;
       
       // determine if item is selected. If so, then go on.
       sel = this.get('selection') ;
-      contentIndex = (view) ? view.get('contentIndex') : -1 ;
       isSelected = sel && sel.containsObject(view.get('content')) ;
       
       if (isSelected) {
@@ -13255,13 +14258,18 @@ SC.CollectionView = SC.View.extend(
   // ..........................................................
   // TOUCH EVENTS
   //
+  
+  /** @private */
   touchStart: function(touch, evt) {
+    var itemView = this.itemViewForEvent(touch),
+        contentIndex = itemView ? itemView.get('contentIndex') : -1;
+
+    if (!this.get('isEnabled')) return contentIndex > -1;
+
     // become first responder if possible.
     this.becomeFirstResponder() ;
 
     if (!this.get('useToggleSelection')) {
-      var itemView = this.itemViewForEvent(touch);
-
       // We're faking the selection visually here
       // Only track this if we added a selection so we can remove it later
       if (itemView && !itemView.get('isSelected')) {
@@ -13275,6 +14283,7 @@ SC.CollectionView = SC.View.extend(
     return YES;
   },
 
+  /** @private */
   touchesDragged: function(evt, touches) {
     touches.forEach(function(touch){
       if (
@@ -13288,32 +14297,51 @@ SC.CollectionView = SC.View.extend(
 
   },
 
+  /** @private */
   touchEnd: function(touch) {
-    var itemView = this.itemViewForEvent(touch),
+    /*
+      TODO [CC] We should be using itemViewForEvent here, but because
+            ListItemView re-renders itself once isSelected is called
+            in touchStart, the elements attached to this event are
+            getting orphaned and this event is basically a complete
+            fail when using touch events.
+    */
+    // var itemView = this.itemViewForEvent(touch),
+    var itemView = this._touchSelectedView,
         contentIndex = itemView ? itemView.get('contentIndex') : -1,
-        isSelected = NO;
+        isSelected = NO, sel;
+
+    if (!this.get('isEnabled')) return contentIndex > -1;
 
     // Remove fake selection in case our contentIndex is -1, a select event will add it back
-    if (this._touchSelectedView) { this._touchSelectedView.set('isSelected', NO); }
+    if (itemView) { itemView.set('isSelected', NO); }
 
-    if (this.get('useToggleSelection')) {
-      var sel = this.get('selection');
-      isSelected = sel && sel.containsObject(itemView.get('content'));
+    if (contentIndex > -1) {
+      if (this.get('useToggleSelection')) {
+        sel = this.get('selection');
+        isSelected = sel && sel.containsObject(itemView.get('content'));
+      }
+
+      if (isSelected) {
+        this.deselect(contentIndex);
+      } else {
+        this.select(contentIndex, NO);
+
+        // If actOnSelect is implemented, the action will be fired.
+        this._cv_performSelectAction(itemView, touch, 0);
+      }
     }
 
-    if (isSelected) {
-      this.deselect(contentIndex);
-    } else {
-      this.select(contentIndex, NO);
-
-      // If actOnSelect is implemented, the action will be fired.
-      this._cv_performSelectAction(itemView, touch, 0);
-    }
+    this._touchSelectedView = null;
   },
 
+  /** @private */
   touchCancelled: function(evt) {
     // Remove fake selection
-    if (this._touchSelectedView) { this._touchSelectedView.set('isSelected', NO); }
+    if (this._touchSelectedView) {
+      this._touchSelectedView.set('isSelected', NO);
+      this._touchSelectedView = null;
+    }
   },
 
   /** @private */
@@ -13371,7 +14399,7 @@ SC.CollectionView = SC.View.extend(
     collection view instance.  You can use this data type to detect reorders
     if necessary.
     
-    @property
+    @field
     @type String
   */
   reorderDataType: function() {
@@ -13386,6 +14414,7 @@ SC.CollectionView = SC.View.extend(
     code.
 
     @type SC.IndexSet
+    @default null
   */
   dragContent: null,
   
@@ -13396,6 +14425,7 @@ SC.CollectionView = SC.View.extend(
     location.
     
     @type Number
+    @default null
   */
   proposedInsertionIndex: null,
   
@@ -13406,7 +14436,7 @@ SC.CollectionView = SC.View.extend(
     operation.
     
     @type Number
-    @property
+    @default null
   */
   proposedDropOperation: null,
   
@@ -13420,7 +14450,6 @@ SC.CollectionView = SC.View.extend(
     - a mouse down event was saved by the mouseDown method.
   */
   mouseDragged: function(ev) {
-    
     var del     = this.get('selectionDelegate'),
         content = this.get('content'),
         sel     = this.get('selection'),
@@ -13557,7 +14586,7 @@ SC.CollectionView = SC.View.extend(
     property will consult the collection view delegate if one is provided. It
     will also do the right thing if you have set canReorderContent to YES.
     
-    @property 
+    @field
     @type Array
   */
   dragDataTypes: function() {
@@ -13569,14 +14598,14 @@ SC.CollectionView = SC.View.extend(
     if (this.get('canReorderContent')) {
       ret = ret ? ret.copy() : [];
       key = this.get('reorderDataType');
-      if (ret.indexOf(key) < 0) ret.push(key);          
+      if (ret.indexOf(key) < 0) ret.push(key);
     }
         
     return ret ? ret : [];
   }.property(),
   
   /**
-    Implements the drag data source protocol method.  The implementation of
+    Implements the drag data source protocol method. The implementation of
     this method will consult the collection view delegate if one has been
     provided.  It also respects the canReoderContent method.
   */
@@ -13607,7 +14636,6 @@ SC.CollectionView = SC.View.extend(
     @returns {Number} logical OR'd mask of allowed drag operations.
   */
   computeDragOperations: function(drag, evt) {
-
     // the proposed drag operation is DRAG_REORDER only if we can reorder
     // content and the drag contains reorder content.
     var op  = SC.DRAG_NONE,
@@ -13637,7 +14665,6 @@ SC.CollectionView = SC.View.extend(
     Returns three params: [drop index, drop operation, allowed drag ops]
   */
   _computeDropOperationState: function(drag, evt, dragOp) {
-    
     // get the insertion index for this location.  This can be computed
     // by a subclass using whatever method.  This method is not expected to
     // do any data valdidation, just to map the location to an insertion 
@@ -13747,9 +14774,11 @@ SC.CollectionView = SC.View.extend(
     determine the drop location and then consult the collection view delegate
     if you implement those methods.  Otherwise it will handle reordering
     content on its own.
+    
+    @param {SC.Drag} drag The drag that was updated
+    @param {SC.Event} evt The event for the drag
   */
   dragUpdated: function(drag, evt) {
-    
     var op     = drag.get('allowedDragOperations'),
         state  = this._computeDropOperationState(drag, evt, op),
         idx    = state[0], dropOp = state[1], dragOp = state[2];
@@ -13785,16 +14814,23 @@ SC.CollectionView = SC.View.extend(
   
   /**
     Implements the SC.DropTarget protocol.
+    
+    @returns {Boolean} YES
   */
-  acceptDragOperation: function(drag, op) { return YES; },
+  acceptDragOperation: function(drag, op) {
+    return YES;
+  },
   
   /**
-    Implements the SC.DropTarget protocol.  Consults the collection view
+    Implements the SC.DropTarget protocol. Consults the collection view
     delegate to actually perform the operation unless the operation is 
     reordering content.
+    
+    @param {SC.Drag} drag The drag to perform the operation on
+    @param {Number} op The drag operation to perform
+    @return {Number} The operation performed
   */
-  performDragOperation: function(drag, op) { 
-        
+  performDragOperation: function(drag, op) {
     // Get the correct insertion point, drop operation, etc.
     var state = this._computeDropOperationState(drag, null, op),
         idx   = state[0], dropOp = state[1], dragOp = state[2],
@@ -13861,9 +14897,11 @@ SC.CollectionView = SC.View.extend(
   /**
     Default delegate method implementation, returns YES if canReorderContent
     is also true.
+    
+    @param {SC.View} view
   */
   collectionViewShouldBeginDrag: function(view) {
-    return this.get('canReorderContent') ;
+    return this.get('canReorderContent');
   },
 
   
@@ -13897,9 +14935,9 @@ SC.CollectionView = SC.View.extend(
     If an insertion is NOT allowed, you should return -1 as the insertion 
     point.  In this case, the drop operation will be ignored.
     
-    @param loc {Point} the mouse location.
-    @param dropOperation {DropOp} the preferred drop operation.
-    @returns {Array} [proposed drop index, drop operation] 
+    @param {Point} loc the mouse location.
+    @param {DropOp} dropOperation the preferred drop operation.
+    @returns {Array} format: [index, op]
   */
   insertionIndexForLocation: function(loc, dropOperation) { 
     return -1; 
@@ -13928,7 +14966,10 @@ SC.CollectionView = SC.View.extend(
     return this.get('isSelectable') ;
   },
   
+  /** @private */
   _TMP_DIFF1: SC.IndexSet.create(),
+  
+  /** @private */
   _TMP_DIFF2: SC.IndexSet.create(),
   
   /** @private
@@ -13967,6 +15008,7 @@ SC.CollectionView = SC.View.extend(
     
   }.observes('nowShowing'),
   
+  /** @private */
   init: function() {
      arguments.callee.base.apply(this,arguments);
      if (this.useFastPath) this.mixin(SC.CollectionFastPath);
@@ -14049,7 +15091,7 @@ SC.CollectionView = SC.View.extend(
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 /*globals Shared */
@@ -14063,34 +15105,25 @@ SC.CollectionView = SC.View.extend(
   
   By default the Date Field View show Date only, but if you need to show the Time do:
   
-  {{{
-    dateAndTime: Shared.DateFieldView.design({
-      showTime: YES,
-      valueBinding: '...'
-    }),
-  }}}
+      dateAndTime: Shared.DateFieldView.design({
+        showTime: YES,
+        valueBinding: '...'
+      }),
   
-  and if you only need to show time: 
+  and if you only need to show time:
   
-  {{{
-    timeOnly: Shared.DateFieldView.design({
-      showTime: YES,
-      showDate: NO,
-      valueBinding: '...'
-    })
-  }}}
-  
-  The default format are:
-  - formatTime: '%I:%M %p',
-  - formatDate: '%d/%m/%Y',
-  - formatDateTime: '%d/%m/%Y %I:%M %p',
+      timeOnly: Shared.DateFieldView.design({
+        showTime: YES,
+        showDate: NO,
+        valueBinding: '...'
+      })
   
   Example usage with special format:
-
-  specialDate: Shared.DateFieldView.design({
-    formatDate: '%d %b of %Y',
-    valueBinding: '...'
-  }),
+  
+      specialDate: Shared.DateFieldView.design({
+        formatDate: '%d %b of %Y',
+        valueBinding: '...'
+      }),
   
   You can override these format as you like, but has some limitations,
   actually only support these KEY from SC.DateTime:
@@ -14104,29 +15137,57 @@ SC.CollectionView = SC.View.extend(
   @author Juan Pablo Goldfinger
 */
 SC.DateFieldView = SC.TextFieldView.extend(
-/** @scope SC.DateFieldView.prototype */
-{
+/** @scope SC.DateFieldView.prototype */ {
 
+  /**
+    @type String
+    @default null
+  */
   value: null,
   
-  // Default Behaviour
+  /**
+    @type Boolean
+    @default YES
+  */
   showDate: YES,
+  
+  /**
+    @type Boolean
+    @default NO
+  */
   showTime: NO,
   
-  // Default formats to choose depending of the behaviour.
+  /**
+    @type String
+    @default '%I:%M %p'
+  */
   formatTime: '%I:%M %p',
+  
+  /**
+    @type String
+    @default '%d/%m/%Y'
+  */
   formatDate: '%d/%m/%Y',
+  
+  /**
+    @type String
+    @default '%d/%m/%Y %I:%M %p'
+  */
   formatDateTime: '%d/%m/%Y %I:%M %p',
   
   // DateTime constants (with fixed width, like numbers or abbs with fixed length)
   // original: '%a %A %b %B %c %d %h %H %i %I %j %m %M %p %S %U %W %x %X %y %Y %Z %%'.w(),
   // NOTE: I think that %a and %b areb't useful because is more adecuato to represente day
   // with 1..31 without zeros at start, but causes the lenght not to be fixed)
-  _dtConstants: '%a %b %d %H %I %j %m %M %p %S %U %W %y %Y'.w(),
+
+  /** @private*/
+  _dtConstants: ['%a', '%b', '%d', '%H', '%I', '%j', '%m', '%M', '%p', '%S', '%U', '%W', '%y', '%Y'],
   // Width constants for each representation %@.
+  
+  /** @private */
   _wtConstants: [3,3,2,2,2,3,2,2,2,2,2,2,2,4],
   
-  // PRIVATE ATTRIBUTES
+  /** @private */
   activeSelection: 0,
 
   /*
@@ -14148,8 +15209,10 @@ SC.DateFieldView = SC.TextFieldView.extend(
   /**
     The current format to apply for Validator and to show.
     
-    @property
-    @type {String}
+    @field
+    @type String
+    @observes showTime
+    @observes showDate
   */
   format: function() {
     var st = this.get('showTime');
@@ -14162,8 +15225,9 @@ SC.DateFieldView = SC.TextFieldView.extend(
   /**
     The current validator to format the Date to the input field and viceversa.
     
-    @property
-    @type {SC.Validator.DateTime}
+    @field
+    @type SC.Validator.DateTime
+    @observes format
   */
   validator: function() {
     return SC.Validator.DateTime.extend({ format: this.get('format') });
@@ -14172,8 +15236,8 @@ SC.DateFieldView = SC.TextFieldView.extend(
   /**
     Array of Key/TextSelection found for the current format.
     
-    @property
-    @type {SC.Array}
+    @field
+    @type SC.Array
   */  
   tabsSelections: function() {
     var arr = [];
@@ -14212,9 +15276,8 @@ SC.DateFieldView = SC.TextFieldView.extend(
   
   /** @private
     If the activeSelection changes or the value changes, update the "TextSelection" to show accordingly.
-   
   */
-  updateTextSelecitonObserver: function() {
+  updateTextSelectionObserver: function() {
     var as = this.get('activeSelection');
     var ts = this.get('tabsSelections');
     if (this.get('isEditing')) {
@@ -14224,7 +15287,6 @@ SC.DateFieldView = SC.TextFieldView.extend(
   
   /** @private
     Updates the value according the key.
-   
   */
   updateValue: function(key, upOrDown) {
     // 0 is DOWN - 1 is UP
@@ -14255,19 +15317,12 @@ SC.DateFieldView = SC.TextFieldView.extend(
     }*/
   },
 
-  /*_textField_fieldDidFocus: function(evt) {
-    SC.RunLoop.begin();
-    //console.log(evt);
-    //console.log(event);
-    //console.log(evt.originalEvent);
-    this.fieldDidFocus();
-    SC.RunLoop.end();
-  },*/
   
-  /////////////////////////
-  // KEY EVENTS SUPPORTS
-  /////////////////////////
+  // ..........................................................
+  // Key Event Support
+  // 
   
+  /** @private */
   keyDown: function(evt) {
     if (this.interpretKeyEvents(evt)) {
       evt.stop();
@@ -14276,10 +15331,12 @@ SC.DateFieldView = SC.TextFieldView.extend(
     return arguments.callee.base.apply(this,arguments);
   },
   
+  /** @private */
   ctrl_a: function() {
     return YES;
   },
 
+  /** @private */
   moveUp: function(evt) {
     var as = this.get('activeSelection');
     var ts = this.get('tabsSelections');
@@ -14287,6 +15344,7 @@ SC.DateFieldView = SC.TextFieldView.extend(
     return YES;
   },
 
+  /** @private */
   moveDown: function(evt) {
     var as = this.get('activeSelection');
     var ts = this.get('tabsSelections');
@@ -14294,10 +15352,12 @@ SC.DateFieldView = SC.TextFieldView.extend(
     return YES;
   },
 
+  /** @private */
   insertText: function(evt) {
     return YES;
   },
 
+  /** @private */
   moveRight: function(evt) {
     var ts = this.get('tabsSelections');
     var ns = this.get('activeSelection') + 1;
@@ -14308,6 +15368,7 @@ SC.DateFieldView = SC.TextFieldView.extend(
     return YES;
   },
     
+  /** @private */
   moveLeft: function(evt) {
     var ts = this.get('tabsSelections');
     var ns = this.get('activeSelection') - 1;
@@ -14318,6 +15379,7 @@ SC.DateFieldView = SC.TextFieldView.extend(
     return YES;
   },
 
+  /** @private */
   insertTab: function(evt) {
     var ts = this.get('tabsSelections');
     var ns = this.get('activeSelection') + 1;
@@ -14328,15 +15390,17 @@ SC.DateFieldView = SC.TextFieldView.extend(
     return NO;
   },
 
+  /** @private */
   insertBacktab: function(evt) {
     var ns = this.get('activeSelection') - 1;
     if (ns !== -1) { 
       this.set('activeSelection', ns);
-      return YES;   
+      return YES;
     }
     return NO;
   },
 
+  /** @private */
   mouseUp: function(evt) {
     var ret = arguments.callee.base.apply(this,arguments);
     var cs = this.get('selection');
@@ -14356,10 +15420,12 @@ SC.DateFieldView = SC.TextFieldView.extend(
     return ret;
   },
 
+  /** @private */
   deleteBackward: function(evt) {
     return YES;
   },
 
+  /** @private */
   deleteForward: function(evt) {
     return YES;
   }
@@ -14370,7 +15436,7 @@ SC.DateFieldView = SC.TextFieldView.extend(
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -14380,90 +15446,128 @@ SC.DateFieldView = SC.TextFieldView.extend(
   Disclosure triangle button. As a subclass of SC.ButtonView, this view
   takes a lot of the same properties as a button:
   
-  - isEnabled: whether disclosure triangle is clickable or not
-  - value: YES or NO (where YES implies expanded/open)
+    - isEnabled: whether disclosure triangle is clickable or not
+    - value: `YES` or `NO` (where `YES` implies expanded/open)
+  
+  A disclosure view also supports expanding and collapsing via
+  the keyboard.
   
   @extends SC.ButtonView
-  @since SproutCore
+  @since SproutCore 1.0
 */
 SC.DisclosureView = SC.ButtonView.extend(
 /** @scope SC.DisclosureView.prototype */ {
   
+  /**
+    @type Array
+    @default ['sc-disclosure-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-disclosure-view'],
 
   /**
-    The WAI-ARIA attribute for the disclosure button. This property is assigned
-    to 'aria-label' attribute, which defines a string value that labels the
-    the element. Used to support voiceover. It is used when it is not
-    possible to have a visible label on the screen.
+    @type String
+    @default 'disclosureRenderDelegate'
   */
-  ariaLabel: null,
-
   renderDelegateName: 'disclosureRenderDelegate',
 
+  /**
+    @type String
+    @default SC.TOGGLE_BEHAVIOR
+    @see SC.ButtonView#buttonBehavior
+  */
   buttonBehavior: SC.TOGGLE_BEHAVIOR,
   
   /**
     This is the value that will be set when the disclosure triangle is toggled
     open.
+    
+    @type Boolean
+    @default YES
   */
   toggleOnValue: YES,
   
   /**
     The value that will be set when the disclosure triangle is toggled closed.
+    
+    @type Boolean
+    @default YES
   */
   toggleOffValue: NO,
   
   /** @private */
-  valueBindingDefault: SC.Binding.bool() ,
+  valueBindingDefault: SC.Binding.bool(),
 
-  /**
-    Allows toggling of the value with the right and left arrow keys. 
+  /** @private
+
+    Allows toggling of the value with the right and left arrow keys.
     Extends the behavior inherted from SC.ButtonView.
     @param evt
   */
   keyDown: function(evt) {
-    if (evt.which === 37 || evt.which === 38) {  
+    if (evt.which === 37 || evt.which === 38) {
       this.set('value', this.get('toggleOffValue')) ;
       return YES;
     }
-    if (evt.which === 39 || evt.which === 40) {  
+
+    if (evt.which === 39 || evt.which === 40) {
       this.set('value', this.get('toggleOnValue')) ;
       return YES;
     }
     arguments.callee.base.apply(this,arguments);
   }
-  
+
 });
 
 /* >>>>>>>>>> BEGIN source/views/file.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+/*
+  TODO revisit this to see if these classnames are usable
+*/
+
 /** @class
 
   Implements a customized file input by creating a standard file input in a
   transparent iframe over top of a SC.ButtonView.
   
-  // TODO: revisit this to see if these classnames are usable
   SC.FieldView uses the SC.Control mixin which will apply CSS 
   classnames when the state of the file view changes:
+  
     - active     when button is active
     - sel        when button is toggled to a selected state
   
   @extends SC.FieldView
-  @since SproutCore 1.0 
+  @since SproutCore 1.0
   @author Tyler Keating
 */
 SC.FileView = SC.FieldView.extend(
-/** @scope SC.FileView.prototype */
-{
+/** @scope SC.FileView.prototype */ {
 
-  classNames: 'sc-file-view'.w(),
+  /**
+    @type Array
+    @default ['sc-file-view']
+    @see SC.View#classNames
+  */
+  classNames: ['sc-file-view'],
+  
+  /** @private */
+  childViews: ['button', 'form'],
 
+
+  // ..........................................................
+  // Properties
+  // 
+
+  /**
+    @type Boolean
+    @default YES
+  */
   autoSubmit: YES,
 
   /**
@@ -14478,12 +15582,13 @@ SC.FileView = SC.FieldView.extend(
     here.  If you set a target, then the button will try to call the method
     on the target itself.
     
-    For legacy support, you can also set the action property to a function.  
+    For legacy support, you can also set the action property to a function.
     Doing so will cause the function itself to be called when the button is
     clicked.  It is generally better to use the target/action approach and 
     to implement your code in a controller of some type.
     
-    @property {String}
+    @type String
+    @default 'uploadImage'
   */
   action: 'uploadImage',
   
@@ -14495,30 +15600,44 @@ SC.FileView = SC.FieldView.extend(
     null, then the button will search the responder chain for a view that 
     implements the action when the button is pressed instead.
     
-    @property {Object}
+    @type Object
+    @default null
   */
   target: null,
   
-  childViews: 'button form'.w(),
-  
+  /**
+    @type String
+    @default "Choose File"
+  */
+  title: "Choose File",
+
+
+  // ..........................................................
+  // Views
+  // 
+
+  /** @private */
   button: SC.ButtonView.design({
     title: 'Choose File',
     theme: 'capsule'
   }),
 
+  /** @private */
   form: SC.View.design({
     tagName: 'form',
     
+    /** @private */
     render: function(context, firstTime) {
       context.attr('method', 'post').attr('action', "javascript:;").attr('enctype', 'multipart/form-data');
       arguments.callee.base.apply(this,arguments);
     },
     
-    childViews: 'input'.w(),
+    childViews: ['input'],
     
     input: SC.View.design({
       tagName: 'input',
 
+      /** @private */
       render: function(context, firstTime) {
         context.attr('type', 'file').end();
         arguments.callee.base.apply(this,arguments);
@@ -14526,20 +15645,20 @@ SC.FileView = SC.FieldView.extend(
     })
   }),
   
-  /** SC.Button **/
-  title: 'Choose File',
   
-  /** SC.FieldView **/
+  // ..........................................................
+  // FieldView Overrides
+  // 
   
-  /**
+  /** @private
     Since it is impossible to set the value of file inputs, don't attempt it.
-    
   */
   setFieldValue: function(newValue) {
     SC.Logger.log("SC.FileView: setFieldValue: %@ does nothing".fmt(newValue));
     //if (newValue) throw SC.$error('SC.FileView can not set the value of the file field');
   },
   
+  /** @private */
   fieldValueDidChange: function(partialChange) {
     arguments.callee.base.apply(this,arguments);
     if (this.get('autoSubmit')) {
@@ -14554,7 +15673,7 @@ SC.FileView = SC.FieldView.extend(
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -14571,13 +15690,13 @@ sc_require('mixins/collection_row_delegate');
   also should provide a default rowHeight.  Setting this value will allow 
   the ListView to optimize its rendering.
   
-  h2. Variable Row Heights
+  ## Variable Row Heights
 
   Normally you set the row height through the rowHeight property.  You can 
   also support custom row heights by implementing the 
   contentCustomRowHeightIndexes property to return an index set.
   
-  h2. Using ListView with Very Large Data Sets
+  ## Using ListView with Very Large Data Sets
   
   ListView implements incremental rendering, which means it will only render
   HTML for the items that are current visible on the screen.  You can use it
@@ -14607,44 +15726,58 @@ sc_require('mixins/collection_row_delegate');
   @extends SC.CollectionRowDelegate
   @since SproutCore 1.0
 */
-SC.ListView = SC.CollectionView.extend(
-  SC.CollectionRowDelegate,
+SC.ListView = SC.CollectionView.extend(SC.CollectionRowDelegate,
 /** @scope SC.ListView.prototype */ {
-  
+
+  /**
+    @type Array
+    @default ['sc-list-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-list-view'],
 
+  /**
+    @type Boolean
+    @default YES
+  */
   acceptsFirstResponder: YES,
   
   /**
-  * If set to YES, the default theme will show alternating rows
-  * for the views this ListView created through exampleView property.
-  *
-  * @property {Boolean} 
+    If set to YES, the default theme will show alternating rows
+    for the views this ListView created through exampleView property.
+    
+    @type Boolean
+    @default NO
   */
   showAlternatingRows: NO,
+  
   
   // ..........................................................
   // METHODS
   //
   
+  /** @private */
   render: function(context, firstTime) {
     context.setClass('alternating', this.get('showAlternatingRows'));
     
     return arguments.callee.base.apply(this,arguments);
   },
 
+
   // ..........................................................
   // COLLECTION ROW DELEGATE SUPPORT
   // 
   
-  
   /**
-    Returns the current collectionRowDelegate.  This property will recompute
-    everytime the content changes.
+    @field
+    @type Object
+    @observes 'delegate'
+    @observes 'content'
   */
   rowDelegate: function() {
-    var del     = this.delegate,
+    var del = this.delegate,
         content = this.get('content');
+
     return this.delegateFor('isCollectionRowDelegate', del, content);
   }.property('delegate', 'content').cacheable(),
   
@@ -14739,6 +15872,7 @@ SC.ListView = SC.CollectionView.extend(
     this.rowHeightDidChangeForIndexes(changed);
     return this ;
   },
+  
   
   // ..........................................................
   // ROW PROPERTIES
@@ -14842,7 +15976,7 @@ SC.ListView = SC.CollectionView.extend(
     @returns {SC.ListView} receiver
   */  
   rowHeightDidChangeForIndexes: function(indexes) {
-    var len     = this.get('length');
+    var len = this.get('length');
 
     // clear any cached offsets
     this._sclv_heightCache = this._sclv_offsetCache = null;
@@ -14871,19 +16005,20 @@ SC.ListView = SC.CollectionView.extend(
   },
   
   /**
-  
     Computes the layout for a specific content index by combining the current
     row heights.
-  
+    
+    @param {Number} contentIndex
+    @returns {Hash} layout hash for the index provided
   */
   layoutForContentIndex: function(contentIndex) {
     var del = this.get('rowDelegate');
     
     return {
-      top:    this.rowOffsetForContentIndex(contentIndex),
+      top: this.rowOffsetForContentIndex(contentIndex),
       height: this.rowHeightForContentIndex(contentIndex) - del.get('rowPadding') * 2,
-      left:   0, 
-      right:  0
+      left: 0,
+      right: 0
     };
   },
   
@@ -14965,10 +16100,10 @@ SC.ListView = SC.CollectionView.extend(
     return SC.IndexSet.create(start, end-start);
   },
   
+  
   // ..........................................................
   // DRAG AND ROP SUPPORT
   // 
-  
   
   /**
     Default view class used to draw an insertion point.  The default 
@@ -14976,20 +16111,21 @@ SC.ListView = SC.CollectionView.extend(
     should expect an outlineLevel property set, which should impact your left
     offset.
     
-    @property 
-    @type {SC.View}
+    @field
+    @type SC.View
   */
   insertionPointView: SC.View.extend({
     classNames: 'sc-list-insertion-point',
     
+    /** @private */
     render: function(context, firstTime) {
       if (firstTime) context.push('<div class="anchor"></div>');
     }
-    
   }),
 
   /**
     Default implementation will show an insertion point
+    @see SC.CollectionView#showInsertionPoint
   */
   showInsertionPoint: function(itemView, dropOperation) {
     var view = this._insertionPointView;
@@ -15041,6 +16177,9 @@ SC.ListView = SC.CollectionView.extend(
     }
   },
   
+  /**
+    @see SC.CollectionView#hideInsertionPoint
+  */
   hideInsertionPoint: function() {
     if (this._lastDropOnView) {
       this._lastDropOnView.set('isSelected', NO);
@@ -15057,15 +16196,15 @@ SC.ListView = SC.CollectionView.extend(
     a point, relative to the top/left corner of the receiver view.  The return
     value is an index plus a dropOperation, which is computed as such:
     
-    - if outlining is not used and you are within 5px of an edge, DROP_BEFORE
-      the item after the edge.
-      
-    - if outlining is used and you are within 5px of an edge and the previous
-      item has a different outline level then the next item, then DROP_AFTER
-      the previous item if you are closer to that outline level.
-      
-    - if dropOperation = SC.DROP_ON and you are over the middle of a row, then
-      use DROP_ON.
+      - if outlining is not used and you are within 5px of an edge, DROP_BEFORE
+        the item after the edge.
+      - if outlining is used and you are within 5px of an edge and the previous
+        item has a different outline level then the next item, then DROP_AFTER
+        the previous item if you are closer to that outline level.
+      - if dropOperation = SC.DROP_ON and you are over the middle of a row, then
+        use DROP_ON.
+    
+    @see SC.CollectionView.insertionIndexForLocation
   */
   insertionIndexForLocation: function(loc, dropOperation) {
     var locRect = {x:loc.x, y:loc.y, width:1, height:1},
@@ -15098,8 +16237,6 @@ SC.ListView = SC.CollectionView.extend(
         return [index, SC.DROP_ON];
       }
     }
-    
-    
     
     // ok, now if we are in last 10px, go to next item.
     if ((index<len) && (loc.y >= max-10)) index++;
@@ -15166,6 +16303,7 @@ SC.ListView = SC.CollectionView.extend(
     return [index, dropOperation];
   },
   
+  /** @private */
   mouseWheel: function(evt) {
     // The following commits changes in a list item that is being edited,
     // if the list is scrolled.
@@ -15182,6 +16320,7 @@ SC.ListView = SC.CollectionView.extend(
   // INTERNAL SUPPORT
   // 
 
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
     this._sclv_rowDelegateDidChange();
@@ -15191,29 +16330,46 @@ SC.ListView = SC.CollectionView.extend(
 
 /* >>>>>>>>>> BEGIN source/views/grid.js */
 // ==========================================================================
-// SC.GridView
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-require('views/list') ;
+sc_require('views/list') ;
 
 /** @class
 
   A grid view renders a collection of items in a grid of rows and columns.
 
-  @extends SC.CollectionView
-  @author    Charles Jolley  
+  @extends SC.ListView
+  @author Charles Jolley
   @version 1.0
 */
 SC.GridView = SC.ListView.extend(
 /** @scope SC.GridView.prototype */ {
-    classNames: ['sc-grid-view'],
+
+  /**
+    @type Array
+    @default ['sc-grid-view']
+    @see SC.View#classNames
+  */
+  classNames: ['sc-grid-view'],
   
+  /**
+    @type Hash
+    @default { left:0, right:0, top:0, bottom:0 }
+    @see SC.View#layout
+  */
   layout: { left:0, right:0, top:0, bottom:0 },
 
   /** 
     The common row height for grid items.
     
     The value should be an integer expressed in pixels.
+    
+    @type Number
+    @default 48
   */
   rowHeight: 48,
   
@@ -15221,6 +16377,9 @@ SC.GridView = SC.ListView.extend(
     The minimum column width for grid items.  Items will actually
     be laid out as needed to completely fill the space, but the minimum
     width of each item will be this value.
+    
+    @type Number
+    @default 64
   */
   columnWidth: 64,
 
@@ -15228,9 +16387,21 @@ SC.GridView = SC.ListView.extend(
     The default example item view will render text-based items.
     
     You can override this as you wish.
+    
+    @type SC.View
+    @default SC.LabelView
   */
   exampleView: SC.LabelView,
   
+  /**
+    Possible values:
+    
+      - SC.HORIZONTAL_ORIENTATION
+      - SC.VERTICAL_ORIENTATION
+    
+    @type String
+    @default SC.HORIZONTAL_ORIENTATION
+  */
   insertionOrientation: SC.HORIZONTAL_ORIENTATION,
   
   /** @private */
@@ -15291,15 +16462,18 @@ SC.GridView = SC.ListView.extend(
     return ret; 
   },
   
+  /**
+    @type SC.View
+  */
   insertionPointClass: SC.View.extend({
     classNames: ['grid-insertion-point'],
     
     render: function(context, firstTime) {
       if (firstTime) context.push('<span class="anchor"></span>') ;
     }
-
   }),
   
+  /** @private */
   showInsertionPoint: function(itemView, dropOperation) {
     if (!itemView) return ;
     
@@ -15341,6 +16515,7 @@ SC.GridView = SC.ListView.extend(
     
   },
     
+  /** @private */
   hideInsertionPoint: function() {
     var insertionPoint = this._insertionPointView ;
     if (insertionPoint) insertionPoint.removeFromParent() ;
@@ -15351,7 +16526,7 @@ SC.GridView = SC.ListView.extend(
     }
   },
   
-  // // We can do this much faster programatically using the rowHeight
+  /** @private */
   insertionIndexForLocation: function(loc, dropOperation) {  
     var f = this.get('frame'),
         sf = this.get('clippingFrame'),
@@ -15402,7 +16577,7 @@ SC.GridView = SC.ListView.extend(
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -15416,23 +16591,25 @@ SC.GridView = SC.ListView.extend(
 
   For example:
 
-  SC.ImageButtonView.create({
-    action: 'imageButtonWasClicked',
+      SC.ImageButtonView.create({
+        action: 'imageButtonWasClicked',
 
-    image: 'image-button-icon'
-  });
+        image: 'my-image-button-icon'
+      });
 
   You could then add some CSS rule for a normal state:
 
-    .sc-image-button-view .image-button-icon {
-      background: '';
-    }
+      $theme.image-button .my-image-button-icon {
+        @include slice('my-image-button-image.png');
 
-  And an active state:
+        // and an active state:
+        &.active {
+          @include slice('my-image-button-image-active.png');
+        }
+      }
 
-    .sc-image-button-view.active .image-button-icon {
-      background: '';
-    }
+  Note: in addition to using SCSS and the Chance directives shown above, you
+  can use normal CSS syntax and sc_static.
 
   @extends SC.View
   @extends SC.Control
@@ -15443,9 +16620,9 @@ SC.ImageButtonView = SC.ButtonView.extend(
 /** @scope SC.ImageButtonView.prototype */ {
 
   /**
-    Class names that will be applied to this view
-
-    @property {Array}
+    @type Array
+    @default ['sc-image-button-view']
+    @see SC.View#classNames
   */
   classNames: ['sc-image-button-view'],
 
@@ -15453,61 +16630,98 @@ SC.ImageButtonView = SC.ButtonView.extend(
     Unlike SC.ButtonView, SC.ImageButtonView does not have a default theme
     that needs to be applied for backwards compatibility.
 
-    @property {String}
+    @type String
+    @default null
   */
   themeName: null,
 
   /**
-    The name of the theme's SC.ImageButtonView render delegate.
-
-    @property {String}
+    @type String
+    @default 'imageButtonRenderDelegate'
   */
   renderDelegateName: 'imageButtonRenderDelegate',
   
+  /**
+    @type Array
+    @default ['image']
+  */
   displayProperties: ['image'],
 
   /**
     A class name that will be applied to the img tag of the button.
-
-    @property {String}
+    
+    @type String
+    @default null
   */
   image: null
+
 }) ;
+
 /* >>>>>>>>>> BEGIN source/views/toolbar.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 /**
   Layout properties needed to anchor a view to the top.
+  
+  @static
+  @constant
+  @type Hash
+  @default `{ top: 0 }`
 */
 SC.ANCHOR_TOP = { top: 0 };
 
 /**
   Layout properties needed to anchor a view to the left.
+  
+  @static
+  @constant
+  @type Hash
+  @default `{ left: 0 }`
 */
 SC.ANCHOR_LEFT = { left: 0 };
 
 /*
   Layout properties to anchor a view to the top left
+  
+  @static
+  @constant
+  @type Hash
+  @default `{ top: 0, left: 0 }`
 */
 SC.ANCHOR_TOP_LEFT = { top: 0, left: 0 };
 
 /**
   Layout properties to anchoe view to the bottom.
+  
+  @static
+  @constant
+  @type Hash
+  @default `{ bottom: 0 }`
 */
 SC.ANCHOR_BOTTOM = { bottom: 0 };
 
 /**
   Layout properties to anchor a view to the right.
+  
+  @static
+  @constant
+  @type Hash
+  @default `{ right: 0 }`
 */
 SC.ANCHOR_RIGHT = { right: 0 } ;
 
 /**
   Layout properties to anchor a view to the bottom right.
+  
+  @static
+  @constant
+  @type Hash
+  @default `{ top: 0, right: 0 }`
 */
 SC.ANCHOR_BOTTOM_RIGHT = { bottom: 0, right: 0 };
 
@@ -15517,7 +16731,7 @@ SC.ANCHOR_BOTTOM_RIGHT = { bottom: 0, right: 0 };
   your main toolbar buttons.
 
   You can also override the layout property yourself or simply set the
-  anchorLocation to SC.ANCHOR_TOP or SC.ANCHOR_BOTTOM.  This will configure
+  anchorLocation to `SC.ANCHOR_TOP` or `SC.ANCHOR_BOTTOM`.  This will configure
   the layout of your toolbar automatically when it is created.
 
   @extends SC.View
@@ -15526,19 +16740,41 @@ SC.ANCHOR_BOTTOM_RIGHT = { bottom: 0, right: 0 };
 SC.ToolbarView = SC.View.extend(
 /** @scope SC.ToolbarView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-toolbar-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-toolbar-view'],
 
   /**
-    The WAI-ARIA role for toolbar view. This property's value should not be
-    changed.
+    The WAI-ARIA role for toolbar view.
 
-    @property {String}
+    @type String
+    @default 'toolbar'
+    @readOnly
   */
   ariaRole: 'toolbar',
 
   /**
+    @type String
+    @default 'toolbarRenderDelegate'
+  */
+  renderDelegateName: 'toolbarRenderDelegate',
+
+  /**
     Default anchor location.  This will be applied automatically to the
-    toolbar layout if you set it.
+    toolbar layout if you set it. Possible values:
+    
+      - SC.ANCHOR_TOP
+      - SC.ANCHOR_LEFT
+      - SC.ANCHOR_TOP_LEFT
+      - SC.ANCHOR_BOTTOM
+      - SC.ANCHOR_RIGHT
+      - SC.ANCHOR_BOTTOM_RIGHT
+    
+    @type String
+    @default null
   */
   anchorLocation: null,
 
@@ -15556,9 +16792,7 @@ SC.ToolbarView = SC.View.extend(
       this.layout = SC.merge(this.layout, this.anchorLocation);
     }
     arguments.callee.base.apply(this,arguments);
-  },
-
-  renderDelegateName: 'toolbarRenderDelegate'
+  }
 
 });
 
@@ -15567,9 +16801,11 @@ SC.ToolbarView = SC.View.extend(
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+sc_require("views/toolbar");
 
 /** @class
   WorkspaceView manages a content view and two optional toolbars (top and bottom).
@@ -15578,58 +16814,82 @@ SC.ToolbarView = SC.View.extend(
   handy!) and iPad apps where you would like the masterIsHidden property to pass through.
   
   @since SproutCore 1.2
+  @extends SC.View
+  @author Alex Iskander
 */
+SC.WorkspaceView = SC.View.extend(
+/** @scope SC.WorkspaceView.prototype */ {
 
-require("views/toolbar");
-
-SC.VERTICAL_ORIENTATION = "vertical";
-SC.HORIZONTAL_ORIENTATION = "horizontal";
-
-SC.WorkspaceView = SC.View.extend({
-  classNames: ["sc-workspace-view"],
   /**
-    The top toolbar. This defaults to an empty toolbar.
+    @type Array
+    @default ['sc-workspace-view']
+    @see SC.View#classNames
+  */
+  classNames: ["sc-workspace-view"],
+  
+  /**
+    @type Array
+    @default "hasTopToolbar hasBottomToolbar".w()
+    @see SC.View#displayProperties
+  */
+  displayProperties: ["hasTopToolbar", "hasBottomToolbar"],
+  
+  /**
+    @type String
+    @default 'workspaceRenderDelegate'
+  */
+  renderDelegateName: 'workspaceRenderDelegate',
+
+  /**
+    @type SC.View
+    @default SC.ToolbarView
   */
   topToolbar: SC.ToolbarView.extend(),
   
   /**
-    The bottom toolbar. Defaults to null (no toolbar).
+    @type SC.View
+    @default null
   */
   bottomToolbar: null,
   
   /**
-    The content. Must NOT be null. Defaults to an empty view.
+    The content. Must NOT be null.
+    
+    @type SC.View
+    @default SC.View
   */
   contentView: SC.View.extend(),
   
   /**
-    Whether to automatically resize toolbars.
-    
-    By default, this property is NO. If you want to automatically resize like iPhone
+    If you want to automatically resize the toolbars like iPhone
     apps should, set to YES.
+    
+    @type Boolean
+    @default NO
   */
   autoResizeToolbars: NO,
   
   /**
-    The default toolbar size. The default is 44, as that looks
-    great on higher-resolution devices.
-    
-    TODO: move into a renderer or something.
+    @type Number
+    @default 44
   */
   defaultToolbarSize: 44,
   
   /**
-    The large toolbar size.
+    @type Number
+    @default 44
   */
   largeToolbarSize: 44,
   
   /**
-    The small toolbar size.
+    @type Number
+    @default 30
   */
   smallToolbarSize: 30,
   
   /**
-    A property (computed) that says what size the toolbars are.
+    @field
+    @type Number
   */
   toolbarSize: function() {
     if (!this.get("autoResizeToolbars")) return this.get("defaultToolbarSize");
@@ -15638,7 +16898,14 @@ SC.WorkspaceView = SC.View.extend({
   }.property("autoHideMaster", "orientation"),
   
   /**
-    Tracks the orientation of the view. Is a computed property. Property, people, not a method.
+    Tracks the orientation of the view. Possible values:
+    
+      - SC.HORIZONTAL_ORIENTATION
+      - SC.PORTRAIT_ORIENTATION
+    
+    @field
+    @type String
+    @default SC.HORIZONTAL_ORIENTATION
   */
   orientation: function() {
     var f = this.get("frame");
@@ -15647,11 +16914,12 @@ SC.WorkspaceView = SC.View.extend({
   }.property("frame").cacheable(),
   
   /**
-    Thees property es passed throo too make eet zeemple for zee toolbar buttonz
-    to hide and show theemselves.
+    @type Boolean
+    @default NO
   */
   masterIsHidden: NO,
   
+  /** @private */
   masterIsHiddenDidChange: function() {
     var t, mih = this.get("masterIsHidden");
     if (t = this.get("topToolbar")) t.set("masterIsHidden", mih);
@@ -15670,7 +16938,7 @@ SC.WorkspaceView = SC.View.extend({
     this.invokeOnce("_scws_tile");
   }.observes("toolbarSize"),
   
-  /**
+  /** @private
     Creates the child views. Specifically, instantiates master and detail views.
   */
   createChildViews: function() {
@@ -15728,7 +16996,7 @@ SC.WorkspaceView = SC.View.extend({
     });
   },
   
-  /**
+  /** @private
     Returns YES if a top toolbar is present.
   */
   hasTopToolbar: function() {
@@ -15736,7 +17004,7 @@ SC.WorkspaceView = SC.View.extend({
     return NO;    
   }.property("topToolbar").cacheable(),
   
-  /**
+  /** @private
     Returns YES if a bottom toolbar is present.
   */
   hasBottomToolbar: function() {
@@ -15744,29 +17012,29 @@ SC.WorkspaceView = SC.View.extend({
     return NO;
   }.property("bottomToolbar").cacheable(),
   
-  /**
+  /** @private
     Called by the individual toolbar/contentView observers at runloop end when the toolbars change.
   */
   childDidChange: function() {
     this._scws_tile();
   },
   
-  /**
+  /** @private
     For subclassing, this is the currently displaying top toolbar.
   */
   activeTopToolbar: null,
   
-  /**
+  /** @private
     For subclassing, this is the currently displaying bottom toolbar.
   */
   activeBottomToolbar: null,
   
-  /**
+  /** @private
     For subclassing, this is the currently displaying content view.
   */
   activeContentView: null,
   
-  /**
+  /** @private
     Called when the top toolbar changes. It appends it, removes any old ones, and calls toolbarsDidChange. 
     
     You may want to override this if, for instance, you want to add transitions of some sort (should be trivial).
@@ -15784,6 +17052,9 @@ SC.WorkspaceView = SC.View.extend({
     this.invokeLast("childDidChange");
   }.observes("topToolbar"),
   
+  /**
+    @private
+  */
   bottomToolbarDidChange: function() {
     var active = this.activeBottomToolbar, replacement = this.get("bottomToolbar");
     if (active) {
@@ -15797,6 +17068,7 @@ SC.WorkspaceView = SC.View.extend({
     this.invokeLast("childDidChange");
   }.observes("bottomToolbar"),
   
+  /** @private */
   contentViewDidChange: function() {
     var active = this.activeContentView, replacement = this.get("contentView");
     if (active) {
@@ -15808,21 +17080,21 @@ SC.WorkspaceView = SC.View.extend({
     
     this.activeContentView = replacement;
     this.invokeLast("childDidChange");
-  }.observes("contentView"),
-  
-  
-  displayProperties: "hasTopToolbar hasBottomToolbar".w(),
-  
-  renderDelegateName: 'workspaceRenderDelegate'
+  }.observes("contentView")
+
 });
 
 /* >>>>>>>>>> BEGIN source/views/master_detail.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+sc_require("views/workspace");
+sc_require("views/toolbar");
+
 
 /** @class
   Master/Detail view is a simple view which manages a master view and a detail view.
@@ -15844,18 +17116,33 @@ SC.WorkspaceView = SC.View.extend({
   
   @since SproutCore 1.2
 */
-require("views/workspace");
-require("views/toolbar");
+SC.MasterDetailView = SC.View.extend(
+/** @scope SC.MasterDetailView.prototype */ {
 
-SC.VERTICAL_ORIENTATION = "vertical";
-SC.HORIZONTAL_ORIENTATION = "horizontal";
-
-SC.MasterDetailView = SC.View.extend({
+  /**
+    @type Array
+    @default ['sc-master-detail-view']
+    @see SC.View#classNames
+  */
   classNames: ["sc-master-detail-view"],
+  
+  /**
+    @type String
+    @default 'masterDetailRenderDelegate'
+  */
+  renderDelegateName: 'masterDetailRenderDelegate',
+  
+  
+  // ..........................................................
+  // Properties
+  // 
   
   /**
     The master view. For your development pleasure, it defaults to a
     WorkspaceView with a top toolbar.
+    
+    @type SC.View
+    @default SC.WorkspaceView
   */
   masterView: SC.WorkspaceView.extend({
     topToolbar: SC.ToolbarView.extend({
@@ -15867,10 +17154,13 @@ SC.MasterDetailView = SC.View.extend({
     The detail view. For your development experience, it defaults to holding
     a top toolbar view with a button that closes/shows master. Come take a peek at
     the code to see what it looks like--it is so simple.
+    
+    @type SC.View
+    @default SC.WorkspaceView
   */
   detailView: SC.WorkspaceView.extend({
     topToolbar: SC.ToolbarView.extend({
-      childViews: "showHidePicker".w(),
+      childViews: ["showHidePicker"],
       showHidePicker: SC.ButtonView.extend({
         layout: { left: 7, centerY: 0, height: 30, width: 100 },
         controlSize: SC.AUTO_CONTROL_SIZE,
@@ -15889,6 +17179,10 @@ SC.MasterDetailView = SC.View.extend({
     browser. Your purpose in overriding it is either to disable it from automatically
     disappearing on iPad and other touch devices, or force it to appear when a desktop
     browser changes.
+    
+    @field
+    @type Boolean
+    @default NO
   */
   autoHideMaster: function() {
     if (SC.platform.touch) return YES;
@@ -15896,13 +17190,19 @@ SC.MasterDetailView = SC.View.extend({
   }.property().cacheable(),
   
   /**
-    The width of the master view.
+    @type Number
     @default 250
   */
   masterWidth: 250,
   
   /**
     A property (computed) that says whether the master view is hidden.
+    
+    @field
+    @type Boolean
+    @default NO
+    @observes autoHideMaster
+    @observes orientation
   */
   masterIsHidden: function() {
     if (!this.get("autoHideMaster")) return NO;
@@ -15911,10 +17211,17 @@ SC.MasterDetailView = SC.View.extend({
   }.property("autoHideMaster", "orientation"),
   
   /**
-    Tracks the orientation of the view.
+    Tracks the orientation of the view. Possible values:
+    
+      - SC.VERTICAL_ORIENTATION
+      - SC.HORIZONTAL_ORIENTATION
+    
+    @type String
+    @default SC.VERTICAL_ORIENTATION
   */
   orientation: SC.VERTICAL_ORIENTATION,
   
+  /** @private */
   _scmd_frameDidChange: function() {
     var f = this.get("frame"), ret;
     if (f.width > f.height) ret = SC.HORIZONTAL_ORIENTATION;
@@ -15923,8 +17230,7 @@ SC.MasterDetailView = SC.View.extend({
     this.setIfChanged('orientation', ret);
   }.observes('frame'),
   
-  // have to calculate the initial orientation when added to parent at
-  // startup (frame doesn't invalidate in this case)
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
     this._scmd_frameDidChange();
@@ -15933,8 +17239,9 @@ SC.MasterDetailView = SC.View.extend({
   
   /**
     If the master is hidden, this toggles the master picker pane.
-    
     Of course, since pickers are modal, this actually only needs to handle showing.
+    
+    @param {SC.View} view The view to anchor the picker to
   */
   toggleMasterPicker: function(view) {
     if (!this.get("masterIsHidden")) return;
@@ -15945,6 +17252,9 @@ SC.MasterDetailView = SC.View.extend({
     }
   },
   
+  /**
+    @param {SC.View} view The view to anchor the picker to
+  */
   showMasterPicker: function(view) {
     if (this._picker && this._picker.get("isVisibleInWindow")) return;
     if (!this._picker) {
@@ -15964,33 +17274,46 @@ SC.MasterDetailView = SC.View.extend({
     }
   },
   
-  showPicker: function(p, view) {
-    p.popup(view, SC.PICKER_POINTER, [3, 0, 1, 2, 3], [9, -9, -18, 18]);
+  /**
+    @param {SC.PickerPane} picker The picker to popup
+    @param {SC.View} view The view to anchor the picker to
+  */
+  showPicker: function(picker, view) {
+    picker.popup(view, SC.PICKER_POINTER, [3, 0, 1, 2, 3], [9, -9, -18, 18]);
   },
   
-  hidePicker: function(p) {
-    p.remove();
+  /**
+    @param {SC.PickerPane} picker The picker to popup
+  */
+  hidePicker: function(picker) {
+    picker.remove();
   },
   
   /**
     The picker pane class from which to create a picker pane.
     
     This defaults to one with a special theme.
+    
+    @type SC.PickerPane
+    @default SC.PickerPane
   */
   pickerPane: SC.PickerPane.extend({
     layout: { width: 250, height: 480 },
     themeName: 'popover'
   }),
   
-  /// INTERNAL CODE. HERE, THERE BE MONSTERS!
+  
+  // ..........................................................
+  // Internal Support
+  // 
+  
+  /** @private */
   _picker: null,
+  
+  /** @private */
   pointerDistanceFromEdge: 46,
   
-  
-  renderDelegateName: 'masterDetailRenderDelegate',
-  
-  /**
-    @private
+  /** @private
     Updates masterIsHidden in child views.
   */
   _scmd_masterIsHiddenDidChange: function() {
@@ -15999,8 +17322,7 @@ SC.MasterDetailView = SC.View.extend({
     this.get("detailView").set("masterIsHidden", mih);
   }.observes("masterIsHidden"),
   
-  /**
-    @private
+  /** @private
     When the frame changes, we don't need to do anything. We use smart positioning.
     However, if the orientation were to change, well, then we might need to do something.
   */
@@ -16008,15 +17330,15 @@ SC.MasterDetailView = SC.View.extend({
     this.invokeOnce("_scmd_tile");
   }.observes("orientation"),
   
-  /**
+  /** @private
     Observes properties which require retiling.
   */
   _scmd_retileProperties: function() {
     this.invokeOnce("_scmd_tile");
   }.observes("masterIsHidden", "masterWidth"),
   
-  /**
-    Creates the child views. Specifically, instantiates master and detail views.
+  /** @private
+    Instantiates master and detail views.
   */
   createChildViews: function() {
     var master = this.get("masterView");
@@ -16029,9 +17351,10 @@ SC.MasterDetailView = SC.View.extend({
     this.invokeOnce("_scmd_tile");
   },
   
+  /** @private */
   _masterIsDrawn: NO, // whether the master is in the view
-  /**
-    @private
+  
+  /** @private
     Tiles the views as necessary.
   */
   _scmd_tile: function() {
@@ -16073,13 +17396,14 @@ SC.MasterDetailView = SC.View.extend({
       detail.set('layout', { left: 0, right: 0, top: 0, bottom: 0 });
     }
   }
+
 });
 
 /* >>>>>>>>>> BEGIN source/views/scroller.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -16095,15 +17419,13 @@ SC.MasterDetailView = SC.View.extend({
   You can either create a subclass of ScrollerView with the new values, or
   provide your own in your theme:
 
-{{{
-  SC.mixin(SC.ScrollerView.prototype, {
-    scrollbarThickness: 14,
-    capLength: 18,
-    capOverlap: 14,
-    buttonOverlap: 11,
-    buttonLength: 41
-  });
-}}}
+      SC.mixin(SC.ScrollerView.prototype, {
+        scrollbarThickness: 14,
+        capLength: 18,
+        capOverlap: 14,
+        buttonOverlap: 11,
+        buttonLength: 41
+      });
 
   You can change whether scroll buttons are displayed by setting the
   hasButtons property.
@@ -16114,15 +17436,30 @@ SC.MasterDetailView = SC.View.extend({
 SC.ScrollerView = SC.View.extend(
 /** @scope SC.ScrollerView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-scroller-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-scroller-view'],
 
   /**
-    The WAI-ARIA role for scroller view. This property's value should not be
-    changed.
+    @type Array
+    @default 'thumbPosition thumbLength isEnabled controlsHidden'.w()
+    @see SC.View#displayProperties
+  */
+  displayProperties: ['thumbPosition', 'thumbLength', 'isEnabled', 'controlsHidden'],
 
-    @property {String}
+  /**
+    The WAI-ARIA role for scroller view.
+
+    @type String
+    @default 'scrollbar'
+    @readOnly
   */
   ariaRole: 'scrollbar',
+  
+  
   // ..........................................................
   // PROPERTIES
   //
@@ -16132,12 +17469,14 @@ SC.ScrollerView = SC.View.extend(
     Otherwise, a click on the track will cause a page down.
     
     In either case, alt-clicks will perform the opposite behavior.
+    
+    @type Boolean
+    @default NO
   */
   shouldScrollToClick: NO,
   
   
-  /**
-    @private
+  /** @private
     The in-touch-scroll value.
   */
   _touchScrollValue: NO,
@@ -16146,8 +17485,11 @@ SC.ScrollerView = SC.View.extend(
     The value of the scroller.
 
     The value represents the position of the scroller's thumb.
-
-    @property {Number}
+    
+    @field
+    @type Number
+    @observes maximum
+    @observes minimum
   */
   value: function(key, val) {
     var minimum = this.get('minimum');
@@ -16159,6 +17501,10 @@ SC.ScrollerView = SC.View.extend(
     return Math.max(Math.min(val, this.get('maximum')), minimum) ;
   }.property('maximum', 'minimum').cacheable(),
   
+  /**
+    @type Number
+    @observes value
+  */
   displayValue: function() {
     var ret;
     if (this.get("_touchScrollValue")) ret = this.get("_touchScrollValue");
@@ -16175,7 +17521,8 @@ SC.ScrollerView = SC.View.extend(
     the slot). Note that if the proportion is 1.0 then the control will be
     disabled.
 
-    @property {Number}
+    @type Number
+    @default 0.0
   */
   proportion: 0,
 
@@ -16185,7 +17532,8 @@ SC.ScrollerView = SC.View.extend(
 
     When set less than the height of the scroller, the scroller is disabled.
 
-    @property {Number}
+    @type Number
+    @default 100
   */
   maximum: 100,
 
@@ -16193,7 +17541,8 @@ SC.ScrollerView = SC.View.extend(
     The minimum offset value for the scroller.  This will be used to calculate
     the internal height/width of the scroller itself.
 
-    @property {Number}
+    @type Number
+    @default 0
   */
   minimum: 0,
 
@@ -16201,26 +17550,48 @@ SC.ScrollerView = SC.View.extend(
     YES to enable scrollbar, NO to disable it.  Scrollbars will automatically
     disable if the maximum scroll width does not exceed their capacity.
 
-    @property
+    @field
+    @type Boolean
+    @default YES
+    @observes proportion
   */
-  isEnabled: YES,
+  isEnabled: function(key, value) {
+    if (value !== undefined) {
+      this._scsv_isEnabled = value;
+    }
+
+    if (this._scsv_isEnabled !== undefined) {
+      return this._scsv_isEnabled;
+    }
+
+    return this.get('proportion') < 1;
+  }.property('proportion').cacheable(),
+
+  /** @private */
+  _scsv_isEnabled: undefined,
 
   /**
     Determine the layout direction.  Determines whether the scrollbar should
     appear horizontal or vertical.  This must be set when the view is created.
-    Changing this once the view has been created will have no effect.
+    Changing this once the view has been created will have no effect. Possible
+    values:
+    
+      - SC.LAYOUT_VERTICAL
+      - SC.LAYOUT_HORIZONTAL
 
-    @property
+    @type String
+    @default SC.LAYOUT_VERTICAL
   */
   layoutDirection: SC.LAYOUT_VERTICAL,
 
   /**
     Whether or not the scroller should display scroll buttons
 
-    @property {Boolean}
+    @type Boolean
     @default YES
   */
   hasButtons: YES,
+
 
   // ..........................................................
   // DISPLAY METRICS
@@ -16230,21 +17601,24 @@ SC.ScrollerView = SC.View.extend(
     The width (if vertical scroller) or height (if horizontal scroller) of the 
     scrollbar.
 
-    @property {Number}
+    @type Number
+    @default 14
   */
   scrollbarThickness: 14,
   
   /**
     The width or height of the cap that encloses the track.
 
-    @property {Number}
+    @type Number
+    @default 18
   */
   capLength: 18,
 
   /**
     The amount by which the thumb overlaps the cap.
 
-    @property {Number}
+    @type Number
+    @default 14
   */
   capOverlap: 14,
 
@@ -16253,7 +17627,8 @@ SC.ScrollerView = SC.View.extend(
     scroller is not displaying arrows, this is the width or height of the end
     cap.
 
-    @property {Number}
+    @type Number
+    @defaut 41
   */
   buttonLength: 41,
 
@@ -16262,7 +17637,8 @@ SC.ScrollerView = SC.View.extend(
     is not displaying arrows, this is the amount by which the thumb overlaps
     the end cap.
 
-    @property {Number}
+    @type Number
+    @default 11
   */
   buttonOverlap: 11,
   
@@ -16270,7 +17646,8 @@ SC.ScrollerView = SC.View.extend(
     The minimium length that the thumb will be, regardless of how much content
     is in the scroll view.
 
-    @property {Number}
+    @type Number
+    @default 20
   */
   minimumThumbLength: 20,
 
@@ -16278,9 +17655,8 @@ SC.ScrollerView = SC.View.extend(
   // INTERNAL SUPPORT
   //
 
-  displayProperties: 'thumbPosition thumbLength isEnabled controlsHidden'.w(),
 
-  /**
+  /** @private
     Generates the HTML that gets displayed to the user.
 
     The first time render is called, the HTML will be output to the DOM.
@@ -16356,7 +17732,7 @@ SC.ScrollerView = SC.View.extend(
       }
 
       //addressing accessibility
-      context.attr('aria-valuemax', this.get('maximun'));
+      context.attr('aria-valuemax', this.get('maximum'));
       context.attr('aria-valuemin', this.get('minimum'));
       context.attr('aria-valuenow', this.get('value'));
       context.attr('aria-controls' , parentView.getPath('contentView.layerId'));
@@ -16378,17 +17754,17 @@ SC.ScrollerView = SC.View.extend(
     }
   },
 
-  /**
-  @private
-  */
+  /** @private */
   touchScrollDidStart: function(value) {
     this.set("_touchScrollValue", value);
   },
   
+  /** @private */
   touchScrollDidEnd: function(value) {
     this.set("_touchScrollValue", NO);
   },
   
+  /** @private */
   touchScrollDidChange: function(value) {
     this.set("_touchScrollValue", value);
   },
@@ -16396,7 +17772,8 @@ SC.ScrollerView = SC.View.extend(
   // ..........................................................
   // THUMB MANAGEMENT
   //
-  /**
+  
+  /** @private
     Adjusts the thumb (for backwards-compatibility calls adjustThumbPosition+adjustThumbSize by default)
   */
   adjustThumb: function(thumb, position, length) {
@@ -16404,11 +17781,10 @@ SC.ScrollerView = SC.View.extend(
     this.adjustThumbSize(thumb, length);
   },
 
-  /**
+  /** @private
     Updates the position of the thumb DOM element.
 
     @param {Number} position the position of the thumb in pixels
-    @private
   */
   adjustThumbPosition: function(thumb, position) {
     // Don't touch the DOM if the position hasn't changed
@@ -16426,6 +17802,7 @@ SC.ScrollerView = SC.View.extend(
     this._thumbPosition = position;
   },
 
+  /** @private */
   adjustThumbSize: function(thumb, size) {
     // Don't touch the DOM if the size hasn't changed
     if (this._thumbSize === size) return;
@@ -16446,7 +17823,7 @@ SC.ScrollerView = SC.View.extend(
   // SCROLLER DIMENSION COMPUTED PROPERTIES
   //
 
-  /**
+  /** @private
     Returns the total length of the track in which the thumb sits.
 
     The length of the track is the height or width of the scroller, less the
@@ -16454,7 +17831,6 @@ SC.ScrollerView = SC.View.extend(
     position of the thumb relative to the view.
 
     @property
-    @private
   */
   trackLength: function() {
     var scrollerLength = this.get('scrollerLength');
@@ -16468,13 +17844,12 @@ SC.ScrollerView = SC.View.extend(
     return scrollerLength;
   }.property('scrollerLength').cacheable(),
 
-  /**
+  /** @private
     Returns the height of the view if this is a vertical scroller or the width
     of the view if this is a horizontal scroller. This is used when scrolling
     up and down by page, as well as in various layout calculations.
 
-    @property {Number}
-    @private
+    @type Number
   */
   scrollerLength: function() {
     switch (this.get('layoutDirection')) {
@@ -16487,12 +17862,11 @@ SC.ScrollerView = SC.View.extend(
     return 0;
   }.property('frame').cacheable(),
 
-  /**
+  /** @private
     The total length of the thumb. The size of the thumb is the
     length of the track times the content proportion.
 
     @property
-    @private
   */
   thumbLength: function() {
     var length;
@@ -16503,12 +17877,11 @@ SC.ScrollerView = SC.View.extend(
     return Math.max(length, this.get('minimumThumbLength'));
   }.property('trackLength', 'proportion').cacheable(),
 
-  /**
+  /** @private
     The position of the thumb in the track.
 
-    @property {Number}
+    @type Number
     @isReadOnly
-    @private
   */
   thumbPosition: function() {
     var value = this.get('displayValue'),
@@ -16524,26 +17897,24 @@ SC.ScrollerView = SC.View.extend(
     return Math.floor(isNaN(position) ? 0 : position);
   }.property('displayValue', 'maximum', 'trackLength', 'thumbLength').cacheable(),
 
-  /**
+  /** @private
     YES if the maximum value exceeds the frame size of the scroller.  This
     will hide the thumb and buttons.
 
-    @property {Boolean}
+    @type Boolean
     @isReadOnly
-    @private
   */
   controlsHidden: function() {
     return this.get('proportion') >= 1;
   }.property('proportion').cacheable(),
 
+
   // ..........................................................
   // MOUSE EVENTS
   //
   
-  /**
+  /** @private
     Returns the value for a position within the scroller's frame.
-    
-    @private
   */
   valueForPosition: function(pos) {
     var max = this.get('maximum'),
@@ -16558,7 +17929,7 @@ SC.ScrollerView = SC.View.extend(
     return value;
   },
 
-  /**
+  /** @private
     Handles mouse down events and adjusts the value property depending where
     the user clicked.
 
@@ -16577,7 +17948,6 @@ SC.ScrollerView = SC.View.extend(
     are repeated until they release the mouse button.
 
     @param evt {SC.Event} the mousedown event
-    @private
   */
   mouseDown: function(evt) {
     if (!this.get('isEnabled')) return NO;
@@ -16590,7 +17960,7 @@ SC.ScrollerView = SC.View.extend(
         thumbPosition = this.get('thumbPosition'),
         value, clickLocation, clickOffset,
         scrollerLength = this.get('scrollerLength');
-        
+
     // Determine the subcontrol that was clicked
     if (target.className.indexOf('thumb') >= 0) {
       // Convert the mouseDown coordinates to the view's coordinates
@@ -16669,13 +18039,12 @@ SC.ScrollerView = SC.View.extend(
     return YES;
   },
 
-  /**
+  /** @private
     When the user releases the mouse button, remove any active
     state from the button controls, and cancel any outstanding
     timers.
 
     @param evt {SC.Event} the mousedown event
-    @private
   */
   mouseUp: function(evt) {
     var active = this._scs_buttonActive, ret = NO, timer;
@@ -16701,7 +18070,7 @@ SC.ScrollerView = SC.View.extend(
     return ret;
   },
 
-  /**
+  /** @private
     If the user began the drag on the thumb, we calculate the difference
     between the mouse position at click and where it is now.  We then
     offset the thumb by that amount, within the bounds of the track.
@@ -16710,7 +18079,6 @@ SC.ScrollerView = SC.View.extend(
     what component they are currently over, changing the scroll direction.
 
     @param evt {SC.Event} the mousedragged event
-    @private
   */
   mouseDragged: function(evt) {
     var value, length, delta, thumbPosition,
@@ -16761,11 +18129,11 @@ SC.ScrollerView = SC.View.extend(
       
       switch (this.get('layoutDirection')) {
         case SC.LAYOUT_VERTICAL:
-          if (evt.pageY < topButtonRect.bottom) nowScrollingUp = YES;
+          if (evt.clientY < topButtonRect.bottom) nowScrollingUp = YES;
           else nowScrollingDown = YES;
           break;
         case SC.LAYOUT_HORIZONTAL:
-          if (evt.pageX < topButtonRect.right) nowScrollingUp = YES;
+          if (evt.clientX < topButtonRect.right) nowScrollingUp = YES;
           else nowScrollingDown = YES;
           break;
       }
@@ -16801,15 +18169,13 @@ SC.ScrollerView = SC.View.extend(
     return YES;
   },
 
-  /**
+  /** @private
     Starts a timer that fires after 300ms.  This is called when the user
     clicks a button or inside the track to move a page at a time. If they
     continue holding the mouse button down, we want to repeat that action
     after a small delay.  This timer will be invalidated in mouseUp.
     
     Specify "immediate" as YES if it should not wait.
-
-    @private
   */
   startMouseDownTimer: function(action, immediate) {
     var timer;
@@ -16820,11 +18186,9 @@ SC.ScrollerView = SC.View.extend(
     });
   },
 
-  /**
+  /** @private
     Called by the mousedown timer.  This method determines the initial
     user action and repeats it until the timer is invalidated in mouseUp.
-
-    @private
   */
   mouseDownTimerDidFire: function() {
     var scrollerLength = this.get('scrollerLength'),
@@ -16863,28 +18227,65 @@ SC.ScrollerView = SC.View.extend(
     });
   },
 
-  /**
+  /** @private
     Given a selector, finds the corresponding DOM element and adds
     the 'active' class name.  Also stores the returned element so that
     the 'active' class name can be removed during mouseup.
 
     @param {String} the selector to find
-    @private
   */
   makeButtonActive: function(selector) {
     this._scs_buttonActive = this.$(selector).addClass('active');
   }
 });
 
-// TO BE EVENTUALLY REPLACED W/RENDERERS FROM QUILMES
-SC.TouchScrollerView = SC.ScrollerView.extend({
+// TODO: Use render delegates to handle rendering.
+
+/**
+  @class
+  @extends SC.ScrollerView
+*/
+SC.TouchScrollerView = SC.ScrollerView.extend(
+/** @scope SC.TouchScrollerView.prototype */{
+
+  /**
+    @type Array
+    @default ['sc-touch-scroller-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-touch-scroller-view'],
+  
+  /**
+    @type Number
+    @default 12
+  */
   scrollbarThickness: 12,
+  
+  /**
+    @type Number
+    @default 5
+  */
   capLength: 5,
+  
+  /**
+    @type Number
+    @default 0
+  */
   capOverlap: 0,
+  
+  /**
+    @type Boolean
+    @default NO
+  */
   hasButtons: NO,
+  
+  /**
+    @type Number
+    @default 36
+  */
   buttonOverlap: 36,
   
+  /** @private */
   adjustThumb: function(thumb, position, length) {
     var thumbInner = this.$('.thumb-inner');
     var max = this.get("scrollerLength") - this.capLength, min = this.get("minimum") + this.capLength;
@@ -16918,6 +18319,7 @@ SC.TouchScrollerView = SC.ScrollerView.extend({
     this._thumbSize = length;
   },
   
+  /** @private */
   render: function(context, firstTime) {
     var classNames = [],
         buttons = '',
@@ -16998,58 +18400,101 @@ SC.TouchScrollerView = SC.ScrollerView.extend({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 sc_require('views/scroller');
-sc_require('mixins/border');
 
+/**
+  @static
+  @type Number
+  @default 0.95
+*/
 SC.NORMAL_SCROLL_DECELERATION = 0.95;
+
+/**
+  @static
+  @type Number
+  @default 0.85
+*/
 SC.FAST_SCROLL_DECELERATION = 0.85;
 
 /** @class
-
   Implements a complete scroll view.  This class uses a manual implementation
   of scrollers in order to properly support clipping frames.
   
   Important Events:
   
-  - contentView frame size changes (to autoshow/hide scrollbar - adjust scrollbar size)
-  - horizontalScrollOffset change
-  - verticalScrollOffsetChanges
-  - scroll wheel events
+    - contentView frame size changes (to autoshow/hide scrollbar - adjust scrollbar size)
+    - horizontalScrollOffset change
+    - verticalScrollOffsetChanges
+    - scroll wheel events
   
   @extends SC.View
   @since SproutCore 1.0
 */
-SC.ScrollView = SC.View.extend(SC.Border, {
-  /** @scope SC.ScrollView.prototype */
+SC.ScrollView = SC.View.extend({
+/** @scope SC.ScrollView.prototype */
+
+  /**
+    @type Array
+    @default ['sc-scroll-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-scroll-view'],
 
   // ..........................................................
   // PROPERTIES
   // 
   
+  /**
+    Walk like a duck
+    
+    @type Boolean
+    @default YES
+    @readOnly
+  */
   isScrollable: YES,
   
   /** 
     The content view you want the scroll view to manage. This will be assigned to the contentView of the clipView also.
+    
+    @type SC.View
+    @default null
   */
   contentView: null,
   
   /**
-    The horizontal alignment for non-filling content inside of the ScrollView.
+    The horizontal alignment for non-filling content inside of the ScrollView. Possible values:
+    
+      - SC.ALIGN_LEFT
+      - SC.ALIGN_RIGHT
+      - SC.ALIGN_CENTER
+    
+    @type String
+    @default SC.ALIGN_LEFT
   */
   horizontalAlign: SC.ALIGN_LEFT,
   
   /**
-    The vertical alignment for non-filling content inside of the ScrollView.
+    The vertical alignment for non-filling content inside of the ScrollView. Possible values:
+    
+      - SC.ALIGN_TOP
+      - SC.ALIGN_BOTTOM
+      - SC.ALIGN_MIDDLE
+    
+    @type String
+    @default SC.ALIGN_TOP
   */
   verticalAlign: SC.ALIGN_TOP,
 
   /**
     The current horizontal scroll offset. Changing this value will update both the contentView and the horizontal scroller, if there is one.
+    
+    @field
+    @type Number
+    @default 0
   */
   horizontalScrollOffset: function(key, value) {
     if (value !== undefined) {
@@ -17063,6 +18508,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   
   /**
     The current vertical scroll offset.  Changing this value will update both the contentView and the vertical scroller, if there is one.
+    
+    @field
+    @type Number
+    @default 0
   */
   verticalScrollOffset: function(key, value) {
     if (value !== undefined) {
@@ -17074,8 +18523,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return this._scroll_verticalScrollOffset||0;
   }.property().cacheable(),
   
-  /**
-    @private
+  /** @private
     Calculates the maximum offset given content and container sizes, and the
     alignment.
   */
@@ -17099,8 +18547,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
-  /**
-    @private
+  /** @private
     Calculates the minimum offset given content and container sizes, and the
     alignment.
   */
@@ -17128,7 +18575,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     size and the size of the scroll view.  If horizontal scrolling is 
     disabled, this will always return 0.
     
-    @property {Number}
+    @field
+    @type Number
+    @default 0
   */
   maximumHorizontalScrollOffset: function() {
     var view = this.get('contentView') ;
@@ -17155,7 +18604,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     size and the size of the scroll view.  If vertical scrolling is disabled,
     this will always return 0 (or whatever alignment dictates).
     
-    @property {Number}
+    @field
+    @type Number
+    @default 0
   */
   maximumVerticalScrollOffset: function() {
     var view = this.get('contentView'),
@@ -17183,7 +18634,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     size and the size of the scroll view.  If horizontal scrolling is 
     disabled, this will always return 0 (or whatever alignment dictates).
     
-    @property {Number}
+    @field
+    @type Number
+    @default 0
   */
   minimumHorizontalScrollOffset: function() {
     var view = this.get('contentView') ;
@@ -17209,7 +18662,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     size and the size of the scroll view.  If vertical scrolling is disabled,
     this will always return 0 (or whatever alignment dictates).
     
-    @property {Number}
+    @field
+    @type Number
+    @default 0
   */
   minimumVerticalScrollOffset: function() {
     var view = this.get('contentView') ;
@@ -17232,12 +18687,13 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   }.property(),
   
   
-  
   /** 
     Amount to scroll one vertical line.
   
-    Used by the default implementation of scrollDownLine() and scrollUpLine().  
-    Defaults to 20px.
+    Used by the default implementation of scrollDownLine() and scrollUpLine().
+    
+    @type Number
+    @default 20
   */
   verticalLineScroll: 20,
   
@@ -17245,30 +18701,43 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Amount to scroll one horizontal line.
   
     Used by the default implementation of scrollLeftLine() and 
-    scrollRightLine(). Defaults to 20px.
+    scrollRightLine().
+    
+    @type Number
+    @default 20
   */
   horizontalLineScroll: 20,
   
   /**
     Amount to scroll one vertical page.
     
-    Used by the default implementation of scrollUpPage() and scrollDownPage(). 
-    Defaults to current frame height.
+    Used by the default implementation of scrollUpPage() and scrollDownPage().
+    
+    @field
+    @type Number
+    @default value of frame.height
+    @observes frame
   */
   verticalPageScroll: function() {
-    return this.get('frame').height ;
+    return this.get('frame').height;
   }.property('frame'),
   
   /**
     Amount to scroll one horizontal page.
     
     Used by the default implementation of scrollLeftPage() and 
-    scrollRightPage().  Defaults to current innerFrame width.
+    scrollRightPage().
+    
+    @field
+    @type Number
+    @default value of frame.width
+    @observes frame
   */
   horizontalPageScroll: function() {
-    return this.get('frame').width ;  
+    return this.get('frame').width;
   }.property('frame'),
-    
+  
+  
   // ..........................................................
   // SCROLLERS
   // 
@@ -17277,7 +18746,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     YES if the view should maintain a horizontal scroller.   This property 
     must be set when the view is created.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   hasHorizontalScroller: YES,
   
@@ -17286,7 +18756,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     instance when the ScrollView is created unless hasHorizontalScroller is 
     NO.
     
-    @property {SC.View}
+    @type SC.View
+    @default SC.ScrollerView
   */
   horizontalScrollerView: SC.ScrollerView,
   
@@ -17294,6 +18765,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     The horizontal scroller view for touch. This will be replaced with a view
     instance when touch is enabled when the ScrollView is created unless 
     hasHorizontalScroller is NO.
+    
+    @type SC.View
+    @default SC.TouchScrollerView
   */
   horizontalTouchScrollerView: SC.TouchScrollerView,
   
@@ -17304,7 +18778,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     hasHorizontalScroller to NO to avoid creating a scroller view in the 
     first place.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   isHorizontalScrollerVisible: YES,
 
@@ -17312,7 +18787,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Returns YES if the view both has a horizontal scroller, the scroller is
     visible.
     
-    @property {Boolean}
+    @field
+    @type Boolean
+    @default YES
   */
   canScrollHorizontal: function() {
     return !!(this.get('hasHorizontalScroller') && 
@@ -17323,7 +18800,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   /**
     If YES, the horizontal scroller will autohide if the contentView is
     smaller than the visible area.  You must set hasHorizontalScroller to YES 
-    for this property to have any effect.  
+    for this property to have any effect.
+    
+    @type Boolean
+    @default YES
   */
   autohidesHorizontalScroller: YES,
   
@@ -17331,7 +18811,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     YES if the view shuld maintain a vertical scroller.   This property must 
     be set when the view is created.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   hasVerticalScroller: YES,
   
@@ -17339,13 +18820,17 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     The vertical scroller view class. This will be replaced with a view 
     instance when the ScrollView is created unless hasVerticalScroller is NO.
     
-    @property {SC.View}
+    @type SC.View
+    @default SC.ScrollerView
   */
   verticalScrollerView: SC.ScrollerView,
   
   /**
     The vertical touch scroller view class. This will be replaced with a view
     instance when the ScrollView is created.
+    
+    @type SC.View
+    @default SC.TouchScrollerView
   */
   verticalTouchScrollerView: SC.TouchScrollerView,
   
@@ -17356,7 +18841,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     hasVerticalScroller to NO to avoid creating a scroller view in the first 
     place.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   isVerticalScrollerVisible: YES,
 
@@ -17364,7 +18850,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Returns YES if the view both has a horizontal scroller, the scroller is
     visible.
     
-    @property {Boolean}
+    @field
+    @type Boolean
+    @default YES
   */
   canScrollVertical: function() {
     return !!(this.get('hasVerticalScroller') && 
@@ -17375,7 +18863,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   /**
     If YES, the vertical scroller will autohide if the contentView is
     smaller than the visible area.  You must set hasVerticalScroller to YES 
-    for this property to have any effect.  
+    for this property to have any effect.
+    
+    @type Boolean
+    @default YES
   */
   autohidesVerticalScroller: YES,
   
@@ -17383,7 +18874,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Use this property to set the 'bottom' offset of your vertical scroller, 
     to make room for a thumb view or other accessory view. Default is 0.
     
-    @property {Number}
+    @type Number
+    @default 0
   */
   verticalScrollerBottom: 0,
   
@@ -17393,8 +18885,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     This ensures that the container frame will not resize to accomodate the
     vertical scroller, hence overlaying the scroller on top of 
     the container.
-  
-    @property {Boolean}
+    
+    @field
+    @type Boolean
+    @default NO
   */
   verticalOverlay: function() {
     if (SC.platform.touch) return YES;
@@ -17408,7 +18902,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     horizontal scroller, hence overlaying the scroller on top of 
     the container
     
-    @property {Boolean}
+    @field
+    @type Boolean
+    @default NO
   */
   horizontalOverlay: function() {
     if (SC.platform.touch) return YES;
@@ -17426,6 +18922,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     “float on top” of the content view.
     
     Example: { top: -1, bottom: -1, right: 0 }
+    
+    @type Hash
+    @default null
   */
   verticalScrollerLayout: null,
   
@@ -17439,6 +18938,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     “float on top” of the content view.
     
     Example: { left: 0, bottom: 0, right: 0 }
+    
+    @type Hash
+    @default null
   */
   horizontalScrollerLayout: null,
   
@@ -17450,11 +18952,11 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     The container view that will contain your main content view.  You can 
     replace this property with your own custom subclass if you prefer.
     
-    @type {SC.ContainerView}
+    @type SC.ContainerView
+    @default SC.ConainerView
   */
-  containerView: SC.ContainerView.extend({
-
-  }),
+  containerView: SC.ContainerView.extend({}),
+  
   
   // ..........................................................
   // METHODS
@@ -17473,8 +18975,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     direction.  You can also optionally pass a Hash for the first parameter 
     with x and y coordinates.
     
-    @param x {Number} the x scroll location
-    @param y {Number} the y scroll location
+    @param {Number} x the x scroll location
+    @param {Number} y the y scroll location
     @returns {SC.ScrollView} receiver
   */
   scrollTo: function(x,y) {
@@ -17484,12 +18986,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
     
     if (!SC.none(x)) {
-      x = Math.max(this.get('minimumHorizontalScrollOffset'),Math.min(this.get('maximumHorizontalScrollOffset'), x)) ;
       this.set('horizontalScrollOffset', x) ;
     }
     
     if (!SC.none(y)) {
-      y = Math.max(this.get('minimumVerticalScrollOffset'),Math.min(this.get('maximumVerticalScrollOffset'), y)) ;
       this.set('verticalScrollOffset', y) ;
     }
     
@@ -17505,8 +19005,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     direction.  You can also optionally pass a Hash for the first parameter 
     with x and y coordinates.
     
-    @param x {Number} change in the x direction (or hash)
-    @param y {Number} change in the y direction
+    @param {Number} x change in the x direction (or hash)
+    @param {Number} y change in the y direction
     @returns {SC.ScrollView} receiver
   */
   scrollBy: function(x , y) {
@@ -17551,7 +19051,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   
   /**
     Scroll to the supplied rectangle.
-    @param {rect} Rectangle to scroll to.
+    @param {Rect} rect Rectangle to scroll to.
     @returns {Boolean} YES if scroll position was changed.
   */
   scrollToRect: function(rect) {
@@ -17583,7 +19083,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Scrolls the receiver down one or more lines if allowed.  If number of
     lines is not specified, scrolls one line.
     
-    @param lines {Number} options number of lines
+    @param {Number} lines number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollDownLine: function(lines) {
@@ -17595,7 +19095,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Scrolls the receiver up one or more lines if allowed.  If number of
     lines is not specified, scrolls one line.
     
-    @param lines {Number} options number of lines
+    @param {Number} lines number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollUpLine: function(lines) {
@@ -17607,7 +19107,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Scrolls the receiver right one or more lines if allowed.  If number of
     lines is not specified, scrolls one line.
     
-    @param lines {Number} options number of lines
+    @param {Number} lines number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollRightLine: function(lines) {
@@ -17619,7 +19119,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Scrolls the receiver left one or more lines if allowed.  If number of
     lines is not specified, scrolls one line.
     
-    @param lines {Number} options number of lines
+    @param {Number} lines number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollLeftLine: function(lines) {
@@ -17633,7 +19133,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     the verticalPageScroll value.  By default this is the size of the current
     scrollable area.
     
-    @param pages {Number} options number of pages
+    @param {Number} pages number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollDownPage: function(pages) {
@@ -17647,7 +19147,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     the verticalPageScroll value.  By default this is the size of the current
     scrollable area.
     
-    @param pages {Number} options number of pages
+    @param {Number} pages number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollUpPage: function(pages) {
@@ -17661,7 +19161,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     the verticalPageScroll value.  By default this is the size of the current
     scrollable area.
     
-    @param pages {Number} options number of pages
+    @param {Number} pages number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollRightPage: function(pages) {
@@ -17675,7 +19175,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     the verticalPageScroll value.  By default this is the size of the current
     scrollable area.
     
-    @param pages {Number} options number of pages
+    @param {Number} pages number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollLeftPage: function(pages) {
@@ -17683,7 +19183,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return this.scrollBy(0-(this.get('horizontalPageScroll')*pages), null) ;
   },
   
-  /**
+  /** @private
     Adjusts the layout for the various internal views.  This method is called
     once when the scroll view is first configured and then anytime a scroller
     is shown or hidden.  You can call this method yourself as well to retile.
@@ -17755,11 +19255,13 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   // SCROLL WHEEL SUPPORT
   // 
   
-  /** @private */ _scroll_wheelDeltaX: 0,
-  /** @private */ _scroll_wheelDeltaY: 0,
+  /** @private */
+  _scroll_wheelDeltaX: 0,
   
-  // save adjustment and then invoke the actual scroll code later.  This will
-  // keep the view feeling smooth.
+  /** @private */
+  _scroll_wheelDeltaY: 0,
+  
+  /** @private */
   mouseWheel: function(evt) {
     var deltaAdjust = (SC.browser.webkit && SC.browser.version > 533.0) ? 120 : 1;
     
@@ -17792,13 +19294,22 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   
   /**
     Determines whether scaling is allowed.
+    
+    @type Boolean
+    @default NO
   */
   canScale: NO,
   
-  /**
+  /** @private
     The current scale.
   */
   _scale: 1.0,
+  
+  /**
+    @field
+    @type Number
+    @default 1.0
+  */
   scale: function(key, value) {
     if (value !== undefined) {
       this._scale = Math.min(Math.max(this.get("minimumScale"), value), this.get("maximumScale"));
@@ -17808,21 +19319,32 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   
   /**
     The minimum scale.
+    
+    @type Number
+    @default 0.25
   */
   minimumScale: 0.25,
   
   /**
     The maximum scale.
+    
+    @type Number
+    @default 2.0
   */
   maximumScale: 2.0,
   
   /**
     Whether to automatically determine the scale range based on the size of the content.
+    
+    @type Boolean
+    @default NO
   */
   autoScaleRange: NO,
   
+  /** @private */
   _scale_css: "",
   
+  /** @private */
   updateScale: function(scale) {
     var contentView = this.get("contentView");
     if (!contentView) return;
@@ -17835,35 +19357,53 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
-  /*..............................................
-    TOUCH SUPPORT
+  
+  // ..........................................................
+  // Touch Support
+  // 
+  
+  /**
+    @type Boolean
+    @default YES
+    @readOnly
   */
   acceptsMultitouch: YES,
   
   /**
     The scroll deceleration rate.
+    
+    @type Number
+    @default SC.NORMAL_SCROLL_DECELERATION
   */
   decelerationRate: SC.NORMAL_SCROLL_DECELERATION,
   
   /**
     If YES, bouncing will always be enabled in the horizontal direction, even if the content
-    is smaller or the same size as the view. NO by default.
+    is smaller or the same size as the view.
+    
+    @type Boolean
+    @default NO
   */
   alwaysBounceHorizontal: NO,
   
   /**
     If NO, bouncing will not be enabled in the vertical direction when the content is smaller
-    or the same size as the scroll view. YES by default.
+    or the same size as the scroll view.
+    
+    @type Boolean
+    @default YES
   */
   alwaysBounceVertical: YES,
   
   /**
     Whether to delay touches from passing through to the content.
+    
+    @type Boolean
+    @default YES
   */
   delaysContentTouches: YES,
   
-  /**
-    @private
+  /** @private
     If the view supports it, this 
   */
   _touchScrollDidChange: function() {
@@ -17884,6 +19424,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   _touchScrollDidStart: function() {
     if (this.get("contentView").touchScrollDidStart) {
       this.get("contentView").touchScrollDidStart(this._scroll_horizontalScrollOffset, this._scroll_verticalScrollOffset);
@@ -17898,6 +19439,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   _touchScrollDidEnd: function() {
     if (this.get("contentView").touchScrollDidEnd) {
       this.get("contentView").touchScrollDidEnd(this._scroll_horizontalScrollOffset, this._scroll_verticalScrollOffset);
@@ -17913,6 +19455,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   _applyCSSTransforms: function(layer) {
     var transform = "";
     this.updateScale(this._scale);
@@ -17924,11 +19467,15 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   captureTouch: function(touch) {
     return YES;
   },
   
+  /** @private */
   touchGeneration: 0,
+  
+  /** @private */
   touchStart: function(touch) {
     var generation = ++this.touchGeneration;
     if (!this.tracking && this.get("delaysContentTouches")) {
@@ -17942,6 +19489,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return YES;
   },
 
+  /** @private */
   beginTouchesInContent: function(gen) {
     if (gen !== this.touchGeneration) return;
     
@@ -17963,7 +19511,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
 
-  /**
+  /** @private
     Initializes the start state of the gesture.
 
     We keep information about the initial location of the touch so we can
@@ -18078,6 +19626,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   _adjustForEdgeResistance: function(offset, minOffset, maxOffset, resistanceCoefficient, asymptote) {
     var distanceFromEdge;
     
@@ -18097,11 +19646,13 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return Math.min(Math.max(minOffset, offset), maxOffset) + distanceFromEdge;
   },
   
+  /** @private */
   touchesDragged: function(evt, touches) {
     var avg = evt.averagedTouchesForView(this);
     this.updateTouchScroll(avg.x, avg.y, avg.d, evt.timeStamp);
   },
   
+  /** @private */
   updateTouchScroll: function(touchX, touchY, distance, timeStamp) {
     // get some vars
     var touch = this.touch,
@@ -18232,6 +19783,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
 
+  /** @private */
   touchEnd: function(touch) {
     var touchStatus = this.touch,
         avg = touch.averagedTouchesForView(this);
@@ -18278,6 +19830,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   touchCancelled: function(touch) {
     var touchStatus = this.touch,
         avg = touch.averagedTouchesForView(this);
@@ -18300,6 +19853,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
 
+  /** @private */
   startDecelerationAnimation: function(evt) {
     var touch = this.touch;
     touch.decelerationVelocity = {
@@ -18310,8 +19864,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     this.decelerateAnimation();
   },
   
-  /**
-    @private
+  /** @private
     Does bounce calculations, adjusting velocity.
     
     Bouncing is fun. Functions that handle it should have fun names,
@@ -18349,6 +19902,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return velocity;
   },
 
+  /** @private */
   decelerateAnimation: function() {
     // get a bunch of properties. They are named well, so not much explanation of what they are...
     // However, note maxOffsetX/Y takes into account the scale;
@@ -18569,6 +20123,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     this.tile() ; // set up initial tiling
   },
   
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
     
@@ -18587,7 +20142,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     if (this.get('isVisibleInWindow')) this._scsv_registerAutoscroll() ;
   },
   
-  /** @private Registers/deregisters view with SC.Drag for autoscrolling */
+  /** @private
+    Registers/deregisters view with SC.Drag for autoscrolling
+  */
   _scsv_registerAutoscroll: function() {
     if (this.get('isVisibleInWindow')) SC.Drag.addScrollableView(this);
     else SC.Drag.removeScrollableView(this);
@@ -18644,6 +20201,12 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return arguments.callee.base.apply(this,arguments);
   },
 
+  /** @private */
+  oldMaxHOffset: 0,
+  
+  /** @private */
+  oldMaxVOffset: 0,
+
   /** @private
     Invoked whenever the contentView's frame changes.  This will update the 
     scroller maxmimum and optionally update the scroller visibility if the
@@ -18652,26 +20215,24 @@ SC.ScrollView = SC.View.extend(SC.Border, {
 
     @param {Boolean} force (optional)  Re-calculate everything even if the contentView’s frame didn’t change size
   */
-
-  oldMaxHOffset: 0,
-  oldMaxVOffset: 0,
-
   contentViewFrameDidChange: function(force) {
     var view   = this.get('contentView'), 
         f      = (view) ? view.get('frame') : null,
         scale  = this._scale,
         width  = 0,
         height = 0,
-        dim, dimWidth, dimHeight;
-    
-    if (view) {
-      width = view.get('calculatedWidth') || f.width || 0;
-      height = view.get('calculatedHeight') || f.height || 0;
-    }
-    
+        dim, dimWidth, dimHeight, calculatedWidth, calculatedHeight;
+
+    // If no view has been set yet, or it doesn't have a frame,
+    // we can avoid doing any work.
+    if (!view || !f) { return; }
+
+    width = view.get('calculatedWidth') || f.width || 0;
+    height = view.get('calculatedHeight') || f.height || 0;
+
     width *= scale;
     height *= scale;
-    
+
     // cache out scroll settings...
     if (!force && (width === this._scroll_contentWidth) && (height === this._scroll_contentHeight)) return ;
     this._scroll_contentWidth  = width;
@@ -18775,12 +20336,12 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     // This gives views that use incremental rendering a chance to render
     // newly-appearing elements before they come into view.
     if (content) {
-      content._viewFrameDidChange();
-
       // Use accelerated drawing if the browser supports it
       if (SC.platform.touch) {
         this._applyCSSTransforms(content.get('layer'));
       }
+
+      if (content._viewFrameDidChange) { content._viewFrameDidChange(); }
     }
 
     if (container && !SC.platform.touch) {
@@ -18800,6 +20361,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
 
+  /** @private */
   forceDimensionsRecalculation: function (forceWidth, forceHeight, vOffSet, hOffSet) {
     var oldScrollHOffset = hOffSet;
     var oldScrollVOffset = vOffSet;
@@ -18815,7 +20377,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
 
+  /** @private */
   _scroll_verticalScrollOffset: 0,
+  
+  /** @private */
   _scroll_horizontalScrollOffset: 0
   
 });
@@ -18824,7 +20389,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -18842,8 +20407,14 @@ sc_require('views/scroll');
   @extends SC.ScrollerView
   @since SproutCore 1.0
 */
+SC.MenuScrollerView = SC.ScrollerView.extend(
+/** @scope SC.MenuScrollerView.prototype */ {
 
-SC.MenuScrollerView = SC.ScrollerView.extend({
+  /**
+    @type Array
+    @default ['sc-menu-scroller-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-menu-scroller-view'],
   
   // ..........................................................
@@ -18851,7 +20422,10 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
   // 
   
   /**
-   Used to set the scrolling direction of the scroller.
+    Used to set the scrolling direction of the scroller.
+    
+    @type Boolean
+    @default NO
   */
   scrollDown: NO,
   
@@ -18859,7 +20433,9 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
     The scroller offset value.  This value will adjust between the minimum
     and maximum values that you set. Default is 0.
     
-    @property
+    @field
+    @type Number
+    @observes maximum
   */
   value: function(key, val) {
     if (val !== undefined) {
@@ -18879,7 +20455,8 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
     
     When set less than the height of the scroller, the scroller is disabled.
     
-    @property {Number}
+    @type Number
+    @default 0
   */
   maximum: 0,
   
@@ -18887,22 +20464,30 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
     YES if enable scrollbar, NO to disable it.  Scrollbars will automatically 
     disable if the maximum scroll width does not exceed their capacity.
     
-    @property
+    @type Boolean
+    @default YES
   */
   isEnabled: YES,
   
   /**
     Determine the layout direction.  Determines whether the scrollbar should 
     appear horizontal or vertical.  This must be set when the view is created.
-    Changing this once the view has been created will have no effect.
+    Changing this once the view has been created will have no effect. Possible
+    values:
     
-    @property
+      - SC.LAYOUT_VERTICAL
+      - SC.LAYOUT_HORIZONTAL
+    
+    @type String
+    @default SC.LAYOUT_VERTICAL
   */
   layoutDirection: SC.LAYOUT_VERTICAL,
   
   /** 
      Amount to scroll one vertical line.
-     Defaults to 20px.
+     
+     @type Number
+     @default 20
   */
   verticalLineScroll: 20,
 
@@ -18910,16 +20495,20 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
     This function overrides the default function in SC.Scroller as 
     menus only have vertical scrolling.
     
-    @property {String}
+    @field
+    @type String
+    @default 'verticalScrollOffset'
   */
   ownerScrollValueKey: function() {
-    return 'verticalScrollOffset' ;  
+    return 'verticalScrollOffset';
   }.property('layoutDirection').cacheable(),
+
 
   // ..........................................................
   // INTERNAL SUPPORT
   //
 
+  /** @private */
   init: function() {
     // Set the scrollerThickness based on controlSize
     switch (this.get('controlSize')) {
@@ -18943,6 +20532,7 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
     return arguments.callee.base.apply(this,arguments);
   },
   
+  /** @private */
   render: function(context, firstTime) {
     context.addClass('sc-vertical') ;
     context.addClass(this.get('controlSize'));
@@ -18953,6 +20543,7 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
     context.setClass('disabled', !this.get('isEnabled')) ;
   },
   
+  /** @private */
   didCreateLayer: function() {
     // var callback, amt, layer;
     // 
@@ -18966,33 +20557,32 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
     // layer.scrollTop = amt ;
   },
   
+  /** @private */
   willDestroyLayer: function() {
     var callback = this._sc_scroller_scrollDidChange ;
     SC.Event.remove(this.$(), 'scroll', this, callback) ;
   },
   
+  /** @private */
   mouseEntered: function(evt) {
     this.set('isMouseOver', YES);
     this._invokeScrollOnMouseOver();
   },
   
+  /** @private */
   mouseExited: function(evt) {
     this.set('isMouseOver', NO);
   },
   
-  /** @private */
-  
   /**
-    This function overrides the default function in SC.Scroller. 
+    This function overrides the default function in SC.Scroller.
     SC.MenuScroller and SC.MenuScroll use valueBinding so this function is
     not neccesary.
   */
-  _sc_scroller_valueDidChange: function() {
-    
-  }.observes('value'),
+  _sc_scroller_valueDidChange: function() {}.observes('value'),
   
 
-  // after 50msec, fire event again
+  /** @private */
   _sc_scroller_armScrollTimer: function() {
     if (!this._sc_scrollTimer) {
       SC.RunLoop.begin() ;
@@ -19002,6 +20592,7 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
     }
   },
   
+  /** @private */
   _sc_scroller_scrollDidChange: function() {
     var now = Date.now(), 
         last = this._sc_lastScroll, 
@@ -19023,7 +20614,7 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
   },
   
   
-  /**
+  /** @private
     Scroll the menu if it is is an up or down arrow. This is called by
     the function that simulates mouseOver.
   */
@@ -19046,7 +20637,8 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
     return YES;
   },
   
-  /**
+  /** @private
+    
     We use this function to simulate mouseOver. It checks for the flag 
     isMouseOver which is turned on when mouseEntered is called and turned off
     when mouseExited is called. 
@@ -19061,12 +20653,38 @@ SC.MenuScrollerView = SC.ScrollerView.extend({
 });
 
 /**
-  Default metrics for scroller size.
+  @static
+  @type Number
+  @default 18
 */
 SC.MenuScrollerView.REGULAR_SCROLLER_THICKNESS = 18;
+
+/**
+  @static
+  @type Number
+  @default 10
+*/
 SC.MenuScrollerView.TINY_SCROLLER_THICKNESS    = 10;
+
+/**
+  @static
+  @type Number
+  @default 14
+*/
 SC.MenuScrollerView.SMALL_SCROLLER_THICKNESS   = 14;
+
+/**
+  @static
+  @type Number
+  @default 23
+*/
 SC.MenuScrollerView.LARGE_SCROLLER_THICKNESS   = 23;
+
+/**
+  @static
+  @type Number
+  @default 26
+*/
 SC.MenuScrollerView.HUGE_SCROLLER_THICKNESS    = 26;
 
 
@@ -19082,9 +20700,16 @@ SC.MenuScrollerView.HUGE_SCROLLER_THICKNESS    = 26;
   @extends SC.ScrollView
   @since SproutCore 1.0
 */
-SC.MenuScrollView = SC.ScrollView.extend({
+SC.MenuScrollView = SC.ScrollView.extend(
+/** @scope SC.MenuScrollView.prototype */{
 
+  /**
+    @type Array
+    @default ['sc-menu-scroll-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-menu-scroll-view'],
+  
   
   // ..........................................................
   // PROPERTIES
@@ -19096,7 +20721,8 @@ SC.MenuScrollView = SC.ScrollView.extend({
     size and the size of the scroll view.  If horizontal scrolling is 
     disabled, this will always return 0.
     
-    @property {Number}
+    @type Number
+    @default 0
   */
   maximumHorizontalScrollOffset: 0,
     
@@ -19109,7 +20735,8 @@ SC.MenuScrollView = SC.ScrollView.extend({
     YES if the view should maintain a horizontal scroller.   This property 
     must be set when the view is created.
     
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   hasHorizontalScroller: NO,
   
@@ -19118,7 +20745,8 @@ SC.MenuScrollView = SC.ScrollView.extend({
     instance when the ScrollView is created unless hasHorizontalScroller is 
     NO.
     
-    @property {SC.View}
+    @type SC.View
+    @default SC.MenuScrollerView
   */
   horizontalScrollerView: SC.MenuScrollerView,
   
@@ -19129,7 +20757,8 @@ SC.MenuScrollView = SC.ScrollView.extend({
     hasHorizontalScroller to NO to avoid creating a scroller view in the 
     first place.
     
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   isHorizontalScrollerVisible: NO,
 
@@ -19137,14 +20766,18 @@ SC.MenuScrollView = SC.ScrollView.extend({
     Returns YES if the view both has a horizontal scroller, the scroller is
     visible.
     
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   canScrollHorizontal: NO,
    
   /**
     If YES, the horizontal scroller will autohide if the contentView is
     smaller than the visible area.  You must set hasHorizontalScroller to YES 
-    for this property to have any effect.  
+    for this property to have any effect.
+    
+    @type Boolean
+    @default NO
   */
   autohidesHorizontalScroller: NO,
   
@@ -19152,7 +20785,8 @@ SC.MenuScrollView = SC.ScrollView.extend({
     YES if the view shuld maintain a vertical scroller.   This property must 
     be set when the view is created.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   hasVerticalScroller: YES,
   
@@ -19160,7 +20794,8 @@ SC.MenuScrollView = SC.ScrollView.extend({
     The vertical scroller view class. This will be replaced with a view 
     instance when the ScrollView is created unless hasVerticalScroller is NO.
     
-    @property {SC.View}
+    @type SC.View
+    @default SC.MenuScrollerView
   */
   verticalScrollerView: SC.MenuScrollerView,
   verticalScrollerView2: SC.MenuScrollerView,
@@ -19169,17 +20804,24 @@ SC.MenuScrollView = SC.ScrollView.extend({
     YES if the vertical scroller should be visible.  For SC.MenuScroll the
     vertical scroller is always there we just hide the arrows to scroll.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   isVerticalScrollerVisible: YES,
 
-  
+  /**
+    @type Boolean
+    @default YES
+  */
   canScrollVertical: YES,
 
   /**
     If YES, the vertical scroller will autohide if the contentView is
     smaller than the visible area.  You must set hasVerticalScroller to YES 
-    for this property to have any effect.  
+    for this property to have any effect.
+    
+    @type Boolean
+    @default YES
   */
   autohidesVerticalScroller: YES,
   
@@ -19187,7 +20829,8 @@ SC.MenuScrollView = SC.ScrollView.extend({
     Use this property to set the 'bottom' offset of your vertical scroller, 
     to make room for a thumb view or other accessory view. Default is 0.
     
-    @property {Number}
+    @type Number
+    @default 0
   */
   verticalScrollerBottom: 0,
   
@@ -19198,6 +20841,9 @@ SC.MenuScrollView = SC.ScrollView.extend({
 
   /**
     Control Size for Menu content: change verticalLineScroll
+    
+    @type String
+    @default SC.REGULAR_CONTROL_SIZE
   */
   controlSize: SC.REGULAR_CONTROL_SIZE,
   
@@ -19205,13 +20851,18 @@ SC.MenuScrollView = SC.ScrollView.extend({
     The container view that will contain your main content view.  You can 
     replace this property with your own custom subclass if you prefer.
     
-    @type {SC.ContainerView}
+    @type SC.ContainerView
+    @default SC.ContainerView
   */
   containerView: SC.ContainerView,
 
   // ..........................................................
   // METHODS
   //
+  
+  /**
+    @param {SC.View} view
+  */
   scrollToVisible: function(view) {
     // if no view is passed, do default
     if (arguments.length === 0) return arguments.callee.base.apply(this,arguments);
@@ -19241,7 +20892,7 @@ SC.MenuScrollView = SC.ScrollView.extend({
     return this.scrollToRect(vf);
   },
 
-  /**
+  /** @private
     Adjusts the layout for the various internal views.  This method is called
     once when the scroll view is first configured and then anytime a scroller
     is shown or hidden.  You can call this method yourself as well to retile.
@@ -19359,6 +21010,7 @@ SC.MenuScrollView = SC.ScrollView.extend({
     this.tile() ; // set up initial tiling
   },
   
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
     
@@ -19441,11 +21093,26 @@ SC.MenuScrollView = SC.ScrollView.extend({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-SC.TO_LEFT = "TOLEFT"; SC.TO_RIGHT = "TORIGHT";
+sc_require("views/workspace");
+
+/**
+  @static
+  @type String
+  @constant
+*/
+SC.TO_LEFT = "TOLEFT";
+
+/**
+  @static
+  @type String
+  @constant
+*/
+SC.TO_RIGHT = "TORIGHT";
+
 
 /** @class
 
@@ -19460,26 +21127,31 @@ SC.TO_LEFT = "TOLEFT"; SC.TO_RIGHT = "TORIGHT";
   Of course, this process is animated...
   
   @author Alex Iskander
-  @since SproutCore Quilmes
+  @extends SC.WorkspaceView
+  @since SproutCore 1.4
 */
-
-sc_require("views/workspace");
-SC.NavigationView = SC.WorkspaceView.extend({
+SC.NavigationView = SC.WorkspaceView.extend(
+/** @scope SC.NavigationView.prototype */ {
+  
+  /** @private */
   _views: null,
+  
+  /** @private */
   _current: null,
-  navigationContentView: SC.View.extend(),
   
   /**
-    Initializes the NavigationView by creating the view stack.
+    @type SC.View
+    @default SC.View
   */
+  navigationContentView: SC.View,
+  
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
     this._views = [];
   },
   
-  /**
-    Creates the navigation content view and places it inside the content view.
-  */
+  /** @private */
   createChildViews: function() {
     arguments.callee.base.apply(this,arguments);
     
@@ -19496,10 +21168,7 @@ SC.NavigationView = SC.WorkspaceView.extend({
     this.contentView.appendChild(content);
   },
   
-  /**
-    @private
-    Changes the content of the navigation, updating toolbars, etc., as needed.
-  */
+  /** @private */
   changeNavigationContent: function(view) {
     var top = null, bottom = null;
     
@@ -19537,6 +21206,8 @@ SC.NavigationView = SC.WorkspaceView.extend({
   
   /**
     Pushes a view into the navigation view stack. The view may have topToolbar and bottomToolbar properties.
+    
+    @param {SC.View} view The view to display
   */
   push: function(view) {
     this._currentDirection = this._current ? SC.TO_LEFT : null;
@@ -19549,7 +21220,7 @@ SC.NavigationView = SC.WorkspaceView.extend({
   },
   
   /**
-    Pops a view off the navigation view stack.
+    Pops the current view off the navigation view stack.
   */
   pop: function() {
     this._currentDirection = SC.TO_RIGHT;
@@ -19563,6 +21234,8 @@ SC.NavigationView = SC.WorkspaceView.extend({
   
   /**
     Pops to the specified view on the navigation view stack; the view you pass will become the current view.
+    
+    @param {SC.View} toView The view to display
   */
   popToView: function(toView) {
     this._currentDirection = SC.TO_RIGHT;
@@ -19581,7 +21254,7 @@ SC.NavigationView = SC.WorkspaceView.extend({
     this.changeNavigationContent(view);
   },
   
-  
+  /** @private */
   topToolbarDidChange: function() {
     var active = this.activeTopToolbar, replacement = this.get("topToolbar");
     
@@ -19610,6 +21283,7 @@ SC.NavigationView = SC.WorkspaceView.extend({
     this.invokeOnce("childDidChange");
   }.observes("topToolbar"),
   
+  /** @private */
   bottomToolbarDidChange: function() {
     var active = this.activeBottomToolbar, replacement = this.get("bottomToolbar");
     
@@ -19634,6 +21308,7 @@ SC.NavigationView = SC.WorkspaceView.extend({
     this.invokeOnce("childDidChange");
   }.observes("topToolbar"),
   
+  /** @private */
   contentViewDidChange: function() {
     var active = this.activeNavigationContentView, replacement = this.get("navigationContentView");
     
@@ -19651,6 +21326,7 @@ SC.NavigationView = SC.WorkspaceView.extend({
     this.invokeOnce("childDidChange");
   }.observes("navigationContentView"),
   
+  /** @private */
   childDidChange: function() {
     var replacement = this._pendingBuildIn, active = this._pendingBuildOut;
     if (active) {
@@ -19680,7 +21356,7 @@ SC.NavigationView = SC.WorkspaceView.extend({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2009 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -19692,13 +21368,13 @@ sc_require("views/toolbar");
   that handle, well, swiping. In short, they are neat.
   
   @extends SC.ToolbarView
+  @extends SC.Gesturable
   @since SproutCore 1.0
 */
-SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable, {
-  gestures: ["swipeGesture"],
-  swipeGesture: SC.SwipeGesture,
+SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable,
+/** @scope SC.NavigationBarView.prototype */{
 
-  
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
     
@@ -19710,13 +21386,10 @@ SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable, {
     }
   },
 
-  /**
-    @private
-    Mixies in animatable and the navigation bar transitions.
-  */
+  /** @private */
   mixinAnimatable: function() {
     this.mixin(SC.Animatable);
-    this.transitions = this.navigationTransitions;    
+    this.transitions = this.navigationTransitions;
   },
   
   /**
@@ -19735,10 +21408,18 @@ SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable, {
     opacity: 1
   },
   
-  //
-  // GESTURE SUPPORT
-  //
+
+  // ..........................................................
+  // Gesture Support
+  // 
   
+  /** @private */
+  gestures: ["swipeGesture"],
+  
+  /** @private */
+  swipeGesture: SC.SwipeGesture,
+
+  /** @private */
   swipe: function(gesture, touch, direction) {
     var lookingFor = (direction === SC.SWIPE_LEFT) ? "isSwipeLeft" : "isSwipeRight",
         cv = this.get("childViews"), 
@@ -19759,16 +21440,17 @@ SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable, {
     
   },
   
-  //
-  // BUILD IN/OUT
-  //
   
-  // for various reasons, including the fact that mixing in init  is VERY BAD, we do this lazily.
+  // ..........................................................
+  // View Build Support
+  // 
+  
+  /** @private */
   resetBuild: function() {
     if (!this.isAnimatable) this.mixinAnimatable();
   },
   
-  // callback
+  /** @private */
   didFinishTransition: function() {
     if (this.isBuildingIn) {
       // and please continue
@@ -19776,6 +21458,7 @@ SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable, {
     } else if (this.isBuildingOut) this.buildOutDidFinish();
   },
   
+  /** @private */
   preBuildIn: function() {
     // first, fade this view out
     this.disableAnimation();
@@ -19800,6 +21483,7 @@ SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable, {
     }
   },
   
+  /** @private */
   buildIn: function() {
     // first, we do the precursor
     this.preBuildIn();
@@ -19808,6 +21492,7 @@ SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable, {
     this.invokeLater("startBuildIn", 10);
   },
   
+  /** @private */
   startBuildIn: function() {
     this.adjust("opacity", 1);
 
@@ -19820,6 +21505,7 @@ SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable, {
     }
   },
 
+  /** @private */
   buildOut: function() {
     this.adjust("opacity", 0);
     
@@ -19832,7 +21518,7 @@ SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable, {
     }
   },
   
-  /* CHILD VIEWS */
+  /** @private */
   mixinNavigationChild: function(child) {
     if (child.isAnimatable) return;
     
@@ -19859,13 +21545,14 @@ SC.NavigationBarView = SC.ToolbarView.extend(SC.Gesturable, {
   }
 });
 /* >>>>>>>>>> BEGIN source/views/popup_button.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 sc_require('views/button');
-
-/**
-  Describes the time after which "click and hold" behavior will replace the
-  standard "click and release" behavior.
-*/
-
 
 /** @class
 
@@ -19875,12 +21562,10 @@ sc_require('views/button');
   To use, create the SC.PopupButtonView as you would a standard SC.ButtonView,
   then set the menu property to an instance of SC.MenuPane. For example:
 
-{{{
-SC.PopupButtonView.design({
-  layout: { width: 200, height: 18 },
-  menuBinding: 'MyApp.menuController.menuPane'
-});
-}}}
+      SC.PopupButtonView.design({
+        layout: { width: 200, height: 18 },
+        menuBinding: 'MyApp.menuController.menuPane'
+      });
 
   You would then have your MyApp.menuController return an instance of the menu
   to display.
@@ -19893,7 +21578,20 @@ SC.PopupButtonView.design({
 */
 SC.PopupButtonView = SC.ButtonView.extend(
 /** @scope SC.PopupButtonView.prototype */ {
+
+  /**
+    @type Array
+    @default ['sc-popup-button']
+    @see SC.View#classNames
+  */
   classNames: ['sc-popup-button'],
+
+  /**
+    @type String
+    @default 'popupButtonRenderDelegate'
+  */
+  renderDelegateName: 'popupButtonRenderDelegate',
+
 
   // ..........................................................
   // PROPERTIES
@@ -19917,6 +21615,9 @@ SC.PopupButtonView = SC.ButtonView.extend(
   /**
     If YES and the menu is a class, this will cause a task that will instantiate the menu
     to be added to SC.backgroundTaskQueue.
+    
+    @type Boolean
+    @default NO
   */
   shouldLoadInBackground: NO,
 
@@ -19924,8 +21625,7 @@ SC.PopupButtonView = SC.ButtonView.extend(
   // INTERNAL SUPPORT
   //
   
-  /**
-    @private
+  /** @private
     If necessary, adds the loading of the menu to the background task queue.
   */
   init: function() {
@@ -19936,8 +21636,7 @@ SC.PopupButtonView = SC.ButtonView.extend(
     }
   },
   
-  /**
-    @private
+  /** @private
     Sets up binding on the menu, removing any old ones if necessary.
   */
   _setupMenu: function() {
@@ -19953,7 +21652,7 @@ SC.PopupButtonView = SC.ButtonView.extend(
     }
   },
   
-  /**
+  /** @private
     Setup the bindings for menu...
   */
   _popup_menuDidChange: function() {
@@ -19965,8 +21664,7 @@ SC.PopupButtonView = SC.ButtonView.extend(
   */
   isActive: NO,
   
-  /**
-    @private
+  /** @private
     Instantiates the menu if it is not already instantiated.
   */
   _instantiateMenu: function() {
@@ -19983,9 +21681,7 @@ SC.PopupButtonView = SC.ButtonView.extend(
     this._setupMenu();
   },
   
-  acceptsFirstResponder: YES,
-  
-  /**
+  /** @private
     The guaranteed-instantiated menu.
   */
   instantiatedMenu: function() {
@@ -20137,13 +21833,7 @@ SC.PopupButtonView = SC.ButtonView.extend(
     var menu = this.get('instantiatedMenu') ;
 
     return (!!menu && menu.performKeyEquivalent(charCode, evt, YES)) ;
-  },
-
-  /** @private */
-  acceptsFirstResponder: function() {
-    if(!SC.SAFARI_FOCUS_BEHAVIOR) return this.get('isEnabled');
-    else return NO;
-  }.property('isEnabled')
+  }
 
 });
 
@@ -20163,7 +21853,7 @@ SC.PopupButtonMenuLoader = SC.Task.extend({
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -20174,28 +21864,48 @@ SC.PopupButtonMenuLoader = SC.Task.extend({
   indeterminate progressbar.  The progress bar itself is designed to be styled
   using CSS classes with the following structure:
   
-  <div class="sc-progress-view"><div class="inner"></div></div>
+      <div class="sc-progress-view"><div class="inner"></div></div>
   
   The outer can form the boundary of the bar while the inner will be adjusted 
   to fit the percentage of the progress.
   
   Creating a ProgressView accepts a number of properties, for example:
-  {
-    value: 50, 
-    minimum: 0, 
-    maximum: 100,
-    isIndeterminate: NO,
-    isEnabled: YES
-  }
   
-  Default isEnabled value is YES.
-
+      progressView: SC.ProgressView.design({
+        value: 50, 
+        minimum: 0, 
+        maximum: 100,
+        isIndeterminate: NO,
+        isEnabled: YES
+      })
+  
   @extends SC.View
   @extends SC.Control
   @since SproutCore 1.0
 */
-SC.ProgressView = SC.View.extend(SC.Control, {
+SC.ProgressView = SC.View.extend(SC.Control,
+/** @scope SC.ProgressView.prototype */{
   
+  /**
+    @type Array
+    @default ['sc-progress-view']
+    @see SC.View#classNames
+  */
+  classNames: ['sc-progress-view'],
+  
+  /**
+    @type Array
+    @default 'displayValue ariaValue minimum maximum isRunning isEnabled isIndeterminate animatedBackgroundMatrix offsetRange'.w()
+    @see SC.View#displayProperties
+  */
+  displayProperties: ['displayValue', 'ariaValue', 'minimum', 'maximum', 'isRunning', 'isEnabled', 'isIndeterminate', 'animatedBackgroundMatrix', 'offsetRange'],
+
+  /**
+    @type String
+    @default 'progressRenderDelegate'
+  */
+  renderDelegateName: 'progressRenderDelegate',
+
   // ........................................
   // PROPERTIES
   //
@@ -20204,23 +21914,67 @@ SC.ProgressView = SC.View.extend(SC.Control, {
     Bind this to the current value of the progress bar.  Note that by default 
     an empty value will disable the progress bar and a multiple value will make 
     it indeterminate.
+    
+    @type Number
+    @default 0.50
   */
   value: 0.50,
 
-  /**
-    The WAI-ARIA role for progress view. This property's value should not be
-    changed.
-
-    @property {String}
-  */
-  ariaRole: 'progressbar',
-
+  /** @private */
   valueBindingDefault: SC.Binding.single().notEmpty(),
   
   /**
+    @field
+    @type Number
+    @observes value
+    @observes maximum
+    @observes minimum
+  */
+  displayValue: function(){
+    var minimum = this.get('minimum') || 0.0,
+        maximum = this.get('maximum') || 1.0,
+        value = this.get('value') || 0.0;
+    value = (value - minimum) / (maximum - minimum);
+    if (value > 1.0) value = 1.0;
+
+    if(isNaN(value)) value = 0.0;
+    // cannot be smaller then minimum
+    if(value<minimum) value = 0.0;
+    // cannot be larger then maximum
+    if(value>maximum) value = 1.0;
+    
+    return value;
+  }.property('value', 'maximum', 'minimum').cacheable(),
+
+  /**
+    The WAI-ARIA role for progress view.
+
+    @type String
+    @default 'progressbar'
+    @readOnly
+  */
+  ariaRole: 'progressbar',
+
+  /**
+    The WAI-ARIA value for the progress view. This value will be passed to any
+    rendering code as-is, not converted into percentages, etc. It is computed
+    based on the original value property.
+
+    @property
+  */
+  ariaValue: function() {
+    return this.get('value');
+  }.property('value').cacheable(),
+  
+  /**
     The minimum value of the progress.
+    
+    @type Number
+    @default 0
   */ 
   minimum: 0,
+  
+  /** @private */
   minimumBindingDefault: SC.Binding.single().notEmpty(),
 
   /**
@@ -20228,14 +21982,20 @@ SC.ProgressView = SC.View.extend(SC.Control, {
     from the content object.  If this is set to null then the minimum value
     will not be derived from the content object.
     
-    @property {String}
+    @type String
+    @default null
   */
   contentMinimumKey: null,
   
   /**
     The maximum value of the progress bar.
+    
+    @type Number
+    @default 1.0
   */
   maximum: 1.0,
+  
+  /** @private */
   maximumBindingDefault: SC.Binding.single().notEmpty(),
 
   /**
@@ -20253,82 +22013,91 @@ SC.ProgressView = SC.View.extend(SC.Control, {
     from the content object.  If this is set to null then the maximum value
     will not be derived from the content object.
     
-    @property {String}
+    @type String
+    @default null
   */
   contentMaximumKey: null,
 
   /** 
     Set to true if the item in progress is indeterminate.  This may be 
     overridden by the actual value.
-    @returns {Boolean} 
+    
+    @type Boolean
+    @default NO
   */
   isIndeterminate: NO,
+  
+  /** @private */
   isIndeterminateBindingDefault: SC.Binding.bool(),
 
   /**
     Set to YES when the process is currently running.  This will cause the 
-    progress bar to animate, especially if it is indeterminate.  
+    progress bar to animate, especially if it is indeterminate.
+    
+    @type Boolean
+    @default NO
   */
   isRunning: NO,
+  
+  /** @private */
   isRunningBindingDefault: SC.Binding.bool(),
 
   /** 
     Set to the matrix used for background image position for animation.
     [1st image y-location, offset, total number of images]
-    @property {Array}
+    
+    @type Array
+    @default null
   */
-  animatedBackgroundMatrix: undefined,
+  animatedBackgroundMatrix: null,
   
   /**
     Optionally specify the key used to extract the isIndeterminate value 
     from the content object.  If this is set to null then the isIndeterminate 
     value will not be derived from the content object.
     
-    @property {String}
+    @type String
+    @default null
   */
   contentIsIndeterminateKey: null,
 
-  // ........................................
-  // STRUCTURE
-  //
-
-  classNames: 'sc-progress-view',
   
   // ........................................
   // INTERNAL SUPPORT
   //
 
+  /** @private */
   _backgroundOffset: 0,
-  _currentBackground: 1,
-  _nextBackground: 1,
   
-  // start animating at the end of the init() method.  note that we call this
-  // here because we want this to make sure this function is called anytime 
-  // the progress view is instantiated.
+  /** @private */
+  _currentBackground: 1,
+  
+  /** @private */
+  _nextBackground: 1,
+
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
-    this.animateProgressBar(); // start animating...  
+    this.animateProgressBar();
   },
   
-  // start/stop running animation based on isRunning state.
+  /** @private */
   animateProgressBar: function() {
     if (this.get('isRunning') && this.get('isVisibleInWindow')) {
       this._animateProgressBar(500); // wait to start to avoid probs
     }
   }.observes('isRunning', 'isVisibleInWindow'),
 
-  _animateProgressBar: function(delay) {  
+  /** @private */
+  _animateProgressBar: function(delay) {
     if (delay===0) delay = 1000/30;
     if (this.get('isRunning') && this.get('isVisibleInWindow')) {
       this.displayDidChange();
       this.invokeLater(this._animateProgressBar, delay, 600);
     }
   },
-  
-  displayProperties: 'displayValue minimum maximum isRunning isEnabled isIndeterminate animatedBackgroundMatrix offsetRange'.w(),
-  
-  renderDelegateName: 'progressRenderDelegate',
-  
+
+  /** @private */
   contentPropertyDidChange: function(target, key) {
     var content = this.get('content');
     this.beginPropertyChanges()
@@ -20337,34 +22106,19 @@ SC.ProgressView = SC.View.extend(SC.Control, {
       .updatePropertyFromContent('maximum', key, 'contentMaximumKey', content)
       .updatePropertyFromContent('isIndeterminate', key, 'contentIsIndeterminateKey', content)
     .endPropertyChanges();
-  },
-  
-  displayValue: function(){
-    var minimum = this.get('minimum') || 0.0,
-        maximum = this.get('maximum') || 1.0,
-        value = this.get('value') || 0.0;
-    value = (value - minimum) / (maximum - minimum);
-    if (value > 1.0) value = 1.0;
+  }
 
-    if(isNaN(value)) value = 0.0;
-    // cannot be smaller then minimum
-    if(value<minimum) value = 0.0;
-    // cannot be larger then maximum
-    if(value>maximum) value = 1.0;
-    
-    return value;
-  }.property('value', 'maximum', 'minimum').cacheable()
-
-  
-}) ;
+});
 
 /* >>>>>>>>>> BEGIN source/views/radio.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+
 /** @class
 
   A RadioView is used to create a group of radio buttons.  The user can use
@@ -20376,36 +22130,36 @@ SC.ProgressView = SC.View.extend(SC.Control, {
   The radio buttons themselves are designed to be styled using CSS classes with
   the following structure:
   
-  <label class="sc-radio-button">
-  <img class="button" src="some_image.gif"/>
-  <input type="radio" name="<sc-guid>" value=""/>
-  <span class="sc-button-label">Label for button1</span>
-  </label>
+      <label class="sc-radio-button">
+        <img class="button" src="some_image.gif"/>
+        <input type="radio" name="<sc-guid>" value=""/>
+        <span class="sc-button-label">Label for button1</span>
+      </label>
   
   Setting up a RadioView accepts a number of properties, for example:
-  {
-    items: [{ title: "Red", 
-              value: "red", 
-              enabled: YES, 
-              icon: "button_red" },
-            { title: "Green", 
-              value: "green", 
-              enabled: YES, 
-              icon: 'button_green' }],
-    value: 'red',
-    itemTitleKey: 'title',
-    itemValueKey: 'value',
-    itemIconKey: 'icon',
-    itemIsEnabledKey: 'enabled',
-    isEnabled: YES,
-    layoutDirection: SC.LAYOUT_HORIZONTAL
-  }
   
-  Default layoutDirection is vertical. 
-  Default isEnabled is YES.
-  
-  The value property can be either a string, as above, or an array of strings
-  for pre-checking multiple values.
+      radio: SC.RadioView.design({
+        items: [
+          { 
+            title: "Red",
+            value: "red",
+            enabled: YES,
+            icon: "button_red"
+          },{
+            title: "Green",
+            value: "green",
+            enabled: YES,
+            icon: 'button_green'
+          }
+        ],
+        value: 'red',
+        itemTitleKey: 'title',
+        itemValueKey: 'value',
+        itemIconKey: 'icon',
+        itemIsEnabledKey: 'enabled',
+        isEnabled: YES,
+        layoutDirection: SC.LAYOUT_HORIZONTAL
+      })
   
   The items array can contain either strings, or as in the example above a 
   hash. When using a hash, make sure to also specify the itemTitleKey
@@ -20413,33 +22167,67 @@ SC.ProgressView = SC.View.extend(SC.Control, {
   itemIconKey if you are using icons radio buttons. The individual items 
   enabled property is YES by default, and the icon is optional.
   
-  @extends SC.FieldView
+  @extends SC.View
+  @extends SC.Control
   @since SproutCore 1.0
 */
 SC.RadioView = SC.View.extend(SC.Control,
-/** @scope SC.RadioView.prototype */
-{
+/** @scope SC.RadioView.prototype */{
 
-  // HTML design options
+  /**
+    @field
+    @type Boolean
+    @default YES
+    @observes isEnabled
+  */
+  acceptsFirstResponder: function() {
+    if (SC.FOCUS_ALL_CONTROLS) { return this.get('isEnabled'); }
+    return NO;
+  }.property('isEnabled'),
+
+  /**
+    @type Array
+    @default ['sc-radio-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-radio-view'],
 
   /**
-    The WAI-ARIA role for a group of radio buttons. This property's value
-    should not be changed.
+    The WAI-ARIA role for a group of radio buttons.
 
-    @property {String}
+    @type String
+    @default 'radiogroup'
+    @readOnly
   */
   ariaRole: 'radiogroup',
 
+  /** 
+    @type Array
+    @default ['displayItems', 'isEnabled', 'layoutDirection']
+    @see SC.View#displayProperties
+  */
+  displayProperties: ['displayItems', 'isEnabled', 'layoutDirection'],
+  
   /**
-  If items property is a hash, specify which property will function as
-  the ariaLabeledBy with this itemAriaLabeledByKey property.ariaLabeledBy is used
-  as the WAI-ARIA attribute for the radio view. This property is assigned to
-  'aria-labelledby' attribute, which defines a string value that labels the
-  element. Used to support voiceover.  It should be assigned a non-empty string,
-  if the 'aria-labelledby' attribute has to be set for the element.
+    @type String
+    @default 'radioGroupRenderDelegate'
+  */
+  renderDelegateName: 'radioGroupRenderDelegate',
 
-    @property {String}
+  // ..........................................................
+  // Properties
+  // 
+  
+  /**
+    If items property is a hash, specify which property will function as
+    the ariaLabeledBy with this itemAriaLabeledByKey property.ariaLabeledBy is used
+    as the WAI-ARIA attribute for the radio view. This property is assigned to
+    'aria-labelledby' attribute, which defines a string value that labels the
+    element. Used to support voiceover.  It should be assigned a non-empty string,
+    if the 'aria-labelledby' attribute has to be set for the element.
+
+    @type String
+    @default null
   */
   itemAriaLabeledByKey: null,
 
@@ -20451,7 +22239,8 @@ SC.RadioView = SC.View.extend(SC.Control,
     element. Used to support voiceover.  It should be assigned a non-empty string,
     if the 'aria-label' attribute has to be set for the element.
 
-    @property {String}
+    @type String
+    @default null
   */
   itemAriaLabelKey: null,
 
@@ -20459,27 +22248,45 @@ SC.RadioView = SC.View.extend(SC.Control,
     The value of the currently selected item, and which will be checked in the 
     UI. This can be either a string or an array with strings for checking 
     multiple values.
+    
+    @type Object|String
+    @default null
   */
   value: null,
 
   /**
-    This property indicates how the radio buttons are arranged.
+    This property indicates how the radio buttons are arranged. Possible values:
+    
+      - SC.LAYOUT_VERTICAL
+      - SC.LAYOUT_HORIZONTAL
+    
+    @type String
+    @default SC.LAYOUT_VERTICAL
   */
   layoutDirection: SC.LAYOUT_VERTICAL,
 
-  // escape the HTML in label text
+  /**
+    @type Boolean
+    @default YES
+  */
   escapeHTML: YES,
 
   /** 
     The items property can be either an array with strings, or a
     hash. When using a hash, make sure to also specify the appropriate
     itemTitleKey, itemValueKey, itemIsEnabledKey and itemIconKey.
+    
+    @type Array
+    @default []
   */
   items: [],
 
   /** 
     If items property is a hash, specify which property will function as
     the title with this itemTitleKey property.
+    
+    @type String
+    @default null
   */
   itemTitleKey: null,
   
@@ -20489,7 +22296,7 @@ SC.RadioView = SC.View.extend(SC.Control,
     layoutDirection is set to SC.LAYOUT_HORIONZTAL and can be used to override
     the default value provided by the framework or theme CSS.
     
-    @property {String}
+    @type String
     @default null
   */
   itemWidthKey: null,
@@ -20497,22 +22304,31 @@ SC.RadioView = SC.View.extend(SC.Control,
   /** 
     If items property is a hash, specify which property will function as
     the value with this itemValueKey property.
+    
+    @type String
+    @default null
   */
   itemValueKey: null,
 
   /** 
     If items property is a hash, specify which property will function as
     the value with this itemIsEnabledKey property.
+    
+    @type String
+    @default null
   */
   itemIsEnabledKey: null,
 
   /** 
     If items property is a hash, specify which property will function as
     the value with this itemIconKey property.
+    
+    @type String
+    @default null
   */
   itemIconKey: null,
 
-  /** 
+  /**  @private
     If the items array itself changes, add/remove observer on item... 
   */
   itemsDidChange: function() {
@@ -20526,7 +22342,7 @@ SC.RadioView = SC.View.extend(SC.Control,
     this.itemContentDidChange();
   }.observes('items'),
 
-  /** 
+  /** @private
     Invoked whenever the item array or an item in the array is changed.
     This method will regenerate the list of items.
   */
@@ -20540,11 +22356,6 @@ SC.RadioView = SC.View.extend(SC.Control,
   // ..........................................................
   // PRIVATE SUPPORT
   // 
-  /** 
-    The display properties for radio buttons are the value and _displayItems.
-  */
-  displayProperties: ['displayItems', 'isEnabled', 'layoutDirection'],
-  renderDelegateName: 'radioGroupRenderDelegate',
 
   /** @private
     Data Sources for radioRenderDelegates, as required by radioGroupRenderDelegate.
@@ -20611,6 +22422,9 @@ SC.RadioView = SC.View.extend(SC.Control,
         title = value = icon = null;
         isEnabled = NO;
       }
+
+      // it can only be enabled if the radio view itself is enabled
+      isEnabled = isEnabled && this.get('isEnabled');
       
       if (item) {
         sel = (isArray) ? (viewValue.indexOf(value) >= 0) : (viewValue === value);
@@ -20619,34 +22433,26 @@ SC.RadioView = SC.View.extend(SC.Control,
       }
 
       // localize title if needed
-      if (loc) title = title.loc();
+      if (loc) title = SC.String.loc(title);
       ret.push(SC.Object.create({
         title: title,
         icon: icon,
         width: width,
         value: value,
-        
+
         isEnabled: isEnabled,
         isSelected: (isArray && viewValue.indexOf(value) >= 0 && viewValue.length === 1) || (viewValue === value),
         isMixed: (isArray && viewValue.indexOf(value) >= 0),
         isActive: this._activeRadioButton === idx,
-        ariaLabeledBy: ariaLabeledBy,
-        ariaLabel: ariaLabel,
         theme: this.get('theme'),
         renderState: {}
       }));
     }
 
     return ret; // done!
-  }.property('value', 'items', 'itemTitleKey', 'itemWidthKey', 'itemValueKey', 'itemIsEnabledKey', 'localize', 'itemIconKey','itemAriaLabeledByKey', 'itemAriaLabelKey').cacheable(),
+  }.property('isEnabled', 'value', 'items', 'itemTitleKey', 'itemWidthKey', 'itemValueKey', 'itemIsEnabledKey', 'localize', 'itemIconKey','itemAriaLabeledByKey', 'itemAriaLabelKey').cacheable(),
 
-
-  acceptsFirstResponder: function() {
-    if(!SC.SAFARI_FOCUS_BEHAVIOR) return this.get('isEnabled');
-    else return NO;
-  }.property('isEnabled'),
-  
-  /**
+  /** @private
     If the user clicks on of the items mark it as active on mouseDown unless
     is disabled.
 
@@ -20672,7 +22478,7 @@ SC.RadioView = SC.View.extend(SC.Control,
     return YES;
   },
 
-  /**
+  /** @private
     If we have a radio element that was clicked on previously, make sure we
     remove the active state. Then update the value if the item clicked is 
     enabled.
@@ -20698,20 +22504,23 @@ SC.RadioView = SC.View.extend(SC.Control,
     }
   },
 
+  /** @private */
   touchStart: function(evt) {
     return this.mouseDown(evt);
   },
 
+  /** @private */
   touchEnd: function(evt) {
     return this.mouseUp(evt);
   }
+
 });
 
 /* >>>>>>>>>> BEGIN source/views/scene.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -20723,7 +22532,7 @@ SC.RadioView = SC.View.extend(SC.Control,
   optionally choose the kind of animation used to transition the two scenes 
   as well if supported on the web browser.
   
-  h1. Using The View
+  # Using SC.SceneView
   
   To setup the scene view, you should define the 'scenes' property with an 
   array of scene names.  These will be the properties on the scene view that
@@ -20736,11 +22545,11 @@ SC.RadioView = SC.View.extend(SC.Control,
   is visible on screen.  Otherwise, it will simply make the new scene view 
   the current content view and that's it.
 
-  @extends SC.View
+  @extends SC.ContainerView
   @since SproutCore 1.0
 */
 SC.SceneView = SC.ContainerView.extend(
-  /** @scope SC.SceneView.prototype */ {
+/** @scope SC.SceneView.prototype */ {
 
   /**
     Array of scene names.  Scenes will slide on and off screen in the order
@@ -20748,10 +22557,8 @@ SC.SceneView = SC.ContainerView.extend(
     2 to a scene at index 1, the scenes will animation backwards.  If you
     shift to a scene at index 3, the scenes will animate forwards.
     
-    The default scenes defined are 'master' and 'detail'.  You can replace or 
-    augment this array as you like.
-    
-    @property {Array}
+    @type Array
+    @default ['master', 'detail']
   */
   scenes: ['master', 'detail'],
 
@@ -20760,21 +22567,26 @@ SC.SceneView = SC.ContainerView.extend(
     scene view to transition to the new scene.  If you set this property to 
     null, an empty string, or a non-existant scene, then the scene will appear
     empty.
+    
+    @type String
+    @default null
   */
   nowShowing: null,
   
   /**
     Speed of transition.  Should be expressed in msec.
+    
+    @type Number
+    @default 200
   */
   transitionDuration: 200,
   
+  /** @private */
   _state: 'NO_VIEW', // no view
 
   /** @private
-  
     Whenever called to change the content, save the nowShowing state and 
     then animate in by adjusting the layout.
-    
   */
   replaceContent: function(content) {
     if (content && this._state===this.READY) this.animateScene(content);
@@ -20783,7 +22595,6 @@ SC.SceneView = SC.ContainerView.extend(
   },
 
   /** @private
-  
     Invoked whenever we just need to swap the scenes without playing an
     animation.
   */
@@ -20812,7 +22623,6 @@ SC.SceneView = SC.ContainerView.extend(
   },
 
   /** @private
-  
     Invoked whenever we need to animate in the new scene.
   */
   animateScene: function(newContent) {
@@ -20853,7 +22663,8 @@ SC.SceneView = SC.ContainerView.extend(
     this.tick();
   },
 
-  /** @private - called while the animation runs.  Compute the new layout for
+  /** @private
+    Called while the animation runs.  Compute the new layout for
     the left and right views based on the portion completed.  When we finish
     call replaceScene().
   */
@@ -20902,22 +22713,27 @@ SC.SceneView = SC.ContainerView.extend(
   },
   
 
-  // states for view animation
+  /** @private */
   NO_VIEW: 'NO_VIEW',
+  
+  /** @private */
   ANIMATING: 'ANIMATING',
+  
+  /** @private */
   READY: 'READY',
 
-  /** @private - standard layout assigned to views at rest */
+  /** @private
+    Standard layout assigned to views at rest
+  */
   STANDARD_LAYOUT: { top: 0, left: 0, bottom: 0, right: 0 }
-  
-  
+
 });
 
 /* >>>>>>>>>> BEGIN source/views/segment.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 /**
@@ -20929,75 +22745,164 @@ SC.SceneView = SC.ContainerView.extend(
   @extends SC.View
   @since SproutCore 1.5
 */
-SC.SegmentView = SC.View.extend(SC.Control, {
+SC.SegmentView = SC.View.extend(SC.Control,
+/** @scope SC.SegmentView.prototype */{
 
+  /**
+    @type String
+    @default 'tab'
+    @readOnly
+  */
+  ariaRole: 'tab',
+
+  /**
+    @type Array
+    @default ['sc-segment-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-segment-view'],
 
-  /* SC.View */
+  /**
+    @type String
+    @default null
+    @see SC.View#toolTip
+  */
   toolTip: null,
 
-  /* SC.Control (note: this brings its own display properties: 'isEnabled', 'isSelected', 'isActive', 'controlSize') */
+  /**
+    @type Boolean
+    @default YES
+    @see SC.Control#isEnabled
+  */
   isEnabled: YES,
 
+  /**
+    @type Boolean
+    @default NO
+    @see SC.Control#isActive
+  */
   isActive: NO,
 
+  /**
+    @type Boolean
+    @default NO
+    @see SC.Control#isSelected
+  */
   isSelected: NO,
 
+  /**
+    @type String
+    @default null
+    @see SC.Control#controlSize
+  */
   controlSize: null,
 
-  /* SC.Button (note: we don't actually mix this in, because it doesn't define displayProperties or renderMixin) */
-  title: '',
+  /**
+    @type Boolean
+    @default NO
+    @see SC.ButtonView#supportFocusRing
+  */
+  supportFocusRing: NO,
 
+  // TODO: isDefault, isCancel, value not really used by render delegate
+  displayProperties: ['icon', 'displayTitle', 'value', 'displayToolTip', 'isDefault', 'isCancel', 'width', 'isFirstSegment', 'isMiddleSegment', 'isLastSegment', 'isOverflowSegment', 'index'],
+
+  /**
+    @type String
+    @default 'segmentRenderDelegate'
+  */
+  renderDelegateName: 'segmentRenderDelegate',
+
+  /**
+    @type Boolean
+    @default YES
+  */
+  useStaticLayout: YES,
+
+
+  // ..........................................................
+  // Properties
+  // 
+
+  /**
+    @type String
+    @default ""
+  */
+  title: "",
+
+  /**
+    @type Object
+    @default null
+  */
   value: null,
 
+  /**
+    @type String
+    @default null
+  */
   icon: null,
 
+  /**
+    @type Boolean
+    @default null
+  */
   localize: NO,
 
+  /**
+    @type String
+    @default null
+  */
   keyEquivalent: null,
 
   // TODO: Modification currently unsupported in SegmentedView
+  /**
+    @type Boolean
+    @default YES
+  */
   escapeHTML: YES,
 
   // TODO: Modification currently unsupported in SegmentedView
+  /**
+    @type Boolean
+    @default YES
+  */
   needsEllipsis: YES,
 
-  /* SC.ButtonView */
-  // TODO: Modification currently unsupported in SegmentedView (this may be deprecated in SC.ButtonView and should also be so here)
-  supportFocusRing: NO,
-
-  /* SC.View */
-  renderDelegateName: 'segmentRenderDelegate',
-
-  useStaticLayout: YES,
-
-  // TODO: isDefault, isCancel, value not really used by render delegate
-  displayProperties: ['icon', 'title', 'value', 'displayToolTip', 'isDefault', 'isCancel', 'width', 'isFirstSegment', 'isMiddleSegment', 'isLastSegment', 'isOverflowSegment', 'index'],
-
-  /* SC.SegmentView */
+  /**
+    Localized title.
+    
+    @field
+    @type String
+    @default ""
+  */
+  displayTitle: function() {
+    var ret = this.get('title');
+    if (this.get('localize')) ret = SC.String.loc(ret);
+    return ret;
+  }.property('title', 'localize').cacheable(),
 
   /**
-    The width of the segment.
-
-    @property {Number}
+    @type Number
+    @default null
   */
   width: null,
 
   /**
     The item represented by this view.
 
-    @property {Object || SC.Object}
+    @type Object
+    @default null
   */
   localItem: null,
 
-  /**
+  /** @private
     Whenever the width property changes, adjust our layout accordingly.
-    */
+  */
   widthDidChange: function() {
     this.adjust('width', this.get('width'));
   }.observes('width'),
 
-  /**
+  /** @private
     Update our properties according to our matching item.
   */
   updateItem: function(parentView, item) {
@@ -21023,9 +22928,11 @@ SC.SegmentView = SC.View.extend(SC.Control, {
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+sc_require('views/segment');
 
 /**
   @class
@@ -21040,7 +22947,7 @@ SC.SegmentView = SC.View.extend(SC.Control, {
   some action depending on the new value.  (of course, you can always bind to
   the value as well, which is generally the preferred approach.)
 
-  h1. Defining Your Segments
+  # Defining Your Segments
 
   You define your segments by providing a items array, much like you provide
   to a RadioView.  Your items array can be as simple as an array of strings
@@ -21050,21 +22957,50 @@ SC.SegmentView = SC.View.extend(SC.Control, {
 
   You can define the following properties on objects you pass in:
 
-  | *itemTitleKey* | the title of the button |
-  | *itemValueKey* | the value of the button |
-  | *itemWidthKey* | the preferred width. if omitted, it autodetects |
-  | *itemIconKey*  | an icon |
-  | *itemActionKey* | an optional action to fire when pressed |
-  | *itemTargetKey* | an optional target for the action |
+    - *itemTitleKey* - the title of the button
+    - *itemValueKey* - the value of the button
+    - *itemWidthKey* - the preferred width. if omitted, it autodetects
+    - *itemIconKey*  - an icon
+    - *itemActionKey* - an optional action to fire when pressed
+    - *itemTargetKey* - an optional target for the action
+    - *segmentViewClass* - class to be used for creating segments
 
   @extends SC.View
+  @extends SC.Control
   @since SproutCore 1.0
 */
 SC.SegmentedView = SC.View.extend(SC.Control,
 /** @scope SC.SegmentedView.prototype */ {
 
+  /**
+    @ field
+    @type Boolean
+    @default YES
+  */
+  acceptsFirstResponder: function() {
+    if (SC.FOCUS_ALL_CONTROLS) { return this.get('isEnabled'); }
+    return NO;
+  }.property('isEnabled').cacheable(),
+
+  /**
+    @type String
+    @default 'tablist'
+    @readOnly
+  */
+  ariaRole: 'tablist',
+
+  /**
+    @type Array
+    @default ['sc-segmented-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-segmented-view'],
 
+  /**
+    @type String
+    @default 'square'
+    @see SC.ButtonView#theme
+  */
   theme: 'square',
 
   /**
@@ -21075,42 +23011,66 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     If you set this value to something that has no matching button, then
     no buttons will be selected.
 
-    @field {Object}
+    @type Object
+    @default null
   */
   value: null,
 
   /**
-    Set to YES to enabled the segmented view, NO to disabled it.
+    @type Boolean
+    @default YES
   */
   isEnabled: YES,
 
   /**
     If YES, clicking a selected button again will deselect it, setting the
-    segmented views value to null.  Defaults to NO.
+    segmented views value to null.
+    
+    @type Boolean
+    @default NO
   */
   allowsEmptySelection: NO,
 
   /**
     If YES, then clicking on a tab will not deselect the other segments, it
     will simply add or remove it from the selection.
+    
+    @type Boolean
+    @default NO
   */
   allowsMultipleSelection: NO,
 
   /**
-    If YES, titles will be localized before display.
+    @type Boolean
+    @default YES
   */
   localize: YES,
 
   /**
     Aligns the segments of the segmented view within its frame horizontally.
+    Possible values:
+    
+      - SC.ALIGN_LEFT
+      - SC.ALIGN_RIGHT
+      - SC.ALIGN_CENTER
+    
+    @type String
+    @default SC.ALIGN_CENTER
   */
   align: SC.ALIGN_CENTER,
 
   /**
     Change the layout direction to make this a vertical set of tabs instead
-    of horizontal ones.
+    of horizontal ones. Possible values:
+    
+      - SC.LAYOUT_HORIZONTAL
+      - SC.LAYOUT_VERTICAL
+    
+    @type String
+    @default SC.LAYOUT_HORIZONTAL
   */
   layoutDirection: SC.LAYOUT_HORIZONTAL,
+
 
   // ..........................................................
   // SEGMENT DEFINITION
@@ -21126,21 +23086,24 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     observed by the view for changes to titles, values, icons, widths,
     isEnabled values & tooltips.
 
-    @property {Array}
+    @type Array
+    @default null
   */
   items: null,
 
   /**
     The key that contains the title for each item.
 
-    @property {String}
+    @type String
+    @default null
   */
   itemTitleKey: null,
 
   /**
     The key that contains the value for each item.
 
-    @property {String}
+    @type String
+    @default null
   */
   itemValueKey: null,
 
@@ -21149,7 +23112,8 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     control in general is not enabled, no items will be enabled, even if the
     item's enabled property returns YES.
 
-    @property {String}
+    @type String
+    @default null
   */
   itemIsEnabledKey: null,
 
@@ -21157,7 +23121,8 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     The key that contains the icon for each item.  If omitted, no icons will
     be displayed.
 
-    @property {String}
+    @type String
+    @default null
   */
   itemIconKey: null,
 
@@ -21165,7 +23130,8 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     The key that contains the desired width for each item.  If omitted, the
     width will autosize.
 
-    @property {String}
+    @type String
+    @default null
   */
   itemWidthKey: null,
 
@@ -21174,7 +23140,8 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     selecting this item will fire the action in addition to changing the
     value.  See also itemTargetKey.
 
-    @property {String}
+    @type String
+    @default null
   */
   itemActionKey: null,
 
@@ -21182,7 +23149,8 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     The key that contains the target for this item.  If this and itemActionKey
     are defined, then this will be the target of the action fired.
 
-    @property {String}
+    @type String
+    @default null
   */
   itemTargetKey: null,
 
@@ -21191,29 +23159,44 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     pressing that key equivalent will be like selecting the tab.  Also,
     pressing the Alt or Option key for 3 seconds will display the key
     equivalent in the tab.
+
+    @type String
+    @default null
   */
   itemKeyEquivalentKey: null,
 
   /**
     The title to use for the overflow segment if it appears.
 
-    @property {String}
+    @type String
+    @default '&raquo;'
   */
   overflowTitle: '&raquo;',
 
   /**
     The toolTip to use for the overflow segment if it appears.
 
-    @property {String}
+    @type String
+    @default 'More&hellip;'
   */
   overflowToolTip: 'More&hellip;',
 
   /**
     The icon to use for the overflow segment if it appears.
 
-    @property {String}
+    @type String
+    @default null
   */
   overflowIcon: null,
+
+  /**
+    The view class used when creating segments.
+
+    @type SC.View
+    @default SC.SegmentView
+  */
+  segmentViewClass: SC.SegmentView,
+
 
   /** @private
     The following properties are used to map items to child views. Item keys
@@ -21221,12 +23204,14 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     If a value in the item is found, then that value is mapped to a child
     view using the matching viewKey.
 
-    @property {Array}
+    @type Array
   */
   itemKeys: 'itemTitleKey itemValueKey itemIsEnabledKey itemIconKey itemWidthKey itemToolTipKey itemKeyEquivalentKey'.w(),
-  viewKeys: 'title value isEnabled icon width toolTip keyEquivalent'.w(),
+  
+  /** @private */
+  viewKeys: ['title', 'value', 'isEnabled', 'icon', 'width', 'toolTip', 'keyEquivalent'],
 
-  /**
+  /** @private
     Call itemsDidChange once to initialize segment child views for the items that exist at
     creation time.
   */
@@ -21238,7 +23223,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
         icon = this.get('overflowIcon'),
         overflowView;
 
-    overflowView = SC.SegmentView.create({
+    overflowView = this.get('segmentViewClass').create({
       controlSize: this.get('controlSize'),
       localize: this.get('localize'),
       title: title,
@@ -21253,11 +23238,10 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     this.itemsDidChange();
   },
 
-  /**
+  /** @private
     Called whenever the number of items changes.  This method populates SegmentedView's childViews, taking
     care to re-use existing childViews if possible.
-
-    */
+  */
   itemsDidChange: function() {
     var items = this.get('items') || [],
         item,
@@ -21271,6 +23255,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
         itemKey,
         viewKeys = this.get('viewKeys'),
         viewKey,
+        segmentViewClass = this.get('segmentViewClass'),
         i, j;
 
     // Update childViews
@@ -21299,7 +23284,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
       for (i = childViews.get('length') - 1; i < items.get('length'); i++) {
 
         // We create a default SC.ButtonView-like object for each segment
-        childView = SC.SegmentView.create({
+        childView = segmentViewClass.create({
           controlSize: this.get('controlSize'),
           localize: this.get('localize')
         });
@@ -21371,10 +23356,9 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     this.invokeLast(this.remeasure);
   }.observes('*items.[]'),
 
-  /**
+  /** @private
     This observer method is called whenever any of the relevant properties of an item change.  This only applies
     to SC.Object based items that may be observed.
-
   */
   itemContentDidChange: function(item, key, alwaysNull, index) {
     var items = this.get('items'),
@@ -21394,9 +23378,8 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     this.invokeLast(this.remeasure);
   },
 
-  /**
+  /** @private
     Whenever the view resizes, we need to check to see if we're overflowing.
-
   */
   viewDidResize: function() {
     var visibleWidth = this.$().width();
@@ -21405,10 +23388,9 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     if (this.isOverflowing || visibleWidth <= this.cachedMinimumWidth) this.adjustOverflow();
   },
 
-  /**
+  /** @private
     Whenever visibility changes, we need to check to see if we're overflowing.
-
-   */
+  */
   isVisibleInWindowDidChange: function() {
     this.invokeLast(this.remeasure);
   }.observes('isVisibleInWindow'),
@@ -21416,7 +23398,6 @@ SC.SegmentedView = SC.View.extend(SC.Control,
   /** @private
     Calling this method forces the segments to be remeasured and will also adjust the
     segments for overflow if necessary.
-
   */
   remeasure: function() {
     var renderDelegate = this.get('renderDelegate'),
@@ -21441,7 +23422,6 @@ SC.SegmentedView = SC.View.extend(SC.Control,
 
   /** @private
     This method is called to adjust the segment views for overflow.
-
    */
   adjustOverflow: function() {
     var childViews = this.get('childViews'),
@@ -21504,15 +23484,24 @@ SC.SegmentedView = SC.View.extend(SC.Control,
   // RENDERING/DISPLAY SUPPORT
   //
 
+  /**
+    @type Array
+    @default ['align']
+    @see SC.View#displayProperties
+  */
   displayProperties: ['align'],
 
+  /**
+    @type String
+    @default 'segmentedRenderDelegate'
+  */
   renderDelegateName: 'segmentedRenderDelegate',
 
   // ..........................................................
   // EVENT HANDLING
   //
 
-  /**
+  /** @private
     Determines the index into the displayItems array where the passed mouse
     event occurred.
   */
@@ -21524,6 +23513,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     }
   },
 
+  /** @private */
   keyDown: function(evt) {
     var childViews,
         childView,
@@ -21582,6 +23572,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return NO;
   },
 
+  /** @private */
   mouseDown: function(evt) {
     var childViews = this.get('childViews'),
         childView,
@@ -21605,6 +23596,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return YES;
   },
 
+  /** @private */
   mouseUp: function(evt) {
     var activeChildView,
         index;
@@ -21626,6 +23618,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return YES;
   },
 
+  /** @private */
   mouseMoved: function(evt) {
     var childViews = this.get('childViews'),
         overflowIndex = childViews.get('length') - 1,
@@ -21656,6 +23649,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return YES;
   },
 
+  /** @private */
   mouseEntered: function(evt) {
     var childViews = this.get('childViews'),
         childView,
@@ -21680,6 +23674,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return YES;
   },
 
+  /** @private */
   mouseExited: function(evt) {
     var activeChildView;
 
@@ -21694,6 +23689,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return YES;
   },
 
+  /** @private */
   touchStart: function(touch) {
     var childViews = this.get('childViews'),
         childView,
@@ -21717,6 +23713,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return YES ;
   },
 
+  /** @private */
   touchEnd: function(touch) {
     var activeChildView,
         index;
@@ -21737,6 +23734,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return YES;
   },
 
+  /** @private */
   touchesDragged: function(evt, touches) {
     var isTouching = this.touchIsInBoundary(evt),
         childViews = this.get('childViews'),
@@ -21775,6 +23773,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return YES;
   },
 
+  /** @private */
   _touchDidExit: function(evt) {
     var activeChildView;
 
@@ -21787,6 +23786,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return YES;
   },
 
+  /** @private */
   _touchDidEnter: function(evt) {
     var childViews = this.get('childViews'),
         childView,
@@ -21807,7 +23807,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
     return YES;
   },
 
-  /**
+  /** @private
     Simulates the user clicking on the segment at the specified index. This
     will update the value if possible and fire the action.
   */
@@ -22003,13 +24003,7 @@ SC.SegmentedView = SC.View.extend(SC.Control,
         childView.set('isSelected', NO);
       }
     }
-  }.observes('value'),
-
-  /** tied to the isEnabled state */
-   acceptsFirstResponder: function() {
-     if(!SC.SAFARI_FOCUS_BEHAVIOR) return this.get('isEnabled');
-     else return NO;
-   }.property('isEnabled').cacheable()
+  }.observes('value')
 
 });
 
@@ -22017,9 +24011,11 @@ SC.SegmentedView = SC.View.extend(SC.Control,
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+sc_require('views/button');
 
 /**
   @class
@@ -22029,33 +24025,32 @@ SC.SegmentedView = SC.View.extend(SC.Control,
   Clicking the SelectView button displays a menu pane with a
   list of items. The selected item will be displayed on the button.
   User has the option of enabling checkbox for the selected menu item.
-
-  I AM CHANGING THIS AND BREAKING APIs, so I have renamed it (and put it in a more
-  logical place) so that I don't break anyone else's current use of SelectButtonView...
-  even though I have a suspiscion that no one uses it.
   
   @extends SC.ButtonView
   @version 1.0
   @author Alex Iskander, Mohammed Ashik
 */
-sc_require('views/button');
-
 SC.SelectView = SC.ButtonView.extend(
 /** @scope SC.SelectView.prototype */ {
+
+  /**
+    @field
+    @type Boolean
+    @default YES
+  */
+  acceptsFirstResponder: function() {
+    return this.get('isEnabled');
+  }.property('isEnabled'),
+
   /**
     An array of items that will be form the menu you want to show.
 
-    @property
-    @type {Array}
+    @type Array
+    @default []
   */
   items: [],
 
-  /**
-    Binding default for an array of items
-
-    @property
-    @default SC.Binding.multiple()
-  */
+  /** @private */
   itemsBindingDefault: SC.Binding.multiple(),
 
   /**
@@ -22063,9 +24058,8 @@ SC.SelectView = SC.ButtonView.extend(
     menu item will be pulled from the object using the named property.
     if this is null, the collection items themselves will be used.
 
-    @property
-    @type {String}
-    @default: null
+    @type String
+    @default null
   */
   itemTitleKey: null,
 
@@ -22074,9 +24068,8 @@ SC.SelectView = SC.ButtonView.extend(
     be used to sort the items.  If this is not set, then itemTitleKey will
     be used.
 
-    @property
-    @type: {String}
-    @default: null
+    @type String
+    @default null
   */
   itemSortKey: null,
 
@@ -22085,32 +24078,37 @@ SC.SelectView = SC.ButtonView.extend(
      as the value for the options popup.  If you don't set this, then the
      items themselves will be used as the value.
 
-     @property
-     @type {String}
+     @type String
      @default null
   */
   itemValueKey: null,
 
   /**
      Key used to extract icons from the items array
+
+     @type String
+     @default null
   */
   itemIconKey: null,
   
   /**
     Key to use to identify separators.
+
+    @type String
+    @default "separator"
   */
   itemSeparatorKey: "separator",
   
   /**
     Key used to indicate if the item is to be enabled.
+
+    @type String
+    @default "isEnabled"
   */
   itemIsEnabledKey: "isEnabled",
 
   /**
-    If true, the empty name will be localized.
-
-    @property
-    @type {Boolean}
+    @type Boolean
     @default YES
   */
   localize: YES,
@@ -22119,21 +24117,22 @@ SC.SelectView = SC.ButtonView.extend(
     if true, it means that no sorting will occur, items will appear
     in the same order as in the array
 
-    @property
-    @type {Boolean}
+    @type Boolean
     @default YES
   */
   disableSort: YES,
 
   /**
-
-    @property
+    @type Array
     @default ['sc-select-button']
+    @see SC.View#classNames
   */
   classNames: ['sc-select-view'],
 
   /**
     Menu attached to the SelectView.
+    
+    @type SC.View
     @default SC.MenuView
   */
   menu: null,
@@ -22152,7 +24151,7 @@ SC.SelectView = SC.ButtonView.extend(
     is used to calculate the preferMatrix.
 
     @property
-    @type {Number}
+    @type Number
     @default null
     @private
   */
@@ -22161,16 +24160,16 @@ SC.SelectView = SC.ButtonView.extend(
   /**
      Current Value of the SelectView
 
-     @property
+     @type Object
      @default null
   */
-  value: null ,
+  value: null,
 
   /**
     if this property is set to 'YES', a checbox is shown next to the
     selected menu item.
 
-    @private
+    @type Boolean
     @default YES
   */
   checkboxEnabled: YES,
@@ -22179,7 +24178,7 @@ SC.SelectView = SC.ButtonView.extend(
     if this property is set to 'YES', a checbox is shown next to the
     selected menu item.
 
-    @private
+    @type Boolean
     @default YES
   */
   showCheckbox: YES,
@@ -22209,17 +24208,18 @@ SC.SelectView = SC.ButtonView.extend(
   _defaultIcon: null,
 
   /**
-    @private
-
     The button theme will be popup
+    
+    @type String
+    @default 'popup'
+    @readOnly
   */
   theme: 'popup',
 
   /**
-    Render method gets triggered when these properties change
-
-    @property
-    @type{SC.Array}
+    @type SC.Array
+    @default ['icon', 'value','controlSize','items']
+    @see SC.View#displayProperties
   */
   displayProperties: ['icon', 'value','controlSize','items'],
 
@@ -22229,10 +24229,8 @@ SC.SelectView = SC.ButtonView.extend(
     the button. The value at the second index(0) changes based on the
     postion(index) of the menu item in the menu pane.
 
-    @property
-    @type {Array}
+    @type Array
     @default null
-
   */
   preferMatrix: null,
 
@@ -22240,8 +24238,7 @@ SC.SelectView = SC.ButtonView.extend(
     Property to set the menu item height. This in turn is used for
     the calculation of prefMatrix.
 
-    @property
-    @type {Number}
+    @type Number
     @default 20
   */
   CUSTOM_MENU_ITEM_HEIGHT: 20,
@@ -22257,7 +24254,7 @@ SC.SelectView = SC.ButtonView.extend(
     If this property is set to 'YES', the menu pane will be positioned
     below the anchor.
 
-    @private
+    @type Boolean
     @default NO
   */
   isDefaultPosition: NO,
@@ -22272,18 +24269,24 @@ SC.SelectView = SC.ButtonView.extend(
 
   /**
     Example view used for menu items.
+    
+    @type SC.View
+    @default null
   */
   exampleView: null,
   
   /**
     customView menu offset width
+    
+    @type Number
+    @default 0
   */
   customViewMenuOffsetWidth: 0,
 
   /**
     This is a property for enabling/disabling ellipsis
 
-    @private
+    @type Boolean
     @default YES
   */
   needsEllipsis: YES,
@@ -22292,19 +24295,23 @@ SC.SelectView = SC.ButtonView.extend(
     This property allows you at add extra padding to the height
     of the menu pane.
 
+    @type Number
     @default 0
-    @property {Number} heightPadding for menu pane.
   */
   menuPaneHeightPadding: 0,
   
   /**
-  The amount of space to add to the calculated width of the menu item strings to
-  determine the width of the menu pane.
+    The amount of space to add to the calculated width of the menu item strings to
+    determine the width of the menu pane.
+    
+    @type Number
+    @default 35
   */
   menuItemPadding: 35,
   
   /**
-    Disable context menu.
+    @type Boolean
+    @default NO
   */
   isContextMenuEnabled: NO,
   
@@ -22312,7 +24319,9 @@ SC.SelectView = SC.ButtonView.extend(
     This is a property to enable/disable focus rings in buttons. 
     For select_button, we are making it a default.
     
+    @type Boolean
     @default YES
+    @see SC.ButtonView#supportFocusRing
   */
   supportFocusRing: YES,
 
@@ -22341,8 +24350,8 @@ SC.SelectView = SC.ButtonView.extend(
     override this method to implement your own sorting of the menu. By
     default, menu items are sorted using the value shown or the sortKey
 
-    @param{SC.Array} objects the unsorted array of objects to display.
-    @returns sorted array of objects
+    @param {SC.Array} objects the unsorted array of objects to display.
+    @returns {SC.Array} sorted array of objects
   */
   sortObjects: function(objects) {
     if(!this.get('disableSort')){
@@ -22405,7 +24414,7 @@ SC.SelectView = SC.ButtonView.extend(
         object.get(nameKey) : object[nameKey]) : object.toString() ;
 
       // localize name if specified.
-      name = shouldLocalize? name.loc() : name ;
+      name = shouldLocalize? SC.String.loc(name) : name ;
 
       //Get the icon value
       icon = iconKey ? (object.get ?
@@ -22456,7 +24465,7 @@ SC.SelectView = SC.ButtonView.extend(
         isEnabled: itemEnabled,
         checkbox: isChecked,
         target: this,
-        action: this.displaySelectedItem
+        action: 'displaySelectedItem'
       }) ;
 
       //Set the items in the itemList array
@@ -22486,8 +24495,6 @@ SC.SelectView = SC.ButtonView.extend(
   },
 
   /**
-    Button action handler
-
     @private
     @param {DOMMouseEvent} evt mouseup event that triggered the action
   */
@@ -22496,7 +24503,7 @@ SC.SelectView = SC.ButtonView.extend(
     var buttonLabel, menuWidth, scrollWidth, lastMenuWidth, offsetWidth,
       items, elementOffsetWidth, largestMenuWidth, item, element, idx,
       value, itemList, menuControlSize, menuHeightPadding, customView,
-      customMenuView, menu, itemsLength;
+      menu, itemsLength, itemIdx;
     
     buttonLabel = this.$('.sc-button-label')[0] ;
     
@@ -22575,8 +24582,7 @@ SC.SelectView = SC.ButtonView.extend(
     menuHeightPadding = this.get('menuPaneHeightPadding') ;
 
     // get the user defined custom view
-    customView = this.get('exampleView') ;
-    customMenuView = customView ? customView : SC.MenuItemView ;
+    customView = this.get('exampleView') || SC.MenuItemView;
 
     menu  = SC.MenuPane.create({
 
@@ -22598,7 +24604,7 @@ SC.SelectView = SC.ButtonView.extend(
         @default SC.MenuItemView
         @type SC.View
       */
-      exampleView: customMenuView,
+      exampleView: customView,
 
       /**
         This property enables all the items and makes them selectable.
@@ -22621,16 +24627,18 @@ SC.SelectView = SC.ButtonView.extend(
     menu.popup(this, this.preferMatrix) ;
     this.set('menu', menu);
 
-    customView = menu.menuItemViewForContentIndex(this.get('_itemIdx'));
-    customView.becomeFirstResponder();
+    itemIdx = this._itemIdx;
+    if (itemIdx && itemIdx > -1) {
+      customView = menu.menuItemViewForContentIndex(itemIdx);
+      if (customView) { customView.becomeFirstResponder(); }
+    }
 
     this.set('isActive', YES);
     return YES ;
   },
 
-  /**
+  /** @private
      Action method for the select button menu items
-
   */
   displaySelectedItem: function(menuView) {
     var currentItem = menuView.get("selectedItem");
@@ -22640,7 +24648,7 @@ SC.SelectView = SC.ButtonView.extend(
     this.set("_itemIdx", currentItem.get("contentIndex"));
   },
 
-  /**
+  /** @private
      Set the "top" attribute in the prefer matrix property which will
      position menu such that the selected item in the menu will be
      place aligned to the item on the button when menu is opened.
@@ -22690,7 +24698,6 @@ SC.SelectView = SC.ButtonView.extend(
 
   /**
     @private
-
     Holding down the button should display the menu pane.
   */
   mouseDown: function(evt) {
@@ -22746,7 +24753,7 @@ SC.SelectView = SC.ButtonView.extend(
     return YES;
   },
 
-  /**
+  /** @private
     Override mouseExited to not remove the active state on mouseexit.
   */
   mouseExited: function() {
@@ -22755,7 +24762,6 @@ SC.SelectView = SC.ButtonView.extend(
   
   /**
     @private
-
     Handle Key event - Down arrow key
   */
   keyDown: function(event) {
@@ -22769,7 +24775,6 @@ SC.SelectView = SC.ButtonView.extend(
 
   /**
     @private
-
     Pressing the Up or Down arrow key should display the menu pane
   */
   interpretKeyEvents: function(event) {
@@ -22784,11 +24789,6 @@ SC.SelectView = SC.ButtonView.extend(
     return arguments.callee.base.apply(this,arguments);
   },
   
-  /** Function overridden - tied to the isEnabled state */
-  acceptsFirstResponder: function() {
-    return this.get('isEnabled');
-  }.property('isEnabled'),
-  
   /** @private
     Override the button isSelectedDidChange function in order to not perform any action
     on selecting the select_button
@@ -22800,36 +24800,130 @@ SC.SelectView = SC.ButtonView.extend(
 }) ;
 
 /**
-  Default metrics for the different control sizes.
+  @static
+  @type Number
+  @default 0
 */
 SC.SelectView.TINY_OFFSET_X = 0;
+
+/**
+  @static
+  @type Number
+  @default 0
+*/
 SC.SelectView.TINY_OFFSET_Y = 0;
+
+/**
+  @static
+  @type Number
+  @default 0
+*/
 SC.SelectView.TINY_POPUP_MENU_WIDTH_OFFSET = 0;
 
+
+/**
+  @static
+  @type Number
+  @default -18
+*/
 SC.SelectView.SMALL_OFFSET_X = -18;
+
+/**
+  @static
+  @type Number
+  @default 3
+*/
 SC.SelectView.SMALL_OFFSET_Y = 3;
+
+/**
+  @static
+  @type Number
+  @default 7
+*/
 SC.SelectView.SMALL_POPUP_MENU_WIDTH_OFFSET = 7;
 
+
+/**
+  @static
+  @type Number
+  @default -17
+*/
 SC.SelectView.REGULAR_OFFSET_X = -17;
+
+/**
+  @static
+  @type Number
+  @default 3
+*/
 SC.SelectView.REGULAR_OFFSET_Y = 3;
+
+/**
+  @static
+  @type Number
+  @default 4
+*/
 SC.SelectView.REGULAR_POPUP_MENU_WIDTH_OFFSET = 4;
 
+
+/**
+  @static
+  @type Number
+  @default -17
+*/
 SC.SelectView.LARGE_OFFSET_X = -17;
+
+/**
+  @static
+  @type Number
+  @default 6
+*/
 SC.SelectView.LARGE_OFFSET_Y = 6;
+
+/**
+  @static
+  @type Number
+  @default 3
+*/
 SC.SelectView.LARGE_POPUP_MENU_WIDTH_OFFSET = 3;
 
+
+/**
+  @static
+  @type Number
+  @default 0
+*/
 SC.SelectView.HUGE_OFFSET_X = 0;
+
+/**
+  @static
+  @type Number
+  @default 0
+*/
 SC.SelectView.HUGE_OFFSET_Y = 0;
+
+/**
+  @static
+  @type Number
+  @default 0
+*/
 SC.SelectView.HUGE_POPUP_MENU_WIDTH_OFFSET = 0;
 
+
+/**
+  @static
+  @type Number
+  @default -2
+*/
 SC.SelectView.MENU_WIDTH_OFFSET = -2;
 
 /* >>>>>>>>>> BEGIN source/views/select_field.js */
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 
 /**
   @class
@@ -22847,15 +24941,47 @@ SC.SelectView.MENU_WIDTH_OFFSET = -2;
 SC.SelectFieldView = SC.FieldView.extend(
 /** @scope SC.SelectFieldView.prototype */ {
 
+  /**
+    @type Array
+    @default ['objects','nameKey','valueKey','isEnabled']
+    @see SC.View#displayProperties
+  */
+  displayProperties: ['objects','nameKey','valueKey','isEnabled'],
+
+  /**
+    Reflects the value of `isEnabled`.
+    
+    @field
+    @type Boolean
+    @default YES
+  */
+  acceptsFirstResponder: function() {
+    return this.get('isEnabled');
+  }.property('isEnabled'),
+
+  /**
+    @type String
+    @default 'select'
+    @see SC.View#tagName
+  */
   tagName: 'select',
+  
+  /**
+    @type Array
+    @default ['sc-select-field-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-select-field-view'],
  
   /**
     An array of items that will form the menu you want to show.
+    
+    @type Array
+    @default []
   */ 
   objects: [],
   
-  /**
+  /** @private
     Binding default for an array of objects
   */ 
   objectsBindingDefault: SC.Binding.multiple(),
@@ -22864,13 +24990,19 @@ SC.SelectFieldView = SC.FieldView.extend(
     If you set this to a non-null value, then the name shown for each 
     menu item will be pulled from the object using the named property.
     if this is null, the collection objects themselves will be used.
+    
+    @type String
+    @default null
   */
   nameKey: null,
 
   /**
-   If you set this to a non-null value, then the value of this key will
-   be used to sort the objects.  If this is not set, then nameKey will
-   be used.
+    If you set this to a non-null value, then the value of this key will
+    be used to sort the objects.  If this is not set, then nameKey will
+    be used.
+
+    @type String
+    @default null
   */ 
   sortKey: null,
 
@@ -22878,20 +25010,29 @@ SC.SelectFieldView = SC.FieldView.extend(
      Set this to a non-null value to use a key from the passed set of objects
      as the value for the options popup.  If you don't set this, then the
      objects themselves will be used as the value.
+
+     @type String
+     @default null
   */ 
   valueKey: null,
 
   /**
     set this to non-null to place an empty option at the top of the menu.   
+    
+    @type String
+    @default null
   */
   emptyName: null,
 
   /**
     if true, the empty name will be localized.
+    
+    @type Boolean
+    @default NO
   */
-  localize: false,
+  localize: NO,
   
-  /**
+  /** @private
     if true, it means that the nameKey, valueKey or objects changed
   */
   cpDidChange: YES,
@@ -22899,10 +25040,11 @@ SC.SelectFieldView = SC.FieldView.extend(
   /**
     if true, it means that no sorting will occur, objects will appear 
     in the same order as in the array
+    
+    @type Boolean
+    @default NO
   */
   disableSort: NO,
-  
-  
   
   /**
     override this to change the enabled/disabled state of menu items as they
@@ -22913,7 +25055,7 @@ SC.SelectFieldView = SC.FieldView.extend(
     @returns YES if the item should be enabled, NO otherwise
   */  
   validateMenuItem: function(itemValue, itemName) {
-    return true ;
+    return YES;
   },
 
   /**
@@ -22940,6 +25082,7 @@ SC.SelectFieldView = SC.FieldView.extend(
     return objects ;
   },
 
+  /** @private */
   render: function(context, firstTime) {
     if (this.get('cpDidChange')) {
       this.set('cpDidChange', NO);
@@ -22970,7 +25113,7 @@ SC.SelectFieldView = SC.FieldView.extend(
       
         var emptyName = this.get('emptyName') ;
         if (emptyName) {
-          if (shouldLocalize) emptyName = emptyName.loc() ;
+          if (shouldLocalize) emptyName = SC.String.loc(emptyName);
           if(firstTime){
             context.push('<option value="***">'+emptyName+'</option>',
                           '<option disabled="disabled"></option>') ;
@@ -22994,7 +25137,7 @@ SC.SelectFieldView = SC.FieldView.extend(
           // localize name if specified.
           if(shouldLocalize)
           {
-            name = name.loc();
+            name = SC.String.loc(name);
           }
    
           // get the value using the valueKey or the object if no valueKey.
@@ -23005,7 +25148,7 @@ SC.SelectFieldView = SC.FieldView.extend(
           if (!emptyName && index === 0 && fieldValue === '***') {
             this.set('value', value);
           }
-          if (value) value = (SC.guidFor(value)) ? SC.guidFor(value) : value.toString() ;
+          if (value !== null && value !== undefined) value = (SC.guidFor(value)) ? SC.guidFor(value) : value.toString() ;
    
           // render HTML
           var disable = (this.validateMenuItem && this.validateMenuItem(value, name)) ? '' : 'disabled="disabled" ' ;
@@ -23039,49 +25182,49 @@ SC.SelectFieldView = SC.FieldView.extend(
       this.$().attr('disabled', this.get('isEnabled') ? null : 'disabled');
     }
   },
-  
-  displayProperties: ['objects','nameKey','valueKey','isEnabled'],
 
+  /** @private */
   _objectsObserver: function() {
     this.set('cpDidChange', YES);
   }.observes('objects'),
 
+  /** @private */
   _objectArrayObserver: function() {
     this.set('cpDidChange', YES);
     this.propertyDidChange('objects');
   }.observes('*objects.[]'),
     
+  /** @private */
   _nameKeyObserver: function() {
     this.set('cpDidChange', YES);
   }.observes('nameKey'),
    
+  /** @private */
   _valueKeyObserver: function() {
     this.set('cpDidChange', YES);
   }.observes('valueKey'),
-    
-  acceptsFirstResponder: function() {
-    return this.get('isEnabled');
-  }.property('isEnabled'),
    
   // .......................................
   // PRIVATE
   //
    
+  /** @private */
   $input: function() { return this.$(); },
    
-  /* @private */
+  /** @private */
   mouseDown: function(evt) {
-    
     if (!this.get('isEnabled')) {
       evt.stop();
       return YES;
     } else return arguments.callee.base.apply(this,arguments);
   },
    
+  /** @private */
   touchStart: function(evt) {
     return this.mouseDown(evt);
   },
   
+  /** @private */
   touchEnd: function(evt) {
     return this.mouseUp(evt);
   },
@@ -23108,12 +25251,12 @@ SC.SelectFieldView = SC.FieldView.extend(
       
       while(!found && (--loc >= 0)) {
         object = objects.objectAt? objects.objectAt(loc) : objects[loc] ;
-        if (!object) continue; // null means placeholder; just skip
+        if (object === null || object === undefined) continue; // null means placeholder; just skip
       
         // get value using valueKey if there is one or use object
         // map to _guid or toString.
         if (valueKey) object = (object.get) ? object.get(valueKey) : object[valueKey] ;
-        var ov = (object) ? (SC.guidFor(object) ? SC.guidFor(object) : object.toString()) : null ;
+        var ov = (object !== null && object !== undefined) ? (SC.guidFor(object) ? SC.guidFor(object) : object.toString()) : null ;
       
         // use this object value if it matches.
         if (value == ov) found = object ;
@@ -23123,36 +25266,35 @@ SC.SelectFieldView = SC.FieldView.extend(
     return (valueKey || found) ? found : value;
   },
   
+  /** @private */
   setFieldValue: function(newValue) {
     if (SC.none(newValue)) { 
       newValue = '***' ; 
     } else {
-      newValue = ((newValue) ? (SC.guidFor(newValue) ? SC.guidFor(newValue) : newValue.toString()) : null );
+      newValue = ((newValue !== null && newValue !== undefined) ? (SC.guidFor(newValue) ? SC.guidFor(newValue) : newValue.toString()) : null );
     }
     this.$input().val(newValue);
     return this ;
   },
   
-  
-  
- 
-  
+  /** @private */
   fieldDidFocus: function() {
     var isFocused = this.get('isFocused');
     if (!isFocused) this.set('isFocused', true);
   },
 
+  /** @private */
   fieldDidBlur: function() {
     var isFocused = this.get('isFocused');
     if (isFocused) this.set('isFocused', false);
   },
-
-
   
+  /** @private */
   _isFocusedObserver: function() {
     this.$().setClass('focus', this.get('isFocused'));
   }.observes('isFocused'),
 
+  /** @private */
   didCreateLayer: function() {
     var input = this.$input();
     if (this.get('isEnabled') === false) this.$()[0].disabled = true;
@@ -23161,20 +25303,21 @@ SC.SelectFieldView = SC.FieldView.extend(
     SC.Event.add(input, 'change',this, this._field_fieldValueDidChange);
   },
   
+  /** @private */
   willDestroyLayer: function() {
     var input = this.$input();
     SC.Event.remove(input, 'focus', this, this.fieldDidFocus);
     SC.Event.remove(input, 'blur', this, this.fieldDidBlur);
     SC.Event.remove(input, 'change',this, this._field_fieldValueDidChange);
   }
- 
+
 });
 
 /* >>>>>>>>>> BEGIN source/views/slider.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -23255,7 +25398,15 @@ SC.SliderView = SC.View.extend(SC.Control,
   // INTERNAL PROPERTIES
   // 
   
-  displayProperties: 'displayValue minimum maximum step frame'.w(),
+  displayProperties: ['displayValue', 'ariaValue', 'minimum', 'maximum', 'step', 'frame'],
+
+  /**
+   @property
+   The raw, unchanged value to be provided to screen readers and the like.
+  */
+  ariaValue: function() {
+    return this.get('value');
+  }.property('value').cacheable(),
 
   // The name of the render delegate which is creating and maintaining
   // the DOM associated with instances of this view
@@ -23376,8 +25527,8 @@ SC.SliderView = SC.View.extend(SC.Control,
   
   /** tied to the isEnabled state */
   acceptsFirstResponder: function() {
-    if(!SC.SAFARI_FOCUS_BEHAVIOR) return this.get('isEnabled');
-    else return NO;
+    if (SC.FOCUS_ALL_CONTROLS) { return this.get('isEnabled'); }
+    return NO;
   }.property('isEnabled'),
   
   willBecomeKeyResponderFrom: function(keyView) {
@@ -23467,7 +25618,7 @@ SC.SliderView = SC.View.extend(SC.Control,
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -23482,15 +25633,20 @@ sc_require('views/disclosure');
   
   @extends SC.View
   @extends SC.Control
+  @extends SC.CollectionGroup
   @author Charles Jolley
   @author Erich Ocean
   @version 1.0
   @since 0.9
 */
-
 SC.SourceListGroupView = SC.View.extend(SC.Control, SC.CollectionGroup,
-/** @scope SC.SourceListGroupView.prototoype */ {
+/** @scope SC.SourceListGroupView.prototype */ {
   
+  /**
+    @type Array
+    @default ['sc-source-list-group']
+    @see SC.View#classNames
+  */
   classNames: ['sc-source-list-group'],
   
   // ..........................................................
@@ -23501,6 +25657,7 @@ SC.SourceListGroupView = SC.View.extend(SC.Control, SC.CollectionGroup,
     The content object the source list group will display.
     
     @type SC.Object
+    @default null
   */
   content: null,
   
@@ -23509,6 +25666,7 @@ SC.SourceListGroupView = SC.View.extend(SC.Control, SC.CollectionGroup,
     layout size of the group.
     
     @type Boolean
+    @default YES
   */
   isGroupVisible: YES,
   
@@ -23520,6 +25678,7 @@ SC.SourceListGroupView = SC.View.extend(SC.Control, SC.CollectionGroup,
     you want and the SourceListView will not leave room for it.
     
     @type Boolean
+    @default YES
   */
   hasGroupTitle: YES,
   
@@ -23527,6 +25686,7 @@ SC.SourceListGroupView = SC.View.extend(SC.Control, SC.CollectionGroup,
     The content property key to use as the group view's title.
     
     @type String
+    @default null
   */
   groupTitleKey: null,
   
@@ -23535,9 +25695,11 @@ SC.SourceListGroupView = SC.View.extend(SC.Control, SC.CollectionGroup,
     visible or not.
     
     @type String
+    @default null
   */
   groupVisibleKey: null,
   
+  /** @private */
   render: function(context, firstTime) {
     context.push('<div role="button" class="sc-source-list-label sc-disclosure-view sc-button-view button disclosure no-disclosure">',
               '<img src="'+SC.BLANK_IMAGE_URL+'" class="button" />',
@@ -23614,11 +25776,7 @@ SC.SourceListGroupView = SC.View.extend(SC.Control, SC.CollectionGroup,
   /** @private */
   labelView: SC.DisclosureView.extend({
     
-    /** 
-      Always default to open disclosures.
-      
-      @type Boolean
-    */
+    /** @private */
     value: YES,
     
     /** @private
@@ -23638,14 +25796,12 @@ SC.SourceListGroupView = SC.View.extend(SC.Control, SC.CollectionGroup,
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-sc_require('views/list') ;
+sc_require('views/list');
 sc_require('views/source_list_group');
-
-SC.BENCHMARK_SOURCE_LIST_VIEW = YES ;
 
 /** @class
   
@@ -23662,24 +25818,38 @@ SC.SourceListView = SC.ListView.extend(
   theme: 'source-list',
 
   /**
-    Add class name to HTML for styling.
+    @type Array
+    @default ['sc-source-list']
+    @see SC.View#classNames
   */
   classNames: ['sc-source-list'],
   
   /**
     Default row height for source list items is larger.
+    
+    @type Number
+    @default 32
+    @see SC.ListView#rowHeight
   */
   rowHeight: 32,
 
   /**
     By default source lists should not select on mouse down since you will
     often want to drag an item instead of selecting it.
+    
+    @type Boolean
+    @default NO
+    @see SC.ListView#selectOnMouseDown
   */
   selectOnMouseDown: NO,
   
   /**
     By default, SourceListView's trigger any action you set whenever the user
     clicks on an item.  This gives the SourceList a "menu" like behavior.
+    
+    @type Boolean
+    @default YES
+    @see SC.ListView#actOnSelect
   */
   actOnSelect: YES
 
@@ -23689,11 +25859,10 @@ SC.SourceListView = SC.ListView.extend(
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-sc_require('views/split');
 
 /**
   @class
@@ -23710,7 +25879,6 @@ sc_require('views/split');
   be surrounded by two other views.
 
   @extends SC.View
-
   @author Charles Jolley
   @author Lawrence Pit
   @author Erich Ocean
@@ -23719,20 +25887,28 @@ sc_require('views/split');
 SC.SplitDividerView = SC.View.extend(
 /** @scope SC.SplitDividerView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-split-divider-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-split-divider-view'],
   
   /** @private */
 
+  /** @private */
   mouseDown: function(evt) {
     var splitView = this.get('splitView');
     return (splitView) ? splitView.mouseDownInThumbView(evt, this) : arguments.callee.base.apply(this,arguments);
   },
   
+  /** @private */
   doubleClick: function(evt) {
     var splitView = this.get('splitView');
     return (splitView) ? splitView.doubleClickInThumbView(evt, this) : arguments.callee.base.apply(this,arguments);
   },
   
+  /** @private */
   touchStart: function(evt){
     return this.mouseDown(evt);
   }
@@ -23743,7 +25919,7 @@ SC.SplitDividerView = SC.View.extend(
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -23761,23 +25937,21 @@ SC.RESIZE_BOTTOM_RIGHT = 'resize-bottom-right';
   optionally, a splitDividerView.  You can also set various other properties
   to control the minimum and maximum thickness allowed for the flexible views.
   
-  h2. Example
+  ## Example
   
-  {{{
-    SC.SplitView.design({
+      SC.SplitView.design({
       
-      // the left view...
-      topLeftView: SC.View.design({
-        // view contents
-      }),
+        // the left view...
+        topLeftView: SC.View.design({
+          // view contents
+        }),
       
-      // the right view
-      bottomRightView: SC.View.design({
-        // view contents
+        // the right view
+        bottomRightView: SC.View.design({
+          // view contents
+        })
+      
       })
-      
-    })
-  }}}
   
   When the user clicks and drags on a split divider view, it will
   automatically resize the views immediately before and after the split
@@ -23807,7 +25981,6 @@ SC.RESIZE_BOTTOM_RIGHT = 'resize-bottom-right';
   
   @extends SC.View
   @since SproutCore 1.0
-  
   @author Charles Jolley
   @author Lawrence Pit
   @author Erich Ocean
@@ -23827,7 +26000,7 @@ SC.SplitView = SC.View.extend(
   /**
     Direction of layout.  Must be SC.LAYOUT_HORIZONTAL or SC.LAYOUT_VERTICAL.
     
-    @property {String}
+    @type String
     @default SC.LAYOUT_HORIZONTAL
   */
   layoutDirection: SC.LAYOUT_HORIZONTAL,
@@ -23835,7 +26008,7 @@ SC.SplitView = SC.View.extend(
   /**
     Set to NO to disable collapsing for all views.
     
-    @property {Boolean}
+    @type Boolean
     @default YES
   */
   canCollapseViews: YES,
@@ -23847,7 +26020,7 @@ SC.SplitView = SC.View.extend(
     | SC.RESIZE_BOTTOM_RIGHT | (default) resizes bottomRightView |
     | SC.RESIZE_TOP_LEFT | resized topLeftView |
     
-    @property {String}
+    @type String
     @default SC.RESIZE_BOTTOM_RIGHT
   */
   autoresizeBehavior: SC.RESIZE_BOTTOM_RIGHT,
@@ -23860,7 +26033,7 @@ SC.SplitView = SC.View.extend(
     The thickness will be applied to the opposite view defined by 
     autoresizeBehavior.
     
-    @property {Number}
+    @type Number
     @default 0.5
   */
   defaultThickness: 0.5,
@@ -23868,7 +26041,7 @@ SC.SplitView = SC.View.extend(
   /**
     Sets minimum thickness of topLeft view.
 
-    @property {Number}
+    @type Number
     @default null
   */
   topLeftMinThickness: null,
@@ -23876,7 +26049,7 @@ SC.SplitView = SC.View.extend(
   /**
     Sets maximum thickness of topLeft view.
 
-    @property {Number}
+    @type Number
     @default null
   */
   topLeftMaxThickness: null,
@@ -23884,7 +26057,7 @@ SC.SplitView = SC.View.extend(
   /**
     Sets minimum thickness of bottomRight view.
 
-    @property {Number}
+    @type Number
     @default null
   */
   bottomRightMinThickness: null,
@@ -23892,7 +26065,7 @@ SC.SplitView = SC.View.extend(
   /**
     Sets maximum thickness of bottomRight view.
 
-    @property {Number}
+    @type Number
     @default null
   */
   bottomRightMaxThickness: null,
@@ -23900,7 +26073,7 @@ SC.SplitView = SC.View.extend(
   /**
     Sets thickness of divider.
 
-    @property {Number}
+    @type Number
     @default null
   */
   dividerThickness: null,
@@ -23908,7 +26081,7 @@ SC.SplitView = SC.View.extend(
   /**
     Yes, we're a split view.
     
-    @property {Boolean}
+    @type Boolean
     @default YES
   */
   isSplitView: YES,
@@ -23916,7 +26089,7 @@ SC.SplitView = SC.View.extend(
   /**
     The view to use for the top left
     
-    @property {SC.View}
+    @type SC.View
     @default SC.View
   */
   topLeftView: SC.View,
@@ -23924,7 +26097,7 @@ SC.SplitView = SC.View.extend(
   /**
     The view to use for the divider
     
-    @property {SC.View}
+    @type SC.View
     @default SC.SplitDividerView
   */
   dividerView: SC.SplitDividerView,
@@ -23932,7 +26105,7 @@ SC.SplitView = SC.View.extend(
   /**
     The view to use for the bottom right
     
-    @property {SC.View}
+    @type SC.View
     @default SC.View
   */
   bottomRightView: SC.View,
@@ -23940,7 +26113,7 @@ SC.SplitView = SC.View.extend(
   /**
     The current thickness for the topLeftView
     
-    @property {Number}
+    @type Number
     @isReadOnly
   */
   topLeftThickness: function() {
@@ -23951,7 +26124,7 @@ SC.SplitView = SC.View.extend(
   /**
     The current thickness for the bottomRightView
     
-    @property {Number}
+    @type Number
     @isReadOnly
   */
   bottomRightThickness: function() {
@@ -23962,7 +26135,7 @@ SC.SplitView = SC.View.extend(
   /**
     The cursor thumb views should use for themselves
     
-    @property {SC.Cursor}
+    @type SC.Cursor
     @default null
   */
   thumbViewCursor: null,
@@ -23970,7 +26143,7 @@ SC.SplitView = SC.View.extend(
   /**
     Used by split divider to decide if the view can be collapsed.
     
-    @property {Boolean}
+    @type Boolean
     @isReadOnly
   */
   canCollapseView: function(view) {
@@ -23989,7 +26162,7 @@ SC.SplitView = SC.View.extend(
     return (direction === SC.LAYOUT_HORIZONTAL) ? ret.width : ret.height;
   },
   
-  /**
+  /** @private
     Creates the topLeftView/dividerView/bottomRightView and adds them to the
     childViews array
     
@@ -24015,7 +26188,7 @@ SC.SplitView = SC.View.extend(
     return this;
   },
   
-  /**
+  /** @private
     Layout the views.
     
     This method needs to be called anytime you change the view thicknesses
@@ -24266,7 +26439,7 @@ SC.SplitView = SC.View.extend(
     else context.addClass('sc-vertical');
   },
   
-  /**
+  /** @private
     Update the split view's layout based on mouse movement.
     
     Call this method in the mouseDown: method of your thumb view. The split view
@@ -24299,12 +26472,14 @@ SC.SplitView = SC.View.extend(
     return YES;
   },
   
+  /** @private */
   mouseDragged: function(evt) {
     var offset = (this._layoutDirection === SC.LAYOUT_HORIZONTAL) ? evt.pageX - this._mouseDownX : evt.pageY - this._mouseDownY ;
     this._updateTopLeftThickness(offset);
     return YES;
   },
   
+  /** @private */
   mouseUp: function(evt) {
     if (this._inLiveResize === YES) {
     	this._thumbView = null; // avoid memory leaks
@@ -24323,14 +26498,17 @@ SC.SplitView = SC.View.extend(
     return NO;
   },
   
+  /** @private */
   touchesDragged: function(evt){
     return this.mouseDragged(evt);
   },
   
+  /** @private */
   touchEnd: function(evt){
     return this.mouseUp(evt);
   },
   
+  /** @private */
   doubleClickInThumbView: function(evt, thumbView) {
     var view = this._topLeftView,
         isCollapsed = view.get('isCollapsed') || NO;
@@ -24454,6 +26632,7 @@ SC.SplitView = SC.View.extend(
   },
   
   
+  /** @private */
   _updateBottomRightThickness: function(offset) {
     var topLeftView = this._topLeftView ,
         bottomRightView = this._bottomRightView,
@@ -24598,11 +26777,12 @@ SC.SplitView = SC.View.extend(
   },
   
   /* Force to rendering once the pane is attached */
+  /** @private */
   _forceSplitCalculation: function(){
     this.updateLayout(); 
   }.observes('*pane.isPaneAttached'),
 
-  /**
+  /** @private
     This method is invoked on the split view when the view resizes due to a layout
     change or due to the parent view resizing. It forces an update on topLeft and
     bottomRight thickness.
@@ -24619,10 +26799,12 @@ SC.SplitView = SC.View.extend(
 });
 
 // TODO: This should be a mixin to the few classes that need it
-SC.mixin(SC.View.prototype, {
+SC.mixin(SC.View.prototype,
+/** @scope SC.View.prototype */ {
+
   /**
     The current split view this view is embedded in (may be null).
-    @property {SC.SplitView}
+    @type SC.SplitView
   */
   splitView: function() {
     var view = this ;
@@ -24636,7 +26818,7 @@ SC.mixin(SC.View.prototype, {
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -24651,7 +26833,7 @@ sc_require('views/collection') ;
   collections with complex displays and variable heights such as comments or
   small notification queues.
   
-  h2. Static Layout
+  ## Static Layout
   
   This view makes no attempt to size or position your child views.  It assumes
   you are using StaticLayout for your child views.  If you don't enable static
@@ -24664,20 +26846,30 @@ sc_require('views/collection') ;
   @extends SC.CollectionView
   @since SproutCore 0.9
 */
-SC.StackedView = SC.CollectionView.extend( 
-/** SC.StackedView.prototype */ {
+SC.StackedView = SC.CollectionView.extend(
+/** @scope SC.StackedView.prototype */ {
   
+  /**
+    @type Array
+    @default ['sc-stacked-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-stacked-view'],
   
   /** 
     Default layout for a stacked view will fill the parent view but auto-
     adjust the height of the view.
+    
+    @type Hash
+    @default `{ top: 0, left: 0, right: 0, height: 1 }`
+    @see SC.View#layout
   */
   layout: { top: 0, left: 0, right: 0, height: 1 },
   
   /**
     Return full range of its indexes for nowShowing
     
+    @param {Rect} rect
     @returns {SC.IndexSet} full range of indexes
   */
   computeNowShowing: function(rect) {
@@ -24709,6 +26901,7 @@ SC.StackedView = SC.CollectionView.extend(
     return this;
   },
   
+  /** @private */
   _updateHeight: function() {
     
     var childViews = this.get('childViews'),
@@ -24748,7 +26941,7 @@ SC.StackedView = SC.CollectionView.extend(
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -24773,12 +26966,23 @@ SC.StackedView = SC.CollectionView.extend(
   @since SproutCore 1.2
   @author Tom Dale
 */
+SC.StaticContentView = SC.View.extend(SC.StaticLayout,
+/** @scope SC.StaticContentView.prototype */ {
 
-SC.StaticContentView = SC.View.extend(SC.StaticLayout, {
-/** @scope SC.StaticContentView.prototype */
+  /**
+    @type Array
+    @default ['sc-static-content-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-static-content-view'],
 
+  /**
+    @type Array
+    @default ['content']
+    @see SC.View#displayProperties
+  */
   displayProperties: ['content'],
+
 
   // ..........................................................
   // PROPERTIES
@@ -24789,6 +26993,7 @@ SC.StaticContentView = SC.View.extend(SC.StaticLayout, {
     the DOM, so ensure that any user-generated content has been escaped.
 
     @type String
+    @default null
   */
   content: null,
 
@@ -24868,11 +27073,13 @@ SC.StaticContentView = SC.View.extend(SC.StaticLayout, {
     }
   },
   
+  /** @private */
   touchStart: function(evt){
     evt.allowDefault();
     return YES;
   },
   
+  /** @private */
   touchEnd: function(evt){
     evt.allowDefault();
     return YES;
@@ -24883,14 +27090,31 @@ SC.StaticContentView = SC.View.extend(SC.StaticLayout, {
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 sc_require('views/segmented');
 
+/**
+  @static
+  @type String
+  @constant
+*/
 SC.TOP_LOCATION = 'top';
+
+/**
+  @static
+  @type String
+  @constant
+*/
 SC.TOP_TOOLBAR_LOCATION = 'top-toolbar';
+
+/**
+  @static
+  @type String
+  @constant
+*/
 SC.BOTTOM_LOCATION = 'bottom';
 
 /** 
@@ -24906,8 +27130,18 @@ SC.BOTTOM_LOCATION = 'bottom';
 SC.TabView = SC.View.extend(
 /** @scope SC.TabView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-tab-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-tab-view'],
   
+  /**
+    @type Array
+    @default ['nowShowing']
+    @see SC.View#displayProperties
+  */
   displayProperties: ['nowShowing'],
 
   // ..........................................................
@@ -24916,27 +27150,85 @@ SC.TabView = SC.View.extend(
 
  /** 
     Set nowShowing with the page you want to display.
+    
+    @type String
+    @default null
   */
   nowShowing: null,
   
+  /**
+    @type Array
+    @default []
+  */
   items: [],
   
+  /**
+    @type Boolean
+    @default YES
+  */
   isEnabled: YES,
   
+  /**
+    @type String
+    @default null
+  */
   itemTitleKey: null,
+  
+  /**
+    @type String
+    @default null
+  */
   itemValueKey: null,
+  
+  /**
+    @type String
+    @default null
+  */
   itemIsEnabledKey: null,
+  
+  /**
+    @type String
+    @default null
+  */
   itemIconKey: null,
+  
+  /**
+    @type String
+    @default null
+  */
   itemWidthKey: null,
+  
+  /**
+    @type String
+    @default null
+  */
   itemToolTipKey: null,
+  
+  /**
+    @type Number
+    @default SC.REGULAR_BUTTON_HEIGHT
+  */
   tabHeight: SC.REGULAR_BUTTON_HEIGHT,
   
+  /**
+    Possible values:
+    
+      - SC.TOP_LOCATION
+      - SC.TOP_TOOLBAR_LOCATION
+      - SC.BOTTOM_LOCATION
+    
+    @type String
+    @default SC.TOP_LOCATION
+  */
   tabLocation: SC.TOP_LOCATION,
   
   /** 
     If set, then the tab location will be automatically saved in the user
     defaults.  Browsers that support localStorage will automatically store
     this information locally.
+    
+    @type String
+    @default null
   */
   userDefaultKey: null,
   
@@ -24946,6 +27238,7 @@ SC.TabView = SC.View.extend(
   // 
   
   // forward important changes on to child views
+  /** @private */
   _tab_nowShowingDidChange: function() {
     var v = this.get('nowShowing');
     this.get('containerView').set('nowShowing',v);
@@ -24953,6 +27246,7 @@ SC.TabView = SC.View.extend(
     return this ;
   }.observes('nowShowing'),
 
+  /** @private */
   _tab_saveUserDefault: function() {
     // if user default is set, save also
     var v = this.get('nowShowing');
@@ -24962,6 +27256,7 @@ SC.TabView = SC.View.extend(
     }
   }.observes('nowShowing'),
   
+  /** @private */
   _tab_itemsDidChange: function() {
     this.get('segmentedView').set('items', this.get('items'));
     return this ;    
@@ -24975,6 +27270,7 @@ SC.TabView = SC.View.extend(
     this._tab_nowShowingDidChange()._tab_itemsDidChange();
   },
 
+  /** @private */
   awake: function() {
     arguments.callee.base.apply(this,arguments);  
     var defaultKey = this.get('userDefaultKey');
@@ -24986,20 +27282,22 @@ SC.TabView = SC.View.extend(
 
   },
   
+  /** @private */
   createChildViews: function() {
     var childViews  = [], view, containerView, layout,
         tabLocation = this.get('tabLocation'),
         tabHeight   = this.get('tabHeight');
-    
-    layout = (tabLocation === SC.TOP_LOCATION) ?
-             { top: tabHeight/2+1, left: 0, right: 0, bottom: 0 } :
-             (tabLocation === SC.TOP_TOOLBAR_LOCATION) ?
-             { top: tabHeight+1, left: 0, right: 0, bottom: 0 } :
-             { top: 0, left: 0, right: 0, bottom: tabHeight-1 } ;
-    
-    containerView = this.containerView.extend(SC.Border, {
+
+    if (tabLocation === SC.TOP_LOCATION) {
+      layout = { top: tabHeight/2+1, left: 0, right: 0, bottom: 0, border: 1 };
+    } else if (tabLocation === SC.TOP_TOOLBAR_LOCATION) {
+      layout = { top: tabHeight+1, left: 0, right: 0, bottom: 0, border: 1 };
+    } else {
+      layout = { top: 0, left: 0, right: 0, bottom: (tabHeight/2) - 1, border: 1 };
+    }
+
+    containerView = this.containerView.extend({
       layout: layout,
-      borderStyle: SC.BORDER_BLACK,
       //adding the role
       ariaRole: 'tabpanel'
     });
@@ -25032,6 +27330,7 @@ SC.TabView = SC.View.extend(
         this.invokeOnce(this.updateLayerIfNeeded) ;
       }.observes('value'),
 
+      /** @private */
       init: function() {
         // before we setup the rest of the view, copy key config properties 
         // from the owner view...
@@ -25058,20 +27357,28 @@ SC.TabView = SC.View.extend(
     The containerView managed by this tab view.  Note that TabView uses a 
     custom container view.  You can access this view but you cannot change 
     it.
+    
+    @type SC.View
+    @default SC.ContainerView
+    @readOnly
   */
   containerView: SC.ContainerView.extend({ renderDelegateName: 'wellRenderDelegate' }),
   
+  /**
+    @type SC.View
+    @default SC.SegmentedView
+  */
   segmentedView: SC.SegmentedView
   
 }) ;
 
-SC._TAB_ITEM_KEYS = 'itemTitleKey itemValueKey itemIsEnabledKey itemIconKey itemWidthKey itemToolTipKey itemActionKey itemTargetKey'.w();
+SC._TAB_ITEM_KEYS = ['itemTitleKey', 'itemValueKey', 'itemIsEnabledKey', 'itemIconKey', 'itemWidthKey', 'itemToolTipKey', 'itemActionKey', 'itemTargetKey'];
 
 /* >>>>>>>>>> BEGIN source/views/thumb.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -25094,12 +27401,22 @@ SC._TAB_ITEM_KEYS = 'itemTitleKey itemValueKey itemIsEnabledKey itemIconKey item
 SC.ThumbView = SC.View.extend(
 /** @scope SC.ThumbView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-thumb-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-thumb-view'],
   
   /**
     Enable this thumb view to control its parent split view.
+    
+    @type Boolean
+    @default YES
   */
   isEnabled: YES,
+  
+  /** @private */
   isEnabledBindingDefault: SC.Binding.bool(),
   
   /** @private */
@@ -25109,6 +27426,7 @@ SC.ThumbView = SC.View.extend(
     return arguments.callee.base.apply(this,arguments) ;
   },
   
+  /** @private */
   mouseDown: function(evt) {
     if (!this.get('isEnabled')) return NO ;
     
@@ -25116,19 +27434,21 @@ SC.ThumbView = SC.View.extend(
     return (splitView) ? splitView.mouseDownInThumbView(evt, this) : arguments.callee.base.apply(this,arguments);
   },
   
+  /** @private */
   touchStart: function(evt) {
     return this.mouseDown(evt);
   }
-    
+
 });
 
 /* >>>>>>>>>> BEGIN source/views/web.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
 /** @class
 
   Used to display an iframe. The source, (specified by the value property) of 
@@ -25139,21 +27459,36 @@ SC.ThumbView = SC.View.extend(
   @extends SC.Control
   @since SproutCore 1.0
 */
-SC.WebView = SC.View.extend(SC.Control, {
-/** @scope SC.WebView.prototype */
+SC.WebView = SC.View.extend(SC.Control,
+/** @scope SC.WebView.prototype */ {
+
+  /**
+    @type Array
+    @default ['sc-web-view']
+    @see SC.View#classNames
+  */
   classNames: 'sc-web-view',
+  
+  /**
+    @type Array
+    @default ['value', 'shouldAutoResize']
+    @see SC.View#displayProperties
+  */
   displayProperties: ['value', 'shouldAutoResize'],
 
   /**
-  The content of the iframe can be bigger than the size specifed when creating
-  the view. If you want the view to be auto-resized to the dimensions of the 
-  iframe, then set the value of this property to YES.
-  The web view can be auto resized only if the contents are from the same
-  domain as the parent domain.
-  @property{Boolean}
+    The content of the iframe can be bigger than the size specifed when creating
+    the view. If you want the view to be auto-resized to the dimensions of the 
+    iframe, then set the value of this property to YES.
+    The web view can be auto resized only if the contents are from the same
+    domain as the parent domain.
+
+    @type Boolean
+    @default NO
   */
   shouldAutoResize: NO,
 
+  /** @private */
   render: function(context, firstTime) {
     var src = this.get('value');
     if (firstTime) {
@@ -25167,7 +27502,7 @@ SC.WebView = SC.View.extend(SC.Control, {
     }
   },
 
-  /**
+  /** @private
   Called when the layer gets created. 
   */
   didCreateLayer: function() {
@@ -25177,14 +27512,13 @@ SC.WebView = SC.View.extend(SC.Control, {
   },
 
 
-  /** 
-  Called when iframe onload event is fired.
-  1. Resizes the view to fit the contents of the iframe using the 
-  scroll width and scroll height of the contents of the iframe
+  /**  @private
+    Called when iframe onload event is fired.
+    1. Resizes the view to fit the contents of the iframe using the 
+    scroll width and scroll height of the contents of the iframe
   
-  The iframe contents can be accessed only when the src is from the same
-  domain as the parent document
-  @returns {void}
+    The iframe contents can be accessed only when the src is from the same
+    domain as the parent document
   */
   iframeDidLoad: function() {
     //fit the iframe to size of the contents.
@@ -25200,27 +27534,33 @@ SC.WebView = SC.View.extend(SC.Control, {
           //TODO: try out document flows other than top to bottom.
           if (!SC.browser.isIE){
             this.$().width(docElement.scrollWidth);
-            this.$().height(docElement.scrollHeight);          
+            this.$().height(docElement.scrollHeight);
           } else {
             this.$().width(docElement.scrollWidth + 12);
-            this.$().height(docElement.scrollHeight + 5);          
+            this.$().height(docElement.scrollHeight + 5);
           }
         }
       }
     }
   }
+
 });
 
 /* >>>>>>>>>> BEGIN source/views/well.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-// Constants
-SC.WELL_CONTAINER_PADDING=15;
+/**
+  @static
+  @constant
+  @type Number
+  @default 15
+*/
+SC.WELL_CONTAINER_PADDING = 15;
 
 /** @class
 
@@ -25236,22 +27576,34 @@ SC.WELL_CONTAINER_PADDING=15;
 SC.WellView = SC.ContainerView.extend(
 /** @scope SC.WellView.prototype */ {
   
+  /**
+    @type Array
+    @default ['sc-well-view']
+    @see SC.View#classNames
+  */
   classNames: 'sc-well-view',
   
   /**
     Layout for the content of the container view.
-    @property {Object}
+    @type Hash
   */
   contentLayout: {
-    top:SC.WELL_CONTAINER_PADDING, bottom:SC.WELL_CONTAINER_PADDING,
-    left:SC.WELL_CONTAINER_PADDING, right:SC.WELL_CONTAINER_PADDING},
-  
+    top: SC.WELL_CONTAINER_PADDING,
+    bottom: SC.WELL_CONTAINER_PADDING,
+    left: SC.WELL_CONTAINER_PADDING,
+    right: SC.WELL_CONTAINER_PADDING
+  },
   
   /**
+    @type String
+    @default 'wellRenderDelegate'
+  */
+  renderDelegateName: 'wellRenderDelegate',
+  
+  /** @private
      Overrides createChildViews and replaces the layout of the contentView
      with the one in contentLayout.
    */
-  
   createChildViews: function() {
     // if contentView is defined, then create the content
     var view = this.get('contentView') ;
@@ -25262,8 +27614,7 @@ SC.WellView = SC.ContainerView.extend(
     } 
   },
 
-  renderDelegateName: 'wellRenderDelegate',
-  /**
+  /** @private
      Invoked whenever the content property changes.  This method will simply
      call replaceContent and set the contentLayout in the new contentView.
      

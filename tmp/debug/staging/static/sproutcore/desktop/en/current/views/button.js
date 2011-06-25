@@ -1,9 +1,44 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+/**
+  @static
+  @constant
+  @type String
+*/
+SC.TOGGLE_BEHAVIOR = 'toggle';
+
+/**
+  @static
+  @constant
+  @type String
+*/
+SC.PUSH_BEHAVIOR =   'push';
+
+/**
+  @static
+  @constant
+  @type String
+*/
+SC.TOGGLE_ON_BEHAVIOR = 'on';
+
+/**
+  @static
+  @constant
+  @type String
+*/
+SC.TOGGLE_OFF_BEHAVIOR = 'off';
+
+/**
+  @static
+  @constant
+  @type String
+*/
+SC.HOLD_BEHAVIOR = 'hold';
 
 /** @class
 
@@ -19,17 +54,26 @@
 
   @extends SC.View
   @extends SC.Control
-  @extends SC.Button
   @since SproutCore 1.0
 */
-SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
+SC.ButtonView = SC.View.extend(SC.Control,
 /** @scope SC.ButtonView.prototype */ {
 
   /**
-    The HTML representation of SC.ButtonView contains the 'sc-button-view'
-    class.
+    Tied to the isEnabled state
+    
+    @type Boolean
+    @default YES
+  */
+  acceptsFirstResponder: function() {
+    if (SC.FOCUS_ALL_CONTROLS) { return this.get('isEnabled'); }
+    return NO;
+  }.property('isEnabled'),
 
-    @property {Array}
+  /**
+    @type Array
+    @default ['sc-button-view']
+    @see SC.View#classNames
   */
   classNames: ['sc-button-view'],
 
@@ -37,26 +81,169 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     The theme to apply to the button. By default, a subtheme with the name of
     'square' is created for backwards-compatibility.
 
-    @property {String}
+    @type String
+    @default 'square'
   */
   themeName: 'square',
+
+
+  // ..........................................................
+  // Value Handling
+  // 
+  
+  /**
+    Used to automatically update the state of the button view for toggle style
+    buttons.
+
+    for toggle style buttons, you can set the value and it will be used to
+    update the isSelected state of the button view.  The value will also
+    change as the user selects or deselects.  You can control which values
+    the button will treat as isSelected by setting the toggleOnValue and 
+    toggleOffValue.  Alternatively, if you leave these properties set to
+    YES or NO, the button will do its best to convert a value to an 
+    appropriate state:
+  
+      - null, false, 0  -> isSelected = false
+      - any other single value -> isSelected = true
+      - array -> if all values are the same state: that state.  otherwise MIXED.
+    
+    @type Object
+    @default null
+  */  
+  value: null,
+
+  /**
+    Value of a selected toggle button.
+    
+    For a toggle button, set this to any object value you want. The button
+    will be selected if the value property equals the targetValue. If the
+    value is an array of multiple items that contains the targetValue, then
+    the button will be set to a mixed state.
+    
+    default is YES
+    
+    @type Boolean|Object
+    @default YES
+  */
+  toggleOnValue: YES,
+
+  /**
+    Value of an unselected toggle button.
+    
+    For a toggle button, set this to any object value you want.  When the
+    user toggle's the button off, the value of the button will be set to this
+    value.
+    
+    @type Boolean|Object
+    @default NO
+  */
+  toggleOffValue: NO,
+
+
+  // ..........................................................
+  // Title Handling
+  // 
+  
+  /**
+    If YES, then the title will be localized.
+    
+    @type Boolean
+    @default NO
+  */
+  localize: NO,
+  
+  /** @private */
+  localizeBindingDefault: SC.Binding.bool(),
+
+  /**
+    The button title.  If localize is YES, then this should be the localization key to display.  Otherwise, this will be the actual string displayed in the title.  This property is observable and bindable.
+    
+    @type String
+    @default ""
+  */
+  title: "",
+
+  /**
+    If set, the title property will be updated automatically
+    from the content using the key you specify.
+    
+    @type String
+    @default null
+  */
+  contentTitleKey: null,
+  
+  /**
+    The button icon. Set this to either a URL or a CSS class name (for
+    spriting). Note that if you pass a URL, it must contain at
+    least one slash to be detected as such.
+    
+    @type String
+    @default null
+  */
+  icon: null,
+
+  /**
+    If you set this property, the icon will be updated automatically from the
+    content using the key you specify.
+    
+    @type String
+    @default null
+  */
+  contentIconKey: null,
+
+  /**
+    If YES, button will attempt to display an ellipsis if the title cannot
+    fit inside of the visible area. This feature is not available on all
+    browsers.
+    
+    @type Boolean
+    @default YES
+  */
+  needsEllipsis: YES,
+  
+  /**
+    This is generated by localizing the title property if necessary.
+    
+    @type String
+    @observes 'title'
+    @observes 'localize'
+  */
+  displayTitle: function() {
+    var ret = this.get('title');
+    return (ret && this.get('localize')) ? SC.String.loc(ret) : (ret || '');
+  }.property('title','localize').cacheable(),
+  
+  /**
+    The key equivalent that should trigger this button on the page.
+    
+    @type String
+    @default null
+  */
+  keyEquivalent: null,
+
+
+  // ..........................................................
+  // BEHAVIOR
+  // 
 
   /**
     The behavioral mode of this button.
 
     Possible values are:
-    - *SC.PUSH_BEHAVIOR* Pressing the button will trigger an action tied to the
-      button. Does not change the value of the button.
-    - *SC.TOGGLE_BEHAVIOR* Pressing the button will invert the current value of
-      the button. If the button has a mixed value, it will be set to true.
-    - *SC.TOGGLE_ON_BEHAVIOR* Pressing the button will set the current state to
-      true no matter the previous value.
-    - *SC.TOGGLE_OFF_BEHAVIOR* Pressing the button will set the current state to
-      false no matter the previous value.
-    - *SC.HOLD_BEHAVIOR* Pressing the button will cause the action to repeat at a
-      regular interval specifed by 'holdInterval'
 
-    @property {String}
+      - *SC.PUSH_BEHAVIOR* Pressing the button will trigger an action tied to the
+        button. Does not change the value of the button.
+      - *SC.TOGGLE_BEHAVIOR* Pressing the button will invert the current value of
+        the button. If the button has a mixed value, it will be set to true.
+      - *SC.TOGGLE_ON_BEHAVIOR* Pressing the button will set the current state to
+        true no matter the previous value.
+      - *SC.TOGGLE_OFF_BEHAVIOR* Pressing the button will set the current state to
+        false no matter the previous value.
+      - *SC.HOLD_BEHAVIOR* Pressing the button will cause the action to repeat at a
+        regular interval specifed by 'holdInterval'
+
+    @type String
+    @default SC.PUSH_BEHAVIOR
   */
   buttonBehavior: SC.PUSH_BEHAVIOR,
 
@@ -64,7 +251,8 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     If buttonBehavior is SC.HOLD_BEHAVIOR, this specifies, in milliseconds,
     how often to trigger the action. Ignored for other behaviors.
 
-    @property {Number}
+    @type Number
+    @default 100
   */
   holdInterval: 100,
 
@@ -74,7 +262,8 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     This is the same as setting the keyEquivalent to 'return'.  This will also
     apply the "def" classname to the button.
 
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   isDefault: NO,
   isDefaultBindingDefault: SC.Binding.oneWay().bool(),
@@ -83,7 +272,8 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     If YES, then this button will be triggered when you hit escape.
     This is the same as setting the keyEquivalent to 'escape'.
 
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   isCancel: NO,
   isCancelBindingDefault: SC.Binding.oneWay().bool(),
@@ -105,7 +295,8 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     clicked.  It is generally better to use the target/action approach and
     to implement your code in a controller of some type.
 
-    @property {String}
+    @type String
+    @default null
   */
   action: null,
 
@@ -117,20 +308,60 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     null, then the button will search the responder chain for a view that
     implements the action when the button is pressed instead.
 
-    @property {Object}
+    @type Object
+    @default null
   */
   target: null,
 
-  /**
-    If YES, use a focus ring.
-    
-    TODO: When is this property ever changed? Is this redundant with
+  /*
+    TODO When is this property ever changed? Is this redundant with
     render delegates since it can now be turned on on a theme-by-theme
     basis? --TD
+  */
+  /**
+    If YES, use a focus ring.
 
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   supportFocusRing: NO,
+
+  // ..........................................................
+  // Auto Resize Support
+  // 
+  //
+  // These properties are provided so that SC.AutoResize can be mixed in
+  // to enable automatic resizing of the button.
+  //
+
+  /** @private */
+  supportsAutoResize: YES,
+
+  /*
+    TODO get this from the render delegate so other elements may be used.
+  */
+  /** @private */
+  autoResizeLayer: function() {
+    return this.get('layer');
+  }.property('layer').cacheable(),
+
+  /** @private */
+  autoResizeText: function() {
+    return this.get('displayTitle');
+  }.property('displayTitle').cacheable(),
+
+  /**
+    The padding to add to the measured size of the text to arrive at the measured
+    size for the view.
+
+    SC.ButtonView gets this from its render delegate, but if not supplied, defaults
+    to 10.
+
+    @default 10
+    @type Number
+  */
+  autoResizePadding: SC.propertyFromRenderDelegate('autoResizePadding', 10),
+
 
   // TODO: What the hell is this? --TD
   _labelMinWidthIE7: 0,
@@ -145,7 +376,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     Does nothing if the button is disabled.
 
     @param {Event} evt
-    @returns {Boolean} success/failure of the request
+    @returns {Boolean} YES if successful, NO otherwise
   */
   triggerActionAfterDelay: function(evt) {
     // If this button is disabled, we have nothing to do
@@ -180,6 +411,9 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
   */
   didTriggerAction: function() {},
 
+  /*
+    TODO Why is this not set by the theme? --TD
+  */
   /**
     The minimum width the button title should consume.  This property is used
     when generating the HTML styling for the title itself.  The default
@@ -189,15 +423,16 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     Note that the title width does not exactly match the width of the button
     itself.  Extra padding added by the theme can impact the final total
     size.
-    
-    TODO: Why is this not set by the theme? --TD
 
-    @property {Number}
+    @type Number
+    @default 80
   */
   titleMinWidth: 80,
 
+
   // ................................................................
   // INTERNAL SUPPORT
+  //
 
   /** @private - save keyEquivalent for later use */
   init: function() {
@@ -210,10 +445,18 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     if (keyEquivalent) {
       this._defaultKeyEquivalent = keyEquivalent;
     }
+
+    // if value is not null, update isSelected to match value.  If value is
+    // null, we assume you may be using isSelected only.  
+    if (!SC.none(this.get('value'))) this._button_valueDidChange();
   },
 
   /**
     The WAI-ARIA role of the button.
+    
+    @type String
+    @default 'button'
+    @readOnly
   */
   ariaRole: 'button',
 
@@ -221,11 +464,15 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
   // isCancel and isDefault also cause a refresh but this is implemented as
   // a separate observer (see below)
 
-  /** @private
+  /**
     The following properties affect how SC.ButtonView is rendered, and will
     cause the view to be rerendered if they change.
     
-    @property {Array}
+    @type Array
+    @default [
+      'icon', 'displayTitle', 'value', 'displayToolTip', 'isDefault', 'isCancel', 
+      'escapeHTML', 'needsEllipsis', 'hint', 'titleMinWidth', 'supportFocusRing'
+    ]
   */
   displayProperties: [
     'icon', 'displayTitle', 'value', 'displayToolTip', 'isDefault', 'isCancel', 
@@ -239,9 +486,144 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     In this case, the 'button' property will be retrieved from the theme and
     set to the render delegate of this view.
     
-    @property {String}
+    @type String
+    @default 'buttonRenderDelegate'
   */
   renderDelegateName: 'buttonRenderDelegate',
+
+  /**
+    Updates the value, title, and icon keys based on the content object, if
+    set.
+    
+    @type {Object} target the target of the object that changed
+    @type {String} key name of property that changed
+    @returns {SC.ButtonView} receiver
+  */
+  contentPropertyDidChange: function(target, key) {
+    var del = this.get('displayDelegate'), 
+        content = this.get('content'), value ;
+
+    var valueKey = this.getDelegateProperty('contentValueKey', del) ;
+    if (valueKey && (key === valueKey || key === '*')) {
+      this.set('value', content ? (content.get ? content.get(valueKey) : content[valueKey]) : null) ;
+    }
+
+    var titleKey = this.getDelegateProperty('contentTitleKey', del) ;
+    if (titleKey && (key === titleKey || key === '*')) {
+      this.set('title', content ? (content.get ? content.get(titleKey) : content[titleKey]) : null) ;
+    }
+
+    var iconKey = this.getDelegateProperty('contentIconKey', del);
+    if (iconKey && (key === iconKey || key === '*')) {
+      this.set('icon', content ? (content.get ? content.get(iconKey) : content[iconKey]) : null) ;
+    }
+    
+    return this ;
+  },
+
+  /** @private - when title changes, dirty display. */
+  _button_displayObserver: function() {
+    this.displayDidChange();
+  }.observes('title', 'icon', 'value'),
+
+  /**
+    Handle a key equivalent if set.  Trigger the default action for the 
+    button.  Depending on the implementation this may vary.
+    
+    @param {String} keystring
+    @param {SC.Event} evt
+    @returns {Boolean}  YES if handled, NO otherwise
+  */
+  performKeyEquivalent: function(keystring, evt) {
+    //If this is not visible
+    if (!this.get('isVisibleInWindow')) return NO;
+
+    if (!this.get('isEnabled')) return NO;
+    var equiv = this.get('keyEquivalent');
+
+    // button has defined a keyEquivalent and it matches!
+    // if triggering succeeded, true will be returned and the operation will 
+    // be handeled (i.e performKeyEquivalent will cease crawling the view 
+    // tree)
+    if (equiv) {
+      if (equiv === keystring) return this.triggerAction(evt);
+    
+    // should fire if isDefault OR isCancel.  This way if isDefault AND 
+    // isCancel, responds to both return and escape
+    } else if ((this.get('isDefault') && (keystring === 'return')) ||
+        (this.get('isCancel') && (keystring === 'escape'))) {
+          return this.triggerAction(evt);
+    }
+
+    return NO; // did not handle it; keep searching
+  },
+
+  // ..........................................................
+  // VALUE <-> isSelected STATE MANAGEMNT
+  // 
+
+  /**
+    This is the standard logic to compute a proposed isSelected state for a
+    new value.  This takes into account the toggleOnValue/toggleOffValue 
+    properties, among other things.  It may return YES, NO, or SC.MIXED_STATE.
+    
+    @param {Object} value
+    @returns {Boolean} return state
+  */
+  computeIsSelectedForValue: function(value) {
+    var targetValue = this.get('toggleOnValue'), state, next ;
+    
+    if (SC.typeOf(value) === SC.T_ARRAY) {
+
+      // treat a single item array like a single value
+      if (value.length === 1) {
+        state = (value[0] == targetValue) ;
+        
+      // for a multiple item array, check the states of all items.
+      } else {
+        state = null;
+        value.find(function(x) {
+          next = (x == targetValue) ;
+          if (state === null) {
+            state = next ;
+          } else if (next !== state) state = SC.MIXED_STATE ;
+          return state === SC.MIXED_STATE ; // stop when we hit a mixed state.
+        });
+      }
+      
+    // for single values, just compare to the toggleOnValue...use truthiness
+    } else {
+      if(value === SC.MIXED_STATE) state = SC.MIXED_STATE;
+      else state = (value === targetValue) ;
+    }
+    return state ;
+  },
+
+  /** @private
+    Whenever the button value changes, update the selected state to match.
+  */
+  _button_valueDidChange: function() {
+    var value = this.get('value'),
+        state = this.computeIsSelectedForValue(value);
+    this.set('isSelected', state) ; // set new state...
+  }.observes('value'),
+  
+  /** @private
+    Whenever the selected state is changed, make sure the button value is also updated.  Note that this may be called because the value has just changed.  In that case this should do nothing.
+  */
+  _button_isSelectedDidChange: function() {
+    var newState = this.get('isSelected'),
+        curState = this.computeIsSelectedForValue(this.get('value'));
+    
+    // fix up the value, but only if computed state does not match.
+    // never fix up value if isSelected is set to MIXED_STATE since this can
+    // only come from the value.
+    if ((newState !== SC.MIXED_STATE) && (curState !== newState)) {
+      var valueKey = (newState) ? 'toggleOnValue' : 'toggleOffValue' ;
+      this.set('value', this.get(valueKey));
+    }
+  }.observes('isSelected'),
+
 
   /** @private
     Used to store the keyboard equivalent.
@@ -250,7 +632,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     keyEquivalent property to 'return'. This cached value is used to restore
     the keyEquivalent property if isDefault is set back to NO.
     
-    @property {String}
+    @type String
   */
   _defaultKeyEquivalent: null,
 
@@ -293,7 +675,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
       }
     }
 
-    return YES ;
+    return YES;
   },
 
   /** @private
@@ -331,6 +713,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     return YES ;
   },
 
+  /** @private */
   touchStart: function(touch){
     var buttonBehavior = this.get('buttonBehavior');
 
@@ -353,6 +736,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     return YES;
   },
 
+  /** @private */
   touchesDragged: function(evt, touches) {
     if (!this.touchIsInBoundary(evt)) {
       if (!this._touch_exited) this.set('isActive', NO);
@@ -366,6 +750,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     return YES;
   },
 
+  /** @private */
   touchEnd: function(touch){
     this._touch_exited = NO;
     this.set('isActive', NO); // track independently in case isEnabled has changed
@@ -379,7 +764,6 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     touch.preventDefault();
     return YES ;
   },
-
 
   /** @private */
   keyDown: function(evt) {
@@ -397,12 +781,13 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     return NO;
   },
 
-  /** @private  Perform an action based on the behavior of the button.
+  /** @private
+    Perform an action based on the behavior of the button.
 
-   - toggle behavior: switch to on/off state
-   - on behavior: turn on.
-   - off behavior: turn off.
-   - otherwise: invoke target/action
+     - toggle behavior: switch to on/off state
+     - on behavior: turn on.
+     - off behavior: turn off.
+     - otherwise: invoke target/action
   */
   _action: function(evt, skipHoldRepeat) {
     switch(this.get('buttonBehavior')) {
@@ -472,8 +857,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
   },
 
   /** @private */
-  _hasLegacyActionHandler: function()
-  {
+  _hasLegacyActionHandler: function() {
     var action = this.get('action');
     if (action && (SC.typeOf(action) === SC.T_FUNCTION)) return true;
     if (action && (SC.typeOf(action) === SC.T_STRING) && (action.indexOf('.') != -1)) return true;
@@ -493,12 +877,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     }
   },
 
-  /** tied to the isEnabled state */
-  acceptsFirstResponder: function() {
-    if(!SC.SAFARI_FOCUS_BEHAVIOR) return this.get('isEnabled');
-    else return NO;
-  }.property('isEnabled'),
-
+  /** @private */
   willBecomeKeyResponderFrom: function(keyView) {
     // focus the text field.
     if (!this._isFocused) {
@@ -510,10 +889,12 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
     }
   },
 
+  /** @private */
   willLoseKeyResponderTo: function(responder) {
     if (this._isFocused) this._isFocused = NO ;
   },
 
+  /** @private */
   didAppendToDocument: function() {
     if(parseInt(SC.browser.msie, 0)===7 && this.get('useStaticLayout')){
       var layout = this.get('layout'),
@@ -540,14 +921,7 @@ SC.ButtonView = SC.View.extend(SC.Control, SC.Button,
 
 }) ;
 
-// ..........................................................
-// CONSTANTS
-//
-SC.TOGGLE_BEHAVIOR = 'toggle';
-SC.PUSH_BEHAVIOR =   'push';
-SC.TOGGLE_ON_BEHAVIOR = 'on';
-SC.TOGGLE_OFF_BEHAVIOR = 'off';
-SC.HOLD_BEHAVIOR = 'hold';
+
 
 /**
   The delay after which "click" behavior should transition to "click and hold"
@@ -561,4 +935,4 @@ SC.ButtonView.CLICK_AND_HOLD_DELAY = SC.browser.msie ? 600 : 300;
 
 SC.REGULAR_BUTTON_HEIGHT=24;
 
-SC.ButtonView.hasGivenDeprecationWarning = NO;
+

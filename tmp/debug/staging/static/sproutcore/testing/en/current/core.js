@@ -1,7 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore Unit Testing Library
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 /*globals CoreTest */
@@ -12,6 +12,9 @@
 var require = require || function sc_require() {};
 var sc_require = sc_require || require;
 var sc_resource = sc_resource || function sc_resource() {};
+
+// map used to exist, this is here for backwards compatibility
+var Q$ = jQuery;
 
 /** @namespace
 

@@ -1,29 +1,31 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
-
 
 /**
   Used for contentIndexDisclosureState().  Indicates open branch node.
   
-  @property {Number}
+  @type Number
+  @constant
 */
 SC.BRANCH_OPEN = 0x0011;
 
 /**
   Used for contentIndexDisclosureState().  Indicates closed branch node.
   
-  @property {Number}
+  @type Number
+  @constant
 */
 SC.BRANCH_CLOSED = 0x0012;
 
 /**
   Used for contentIndexDisclosureState().  Indicates leaf node.
   
-  @property {Number}
+  @type Number
+  @constant
 */
 SC.LEAF_NODE = 0x0020;
 
@@ -44,7 +46,7 @@ SC.CollectionContent = {
   /**
     Used to detect the mixin by SC.CollectionView
 
-    @property {Boolean}
+    @type Boolean
   */
   isCollectionContent: YES,
   

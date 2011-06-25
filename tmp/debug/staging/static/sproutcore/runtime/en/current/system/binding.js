@@ -1,11 +1,12 @@
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-sc_require('system/object') ;
+sc_require('ext/function');
+sc_require('system/object');
 
 /**
   Debug parameter you can turn on.  This will log all bindings that fire to
@@ -55,22 +56,21 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
 
 
 /**
-  @namespace
+  @class
 
   A binding simply connects the properties of two objects so that whenever the
   value of one property changes, the other property will be changed also.  You
   do not usually work with Binding objects directly but instead describe
   bindings in your class definition using something like:
 
-  {{{
-    valueBinding: "MyApp.someController.title"
-  }}}
+        valueBinding: "MyApp.someController.title"
 
   This will create a binding from "MyApp.someController.title" to the "value"
   property of your object instance automatically.  Now the two values will be
   kept in sync.
 
-  h2. Customizing Your Bindings
+  Customizing Your Bindings
+  ===
 
   In addition to synchronizing values, bindings can also perform some basic
   transforms on values.  These transforms can help to make sure the data fed
@@ -80,9 +80,7 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
   To customize a binding, you can use one of the many helper methods defined
   on SC.Binding like so:
 
-  {{{
-    valueBinding: SC.Binding.single("MyApp.someController.title")
-  }}}
+        valueBinding: SC.Binding.single("MyApp.someController.title")
 
   This will create a binding just like the example above, except that now the
   binding will convert the value of MyApp.someController.title to a single
@@ -91,16 +89,15 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
 
   You can also chain helper methods to build custom bindings like so:
 
-  {{{
-    valueBinding: SC.Binding.single("MyApp.someController.title").notEmpty("(EMPTY)")
-  }}}
+        valueBinding: SC.Binding.single("MyApp.someController.title").notEmpty("(EMPTY)")
 
   This will force the value of MyApp.someController.title to be a single value
   and then check to see if the value is "empty" (null, undefined, empty array,
   or an empty string).  If it is empty, the value will be set to the string
   "(EMPTY)".
 
-  h2. One Way Bindings
+  One Way Bindings
+  ===
 
   One especially useful binding customization you can use is the oneWay()
   helper.  This helper tells SproutCore that you are only interested in
@@ -109,9 +106,7 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
   has changed, but your object will not be changing the preference itself, you
   could do:
 
-  {{{
-    bigTitlesBinding: SC.Binding.oneWay("MyApp.preferencesController.bigTitles")
-  }}}
+        bigTitlesBinding: SC.Binding.oneWay("MyApp.preferencesController.bigTitles")
 
   This way if the value of MyApp.preferencesController.bigTitles changes the
   "bigTitles" property of your object will change also.  However, if you
@@ -125,7 +120,8 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
   may be created frequently and you do not intend to change a property; only
   to monitor it for changes. (such as in the example above).
 
-  h2. Adding Custom Transforms
+  Adding Custom Transforms
+  ===
 
   In addition to using the standard helpers provided by SproutCore, you can
   also defined your own custom transform functions which will be used to
@@ -134,11 +130,9 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
   not allow Integers less than ten.  Note that it checks the value of the
   bindings and allows all other values to pass:
 
-  {{{
-    valueBinding: SC.Binding.transform(function(value, binding) {
-      return ((SC.typeOf(value) === SC.T_NUMBER) && (value < 10)) ? 10 : value;
-    }).from("MyApp.someController.value")
-  }}}
+        valueBinding: SC.Binding.transform(function(value, binding) {
+          return ((SC.typeOf(value) === SC.T_NUMBER) && (value < 10)) ? 10 : value;
+        }).from("MyApp.someController.value")
 
   If you would like to instead use this transform on a number of bindings,
   you can also optionally add your own helper method to SC.Binding.  This
@@ -146,35 +140,30 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
   below adds a new helper called notLessThan() which will limit the value to
   be not less than the passed minimum:
 
-  {{{
-    SC.Binding.notLessThan = function(minValue) {
-      return this.transform(function(value, binding) {
-        return ((SC.typeOf(value) === SC.T_NUMBER) && (value < minValue)) ? minValue : value ;
-      }) ;
-    } ;
-  }}}
+      SC.Binding.notLessThan = function(minValue) {
+        return this.transform(function(value, binding) {
+          return ((SC.typeOf(value) === SC.T_NUMBER) && (value < minValue)) ? minValue : value ;
+        }) ;
+      } ;
 
   You could specify this in your core.js file, for example.  Then anywhere in
   your application you can use it to define bindings like so:
 
-  {{{
-    valueBinding: SC.Binding.from("MyApp.someController.value").notLessThan(10)
-  }}}
+        valueBinding: SC.Binding.from("MyApp.someController.value").notLessThan(10)
 
   Also, remember that helpers are chained so you can use your helper along with
   any other helpers.  The example below will create a one way binding that
   does not allow empty values or values less than 10:
 
-  {{{
-    valueBinding: SC.Binding.oneWay("MyApp.someController.value").notEmpty().notLessThan(10)
-  }}}
+        valueBinding: SC.Binding.oneWay("MyApp.someController.value").notEmpty().notLessThan(10)
 
   Note that the built in helper methods all allow you to pass a "from"
   property path so you don't have to use the from() helper to set the path.
   You can do the same thing with your own helper methods if you like, but it
   is not required.
 
-  h2. Creating Custom Binding Templates
+  Creating Custom Binding Templates
+  ===
 
   Another way you can customize bindings is to create a binding template.  A
   template is simply a binding that is already partially or completely
@@ -186,23 +175,20 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
   bindings that allow values greater than 10 throughout your app.  You could
   create a binding template in your core.js like this:
 
-  {{{
-    MyApp.LimitBinding = SC.Binding.oneWay().notEmpty().notLessThan(10);
-  }}}
+        MyApp.LimitBinding = SC.Binding.oneWay().notEmpty().notLessThan(10);
 
   Then anywhere you want to use this binding, just refer to the template like
   so:
 
-  {{{
-    valueBinding: MyApp.LimitBinding.beget("MyApp.someController.value")
-  }}}
+        valueBinding: MyApp.LimitBinding.beget("MyApp.someController.value")
 
   Note that when you use binding templates, it is very important that you
   always start by using beget() to extend the template.  If you do not do
   this, you will end up using the same binding instance throughout your app
   which will lead to erratic behavior.
 
-  h2. How to Manually Activate a Binding
+  How to Manually Activate a Binding
+  ===
 
   All of the examples above show you how to configure a custom binding, but
   the result of these customizations will be a binding template, not a fully
@@ -221,18 +207,14 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
   examples above, during init, SproutCore objects will effectively call
   something like this on your binding:
 
-  {{{
-    binding = this.valueBinding.beget().to("value", this) ;
-  }}}
+        binding = this.valueBinding.beget().to("value", this) ;
 
   This creates a new binding instance based on the template you provide, and
   sets the to path to the "value" property of the new object.  Now that the
   binding is fully configured with a "from" and a "to", it simply needs to be
   connected to become active.  This is done through the connect() method:
 
-  {{{
-    binding.connect() ;
-  }}}
+        binding.connect() ;
 
   Now that the binding is connected, it will observe both the from and to side
   and relay changes.
@@ -241,30 +223,25 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
   understand this anyway), you could manually create an active binding by
   doing the following:
 
-  {{{
-    SC.Binding.from("MyApp.someController.value")
-     .to("MyApp.anotherObject.value")
-     .connect();
-  }}}
+        SC.Binding.from("MyApp.someController.value")
+         .to("MyApp.anotherObject.value")
+         .connect();
 
   You could also use the bind() helper method provided by SC.Object. (This is
   the same method used by SC.Object.init() to setup your bindings):
 
-  {{{
-    MyApp.anotherObject.bind("value", "MyApp.someController.value") ;
-  }}}
+        MyApp.anotherObject.bind("value", "MyApp.someController.value") ;
 
   Both of these code fragments have the same effect as doing the most friendly
   form of binding creation like so:
 
-  {{{
-    MyApp.anotherObject = SC.Object.create({
-      valueBinding: "MyApp.someController.value",
 
-      // OTHER CODE FOR THIS OBJECT...
+        MyApp.anotherObject = SC.Object.create({
+          valueBinding: "MyApp.someController.value",
 
-    }) ;
-  }}}
+          // OTHER CODE FOR THIS OBJECT...
+
+        }) ;
 
   SproutCore's built in binding creation method make it easy to automatically
   create bindings for you.  You should always use the highest-level APIs
@@ -272,7 +249,7 @@ SC.EMPTY_PLACEHOLDER = '@@EMPTY@@' ;
 
   @since SproutCore 1.0
 */
-SC.Binding = {
+SC.Binding = /** @scope SC.Binding.prototype */{
 
   /**
     This is the core method you use to create a new binding instance.  The
@@ -282,7 +259,7 @@ SC.Binding = {
     The returned instance will also have its parentBinding property set to the
     receiver.
 
-    @param fromPath {String} optional from path.
+    @param {String} fromPath optional from path.
     @returns {SC.Binding} new binding instance
   */
   beget: function(fromPath) {
@@ -313,8 +290,8 @@ SC.Binding = {
     "*", which will use the root object of the to side be default.  This special
     behavior is used to support the high-level API provided by SC.Object.
 
-    @param propertyPath {String|Tuple} A property path or tuple
-    @param root {Object} optional root object to use when resolving the path.
+    @param {String|Tuple} propertyPath A property path or tuple
+    @param {Object} root optional root object to use when resolving the path.
     @returns {SC.Binding} this
   */
   from: function(propertyPath, root) {
@@ -337,8 +314,8 @@ SC.Binding = {
    attempt to reoslve this property path to an actual object/property tuple
    until you connect the binding.
 
-    @param propertyPath {String|Tuple} A property path or tuple
-    @param root {Object} optional root object to use when resolving the path.
+    @param {String|Tuple} propertyPath A property path or tuple
+    @param {Object} root optional root object to use when resolving the path.
     @returns {SC.Binding} this
   */
   to: function(propertyPath, root) {
@@ -363,7 +340,13 @@ SC.Binding = {
     this.isConnected = YES ;
     this._connectionPending = YES ; // its connected but not really...
     this._syncOnConnect = YES ;
+
     SC.Binding._connectQueue.add(this) ;
+
+    if (!SC.RunLoop.isRunLoopInProgress()) {
+      this._scheduleSync();
+    }
+
     return this;
   },
 
@@ -454,6 +437,9 @@ SC.Binding = {
   /**
     Invoked whenever the value of the "from" property changes.  This will mark
     the binding as dirty if the value has changed.
+    
+    @param {Object} target The object that contains the key
+    @param {String} key The name of the property which changed
   */
   fromPropertyDidChange: function(target, key) {
     var v = target ? target.get(key) : null;
@@ -467,6 +453,8 @@ SC.Binding = {
       this._setBindingValue(target, key) ;
       this._changePending = YES ;
       SC.Binding._changeQueue.add(this) ; // save for later.
+
+      this._scheduleSync();
     }
   },
 
@@ -479,6 +467,9 @@ SC.Binding = {
 
     if the value does not match the transformedBindingValue, then it will
     become the new bindingValue.
+    
+    @param {Object} target The object that contains the key
+    @param {String} key The name of the property which changed
   */
   toPropertyDidChange: function(target, key) {
     if (this._oneWay) return; // nothing to do
@@ -491,7 +482,18 @@ SC.Binding = {
       this._setBindingValue(target, key) ;
       this._changePending = YES ;
       SC.Binding._changeQueue.add(this) ; // save for later.
+
+      this._scheduleSync();
     }
+  },
+
+  _scheduleSync: function() {
+    if (SC.RunLoop.isRunLoopInProgress() || this._syncScheduled) { return; }
+
+    this._syncScheduled = YES;
+    var self = this;
+
+    setTimeout(function() { SC.run(); self._syncScheduled = NO; }, 1);
   },
 
   /** @private
@@ -648,6 +650,18 @@ SC.Binding = {
           key = this._fromPropertyKey ;
       if (!target || !key) return this ; // nothing to do
 
+      // in debug, let's check for whether target is a valid observable with getPath.
+      // Common cases might have it be a Window or a DOM object.
+      //
+      // If we have a target, it is ready, but if it is invalid, that is WRONG.
+      //
+      
+      if (!target.isObservable) {
+        SC.Logger.warn("Cannot bind '%@' to property '%@' on non-observable '%@'".fmt(this._toPropertyPath, key, target));
+        return this;
+      }
+      
+
       // get the new value
       var v = target.getPath(key) ;
 
@@ -710,8 +724,8 @@ SC.Binding = {
     means that if you change the "to" side directly, the "from" side may have
     a different value.
 
-    @param fromPath {String} optional from path to connect.
-    @param aFlag {Boolean} Optionally pass NO to set the binding back to two-way
+    @param {String} fromPath optional from path to connect.
+    @param {Boolean} aFlag Optionally pass NO to set the binding back to two-way
     @returns {SC.Binding} this
   */
   oneWay: function(fromPath, aFlag) {
@@ -733,9 +747,7 @@ SC.Binding = {
 
     The function you pass must have the following signature:
 
-    {{{
-      function(value) {} ;
-    }}}
+          function(value) {} ;
 
     It must return either the transformed value or an error object.
 
@@ -743,7 +755,7 @@ SC.Binding = {
     extending a binding and want to reset the transforms, you can call
     resetTransform() first.
 
-    @param transformFunc {Function} the transform function.
+    @param {Function} transformFunc the transform function.
     @returns {SC.Binding} this
   */
   transform: function(transformFunc) {
@@ -783,8 +795,8 @@ SC.Binding = {
     Note that this is not a transform function since it will be called at the
     end of the transform chain.
 
-    @param fromPath {String} optional from path to connect.
-    @param aFlag {Boolean} optionally pass NO to allow error objects again.
+    @param {String} fromPath optional from path to connect.
+    @param {Boolean} aFlag optionally pass NO to allow error objects again.
     @returns {SC.Binding} this
   */
   noError: function(fromPath, aFlag) {
@@ -805,11 +817,9 @@ SC.Binding = {
     This will allow single values, nulls, and error values to pass through.  If
     you pass an array, it will be mapped as so:
 
-    {{{
-      [] => null
-      [a] => a
-      [a,b,c] => Multiple Placeholder
-    }}}
+          [] => null
+          [a] => a
+          [a,b,c] => Multiple Placeholder
 
     You can pass in an optional multiple placeholder or it will use the
     default.
@@ -817,8 +827,8 @@ SC.Binding = {
     Note that this transform will only happen on forwarded valued.  Reverse
     values are send unchanged.
 
-    @param fromPath {String} from path or null
-    @param placeholder {Object} optional placeholder value.
+    @param {String} fromPath from path or null
+    @param {Object} placeholder optional placeholder value.
     @returns {SC.Binding} this
   */
   single: function(fromPath, placeholder) {
@@ -838,8 +848,8 @@ SC.Binding = {
     Adds a transform that will return the placeholder value if the value is
     null, undefined, an empty array or an empty string.  See also notNull().
 
-    @param fromPath {String} from path or null
-    @param placeholder {Object} optional placeholder.
+    @param {String} fromPath from path or null
+    @param {Object} placeholder optional placeholder.
     @returns {SC.Binding} this
   */
   notEmpty: function(fromPath, placeholder) {
@@ -854,10 +864,10 @@ SC.Binding = {
 
   /**
     Adds a transform that will return the placeholder value if the value is
-    null.  Otherwise it will passthrough untouched.  See also notEmpty().
+    null or undefined.  Otherwise it will passthrough untouched.  See also notEmpty().
 
-    @param fromPath {String} from path or null
-    @param placeholder {Object} optional placeholder;
+    @param {String} fromPath from path or null
+    @param {Object} placeholder optional placeholder;
     @returns {SC.Binding} this
   */
   notNull: function(fromPath, placeholder) {
@@ -872,7 +882,7 @@ SC.Binding = {
     Adds a transform that will convert the passed value to an array.  If
     the value is null or undefined, it will be converted to an empty array.
 
-    @param fromPath {String} optional from path
+    @param {String} fromPath optional from path
     @returns {SC.Binding} this
   */
   multiple: function(fromPath) {
@@ -887,7 +897,7 @@ SC.Binding = {
     an array it will return YES if array is not empty.  If the value is a string
     it will return YES if the string is not empty.
 
-    @param fromPath {String} optional from path
+    @param {String} fromPath optional from path
     @returns {SC.Binding} this
   */
   bool: function(fromPath) {
@@ -912,6 +922,8 @@ SC.Binding = {
         isEnabledBinding: SC.Binding.and('MyApp.itemsController.hasSelection', 'MyApp.userController.canDelete')
       })
 
+    @param {String} pathA The first part of the conditional
+    @param {String} pathB The second part of the conditional
   */
   and: function(pathA, pathB) {
 
@@ -936,6 +948,8 @@ SC.Binding = {
 
       'pathA' AND 'pathB' --> value  (value returned is the result of ('pathA' || 'pathB'))
 
+    @param {String} pathA The first part of the conditional
+    @param {String} pathB The second part of the conditional
   */
   or: function(pathA, pathB) {
 
@@ -956,7 +970,7 @@ SC.Binding = {
     Adds a transform to convert the value to the inverse of a bool value.  This
     uses the same transform as bool() but inverts it.
 
-    @param fromPath {String} optional from path
+    @param {String} fromPath optional from path
     @returns {SC.Binding} this
   */
   not: function(fromPath) {
@@ -968,8 +982,9 @@ SC.Binding = {
   },
 
   /**
-    Adds a transform that will return YES if the value is null, NO otherwise.
-
+    Adds a transform that will return YES if the value is null or undefined, NO otherwise.
+    
+    @param {String} fromPath optional from path
     @returns {SC.Binding} this
   */
   isNull: function(fromPath) {
@@ -992,9 +1007,7 @@ SC.Binding = {
 /**
   Shorthand method to define a binding.  This is the same as calling:
 
-  {{{
-    SC.binding(path) = SC.Binding.from(path)
-  }}}
+        SC.binding(path) = SC.Binding.from(path)
 */
 SC.binding = function(path, root) { return SC.Binding.from(path,root); } ;
 

@@ -1,27 +1,22 @@
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
 
 sc_require('panes/modal');
-
-/** 
-  Shadow views from top-left corner clockwise
-*/
 
 /** @class
 
   Most SproutCore applications need modal panels. The default way to use the 
   panel pane is to simply add it to your page like this:
   
-  {{{
-    SC.PanelPane.create({
-      layout: { width: 400, height: 200, centerX: 0, centerY: 0 },
-      contentView: SC.View.extend({
-      })
-    }).append();
-  }}}
+      SC.PanelPane.create({
+        layout: { width: 400, height: 200, centerX: 0, centerY: 0 },
+        contentView: SC.View.extend({
+        })
+      }).append();
   
   This will cause your panel to display.  The default layout for a Panel 
   is to cover the entire document window with a semi-opaque background, and to 
@@ -31,52 +26,52 @@ sc_require('panes/modal');
   @author Erich Ocean
   @since SproutCore 1.0
 */
-SC.PanelPane = SC.Pane.extend({
+SC.PanelPane = SC.Pane.extend(
+/** @scope SC.PanelPane.prototype */ {
 
-  layout: { left:0, right:0, top:0, bottom:0 },
+  /**
+    @type Array
+    @default ['sc-panel']
+    @see SC.View#classNames
+  */
   classNames: ['sc-panel'],
+  
+  /**
+    @type Boolean
+    @default YES
+    @see SC.Pane#acceptsKeyPane
+  */
   acceptsKeyPane: YES,
 
   /**
-    The WAI-ARIA role for panel pane. This property's value should not be
-    changed.
+    The WAI-ARIA role for panel pane.
 
-    @property {String}
+    @type String
+    @default 'dialog'
+    @constant
   */
   ariaRole: 'dialog',
 
   /**
-    The WAI-ARIA attribute for the panel pane. This property is assigned to
-    'aria-labelledby' attribute, which defines a string value that labels the
-    element. Used to support voiceover. It should be assigned a non-empty string,
-    if the 'aria-labelledby' attribute has to be set for the element.
+    The WAI-ARIA label for the panel. Screen readers will use this to tell
+    the user a name for the panel.
 
-    @property {String}
+    @type String
   */
-  ariaLabeledBy: null,
-
-  /**
-    The WAI-ARIA attribute for the panel pane. This property is assigned to
-    'aria-describedby' attribute.Used to support voiceover. It is intended to
-    provide additional detail that some users might need. It should be assigned
-    a non-empty string, if the 'aria-describedby' attribute has to be set for
-    the element.
-
-    @property {String}
-  */
-  ariaDescribedBy: null,
+  ariaLabel: null,
 
   /**
     Indicates that a pane is modal and should not allow clicks to pass
-    though to panes underneath it.  This will usually cause the pane to show
+    though to panes underneath it. This will usually cause the pane to show
     the modalPane underneath it.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   isModal: YES,
 
   /**
-    The modal pane to place behind this pane if this pane is modal.  This 
+    The modal pane to place behind this pane if this pane is modal. This
     must be a subclass or an instance of SC.ModalPane.
   */
   modalPane: SC.ModalPane.extend({
@@ -90,14 +85,18 @@ SC.PanelPane = SC.Pane.extend({
   /**
     Set this to the view you want to act as the content within the panel.
     
-    @property {SC.View}
+    @type SC.View
+    @default null
   */
   contentView: null,
   contentViewBindingDefault: SC.Binding.single(),
   
+  /**
+    @param {SC.View} newContent
+  */
   replaceContent: function(newContent) {
     this.removeAllChildren() ;
-    if (newContent) this.appendChild(newContent) ;
+    if (newContent) this.appendChild(newContent);
   },
 
   /** @private */
@@ -112,8 +111,8 @@ SC.PanelPane = SC.Pane.extend({
 
   
   /**
-    Invoked whenever the content property changes.  This method will simply
-    call replaceContent.  Override replaceContent to change how the view is
+    Invoked whenever the content property changes. This method will simply
+    call replaceContent. Override replaceContent to change how the view is
     swapped out.
   */
   contentViewDidChange: function() {
@@ -127,7 +126,8 @@ SC.PanelPane = SC.Pane.extend({
   /**
     The name of the theme's SC.PanelPane render delegate.
 
-    @property {String}
+    @type String
+    @default 'panelRenderDelegate'
   */
   renderDelegateName: 'panelRenderDelegate',
 
@@ -189,19 +189,5 @@ SC.PanelPane = SC.Pane.extend({
     return ret ;
   },
 
-  render: function(context, firstTime) {
-    arguments.callee.base.apply(this,arguments);
-    var ariaLabeledBy   = this.get('ariaLabeledBy'),
-        ariaDescribedBy = this.get('ariaDescribedBy');
-
-    //addressing accessibility
-    if(firstTime) {
-      if(ariaLabeledBy && ariaLabeledBy !== "") {
-        context.attr('aria-labelledby', ariaLabeledBy);
-      }
-      if(ariaDescribedBy && ariaDescribedBy !== "") {
-       context.attr('aria-describedby', ariaDescribedBy);
-      }
-    }
-  }
+  displayProperties: ['ariaLabel']
 });

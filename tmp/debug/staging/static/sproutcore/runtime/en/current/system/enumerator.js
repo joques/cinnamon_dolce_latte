@@ -1,7 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -25,7 +25,7 @@ SC.Enumerator = function(enumerableObject) {
   return this ;
 } ;
 
-SC.Enumerator.prototype = {
+SC.Enumerator.prototype = /** @scope SC.Enumerator.prototype */{
 
   /**
     Returns the next object in the enumeration or undefined when complete.

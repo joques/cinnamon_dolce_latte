@@ -1,58 +1,101 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 sc_require('views/scroller');
-sc_require('mixins/border');
 
+/**
+  @static
+  @type Number
+  @default 0.95
+*/
 SC.NORMAL_SCROLL_DECELERATION = 0.95;
+
+/**
+  @static
+  @type Number
+  @default 0.85
+*/
 SC.FAST_SCROLL_DECELERATION = 0.85;
 
 /** @class
-
   Implements a complete scroll view.  This class uses a manual implementation
   of scrollers in order to properly support clipping frames.
   
   Important Events:
   
-  - contentView frame size changes (to autoshow/hide scrollbar - adjust scrollbar size)
-  - horizontalScrollOffset change
-  - verticalScrollOffsetChanges
-  - scroll wheel events
+    - contentView frame size changes (to autoshow/hide scrollbar - adjust scrollbar size)
+    - horizontalScrollOffset change
+    - verticalScrollOffsetChanges
+    - scroll wheel events
   
   @extends SC.View
   @since SproutCore 1.0
 */
-SC.ScrollView = SC.View.extend(SC.Border, {
-  /** @scope SC.ScrollView.prototype */
+SC.ScrollView = SC.View.extend({
+/** @scope SC.ScrollView.prototype */
+
+  /**
+    @type Array
+    @default ['sc-scroll-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-scroll-view'],
 
   // ..........................................................
   // PROPERTIES
   // 
   
+  /**
+    Walk like a duck
+    
+    @type Boolean
+    @default YES
+    @readOnly
+  */
   isScrollable: YES,
   
   /** 
     The content view you want the scroll view to manage. This will be assigned to the contentView of the clipView also.
+    
+    @type SC.View
+    @default null
   */
   contentView: null,
   
   /**
-    The horizontal alignment for non-filling content inside of the ScrollView.
+    The horizontal alignment for non-filling content inside of the ScrollView. Possible values:
+    
+      - SC.ALIGN_LEFT
+      - SC.ALIGN_RIGHT
+      - SC.ALIGN_CENTER
+    
+    @type String
+    @default SC.ALIGN_LEFT
   */
   horizontalAlign: SC.ALIGN_LEFT,
   
   /**
-    The vertical alignment for non-filling content inside of the ScrollView.
+    The vertical alignment for non-filling content inside of the ScrollView. Possible values:
+    
+      - SC.ALIGN_TOP
+      - SC.ALIGN_BOTTOM
+      - SC.ALIGN_MIDDLE
+    
+    @type String
+    @default SC.ALIGN_TOP
   */
   verticalAlign: SC.ALIGN_TOP,
 
   /**
     The current horizontal scroll offset. Changing this value will update both the contentView and the horizontal scroller, if there is one.
+    
+    @field
+    @type Number
+    @default 0
   */
   horizontalScrollOffset: function(key, value) {
     if (value !== undefined) {
@@ -66,6 +109,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   
   /**
     The current vertical scroll offset.  Changing this value will update both the contentView and the vertical scroller, if there is one.
+    
+    @field
+    @type Number
+    @default 0
   */
   verticalScrollOffset: function(key, value) {
     if (value !== undefined) {
@@ -77,8 +124,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return this._scroll_verticalScrollOffset||0;
   }.property().cacheable(),
   
-  /**
-    @private
+  /** @private
     Calculates the maximum offset given content and container sizes, and the
     alignment.
   */
@@ -102,8 +148,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
-  /**
-    @private
+  /** @private
     Calculates the minimum offset given content and container sizes, and the
     alignment.
   */
@@ -131,7 +176,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     size and the size of the scroll view.  If horizontal scrolling is 
     disabled, this will always return 0.
     
-    @property {Number}
+    @field
+    @type Number
+    @default 0
   */
   maximumHorizontalScrollOffset: function() {
     var view = this.get('contentView') ;
@@ -158,7 +205,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     size and the size of the scroll view.  If vertical scrolling is disabled,
     this will always return 0 (or whatever alignment dictates).
     
-    @property {Number}
+    @field
+    @type Number
+    @default 0
   */
   maximumVerticalScrollOffset: function() {
     var view = this.get('contentView'),
@@ -186,7 +235,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     size and the size of the scroll view.  If horizontal scrolling is 
     disabled, this will always return 0 (or whatever alignment dictates).
     
-    @property {Number}
+    @field
+    @type Number
+    @default 0
   */
   minimumHorizontalScrollOffset: function() {
     var view = this.get('contentView') ;
@@ -212,7 +263,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     size and the size of the scroll view.  If vertical scrolling is disabled,
     this will always return 0 (or whatever alignment dictates).
     
-    @property {Number}
+    @field
+    @type Number
+    @default 0
   */
   minimumVerticalScrollOffset: function() {
     var view = this.get('contentView') ;
@@ -235,12 +288,13 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   }.property(),
   
   
-  
   /** 
     Amount to scroll one vertical line.
   
-    Used by the default implementation of scrollDownLine() and scrollUpLine().  
-    Defaults to 20px.
+    Used by the default implementation of scrollDownLine() and scrollUpLine().
+    
+    @type Number
+    @default 20
   */
   verticalLineScroll: 20,
   
@@ -248,30 +302,43 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Amount to scroll one horizontal line.
   
     Used by the default implementation of scrollLeftLine() and 
-    scrollRightLine(). Defaults to 20px.
+    scrollRightLine().
+    
+    @type Number
+    @default 20
   */
   horizontalLineScroll: 20,
   
   /**
     Amount to scroll one vertical page.
     
-    Used by the default implementation of scrollUpPage() and scrollDownPage(). 
-    Defaults to current frame height.
+    Used by the default implementation of scrollUpPage() and scrollDownPage().
+    
+    @field
+    @type Number
+    @default value of frame.height
+    @observes frame
   */
   verticalPageScroll: function() {
-    return this.get('frame').height ;
+    return this.get('frame').height;
   }.property('frame'),
   
   /**
     Amount to scroll one horizontal page.
     
     Used by the default implementation of scrollLeftPage() and 
-    scrollRightPage().  Defaults to current innerFrame width.
+    scrollRightPage().
+    
+    @field
+    @type Number
+    @default value of frame.width
+    @observes frame
   */
   horizontalPageScroll: function() {
-    return this.get('frame').width ;  
+    return this.get('frame').width;
   }.property('frame'),
-    
+  
+  
   // ..........................................................
   // SCROLLERS
   // 
@@ -280,7 +347,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     YES if the view should maintain a horizontal scroller.   This property 
     must be set when the view is created.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   hasHorizontalScroller: YES,
   
@@ -289,7 +357,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     instance when the ScrollView is created unless hasHorizontalScroller is 
     NO.
     
-    @property {SC.View}
+    @type SC.View
+    @default SC.ScrollerView
   */
   horizontalScrollerView: SC.ScrollerView,
   
@@ -297,6 +366,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     The horizontal scroller view for touch. This will be replaced with a view
     instance when touch is enabled when the ScrollView is created unless 
     hasHorizontalScroller is NO.
+    
+    @type SC.View
+    @default SC.TouchScrollerView
   */
   horizontalTouchScrollerView: SC.TouchScrollerView,
   
@@ -307,7 +379,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     hasHorizontalScroller to NO to avoid creating a scroller view in the 
     first place.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   isHorizontalScrollerVisible: YES,
 
@@ -315,7 +388,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Returns YES if the view both has a horizontal scroller, the scroller is
     visible.
     
-    @property {Boolean}
+    @field
+    @type Boolean
+    @default YES
   */
   canScrollHorizontal: function() {
     return !!(this.get('hasHorizontalScroller') && 
@@ -326,7 +401,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   /**
     If YES, the horizontal scroller will autohide if the contentView is
     smaller than the visible area.  You must set hasHorizontalScroller to YES 
-    for this property to have any effect.  
+    for this property to have any effect.
+    
+    @type Boolean
+    @default YES
   */
   autohidesHorizontalScroller: YES,
   
@@ -334,7 +412,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     YES if the view shuld maintain a vertical scroller.   This property must 
     be set when the view is created.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   hasVerticalScroller: YES,
   
@@ -342,13 +421,17 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     The vertical scroller view class. This will be replaced with a view 
     instance when the ScrollView is created unless hasVerticalScroller is NO.
     
-    @property {SC.View}
+    @type SC.View
+    @default SC.ScrollerView
   */
   verticalScrollerView: SC.ScrollerView,
   
   /**
     The vertical touch scroller view class. This will be replaced with a view
     instance when the ScrollView is created.
+    
+    @type SC.View
+    @default SC.TouchScrollerView
   */
   verticalTouchScrollerView: SC.TouchScrollerView,
   
@@ -359,7 +442,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     hasVerticalScroller to NO to avoid creating a scroller view in the first 
     place.
     
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   isVerticalScrollerVisible: YES,
 
@@ -367,7 +451,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Returns YES if the view both has a horizontal scroller, the scroller is
     visible.
     
-    @property {Boolean}
+    @field
+    @type Boolean
+    @default YES
   */
   canScrollVertical: function() {
     return !!(this.get('hasVerticalScroller') && 
@@ -378,7 +464,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   /**
     If YES, the vertical scroller will autohide if the contentView is
     smaller than the visible area.  You must set hasVerticalScroller to YES 
-    for this property to have any effect.  
+    for this property to have any effect.
+    
+    @type Boolean
+    @default YES
   */
   autohidesVerticalScroller: YES,
   
@@ -386,7 +475,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Use this property to set the 'bottom' offset of your vertical scroller, 
     to make room for a thumb view or other accessory view. Default is 0.
     
-    @property {Number}
+    @type Number
+    @default 0
   */
   verticalScrollerBottom: 0,
   
@@ -396,8 +486,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     This ensures that the container frame will not resize to accomodate the
     vertical scroller, hence overlaying the scroller on top of 
     the container.
-  
-    @property {Boolean}
+    
+    @field
+    @type Boolean
+    @default NO
   */
   verticalOverlay: function() {
     if (SC.platform.touch) return YES;
@@ -411,7 +503,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     horizontal scroller, hence overlaying the scroller on top of 
     the container
     
-    @property {Boolean}
+    @field
+    @type Boolean
+    @default NO
   */
   horizontalOverlay: function() {
     if (SC.platform.touch) return YES;
@@ -429,6 +523,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     “float on top” of the content view.
     
     Example: { top: -1, bottom: -1, right: 0 }
+    
+    @type Hash
+    @default null
   */
   verticalScrollerLayout: null,
   
@@ -442,6 +539,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     “float on top” of the content view.
     
     Example: { left: 0, bottom: 0, right: 0 }
+    
+    @type Hash
+    @default null
   */
   horizontalScrollerLayout: null,
   
@@ -453,11 +553,11 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     The container view that will contain your main content view.  You can 
     replace this property with your own custom subclass if you prefer.
     
-    @type {SC.ContainerView}
+    @type SC.ContainerView
+    @default SC.ConainerView
   */
-  containerView: SC.ContainerView.extend({
-
-  }),
+  containerView: SC.ContainerView.extend({}),
+  
   
   // ..........................................................
   // METHODS
@@ -476,8 +576,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     direction.  You can also optionally pass a Hash for the first parameter 
     with x and y coordinates.
     
-    @param x {Number} the x scroll location
-    @param y {Number} the y scroll location
+    @param {Number} x the x scroll location
+    @param {Number} y the y scroll location
     @returns {SC.ScrollView} receiver
   */
   scrollTo: function(x,y) {
@@ -487,12 +587,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
     
     if (!SC.none(x)) {
-      x = Math.max(this.get('minimumHorizontalScrollOffset'),Math.min(this.get('maximumHorizontalScrollOffset'), x)) ;
       this.set('horizontalScrollOffset', x) ;
     }
     
     if (!SC.none(y)) {
-      y = Math.max(this.get('minimumVerticalScrollOffset'),Math.min(this.get('maximumVerticalScrollOffset'), y)) ;
       this.set('verticalScrollOffset', y) ;
     }
     
@@ -508,8 +606,8 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     direction.  You can also optionally pass a Hash for the first parameter 
     with x and y coordinates.
     
-    @param x {Number} change in the x direction (or hash)
-    @param y {Number} change in the y direction
+    @param {Number} x change in the x direction (or hash)
+    @param {Number} y change in the y direction
     @returns {SC.ScrollView} receiver
   */
   scrollBy: function(x , y) {
@@ -554,7 +652,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   
   /**
     Scroll to the supplied rectangle.
-    @param {rect} Rectangle to scroll to.
+    @param {Rect} rect Rectangle to scroll to.
     @returns {Boolean} YES if scroll position was changed.
   */
   scrollToRect: function(rect) {
@@ -586,7 +684,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Scrolls the receiver down one or more lines if allowed.  If number of
     lines is not specified, scrolls one line.
     
-    @param lines {Number} options number of lines
+    @param {Number} lines number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollDownLine: function(lines) {
@@ -598,7 +696,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Scrolls the receiver up one or more lines if allowed.  If number of
     lines is not specified, scrolls one line.
     
-    @param lines {Number} options number of lines
+    @param {Number} lines number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollUpLine: function(lines) {
@@ -610,7 +708,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Scrolls the receiver right one or more lines if allowed.  If number of
     lines is not specified, scrolls one line.
     
-    @param lines {Number} options number of lines
+    @param {Number} lines number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollRightLine: function(lines) {
@@ -622,7 +720,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     Scrolls the receiver left one or more lines if allowed.  If number of
     lines is not specified, scrolls one line.
     
-    @param lines {Number} options number of lines
+    @param {Number} lines number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollLeftLine: function(lines) {
@@ -636,7 +734,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     the verticalPageScroll value.  By default this is the size of the current
     scrollable area.
     
-    @param pages {Number} options number of pages
+    @param {Number} pages number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollDownPage: function(pages) {
@@ -650,7 +748,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     the verticalPageScroll value.  By default this is the size of the current
     scrollable area.
     
-    @param pages {Number} options number of pages
+    @param {Number} pages number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollUpPage: function(pages) {
@@ -664,7 +762,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     the verticalPageScroll value.  By default this is the size of the current
     scrollable area.
     
-    @param pages {Number} options number of pages
+    @param {Number} pages number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollRightPage: function(pages) {
@@ -678,7 +776,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     the verticalPageScroll value.  By default this is the size of the current
     scrollable area.
     
-    @param pages {Number} options number of pages
+    @param {Number} pages number of lines
     @returns {SC.ScrollView} receiver
   */
   scrollLeftPage: function(pages) {
@@ -686,7 +784,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return this.scrollBy(0-(this.get('horizontalPageScroll')*pages), null) ;
   },
   
-  /**
+  /** @private
     Adjusts the layout for the various internal views.  This method is called
     once when the scroll view is first configured and then anytime a scroller
     is shown or hidden.  You can call this method yourself as well to retile.
@@ -758,11 +856,13 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   // SCROLL WHEEL SUPPORT
   // 
   
-  /** @private */ _scroll_wheelDeltaX: 0,
-  /** @private */ _scroll_wheelDeltaY: 0,
+  /** @private */
+  _scroll_wheelDeltaX: 0,
   
-  // save adjustment and then invoke the actual scroll code later.  This will
-  // keep the view feeling smooth.
+  /** @private */
+  _scroll_wheelDeltaY: 0,
+  
+  /** @private */
   mouseWheel: function(evt) {
     var deltaAdjust = (SC.browser.webkit && SC.browser.version > 533.0) ? 120 : 1;
     
@@ -795,13 +895,22 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   
   /**
     Determines whether scaling is allowed.
+    
+    @type Boolean
+    @default NO
   */
   canScale: NO,
   
-  /**
+  /** @private
     The current scale.
   */
   _scale: 1.0,
+  
+  /**
+    @field
+    @type Number
+    @default 1.0
+  */
   scale: function(key, value) {
     if (value !== undefined) {
       this._scale = Math.min(Math.max(this.get("minimumScale"), value), this.get("maximumScale"));
@@ -811,21 +920,32 @@ SC.ScrollView = SC.View.extend(SC.Border, {
   
   /**
     The minimum scale.
+    
+    @type Number
+    @default 0.25
   */
   minimumScale: 0.25,
   
   /**
     The maximum scale.
+    
+    @type Number
+    @default 2.0
   */
   maximumScale: 2.0,
   
   /**
     Whether to automatically determine the scale range based on the size of the content.
+    
+    @type Boolean
+    @default NO
   */
   autoScaleRange: NO,
   
+  /** @private */
   _scale_css: "",
   
+  /** @private */
   updateScale: function(scale) {
     var contentView = this.get("contentView");
     if (!contentView) return;
@@ -838,35 +958,53 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
-  /*..............................................
-    TOUCH SUPPORT
+  
+  // ..........................................................
+  // Touch Support
+  // 
+  
+  /**
+    @type Boolean
+    @default YES
+    @readOnly
   */
   acceptsMultitouch: YES,
   
   /**
     The scroll deceleration rate.
+    
+    @type Number
+    @default SC.NORMAL_SCROLL_DECELERATION
   */
   decelerationRate: SC.NORMAL_SCROLL_DECELERATION,
   
   /**
     If YES, bouncing will always be enabled in the horizontal direction, even if the content
-    is smaller or the same size as the view. NO by default.
+    is smaller or the same size as the view.
+    
+    @type Boolean
+    @default NO
   */
   alwaysBounceHorizontal: NO,
   
   /**
     If NO, bouncing will not be enabled in the vertical direction when the content is smaller
-    or the same size as the scroll view. YES by default.
+    or the same size as the scroll view.
+    
+    @type Boolean
+    @default YES
   */
   alwaysBounceVertical: YES,
   
   /**
     Whether to delay touches from passing through to the content.
+    
+    @type Boolean
+    @default YES
   */
   delaysContentTouches: YES,
   
-  /**
-    @private
+  /** @private
     If the view supports it, this 
   */
   _touchScrollDidChange: function() {
@@ -887,6 +1025,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   _touchScrollDidStart: function() {
     if (this.get("contentView").touchScrollDidStart) {
       this.get("contentView").touchScrollDidStart(this._scroll_horizontalScrollOffset, this._scroll_verticalScrollOffset);
@@ -901,6 +1040,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   _touchScrollDidEnd: function() {
     if (this.get("contentView").touchScrollDidEnd) {
       this.get("contentView").touchScrollDidEnd(this._scroll_horizontalScrollOffset, this._scroll_verticalScrollOffset);
@@ -916,6 +1056,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   _applyCSSTransforms: function(layer) {
     var transform = "";
     this.updateScale(this._scale);
@@ -927,11 +1068,15 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   captureTouch: function(touch) {
     return YES;
   },
   
+  /** @private */
   touchGeneration: 0,
+  
+  /** @private */
   touchStart: function(touch) {
     var generation = ++this.touchGeneration;
     if (!this.tracking && this.get("delaysContentTouches")) {
@@ -945,6 +1090,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return YES;
   },
 
+  /** @private */
   beginTouchesInContent: function(gen) {
     if (gen !== this.touchGeneration) return;
     
@@ -966,7 +1112,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
 
-  /**
+  /** @private
     Initializes the start state of the gesture.
 
     We keep information about the initial location of the touch so we can
@@ -1081,6 +1227,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   _adjustForEdgeResistance: function(offset, minOffset, maxOffset, resistanceCoefficient, asymptote) {
     var distanceFromEdge;
     
@@ -1100,11 +1247,13 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return Math.min(Math.max(minOffset, offset), maxOffset) + distanceFromEdge;
   },
   
+  /** @private */
   touchesDragged: function(evt, touches) {
     var avg = evt.averagedTouchesForView(this);
     this.updateTouchScroll(avg.x, avg.y, avg.d, evt.timeStamp);
   },
   
+  /** @private */
   updateTouchScroll: function(touchX, touchY, distance, timeStamp) {
     // get some vars
     var touch = this.touch,
@@ -1235,6 +1384,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
 
+  /** @private */
   touchEnd: function(touch) {
     var touchStatus = this.touch,
         avg = touch.averagedTouchesForView(this);
@@ -1281,6 +1431,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
   
+  /** @private */
   touchCancelled: function(touch) {
     var touchStatus = this.touch,
         avg = touch.averagedTouchesForView(this);
@@ -1303,6 +1454,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
 
+  /** @private */
   startDecelerationAnimation: function(evt) {
     var touch = this.touch;
     touch.decelerationVelocity = {
@@ -1313,8 +1465,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     this.decelerateAnimation();
   },
   
-  /**
-    @private
+  /** @private
     Does bounce calculations, adjusting velocity.
     
     Bouncing is fun. Functions that handle it should have fun names,
@@ -1352,6 +1503,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return velocity;
   },
 
+  /** @private */
   decelerateAnimation: function() {
     // get a bunch of properties. They are named well, so not much explanation of what they are...
     // However, note maxOffsetX/Y takes into account the scale;
@@ -1572,6 +1724,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     this.tile() ; // set up initial tiling
   },
   
+  /** @private */
   init: function() {
     arguments.callee.base.apply(this,arguments);
     
@@ -1590,7 +1743,9 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     if (this.get('isVisibleInWindow')) this._scsv_registerAutoscroll() ;
   },
   
-  /** @private Registers/deregisters view with SC.Drag for autoscrolling */
+  /** @private
+    Registers/deregisters view with SC.Drag for autoscrolling
+  */
   _scsv_registerAutoscroll: function() {
     if (this.get('isVisibleInWindow')) SC.Drag.addScrollableView(this);
     else SC.Drag.removeScrollableView(this);
@@ -1647,6 +1802,12 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     return arguments.callee.base.apply(this,arguments);
   },
 
+  /** @private */
+  oldMaxHOffset: 0,
+  
+  /** @private */
+  oldMaxVOffset: 0,
+
   /** @private
     Invoked whenever the contentView's frame changes.  This will update the 
     scroller maxmimum and optionally update the scroller visibility if the
@@ -1655,26 +1816,24 @@ SC.ScrollView = SC.View.extend(SC.Border, {
 
     @param {Boolean} force (optional)  Re-calculate everything even if the contentView’s frame didn’t change size
   */
-
-  oldMaxHOffset: 0,
-  oldMaxVOffset: 0,
-
   contentViewFrameDidChange: function(force) {
     var view   = this.get('contentView'), 
         f      = (view) ? view.get('frame') : null,
         scale  = this._scale,
         width  = 0,
         height = 0,
-        dim, dimWidth, dimHeight;
-    
-    if (view) {
-      width = view.get('calculatedWidth') || f.width || 0;
-      height = view.get('calculatedHeight') || f.height || 0;
-    }
-    
+        dim, dimWidth, dimHeight, calculatedWidth, calculatedHeight;
+
+    // If no view has been set yet, or it doesn't have a frame,
+    // we can avoid doing any work.
+    if (!view || !f) { return; }
+
+    width = view.get('calculatedWidth') || f.width || 0;
+    height = view.get('calculatedHeight') || f.height || 0;
+
     width *= scale;
     height *= scale;
-    
+
     // cache out scroll settings...
     if (!force && (width === this._scroll_contentWidth) && (height === this._scroll_contentHeight)) return ;
     this._scroll_contentWidth  = width;
@@ -1778,12 +1937,12 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     // This gives views that use incremental rendering a chance to render
     // newly-appearing elements before they come into view.
     if (content) {
-      content._viewFrameDidChange();
-
       // Use accelerated drawing if the browser supports it
       if (SC.platform.touch) {
         this._applyCSSTransforms(content.get('layer'));
       }
+
+      if (content._viewFrameDidChange) { content._viewFrameDidChange(); }
     }
 
     if (container && !SC.platform.touch) {
@@ -1803,6 +1962,7 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
 
+  /** @private */
   forceDimensionsRecalculation: function (forceWidth, forceHeight, vOffSet, hOffSet) {
     var oldScrollHOffset = hOffSet;
     var oldScrollVOffset = vOffSet;
@@ -1818,7 +1978,10 @@ SC.ScrollView = SC.View.extend(SC.Border, {
     }
   },
 
+  /** @private */
   _scroll_verticalScrollOffset: 0,
+  
+  /** @private */
   _scroll_horizontalScrollOffset: 0
   
 });

@@ -1,11 +1,10 @@
-/* >>>>>>>>>> BEGIN __sc_chance.js */
-
 /* >>>>>>>>>> BEGIN source/license.js */
 /**
  * @license
  * ==========================================================================
  * SproutCore -- JavaScript Application Framework
- * copyright 2006-2011, Strobe Inc., Apple Inc. and contributors.
+ * Copyright 2006-2011, Strobe Inc. and contributors.
+ * Copyright ©2008-2011 Apple Inc. All rights reserved.
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 

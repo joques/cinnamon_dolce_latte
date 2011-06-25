@@ -1,11 +1,14 @@
-// ========================================================================
-// SproutCore -- JavaScript Application Framework
-// Copyright ©2006-2011, Strobe Inc. and contributors.
-// Portions copyright ©2008 Apple Inc.  All rights reserved.
-// ========================================================================
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
 
 /**
   @namespace
+  @deprecated
 
   Any views you implement that are scrollable should include this mixin to
   provide basic support for scrolling actions.  You can also override any 
@@ -16,35 +19,42 @@
   info.
   
   Note that isScrollable must always be true.
-
 */
 SC.Scrollable = {
   
-//@if(debug)
+
   initMixin: function() {
     SC.Logger.warn("SC.Scrollable is deprecated and will be removed in a future version of SproutCore.  Consider pulling the mixin into your own app if you want to keep using it.");
   },
-//@endif 
+ 
 
   /** Informs the view system that the receiver is scrollable.
-  
+
     Must always be true.
+
+    @property {Boolean}
+    @default YES
+    @constant
   */
   isScrollable: true,
 
   /** 
     Amount to scroll one vertical line.
   
-    Used by the default implementation of scrollDownLine() and scrollUpLine().  Defaults
-    to 20px.
+    Used by the default implementation of scrollDownLine() and scrollUpLine().
+    
+    @property {Number}
+    @default 20
   */
   verticalLineScroll: 20,
   
   /**
     Amount to scroll one horizontal line.
   
-    Used by the default implementation of scrollLeftLine() and scrollRightLine(). Defaults
-    to 20px.
+    Used by the default implementation of scrollLeftLine() and scrollRightLine().
+    
+    @property {Number}
+    @default 20
   */
   horizontalLineScroll: 20,
   
@@ -55,7 +65,7 @@ SC.Scrollable = {
     current innerFrame height.
   */
   verticalPageScroll: function() {
-    return this.get('innerFrame').height ;
+    return this.get('innerFrame').height;
   }.property('innerFrame'),
   
   /**
@@ -65,31 +75,33 @@ SC.Scrollable = {
     to current innerFrame width.
   */
   horizontalPageScroll: function() {
-    return this.get('innerFrame').width ;  
+    return this.get('innerFrame').width ;
   }.property('innerFrame'),
   
   /**
-    Returns true if the receiver has enough vertical content to require 
+    Returns true if the receiver has enough vertical content to require
     scrolling.
     
-    If you do not want to allow vertical scrolling, override this to be false 
+    If you do not want to allow vertical scrolling, override this to be false
     and set the appropriate CSS.
     
+    @field {Boolean}
   */
   hasVerticalScroller: function() {
-    return this.get('scrollFrame').height > this.get('innerFrame').height ;
+    return this.get('scrollFrame').height > this.get('innerFrame').height;
   }.property('scrollFrame'),
   
   /**
-    Returns true if the receiver has enough horizontal content to require 
+    Returns true if the receiver has enough horizontal content to require
     scrolling.
     
-    If you do not want to allow horizontal scrolling, override this to be 
+    If you do not want to allow horizontal scrolling, override this to be
     false and set the appropriate CSS.
     
+    @field {Boolean}
   */
   hasHorizontalScroller: function() {
-    return this.get('scrollFrame').width > this.get('innerFrame').width ;
+    return this.get('scrollFrame').width > this.get('innerFrame').width;
   }.property('scrollFrame'),
 
   /**
@@ -119,9 +131,12 @@ SC.Scrollable = {
 
   /**
     Scrolls the receiver to the specified x,y coordinate
+    
+    @param {Number} x
+    @param {Number} y
   */
   scrollTo: function(x,y) {
-    this.set('scrollFrame', { x: 0-x, y: 0-y }) ;  
+    this.set('scrollFrame', { x: 0-x, y: 0-y });
   },
   
   /**
@@ -129,10 +144,9 @@ SC.Scrollable = {
     
     Frame must be relative to the receiver's offsetParent.
     
-    @param {SC.ClassicView} view the view you want to make visible
+    @param {SC.View} view the view you want to make visible
   */
   scrollToVisible: function(view) {
-
     // get frames and convert them to proper offsets
     var f = this.get('innerFrame') ;
     var sf = this.get('scrollFrame') ;

@@ -1,13 +1,13 @@
 // ==========================================================================
 // Project:   SproutCore Costello - Property Observing Library
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
 /*globals CoreTest Q$ */
 
-sc_require('jquery');
+var QUNIT_BREAK_ON_TEST_FAIL = false;
 
 /** @class
 
@@ -538,6 +538,11 @@ CoreTest.Plan = {
           msg = msg + ", expected: " + CoreTest.dump(expected) + " result: " + CoreTest.dump(actual);
         }
       }
+
+      if (QUNIT_BREAK_ON_TEST_FAIL & !pass) {
+        throw msg;
+      }
+
       return !!pass ? this.pass(msg) : this.fail(msg);
     },
 

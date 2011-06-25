@@ -1,7 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -24,12 +24,22 @@
 SC.ThumbView = SC.View.extend(
 /** @scope SC.ThumbView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-thumb-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-thumb-view'],
   
   /**
     Enable this thumb view to control its parent split view.
+    
+    @type Boolean
+    @default YES
   */
   isEnabled: YES,
+  
+  /** @private */
   isEnabledBindingDefault: SC.Binding.bool(),
   
   /** @private */
@@ -39,6 +49,7 @@ SC.ThumbView = SC.View.extend(
     return arguments.callee.base.apply(this,arguments) ;
   },
   
+  /** @private */
   mouseDown: function(evt) {
     if (!this.get('isEnabled')) return NO ;
     
@@ -46,8 +57,9 @@ SC.ThumbView = SC.View.extend(
     return (splitView) ? splitView.mouseDownInThumbView(evt, this) : arguments.callee.base.apply(this,arguments);
   },
   
+  /** @private */
   touchStart: function(evt) {
     return this.mouseDown(evt);
   }
-    
+
 });

@@ -1,6 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2010 Evin Grano
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -14,14 +15,12 @@ sc_require('system/child_array');
   ChildrenAttribute is a subclass of ChildAttribute and handles to-many 
   relationships for child records.
   
-  When setting ( .set() ) the value of a toMany attribute, make sure
+  When setting ( `.set()` ) the value of a toMany attribute, make sure
   to pass in an array of SC.Record objects.
   
   There are many ways you can configure a ChildrenAttribute:
   
-  {{{
-    contacts: SC.ChildrenAttribute.attr('SC.Child');
-  }}}
+      contacts: SC.ChildrenAttribute.attr('SC.Child');
   
   @extends SC.RecordAttribute
   @since SproutCore 1.0

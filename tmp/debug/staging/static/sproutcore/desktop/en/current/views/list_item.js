@@ -1,12 +1,27 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            portions copyright @2009 Apple Inc.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
+
+/**
+  @static
+  @constant
+*/
 SC.LIST_ITEM_ACTION_CANCEL = 'sc-list-item-cancel-action';
+
+/**
+  @static
+  @constant
+*/
 SC.LIST_ITEM_ACTION_REFRESH = 'sc-list-item-cancel-refresh';
+
+/**
+  @static
+  @constant
+*/
 SC.LIST_ITEM_ACTION_EJECT = 'sc-list-item-cancel-eject';
 
 /**
@@ -22,23 +37,27 @@ SC.LIST_ITEM_ACTION_EJECT = 'sc-list-item-cancel-eject';
 
   @extends SC.View
   @extends SC.Control
-  @extends SC.Editable
+  @extends SC.InlineEditable
   @extends SC.StaticLayout
   @since SproutCore 1.0
 */
-SC.ListItemView = SC.View.extend(
-    SC.InlineEditable,
-    SC.Control,
+SC.ListItemView = SC.View.extend(SC.InlineEditable, SC.Control,
 /** @scope SC.ListItemView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-list-item-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-list-item-view'],
 
+  /**
+    @type Array
+    @default ['disclosureState', 'escapeHTML']
+    @see SC.View#displayProperties
+  */
   displayProperties: ['disclosureState', 'escapeHTML'],
 
-
-  init: function() {
-    arguments.callee.base.apply(this,arguments);
-  },
 
   // ..........................................................
   // KEY PROPERTIES
@@ -48,6 +67,7 @@ SC.ListItemView = SC.View.extend(
     The content object the list item will display.
 
     @type SC.Object
+    @default null
   */
   content: null,
 
@@ -59,7 +79,8 @@ SC.ListItemView = SC.View.extend(
     in a ListView, this property would be 0.
 
     @type Number
-    @isReadOnly
+    @default null
+    @readOnly
   */
   contentIndex: null,
 
@@ -68,6 +89,9 @@ SC.ListItemView = SC.View.extend(
 
     If false, the icon on the list item view will be hidden.  Otherwise,
     space will be left for the icon next to the list item view.
+    
+    @type Boolean
+    @default NO
   */
   hasContentIcon: NO,
 
@@ -76,6 +100,9 @@ SC.ListItemView = SC.View.extend(
 
     If false, the icon on the list item view will be hidden.  Otherwise,
     space will be left for the icon next to the list item view.
+    
+    @type Boolean
+    @default NO
   */
   hasContentRightIcon: NO,
 
@@ -84,6 +111,9 @@ SC.ListItemView = SC.View.extend(
     arrow.
 
     If false, the space for the branch arrow will be collapsed.
+    
+    @type Boolean
+    @default NO
   */
   hasContentBranch: NO,
 
@@ -92,13 +122,17 @@ SC.ListItemView = SC.View.extend(
 
     The checkbox will only be visible if this key is not null.
 
-    @type {String}
+    @type String
+    @default null
   */
   contentCheckboxKey: null,
 
   /**
     The URL or CSS class name to use for the icon. This is only used if
     contentIconKey is null, or returns null from the delegate.
+    
+    @type String
+    @default null
   */
   icon: null,
 
@@ -107,12 +141,18 @@ SC.ListItemView = SC.View.extend(
 
     This property will be checked on the content object to determine the
     icon to display.  It must return either a URL or a CSS class name.
+    
+    @type String
+    @default NO
   */
   contentIconKey: null,
 
   /**
     The URL or CSS class name to use for the right icon. This is only used if
     contentRightIconKey is null, or returns null from the delegate.
+    
+    @type String
+    @default null
   */
   rightIcon: null,
 
@@ -121,6 +161,9 @@ SC.ListItemView = SC.View.extend(
 
     This property will be checked on the content object to determine the
     icon to display.  It must return either a URL or a CSS class name.
+    
+    @type String
+    @default null
   */
   contentRightIconKey: null,
 
@@ -128,6 +171,9 @@ SC.ListItemView = SC.View.extend(
     (displayDelegate) The name of the property used for label itself
 
     If null, then the content object itself will be used..
+    
+    @type String
+    @default null
   */
   contentValueKey: null,
 
@@ -136,6 +182,9 @@ SC.ListItemView = SC.View.extend(
     You should only disable this option if you are sure you will only
     display content that is already escaped and you need the added
     performance gain.
+    
+    @type Boolean
+    @default YES
   */
   escapeHTML: YES,
 
@@ -145,6 +194,9 @@ SC.ListItemView = SC.View.extend(
 
     The count will only be visible if this property is not null and the
     returned value is not 0.
+    
+    @type String
+    @default null
   */
   contentUnreadCountKey: null,
 
@@ -155,30 +207,40 @@ SC.ListItemView = SC.View.extend(
 
     If this is null, then the branch view will be completely hidden.
     Otherwise space will be allocated for it.
+    
+    @type String
+    @default null
   */
   contentIsBranchKey: null,
-
-
-  /**
-    YES if the item view is currently editing.
-  */
-  isEditing: NO,
-
+  
   /**
     Indent to use when rendering a list item with an outline level > 0.  The
     left edge of the list item will be indented by this amount for each
     outline level.
+    
+    @type Number
+    @default 16
   */
   outlineIndent: 16,
 
   /**
     Outline level for this list item.  Usually set by the collection view.
+    
+    @type Number
+    @default 0
   */
   outlineLevel: 0,
 
   /**
     Disclosure state for this list item.  Usually set by the collection view
-    when the list item is created.
+    when the list item is created. Possible values:
+    
+      - SC.LEAF_NODE
+      - SC.BRANCH_OPEN
+      - SC.BRANCH_CLOSED
+    
+    @type String
+    @default SC.LEAF_NODE
   */
   disclosureState: SC.LEAF_NODE,
 
@@ -188,6 +250,7 @@ SC.ListItemView = SC.View.extend(
   */
   validator: null,
 
+  /** @private */
   contentPropertyDidChange: function() {
     //if (this.get('isEditing')) this.discardEditing() ;
     if (this.get('contentIsEditable') !== this.contentIsEditable()) {
@@ -198,40 +261,37 @@ SC.ListItemView = SC.View.extend(
   },
 
   /**
-    Determines if content is editable or not.  Checkboxes and other related
+    Determines if content is editable or not. Checkboxes and other related
     components will render disabled if an item is not editable.
+    
+    @field
+    @type Boolean
+    @observes content
   */
   contentIsEditable: function() {
     var content = this.get('content');
     return content && (content.get ? content.get('isEditable')!==NO : NO);
   }.property('content').cacheable(),
-
-
+  
+  /**
+    @type Object
+    @default SC.InlineTextFieldDelegate
+  */
+  inlineEditorDelegate: SC.InlineTextFieldDelegate,
+  
   /**
     Finds and retrieves the element containing the label.  This is used
     for inline editing.  The default implementation returns a CoreQuery
     selecting any label elements.   If you override renderLabel() you
     probably need to override this as well.
 
-    @returns {SC.CoreQuery} CQ object selecting label elements
+    @returns {jQuery} jQuery object selecting label elements
   */
   $label: function() {
-    return this.$('label') ;
+    return this.$('label');
   },
 
-  /**
-    Generates the html string used to represent the action item for your
-    list item.  override this to return your own custom HTML
-
-    @param {SC.RenderContext} context the render context
-    @param {String} actionClassName the name of the action item
-    @returns {void}
-  */
-  renderAction: function(context, actionClassName){
-    context.push('<img src="',SC.BLANK_IMAGE_URL,'" class="action" />');
-  },
-
-  /**
+  /** @private
     Determines if the event occured inside an element with the specified
     classname or not.
   */
@@ -279,11 +339,10 @@ SC.ListItemView = SC.View.extend(
   },
 
   /** @private
-  mouseDown is handled only for clicks on the checkbox view or or action
-  button.
+    mouseDown is handled only for clicks on the checkbox view or or action
+    button.
   */
   mouseDown: function(evt) {
-
     // if content is not editable, then always let collection view handle the
     // event.
     if (!this.get('contentIsEditable')) return NO ;
@@ -310,6 +369,7 @@ SC.ListItemView = SC.View.extend(
     return NO ; // let the collection view handle this event
   },
 
+  /** @private */
   mouseUp: function(evt) {
     var ret= NO, del, checkboxKey, content, state, idx, set;
 
@@ -370,6 +430,7 @@ SC.ListItemView = SC.View.extend(
     return ret ;
   },
 
+  /** @private */
   mouseMoved: function(evt) {
     if (this._isMouseDownOnCheckbox && this._isInsideCheckbox(evt)) {
       this._addCheckboxActiveState() ;
@@ -393,23 +454,28 @@ SC.ListItemView = SC.View.extend(
    return NO ;
   },
 
+  /** @private */
   touchStart: function(evt){
     return this.mouseDown(evt);
   },
 
+  /** @private */
   touchEnd: function(evt){
     return this.mouseUp(evt);
   },
 
+  /** @private */
   touchEntered: function(evt){
     return this.mouseEntered(evt);
   },
 
+  /** @private */
   touchExited: function(evt){
     return this.mouseExited(evt);
   },
 
 
+  /** @private */
   _addCheckboxActiveState: function() {
     if (this.get('isEnabled')) {
       if (this._checkboxRenderDelegate) {
@@ -425,6 +491,7 @@ SC.ListItemView = SC.View.extend(
     }
   },
 
+  /** @private */
   _removeCheckboxActiveState: function() {
     if (this._checkboxRenderer) {
       var source = this._checkboxRenderSource;
@@ -438,6 +505,7 @@ SC.ListItemView = SC.View.extend(
     }
   },
 
+  /** @private */
   _addDisclosureActiveState: function() {
     if (this.get('isEnabled')) {
       if (this._disclosureRenderDelegate) {
@@ -453,6 +521,7 @@ SC.ListItemView = SC.View.extend(
     }
   },
 
+  /** @private */
   _removeDisclosureActiveState: function() {
     if (this._disclosureRenderer) {
       var source = this._disclosureRenderSource;
@@ -465,15 +534,17 @@ SC.ListItemView = SC.View.extend(
     }
   },
 
+  /** @private */
   _addRightIconActiveState: function() {
    this.$('img.right-icon').setClass('active', YES);
   },
 
+  /** @private */
   _removeRightIconActiveState: function() {
    this.$('img.right-icon').removeClass('active');
   },
 
-  /**
+  /** @private
     Returns true if a click is on the label text itself to enable editing.
 
     Note that if you override renderLabel(), you probably need to override
@@ -502,22 +573,17 @@ SC.ListItemView = SC.View.extend(
    return NO;
   },
 
-  beginEditing: function() {
-    if (this.get('isEditing')) return YES ;
-    //if (!this.get('contentIsEditable')) return NO ;
-    return this._beginEditing(YES);
-  },
-
-  _beginEditing: function(scrollIfNeeded) {
-    var content   = this.get('content'),
-        del       = this.get('displayDelegate'),
-        labelKey  = this.getDelegateProperty('contentValueKey', del),
-        parent    = this.get('parentView'),
-        pf        = parent ? parent.get('frame') : null,
-        el        = this.$label(),
-        validator = this.get('validator'),
-        f, v, offset, oldLineHeight, fontSize, top, lineHeight, escapeHTML,
-        lineHeightShift, targetLineHeight, ret ;
+  /*
+    Edits the label portion of the list item. If scrollIfNeeded is YES, will
+    scroll to the item before editing it.
+    
+    @params {Boolean} if the parent scroll view should be scrolled to this item
+      before editing begins
+    @returns {Boolean} YES if successful
+  */
+  beginEditing: function(original, scrollIfNeeded) {
+    var el        = this.$label(),
+        parent    = this.get('parentView');
 
     // if possible, find a nearby scroll view and scroll into view.
     // HACK: if we scrolled, then wait for a loop and get the item view again
@@ -527,28 +593,42 @@ SC.ListItemView = SC.View.extend(
       var collectionView = this.get('owner'), idx = this.get('contentIndex');
       this.invokeLast(function() {
         var item = collectionView.itemViewForContentIndex(idx);
-        if (item && item._beginEditing) item._beginEditing(NO);
+        if (item && item.beginEditing) item.beginEditing(NO);
       });
       return YES; // let the scroll happen then begin editing...
     }
 
-    // nothing to do...
-    if (!parent || !el || el.get('length')===0) return NO ;
-    v = (labelKey && content && content.get) ? content.get(labelKey) : null ;
+    else if (!parent || !el || el.get('length')===0) return NO ;
+
+    else return original();
+  }.enhance(),
+
+  /*
+    Configures the editor to overlay the label properly.
+  */
+  inlineEditorWillBeginEditing: function(editor, editable, value) {
+    var content   = this.get('content'),
+        del       = this.get('displayDelegate'),
+        labelKey  = this.getDelegateProperty('contentValueKey', del),
+        parent    = this.get('parentView'),
+        el        = this.$label(),
+        validator = this.get('validator'),
+        f, v, offset, fontSize, top, lineHeight, escapeHTML,
+        lineHeightShift, targetLineHeight, ret ;
+
+    v = (labelKey && content) ? (content.get ? content.get(labelKey) : content[labelKey]) : content;
 
     f = this.computeFrameWithParentFrame(null);
-    offset = SC.viewportOffset(el[0]);
 
     // if the label has a large line height, try to adjust it to something
     // more reasonable so that it looks right when we show the popup editor.
-    oldLineHeight = el.css('lineHeight');
+    lineHeight = this._oldLineHeight = el.css('lineHeight');
     fontSize = el.css('fontSize');
     top = this.$().css('top');
 
     if (top) top = parseInt(top.substring(0,top.length-2),0);
     else top =0;
 
-    lineHeight = oldLineHeight;
     lineHeightShift = 0;
 
     if (fontSize && lineHeight) {
@@ -559,82 +639,74 @@ SC.ListItemView = SC.View.extend(
       } else oldLineHeight = null ;
     }
 
+    el = el[0];
+    offset = SC.offset(el);
+
     f.x = offset.x;
     f.y = offset.y+top + lineHeightShift ;
-    f.height = el[0].offsetHeight ;
-    f.width = el[0].offsetWidth ;
+    f.height = el.offsetHeight ;
+    f.width = el.offsetWidth ;
 
     escapeHTML = this.get('escapeHTML');
 
-    ret = SC.InlineTextFieldView.beginEditing({
-      frame: f,
-      exampleElement: el,
-      delegate: this,
+    editor.set({
       value: v,
+      exampleFrame: f,
+      exampleElement: el,
       multiline: NO,
       isCollection: YES,
       validator: validator,
-      escapeHTML: escapeHTML,
-      pane: this.get('pane'),
-      layout: this.get('layout')
+      escapeHTML: escapeHTML
     }) ;
-
-    // restore old line height for original item if the old line height
-    // was saved.
-    if (oldLineHeight) el.css({ lineHeight: oldLineHeight }) ;
-
-    // Done!  If this failed, then set editing back to no.
-    return ret ;
   },
-
-  commitEditing: function() {
-   if (!this.get('isEditing')) return YES ;
-   return SC.InlineTextFieldView.commitEditing();
-  },
-
-  discardEditing: function() {
-   if (!this.get('isEditing')) return YES ;
-   return SC.InlineTextFieldView.discardEditing();
-  },
-
 
   /** @private
     Allow editing.
   */
   inlineEditorShouldBeginEditing: function(inlineEditor) {
-    return YES ;
+    return YES;
   },
 
   /** @private
    Hide the label view while the inline editor covers it.
   */
-  inlineEditorDidBeginEditing: function(inlineEditor) {
-   var el = this.$label() ;
-   this._oldOpacity = el.css('opacity');
-   el.css('opacity', 0.0) ;
-  },
+  inlineEditorDidBeginEditing: function(original, inlineEditor, value, editable) {
+    original(inlineEditor, value, editable);
 
-  inlineEditorShouldEndEditing: function(inlineEditor, finalValue) {
-   return YES ;
-  },
+    var el = this.$label() ;
+    this._oldOpacity = el.css('opacity');
+    el.css('opacity', 0.0) ;
+
+    // restore old line height for original item if the old line height 
+    // was saved.
+    if (this._oldLineHeight) el.css({ lineHeight: this._oldLineHeight }) ;
+  }.enhance(),
 
   /** @private
    Update the field value and make it visible again.
   */
-  inlineEditorDidEndEditing: function(inlineEditor, finalValue) {
-    this.set('isEditing', NO) ;
-
+  inlineEditorDidCommitEditing: function(editor, finalValue, editable) {
     var content = this.get('content') ;
     var del = this.displayDelegate ;
     var labelKey = this.getDelegateProperty('contentValueKey', del) ;
-    if (labelKey && content && content.set) {
-     content.set(labelKey, finalValue) ;
+
+    if(labelKey && content) {
+      if(content.set) content.set(labelKey, finalValue);
+      else content[labelKey] = finalValue;
     }
 
-    this.$label().css("opacity", this._oldOpacity);
+    else this.set('content', finalValue);
 
     this.displayDidChange();
+
+    this._endEditing();
   },
+
+  _endEditing: function(original) {
+    this.$label().css('opacity', this._oldOpacity);
+
+    original();
+  }.enhance(),
 
   /** @private
     Fills the passed html-array with strings that can be joined to form the

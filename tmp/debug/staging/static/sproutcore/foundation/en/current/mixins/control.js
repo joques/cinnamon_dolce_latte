@@ -1,57 +1,67 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-sc_require('mixins/string');
+sc_require('mixins/content_value_support');
+sc_require('system/string');
 
 /**
   Option for controls to automatically calculate their size (should be default 
   on controls that use renderers).
+  
+  @type String
+  @constant
 */
 SC.AUTO_CONTROL_SIZE = '__AUTO__';
 
 /** 
   Option for HUGE control size.
   
-  @property {String}
+  @type String
+  @constant
 */
 SC.JUMBO_CONTROL_SIZE = 'sc-jumbo-size' ;
 
 /** 
   Option for HUGE control size.
   
-  @property {String}
+  @type String
+  @constant
 */
 SC.HUGE_CONTROL_SIZE = 'sc-huge-size' ;
 
 /** 
   Option for large control size.
   
-  @property {String}
+  @type String
+  @constant
 */
 SC.LARGE_CONTROL_SIZE = 'sc-large-size' ;
 
 /** 
   Option for standard control size.
   
-  @property {String}
+  @type String
+  @constant
 */
 SC.REGULAR_CONTROL_SIZE = 'sc-regular-size' ;
 
 /** 
   Option for small control size.
   
-  @property {String}
+  @type String
+  @constant
 */
 SC.SMALL_CONTROL_SIZE = 'sc-small-size' ;
 
 /** 
   Option for tiny control size
   
-  @property {String}
+  @type String
+  @constant
 */
 SC.TINY_CONTROL_SIZE = 'sc-tiny-size' ;
 
@@ -63,7 +73,7 @@ SC.TINY_CONTROL_SIZE = 'sc-tiny-size' ;
   functionality including showing a selected state, enabled state, focus
   state, etc.
   
-  h2. About Values and Content
+  ## About Values and Content
   
   Controls typically are used to represent a single value, such as a number,
   boolean or string.  The value a control is managing is typically stored in
@@ -97,7 +107,7 @@ SC.TINY_CONTROL_SIZE = 'sc-tiny-size' ;
   properties you care about on the content object and update your view if 
   anything you care about has changed.
   
-  h2. Delegate Support
+  ## Delegate Support
   
   Controls can optionally get the contentDisplayProperty from a 
   displayDelegate, if it is set.  The displayDelegate is often used to 
@@ -106,21 +116,29 @@ SC.TINY_CONTROL_SIZE = 'sc-tiny-size' ;
   collection view will be automatically set as its displayDelegate.
   
   @since SproutCore 1.0
+  @extends SC.ContentValueSupport
 */
-SC.Control = {
+SC.Control = SC.mixin(SC.clone(SC.ContentValueSupport),
+/** @scope SC.Control.prototype */{
   
+  /**
+    Walk like a duck
+    
+    @type Boolean
+    @default YES
+    @readOnly
+  */
   isControl: YES,
   
-  /** @private */
-  initMixin: function() {
-    this._control_contentDidChange() ; // setup content observing if needed.
-  },
-  
   /** 
-    The selected state of this control.  Possible options are YES, NO or 
-    SC.MIXED_STATE.
+    The selected state of this control. Possible values:
     
-    @property {Boolean}
+      - `YES`
+      - `NO`
+      - SC.MIXED_STATE.
+    
+    @type Boolean
+    @default NO
   */
   isSelected: NO,
   
@@ -135,150 +153,13 @@ SC.Control = {
     Changing this property value by default will cause the Control mixin to
     add/remove an 'active' class name to the root element.
     
-    @property {Boolean}
+    @type Boolean
+    @default NO
   */
   isActive: NO,
   
   /** @private */
   isActiveBindingDefault: SC.Binding.oneWay().bool(),
-  
-  /**
-    The value represented by this control.
-    
-    Most controls represent a value of some type, such as a number, string
-    or image URL.  This property should hold that value.  It is bindable
-    and observable.  Changing this value will immediately change the
-    appearance of the control.  Likewise, editing the control 
-    will immediately change this value.
-    
-    If instead of setting a single value on a control, you would like to 
-    set a content object and have the control display a single property
-    of that control, then you should use the content property instead.
-
-    @property {Object}
-  */
-  value: null,
-  
-  /**
-    The content object represented by this control.
-    
-    Often you need to use a control to display some single aspect of an 
-    object, especially if you are using the control as an item view in a
-    collection view.
-    
-    In those cases, you can set the content and contentValueKey for the
-    control.  This will cause the control to observe the content object for
-    changes to the value property and then set the value of that property 
-    on the "value" property of this object.
-    
-    Note that unless you are using this control as part of a form or 
-    collection view, then it would be better to instead bind the value of
-    the control directly to a controller property.
-    
-    @property {SC.Object}
-  */
-  content: null,
-  
-  /**
-    The property on the content object that would want to represent the 
-    value of this control.  This property should only be set before the
-    content object is first set.  If you have a displayDelegate, then
-    you can also use the contentValueKey of the displayDelegate.
-    
-    @property {String}
-  */
-  contentValueKey: null,
-  
-  /**
-    Invoked whenever any property on the content object changes.  
-    
-    The default implementation will update the value property of the view
-    if the contentValueKey property has changed.  You can override this
-    method to implement whatever additional changes you would like.
-    
-    The key will typically contain the name of the property that changed or 
-    '*' if the content object itself has changed.  You should generally do
-    a total reset if '*' is changed.
-    
-    @param {Object} target the content object
-    @param {String} key the property that changes
-    @returns {void}
-    @test in content
-  */
-  contentPropertyDidChange: function(target, key) {
-    return this.updatePropertyFromContent('value', key, 'contentValueKey', target);
-  },
-  
-  /**
-    Helper method you can use from your own implementation of 
-    contentPropertyDidChange().  This method will look up the content key to
-    extract a property and then update the property if needed.  If you do
-    not pass the content key or the content object, they will be computed 
-    for you.  It is more efficient, however, for you to compute these values
-    yourself if you expect this method to be called frequently.
-    
-    @param {String} prop local property to update
-    @param {String} key the contentproperty that changed
-    @param {String} contentKey the local property that contains the key
-    @param {Object} content
-    @returns {SC.Control} receiver
-  */
-  updatePropertyFromContent: function(prop, key, contentKey, content) {
-    var del, v;
-    
-    if (contentKey === undefined) contentKey = "content"+prop.capitalize()+"Key";
-    
-    // prefer our own definition of contentKey
-    if(this[contentKey]) contentKey = this.get(contentKey);
-    // if we don't have one defined check the delegate
-    else if((del = this.displayDelegate) && (v = del[contentKey])) contentKey = del.get ? del.get(contentKey) : v;
-    // if we have no key we can't do anything so just short circuit out
-    else return this;
-    
-    // only bother setting value if the observer triggered for the correct key
-    if (key === '*' || key === contentKey) {
-      if (content === undefined) content = this.get('content');
-      
-      if(content) v = content.get ? content.get(contentKey) : content[contentKey];
-      else v = null;
-      
-      this.set(prop, v) ;
-    }
-    
-    return this ;
-  },
-  
-  /**
-    Relays changes to the value back to the content object if you are using
-    a content object.
-    
-    This observer is triggered whenever the value changes.  It will only do
-    something if it finds you are using the content property and
-    contentValueKey and the new value does not match the old value of the
-    content object.  
-    
-    If you are using contentValueKey in some other way than typically
-    implemented by this mixin, then you may want to override this method as
-    well.
-    
-    @returns {void}
-  */
-  updateContentWithValueObserver: function() {
-    var key = this.contentValueKey ?
-      this.get('contentValueKey') :
-      this.getDelegateProperty('contentValueKey', this.displayDelegate),
-      content = this.get('content') ;
-    if (!key || !content) return ; // do nothing if disabled
-    
-    // get value -- set on content if changed
-    var value = this.get('value');
-    if (typeof content.setIfChanged === SC.T_FUNCTION) {
-      content.setIfChanged(key, value);
-    } else {
-      // avoid re-writing inherited props
-      if (content[key] !== value) content[key] = value ;
-    }
-  }.observes('value'),
   
   /**
     The name of the property this control should display if it is part of an
@@ -288,7 +169,8 @@ SC.Control = {
     automatically bind the value to the property key you name here on the 
     content object.
     
-    @property {String}
+    @type String
+    @default null
   */
   fieldKey: null,
   
@@ -299,7 +181,8 @@ SC.Control = {
     in the error explanation.  If you do not set this property, then the 
     fieldKey or the class name will be used to generate a human readable name.
     
-    @property {String}
+    @type String
+    @default null
   */
   fieldLabel: null,
   
@@ -315,18 +198,20 @@ SC.Control = {
     Try to localize using the string "ErrorLabel.{ClassName}". Return a 
     humanized form of the class name.
     
-    @property {String}
+    @field
+    @type String
+    @observes 'fieldLabel'
+    @observes 'fieldKey'
   */
   errorLabel: function() {
-    var ret, fk, def ;
-    if (ret = this.get('fieldLabel')) return ret ;
+    var ret, fk, def, locFK;
+    if (ret = this.get('fieldLabel')) return ret;
     
     // if field label is not provided, compute something...
-    fk = this.get('fieldKey') || this.constructor.toString() ;
-    def = (fk || '').humanize().capitalize() ;
-    return "ErrorLabel."+fk
-      .locWithDefault(("FieldKey."+fk).locWithDefault(def)) ;
-      
+    fk = this.get('fieldKey') || this.constructor.toString();
+    def = fk ? SC.String.capitalize(SC.String.humanize(fk)) : '';
+    locFK = SC.String.locWithDefault("FieldKey." + fk, def);
+    return SC.String.locWithDefault("ErrorLabel." + fk, locFK);
   }.property('fieldLabel','fieldKey').cacheable(),
 
   /**
@@ -339,12 +224,13 @@ SC.Control = {
     a height, performance will be impacted as it must be calculated; if you do
     this, a warning will be issued. If you don't care, use SC.CALCULATED_CONTROL_SIZE.
     
-    @property {String}
+    @type String
+    @default SC.REGULAR_CONTROL_SIZE
   */
   controlSize: SC.REGULAR_CONTROL_SIZE,
   
   /** @private */
-  displayProperties: 'isEnabled isSelected isActive controlSize'.w(),
+  displayProperties: ['isEnabled', 'isSelected', 'isActive', 'controlSize'],
   
   /** @private */
   _CONTROL_TMP_CLASSNAMES: {},
@@ -363,13 +249,23 @@ SC.Control = {
     names.active = this.get('isActive') ;
 
     var controlSize = this.get("controlSize");
+    if (!controlSize) {
+      controlSize = SC.REGULAR_CONTROL_SIZE;
+    }
 
     if (firstTime) {
       context.setClass(names);
-      if (controlSize !== SC.AUTO_CONTROL_SIZE) context.addClass(controlSize);
+
+      // delegates handle adding 'controlSize' on their own. We only support it
+      // here for backwards-compatibility.
+      if (!this.get('renderDelegate')) {
+        context.addClass(controlSize);
+      }
     } else {
       context.$().setClass(names);
-      if (controlSize !== SC.AUTO_CONTROL_SIZE) context.$().addClass(controlSize);
+      if (!this.get('renderDelegate')) {
+        context.$().addClass(controlSize);
+      }
     }
 
     // if the control implements the $input() helper, then fixup the input
@@ -380,43 +276,7 @@ SC.Control = {
         this.$input().attr('disabled', disabled);
       }
     }
-  },
-  
-  /** @private
-    This should be null so that if content is also null, the
-    _contentDidChange won't do anything on init.
-  */
-  _control_content: null,
-  
-  /** @private
-    Observes when a content object has changed and handles notifying 
-    changes to the value of the content object.
-  */
-  // TODO: observing * is unnecessary and inefficient, but a bunch of stuff in sproutcore depends on it (like button)
-  _control_contentDidChange: function() {
-    var content = this.get('content');
-    
-    if (this._control_content === content) return; // nothing changed
-    
-    var f = this.contentPropertyDidChange,
-    // remove an observer from the old content if necessary
-        old = this._control_content ;
-    if (old && old.removeObserver) old.removeObserver('*', this, f) ;
-  
-    // update previous values
-    this._control_content = content ;
-  
-    // add observer to new content if necessary.
-    if (content && content.addObserver) content.addObserver('*', this, f) ;
-    
-    // notify that value did change.
-    this.contentPropertyDidChange(content, '*') ;
-    
-  }.observes('content'),
-  
-  // since we always observe *, just call the update function
-  _control_contentValueKeyDidChange: function() {
-    // notify that value did change.
-    this.contentPropertyDidChange(this.get('content'), '*') ;
-  }.observes('contentValueKey')
-};
+  }
+
+});
+

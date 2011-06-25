@@ -1,7 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -15,14 +15,12 @@
   method on your view. Your updateDisplay() method will then be called at the 
   end of the run loop.
   
-  h2. Example
+  ## Example
   
-  {{{
-    MyApp.MyViewClass = SC.View.extend(SC.ContentDisplay, { 
-      contentDisplayProperties: 'title isEnabled hasChildren'.w(),
-      ...
-    });
-  }}}
+      MyApp.MyViewClass = SC.View.extend(SC.ContentDisplay, { 
+        contentDisplayProperties: 'title isEnabled hasChildren'.w(),
+        ...
+      });
   
   @since SproutCore 1.0
 */
@@ -39,7 +37,8 @@ SC.ContentDisplay = {
     should trigger an update of the display for your view.  Changes to the
     content object will only invoke your display method once per runloop.
     
-    @property {Array}
+    @type Array
+    @default []
   */
   contentDisplayProperties: [],
 

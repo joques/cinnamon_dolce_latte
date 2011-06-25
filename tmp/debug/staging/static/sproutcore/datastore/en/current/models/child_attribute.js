@@ -1,6 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2010 Evin Grano
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -9,17 +10,15 @@ sc_require('models/record_attribute');
 
 /** @class
   
-  ChildAttribute is a subclass of RecordAttribute and handles to-one 
+  ChildAttribute is a subclass of `RecordAttribute` and handles to-one 
   relationships for child records.
   
-  When setting ( .set() ) the value of a toMany attribute, make sure
-  to pass in an array of SC.Record objects.
+  When setting ( `.set()` ) the value of a toMany attribute, make sure
+  to pass in an array of `SC.Record` objects.
   
   There are many ways you can configure a ManyAttribute:
   
-  {{{
-    contacts: SC.ChildAttribute.attr('SC.Child');
-  }}}
+      contacts: SC.ChildAttribute.attr('SC.Child');
   
   @extends SC.RecordAttribute
   @since SproutCore 1.0
@@ -47,23 +46,33 @@ SC.ChildAttribute = SC.RecordAttribute.extend(
   },
   
   // Default fromType is just returning itself
-  fromType: function(record, key, value){
+  fromType: function(record, key, value) {
     var sk, store, ret;
-    if (record){
-      ret = record.registerNestedRecord(value, key, key);
-      if (ret) {
-        sk = ret.get('storeKey');
-        store = ret.get('store');
-        record.writeAttribute(key, store.readDataHash(sk));
-      }
-      else if (value) {
+
+    if (record) {
+      if (SC.none(value)) {
+        // Handle null value.
         record.writeAttribute(key, value);
+        ret = value;
+      } else {
+        // Register the nested record with this record (the parent).
+        ret = record.registerNestedRecord(value, key);
+
+        if (ret) {
+          // Write the data hash of the nested record to the store.
+          sk = ret.get('storeKey');
+          store = ret.get('store');
+          record.writeAttribute(key, store.readDataHash(sk));
+        } else if (value) {
+          // If registration failed, just write the value.
+          record.writeAttribute(key, value);
+        }
       }
-    } 
-    
+    }
+
     return ret;
   },
-    
+ 
   /**
     The core handler.  Called from the property.
     @param {SC.Record} record the record instance

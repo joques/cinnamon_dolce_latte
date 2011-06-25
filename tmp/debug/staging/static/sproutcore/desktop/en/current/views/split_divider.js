@@ -1,11 +1,10 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-sc_require('views/split');
 
 /**
   @class
@@ -22,7 +21,6 @@ sc_require('views/split');
   be surrounded by two other views.
 
   @extends SC.View
-
   @author Charles Jolley
   @author Lawrence Pit
   @author Erich Ocean
@@ -31,20 +29,28 @@ sc_require('views/split');
 SC.SplitDividerView = SC.View.extend(
 /** @scope SC.SplitDividerView.prototype */ {
 
+  /**
+    @type Array
+    @default ['sc-split-divider-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-split-divider-view'],
   
   /** @private */
 
+  /** @private */
   mouseDown: function(evt) {
     var splitView = this.get('splitView');
     return (splitView) ? splitView.mouseDownInThumbView(evt, this) : arguments.callee.base.apply(this,arguments);
   },
   
+  /** @private */
   doubleClick: function(evt) {
     var splitView = this.get('splitView');
     return (splitView) ? splitView.doubleClickInThumbView(evt, this) : arguments.callee.base.apply(this,arguments);
   },
   
+  /** @private */
   touchStart: function(evt){
     return this.mouseDown(evt);
   }

@@ -1,11 +1,12 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
-// Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+// Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
-require('panes/picker');
-require('views/menu_item');
+
+sc_require('panes/picker');
+sc_require('views/menu_item');
 
 /**
   @class
@@ -40,7 +41,7 @@ require('views/menu_item');
     var menuItems = [
       { title: 'Menu Item', keyEquivalent: 'ctrl_shift_n' },
       { title: 'Checked Menu Item', isChecked: YES, keyEquivalent: 'ctrl_a' },
-      { title: 'Selected Menu Item', keyEquivalent: 'backspace' },
+      { title: 'Selected Menu Item', keyEquivalent: ['backspace', 'delete'] },
       { isSeparator: YES },
       { title: 'Menu Item with Icon', icon: 'inbox', keyEquivalent: 'ctrl_m' },
       { title: 'Menu Item with Icon', icon: 'folder', keyEquivalent: 'ctrl_p' }
@@ -59,19 +60,25 @@ require('views/menu_item');
   @extends SC.PickerPane
   @since SproutCore 1.0
 */
-
 SC.MenuPane = SC.PickerPane.extend(
 /** @scope SC.MenuPane.prototype */ {
 
+  /**
+    @property {Array}
+    @default ['sc-menu']
+    @see SC.View#classNames
+  */
   classNames: ['sc-menu'],
 
   /**
-    The WAI-ARIA role for menu pane. This property's value should not be
-    changed.
+    The WAI-ARIA role for menu pane.
 
     @property {String}
+    @default 'menu'
+    @constant
   */
   ariaRole: 'menu',
+
 
   // ..........................................................
   // PROPERTIES
@@ -83,7 +90,8 @@ SC.MenuPane = SC.PickerPane.extend(
     various itemKey properties to tell the menu how to extract the information
     it needs.
 
-    @type String
+    @property {Array}
+    @default []
   */
   items: [],
 
@@ -94,15 +102,23 @@ SC.MenuPane = SC.PickerPane.extend(
     menuHeightPadding, and submenuOffsetX if you don't explicitly set these
     properties.
 
-    Your theme can override the default values for each control size. For
-    example, to set the height of menu items for small menus, you could set
+    Your theme can override the default values for each control size by specifying
+    them in the `menuRenderDelegate`. For example:
+
     {{{
-      SC.MenuPane.SMALL_MENU_ITEM_HEIGHT = 10;
+        MyTheme.menuRenderDelegate = SC.BaseTheme.menuRenderDelegate.create({
+          'sc-tiny-size': {
+            itemHeight: 20,
+            itemSeparatorHeight: 9,
+            menuHeightPadding: 6,
+            submenuOffsetX: 2
+          }
+        });
     }}}
 
     Changing the controlSize once the menu is instantiated has no effect.
 
-    @type String
+    @property {String}
     @default SC.REGULAR_CONTROL_SIZE
   */
   controlSize: SC.REGULAR_CONTROL_SIZE,
@@ -116,10 +132,10 @@ SC.MenuPane = SC.PickerPane.extend(
     If you don't specify a value, the item height will be inferred from
     controlSize.
 
-    @type Number
-    @default null
+    @property {Number}
+    @default itemHeight from theme if present, or 20.
   */
-  itemHeight: null,
+  itemHeight: SC.propertyFromRenderDelegate('itemHeight', 20),
 
   /**
     The height of separator menu items.
@@ -130,16 +146,17 @@ SC.MenuPane = SC.PickerPane.extend(
     If you don't specify a value, the height of the separator menu items will
     be inferred from controlSize.
 
-    @type Number
-    @default null
+    @property {Number}
+    @default itemSeparatorHeight from theme, or 9.
   */
-  itemSeparatorHeight: null,
+  itemSeparatorHeight: SC.propertyFromRenderDelegate('itemSeparatorHeight', 9),
 
   /**
-    The height of the menu pane.  This is updated every time menuItemViews
+    The height of the menu pane. This is updated every time menuItemViews
     is recalculated.
 
-    @type Number
+    @property {Number}
+    @default 0
     @isReadOnly
   */
   menuHeight: 0,
@@ -154,10 +171,10 @@ SC.MenuPane = SC.PickerPane.extend(
     If you don't specify a value, the padding will be inferred from the
     controlSize.
 
-    @type Number
-    @default null
+    @property {Number}
+    @default menuHeightPadding from theme, or 6
   */
-  menuHeightPadding: null,
+  menuHeightPadding: SC.propertyFromRenderDelegate('menuHeightPadding', 6),
 
   /**
     The amount of offset x while positioning submenu.
@@ -165,10 +182,10 @@ SC.MenuPane = SC.PickerPane.extend(
     If you don't specify a value, the padding will be inferred from the
     controlSize.
 
-    @type Number
-    @default null
+    @property {Number}
+    @default submenuOffsetX from theme, or 2
   */
-  submenuOffsetX: null,
+  submenuOffsetX: SC.propertyFromRenderDelegate('submenuOffsetX', 2),
 
   /**
     The last menu item to be selected by the user.
@@ -176,7 +193,7 @@ SC.MenuPane = SC.PickerPane.extend(
     You can place an observer on this property to be notified when the user
     makes a selection.
 
-    @type SC.Object
+    @property {SC.Object}
     @default null
     @isReadOnly
   */
@@ -189,8 +206,8 @@ SC.MenuPane = SC.PickerPane.extend(
     set here for each item in the @items@ array. You may provide your own
     subclass for this property to display the customized content.
 
+    @property {SC.View}
     @default SC.MenuItemView
-    @type SC.View
   */
   exampleView: SC.MenuItemView,
 
@@ -210,6 +227,7 @@ SC.MenuPane = SC.PickerPane.extend(
     YES if this menu pane was generated by a parent SC.MenuPane.
 
     @type Boolean
+    @default NO
     @isReadOnly
   */
   isSubMenu: NO,
@@ -235,8 +253,12 @@ SC.MenuPane = SC.PickerPane.extend(
   
   /**
     Disable context menu.
+    
+    @property {Boolean}
+    @default NO
   */
   isContextMenuEnabled: NO,
+
 
   // ..........................................................
   // METHODS
@@ -249,10 +271,9 @@ SC.MenuPane = SC.PickerPane.extend(
     anchor itself to the view, and intelligently reposition itself if the
     contents of the menu exceed the available space.
 
-    @param SC.View anchorViewOrElement the view or element to which the menu
+    @param {SC.View} anchorViewOrElement the view or element to which the menu
     should anchor.
-    @param preferMatrix The prefer matrix used to position the pane.
-    (optional)
+    @param {Array} (preferMatrix) The prefer matrix used to position the pane.
   */
   popup: function(anchorViewOrElement, preferMatrix) {
     var anchor;
@@ -366,7 +387,8 @@ SC.MenuPane = SC.PickerPane.extend(
   itemSeparatorKey: 'separator',
 
   /**
-    The name of the property that contains the target for the action that is triggered when the user clicks the menu item.
+    The name of the property that contains the target for the action that is 
+    triggered when the user clicks the menu item.
 
     Note that this property is ignored if the menu item has a submenu.
 
@@ -446,7 +468,7 @@ SC.MenuPane = SC.PickerPane.extend(
     @isReadOnly
     @property Array
   */
-  menuItemKeys: 'itemTitleKey itemValueKey itemIsEnabledKey itemIconKey itemSeparatorKey itemActionKey itemCheckboxKey itemShortCutKey itemHeightKey itemSubMenuKey itemKeyEquivalentKey itemTargetKey'.w(),
+  menuItemKeys: ['itemTitleKey', 'itemValueKey', 'itemIsEnabledKey', 'itemIconKey', 'itemSeparatorKey', 'itemActionKey', 'itemCheckboxKey', 'itemShortCutKey', 'itemHeightKey', 'itemSubMenuKey', 'itemKeyEquivalentKey', 'itemTargetKey'],
 
   // ..........................................................
   // INTERNAL PROPERTIES
@@ -486,69 +508,11 @@ SC.MenuPane = SC.PickerPane.extend(
     @private
   */
   init: function() {
-    switch (this.get('controlSize')) {
-      case SC.TINY_CONTROL_SIZE:
-        this.setIfNull('itemHeight', SC.MenuPane.TINY_MENU_ITEM_HEIGHT);
-        this.setIfNull('itemSeparatorHeight', SC.MenuPane.TINY_MENU_ITEM_SEPARATOR_HEIGHT);
-        this.setIfNull('menuHeightPadding', SC.MenuPane.TINY_MENU_HEIGHT_PADDING);
-        this.setIfNull('submenuOffsetX', SC.MenuPane.TINY_SUBMENU_OFFSET_X);
-        break;
-      case SC.SMALL_CONTROL_SIZE:
-        this.setIfNull('itemHeight', SC.MenuPane.SMALL_MENU_ITEM_HEIGHT);
-        this.setIfNull('itemSeparatorHeight', SC.MenuPane.SMALL_MENU_ITEM_SEPARATOR_HEIGHT);
-        this.setIfNull('menuHeightPadding', SC.MenuPane.SMALL_MENU_HEIGHT_PADDING);
-        this.setIfNull('submenuOffsetX', SC.MenuPane.SMALL_SUBMENU_OFFSET_X);
-        break;
-      case SC.REGULAR_CONTROL_SIZE:
-        this.setIfNull('itemHeight', SC.MenuPane.REGULAR_MENU_ITEM_HEIGHT);
-        this.setIfNull('itemSeparatorHeight', SC.MenuPane.REGULAR_MENU_ITEM_SEPARATOR_HEIGHT);
-        this.setIfNull('menuHeightPadding', SC.MenuPane.REGULAR_MENU_HEIGHT_PADDING);
-        this.setIfNull('submenuOffsetX', SC.MenuPane.REGULAR_SUBMENU_OFFSET_X);
-        break;
-      case SC.LARGE_CONTROL_SIZE:
-        this.setIfNull('itemHeight', SC.MenuPane.LARGE_MENU_ITEM_HEIGHT);
-        this.setIfNull('itemSeparatorHeight', SC.MenuPane.LARGE_MENU_ITEM_SEPARATOR_HEIGHT);
-        this.setIfNull('menuHeightPadding', SC.MenuPane.LARGE_MENU_HEIGHT_PADDING);
-        this.setIfNull('submenuOffsetX', SC.MenuPane.LARGE_SUBMENU_OFFSET_X);
-        break;
-      case SC.HUGE_CONTROL_SIZE:
-        this.setIfNull('itemHeight', SC.MenuPane.HUGE_MENU_ITEM_HEIGHT);
-        this.setIfNull('itemSeparatorHeight', SC.MenuPane.HUGE_MENU_ITEM_SEPARATOR_HEIGHT);
-        this.setIfNull('menuHeightPadding', SC.MenuPane.HUGE_MENU_HEIGHT_PADDING);
-        this.setIfNull('submenuOffsetX', SC.MenuPane.HUGE_SUBMENU_OFFSET_X);
-        break;
-    }
-
-    return arguments.callee.base.apply(this,arguments);
+   return arguments.callee.base.apply(this,arguments);
   },
 
-  /**
-    Helper method that only sets a property if it is null.
-
-    @param {String} key the property to set
-    @param {Object} value
-    @private
-  */
-  setIfNull: function(key, value) {
-    if (this.get(key) === null) {
-      this.set(key, value);
-    }
-  },
-
+  displayProperties: ['controlSize'],
   renderDelegateName: 'menuRenderDelegate',
-
-  /** @private
-    The render method is responsible for adding the control size class
-    name to the menu pane.
-
-    @param {SC.RenderContext} context the render context
-    @param {Boolean} firstTime YES if this is creating a layer
-  */
-  render: function(context, firstTime) {
-    context.addClass(this.get('controlSize'));
-
-    return arguments.callee.base.apply(this,arguments);
-  },
 
   /**
     Creates the child scroll view, and sets its contentView to a new
@@ -647,7 +611,6 @@ SC.MenuPane = SC.PickerPane.extend(
         len;
 
     if (!items) return views; // return an empty array
-
     heightKey = this.get('itemHeightKey');
     separatorKey = this.get('itemSeparatorKey');
     defaultHeight = this.get('itemHeight');
@@ -677,7 +640,15 @@ SC.MenuPane = SC.PickerPane.extend(
 
       keyEquivalent = item.get(keyEquivalentKey);
       if (keyEquivalent) {
-        this._keyEquivalents[keyEquivalent] = view;
+        // if array, apply each one for this view
+        if(SC.typeOf(keyEquivalent)===SC.T_ARRAY) {
+          keyEquivalent.forEach(function(keyEq) {
+            this._keyEquivalents[keyEq] = view;
+          }, this);
+        }
+        else {
+          this._keyEquivalents[keyEquivalent] = view;
+        }
       }
     }
 
@@ -1106,34 +1077,6 @@ SC._menu_fetchItem = function(k) {
   if (!k) return null ;
   return this.get ? this.get(k) : this[k] ;
 };
-
-/**
-  Default metrics for the different control sizes.
-*/
-SC.MenuPane.TINY_MENU_ITEM_HEIGHT = 10;
-SC.MenuPane.TINY_MENU_ITEM_SEPARATOR_HEIGHT = 2;
-SC.MenuPane.TINY_MENU_HEIGHT_PADDING = 2;
-SC.MenuPane.TINY_SUBMENU_OFFSET_X = 0;
-
-SC.MenuPane.SMALL_MENU_ITEM_HEIGHT = 16;
-SC.MenuPane.SMALL_MENU_ITEM_SEPARATOR_HEIGHT = 7;
-SC.MenuPane.SMALL_MENU_HEIGHT_PADDING = 4;
-SC.MenuPane.SMALL_SUBMENU_OFFSET_X = 2;
-
-SC.MenuPane.REGULAR_MENU_ITEM_HEIGHT = 20;
-SC.MenuPane.REGULAR_MENU_ITEM_SEPARATOR_HEIGHT = 9;
-SC.MenuPane.REGULAR_MENU_HEIGHT_PADDING = 6;
-SC.MenuPane.REGULAR_SUBMENU_OFFSET_X = 2;
-
-SC.MenuPane.LARGE_MENU_ITEM_HEIGHT = 60;
-SC.MenuPane.LARGE_MENU_ITEM_SEPARATOR_HEIGHT = 20;
-SC.MenuPane.LARGE_MENU_HEIGHT_PADDING = 0;
-SC.MenuPane.LARGE_SUBMENU_OFFSET_X = 4;
-
-SC.MenuPane.HUGE_MENU_ITEM_HEIGHT = 20;
-SC.MenuPane.HUGE_MENU_ITEM_SEPARATOR_HEIGHT = 9;
-SC.MenuPane.HUGE_MENU_HEIGHT_PADDING = 0;
-SC.MenuPane.HUGE_SUBMENU_OFFSET_X = 0;
 
 // If a menu pane exceeds the height of the viewport, it will
 // be truncated to fit. This value determines the amount by which

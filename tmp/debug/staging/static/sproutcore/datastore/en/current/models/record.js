@@ -1,9 +1,11 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+sc_require('system/query');
 
 /**
   @class
@@ -14,9 +16,7 @@
   
   To create a new model class, in your SproutCore workspace, do:
   
-  {{{
-    $ sc-gen model MyApp.MyModel
-  }}}
+      $ sc-gen model MyApp.MyModel
   
   This will create MyApp.MyModel in clients/my_app/models/my_model.js.
   
@@ -31,9 +31,10 @@
   attributes hash instead.
   
   You can bulk update attributes from the server using the 
-  updateAttributes() method.
+  `updateAttributes()` method.
 
   @extends SC.Object
+  @see SC.RecordAttribute
   @since SproutCore 1.0
 */
 SC.Record = SC.Object.extend(
@@ -42,12 +43,16 @@ SC.Record = SC.Object.extend(
   /**  
     Walk like a duck
   
-    @property {Boolean}
+    @type Boolean
+    @default YES
   */
   isRecord: YES,
   
   /**
     If you have nested records
+    
+    @type Boolean
+    @default NO
   */
   isParentRecord: NO,
   
@@ -59,17 +64,20 @@ SC.Record = SC.Object.extend(
     This is the primary key used to distinguish records.  If the keys
     match, the records are assumed to be identical.
     
-    @property {String}
+    @type String
+    @default 'guid'
   */
   primaryKey: 'guid',
   
   /**
     Returns the id for the record instance.  The id is used to uniquely 
     identify this record instance from all others of the same type.  If you 
-    have a primaryKey set on this class, then the id will be the value of the
-    primaryKey property on the underlying JSON hash.
+    have a `primaryKey set on this class, then the id will be the value of the
+    `primaryKey` property on the underlying JSON hash.
     
-    @property {String}
+    @type String
+    @property
+    @dependsOn storeKey
   */
   id: function(key, value) {
     if (value !== undefined) {
@@ -89,12 +97,14 @@ SC.Record = SC.Object.extend(
     current state of the record, you can determine which operations are 
     currently allowed on the record and which are not.
     
-    In general, a record can be in one of five primary states; SC.Record.EMPTY,
-    SC.Record.BUSY, SC.Record.READY, SC.Record.DESTROYED, SC.Record.ERROR. 
-    These are all described in more detail in the class mixin (below) where 
-    they are defined.
+    In general, a record can be in one of five primary states:
+    `SC.Record.EMPTY`, `SC.Record.BUSY`, `SC.Record.READY`,
+    `SC.Record.DESTROYED`, `SC.Record.ERROR`.  These are all described in
+    more detail in the class mixin (below) where they are defined.
     
-    @property {Number}
+    @type Number
+    @property
+    @dependsOn storeKey
   */
   status: function() {
     return this.store.readStatus(this.storeKey);
@@ -107,7 +117,8 @@ SC.Record = SC.Object.extend(
     This property is set when the record instance is created and should not be
     changed or else it will break the record behavior.
     
-    @property {SC.Store}
+    @type SC.Store
+    @default null
   */
   store: null,
 
@@ -118,29 +129,34 @@ SC.Record = SC.Object.extend(
     You should not edit this store key but you may sometimes need to refer to
     this store key when implementing a Server object.
     
-    @property {Number}
+    @type Number
+    @default null
   */
   storeKey: null,
 
   /** 
     YES when the record has been destroyed
     
-    @property {Boolean}
+    @type Boolean
+    @property
+    @dependsOn status
   */
   isDestroyed: function() {
     return !!(this.get('status') & SC.Record.DESTROYED);  
   }.property('status').cacheable(),
   
   /**
-    YES when the record is in an editable state.  You can use this property to
+    `YES` when the record is in an editable state.  You can use this property to
     quickly determine whether attempting to modify the record would raise an 
     exception or not.
     
     This property is both readable and writable.  Note however that if you 
-    set this property to YES but the status of the record is anything but
-    SC.Record.READY, the return value of this property may remain NO.
+    set this property to `YES` but the status of the record is anything but
+    `SC.Record.READY`, the return value of this property may remain `NO`.
     
-    @property {Boolean}
+    @type Boolean
+    @property
+    @dependsOn status
   */
   isEditable: function(key, value) {
     if (value !== undefined) this._screc_isEditable = value;
@@ -148,13 +164,20 @@ SC.Record = SC.Object.extend(
     else return NO ;
   }.property('status').cacheable(),
 
+  /**
+    @private
+    
+    Backing value for isEditable
+  */
   _screc_isEditable: YES, // default
 
   /**
-    YES when the record's contents have been loaded for the first time.  You 
+    `YES` when the record's contents have been loaded for the first time.  You 
     can use this to quickly determine if the record is ready to display.
     
-    @property {Boolean}
+    @type Boolean
+    @property
+    @dependsOn status
   */
   isLoaded: function() {
     var K = SC.Record, 
@@ -171,16 +194,18 @@ SC.Record = SC.Object.extend(
     
     Note this must be a regular Array - NOT any object implementing SC.Array.
     
-    @property {Array}
+    @type Array
+    @default null
   */
   relationships: null,
 
   /**
     This will return the raw attributes that you can edit directly.  If you 
-    make changes to this hash, be sure to call beginEditing() before you get
-    the attributes and endEditing() afterwards.
+    make changes to this hash, be sure to call `beginEditing()` before you get
+    the attributes and `endEditing()` afterwards.
   
-    @property {Hash}
+    @type Hash
+    @property
   **/
   attributes: function() {
     var store    = this.get('store'), 
@@ -191,10 +216,11 @@ SC.Record = SC.Object.extend(
   /**
     This will return the raw attributes that you cannot edit directly.  It is
     useful if you want to efficiently look at multiple attributes in bulk.  If
-    you would like to edit the attributes, see the @attributes@ property
+    you would like to edit the attributes, see the `attributes` property
     instead.
   
-    @property {Hash}
+    @type Hash
+    @property
   **/
   readOnlyAttributes: function() {
     var store    = this.get('store'), 
@@ -207,12 +233,18 @@ SC.Record = SC.Object.extend(
   }.property(),
   
   /**
-   * The namespace which to retrieve the childRecord Types from
-   */
+    The namespace which to retrieve the childRecord Types from
+    
+    @type String
+    @default null
+  */
   nestedRecordNamespace: null,
   
   /**
-    Function that returns whether this is a nested Record
+    Whether or not this is a nested Record.
+    
+    @type Boolean
+    @property
   */
   isNestedRecord: function(){
     var store = this.get('store'), ret,
@@ -223,6 +255,12 @@ SC.Record = SC.Object.extend(
     return ret;
   }.property().cacheable(),
   
+  /**
+    The parent record if this is a nested record.
+    
+    @type Boolean
+    @property
+  */
   parentRecord: function(){
     var sk = this.storeKey, store = this.get('store');
     return store.materializeParentRecord(sk);
@@ -238,12 +276,13 @@ SC.Record = SC.Object.extend(
     record data from the server.  If the record is new and exists only in 
     memory then this call will have no effect.
     
-    @param {boolean} recordOnly, optional param if you want to only THIS record
+    @param {boolean} recordOnly optional param if you want to only THIS record
       even if it is a child record.
+    @param {Function} callback optional callback that will fire when request finishes
     
     @returns {SC.Record} receiver
   */
-  refresh: function(recordOnly) { 
+  refresh: function(recordOnly, callback) { 
     var store = this.get('store'), rec, ro,
         sk = this.get('storeKey'),
         prKey = store.parentStoreKeyExists();
@@ -252,10 +291,10 @@ SC.Record = SC.Object.extend(
     // we will commit this record
     ro = recordOnly || (SC.none(recordOnly) && SC.none(prKey));
     if (ro){
-      store.refreshRecord(null, null, sk);
+      store.refreshRecord(null, null, sk, callback);
     } else if (prKey){
       rec = store.materializeRecord(prKey);
-      rec.refresh(recordOnly);
+      rec.refresh(recordOnly, callback);
     }
 
     return this ;
@@ -266,8 +305,8 @@ SC.Record = SC.Object.extend(
     records destroyed in the store as well as changing the isDestroyed 
     property on the record to YES.  If this is a new record, this will avoid 
     creating the record in the first place.
-    
-    @param {boolean} recordOnly, optional param if you want to only THIS record
+
+    @param {boolean} recordOnly optional param if you want to only THIS record
       even if it is a child record. 
     
     @returns {SC.Record} receiver
@@ -297,16 +336,16 @@ SC.Record = SC.Object.extend(
 
   /**
     You can invoke this method anytime you need to make the record as dirty.
-    This will cause the record to be commited when you commitChanges()
+    This will cause the record to be commited when you `commitChanges()`
     on the underlying store.
     
-    If you use the writeAttribute() primitive, this method will be called for 
-    you.
+    If you use the `writeAttribute()` primitive, this method will be called 
+    for you.
     
     If you pass the key that changed it will ensure that observers are fired
-    only once for the changed property instead of allPropertiesDidChange()
+    only once for the changed property instead of `allPropertiesDidChange()`
     
-    @param {String} key that changed (optional)
+    @param {String} key key that changed (optional)
     @returns {SC.Record} receiver
   */
   recordDidChange: function(key) {
@@ -336,10 +375,10 @@ SC.Record = SC.Object.extend(
   
   /**
     Defers notification of record changes until you call a matching 
-    endEditing() method.  This method is called automatically whenever you
+    `endEditing()` method.  This method is called automatically whenever you
     set an attribute, but you can call it yourself to group multiple changes.
     
-    Calls to beginEditing() and endEditing() can be nested.
+    Calls to `beginEditing()` and `endEditing()` can be nested.
     
     @returns {SC.Record} receiver
   */
@@ -350,12 +389,12 @@ SC.Record = SC.Object.extend(
 
   /**
     Notifies the store of record changes if this matches a top level call to
-    beginEditing().  This method is called automatically whenever you set an
+    `beginEditing()`.  This method is called automatically whenever you set an
     attribute, but you can call it yourself to group multiple changes.
     
-    Calls to beginEditing() and endEditing() can be nested.
+    Calls to `beginEditing()` and `endEditing()` can be nested.
     
-    @param {String} key that changed (optional)
+    @param {String} key key that changed (optional)
     @returns {SC.Record} receiver
   */
   endEditing: function(key) {
@@ -383,7 +422,7 @@ SC.Record = SC.Object.extend(
     Updates the passed attribute with the new value.  This method does not 
     transform the value at all.  If instead you want to modify an array or 
     hash already defined on the underlying json, you should instead get 
-    an editable version of the attribute using editableAttribute()
+    an editable version of the attribute using `editableAttribute()`.
   
     @param {String} key the attribute you want to read
     @param {Object} value the value you want to write
@@ -450,11 +489,17 @@ SC.Record = SC.Object.extend(
         destroyed  = K.DESTROYED,
         readyClean = K.READY_CLEAN,
         iter;
-        
-    // If the child is dirty, then make sure the parent gets a dirty
-    // status.  (If the child is created or destroyed, there's no need,
-    // because the parent will dirty itself when it modifies that
-    // relationship.)
+    
+    /**
+      @private
+      
+      If the child is dirty, then make sure the parent gets a dirty
+      status.  (If the child is created or destroyed, there's no need,
+      because the parent will dirty itself when it modifies that
+      relationship.)
+      
+      @param {SC.Record} record to propagate to
+    */
     iter =  function(rec) {
       var childStatus, parentStatus;
       
@@ -517,10 +562,10 @@ SC.Record = SC.Object.extend(
     This method will write the conforming hash to the store and return
     the materialized record.
     
-    By normalizing the record, you can use .attributes() and be
+    By normalizing the record, you can use `.attributes()` and be
     assured that it will conform to the defined model. For example, this
     can be useful in the case where you need to send a JSON representation
-    to some server after you have used .createRecord(), since this method
+    to some server after you have used `.createRecord()`, since this method
     will enforce the 'rules' in the model such as their types and default
     values. You can also include null values in the hash with the 
     includeNull argument.
@@ -601,8 +646,8 @@ SC.Record = SC.Object.extend(
     method will be called. It will try to get the value from the set of 
     attributes.
     
-    This will also check is ignoreUnknownProperties is set on the recordType
-    so that they will not be written to dataHash unless explicitly defined
+    This will also check is `ignoreUnknownProperties` is set on the recordType
+    so that they will not be written to `dataHash` unless explicitly defined
     in the model schema.
   
     @param {String} key the attribute being get/set
@@ -623,7 +668,7 @@ SC.Record = SC.Object.extend(
         return value;
       }
       
-      // if we're modifying the PKEY, then SC.Store needs to relocate where 
+      // if we're modifying the PKEY, then `SC.Store` needs to relocate where 
       // this record is cached. store the old key, update the value, then let 
       // the store do the housekeeping...
       var primaryKey = this.get('primaryKey');
@@ -644,11 +689,13 @@ SC.Record = SC.Object.extend(
     
     @param {Hash} params optional additonal params that will passed down
       to the data source
-    @param {boolean} recordOnly, optional param if you want to only commit a single
+    @param {boolean} recordOnly optional param if you want to only commit a single
       record if it has a parent.
+    @param {Function} callback optional callback that the store will fire once the 
+    datasource finished committing
     @returns {SC.Record} receiver
   */
-  commitRecord: function(params, recordOnly) {    
+  commitRecord: function(params, recordOnly, callback) {    
     var store = this.get('store'), rec, ro,
         sk = this.get('storeKey'),
         prKey = store.parentStoreKeyExists();
@@ -657,12 +704,11 @@ SC.Record = SC.Object.extend(
     // we will commit this record
     ro = recordOnly || (SC.none(recordOnly) && SC.none(prKey));
     if (ro){
-      store.commitRecord(undefined, undefined, this.get('storeKey'), params);
+      store.commitRecord(undefined, undefined, this.get('storeKey'), params, callback);
     } else if (prKey){
       rec = store.materializeRecord(prKey);
-      rec.commitRecord(params, recordOnly);
+      rec.commitRecord(params, recordOnly, callback);
     }
-    
     return this ;
   },
   
@@ -671,10 +717,12 @@ SC.Record = SC.Object.extend(
   // 
   
   /**
-    Returns YES whenever the status is SC.Record.ERROR.  This will allow you 
+    Returns `YES` whenever the status is SC.Record.ERROR.  This will allow you
     to put the UI into an error state.
     
-    @property {Boolean}
+    @type Boolean
+    @property
+    @dependsOn status
   */
   isError: function() {
     return this.get('status') & SC.Record.ERROR;
@@ -684,7 +732,9 @@ SC.Record = SC.Object.extend(
     Returns the receiver if the record is in an error state.  Returns null
     otherwise.
     
-    @property {SC.Record}
+    @type SC.Record
+    @property
+    @dependsOn isError
   */
   errorValue: function() {
     return this.get('isError') ? SC.val(this.get('errorObject')) : null ;
@@ -694,7 +744,9 @@ SC.Record = SC.Object.extend(
     Returns the current error object only if the record is in an error state.
     If no explicit error object has been set, returns SC.Record.GENERIC_ERROR.
     
-    @property {SC.Error}
+    @type SC.Error
+    @property
+    @dependsOn isError
   */
   errorObject: function() {
     if (this.get('isError')) {
@@ -711,8 +763,8 @@ SC.Record = SC.Object.extend(
     Sets the key equal to value.
 
     This version will first check to see if the property is an
-    SC.RecordAttribute, and if so, will ensure that its isEditable property
-    is YES before attempting to change the value.
+    `SC.RecordAttribute`, and if so, will ensure that its isEditable property
+    is `YES` before attempting to change the value.
 
     @param key {String} the property to set
     @param value {Object} the value to set or null.
@@ -767,6 +819,8 @@ SC.Record = SC.Object.extend(
 
     @param {Hash} value The hash of attributes to apply to the child record.
     @param {Integer} key The store key that we are asking for
+    @param {String} path The property path of the child record
+    @returns {SC.Record} the child record that was registered
    */
   registerNestedRecord: function(value, key, path) {
     var store, psk, csk, childRecord, recordType;
@@ -795,15 +849,20 @@ SC.Record = SC.Object.extend(
   },
   
   /**
-     private method that retrieves the recordType from the hash that is provided.
+    @private
+    
+     private method that retrieves the `recordType` from the hash that is
+     provided.
 
-     Important for use in polymorphism but you must have the following items in the
-     parent record:
+     Important for use in polymorphism but you must have the following items
+     in the parent record:
      
-     nestedRecordNamespace <= this is the object that has the SC.Records defined
+     `nestedRecordNamespace` <= this is the object that has the `SC.Records`
+     defined
 
      @param {Hash} value The hash of attributes to apply to the child record.
      @param {String} key the name of the key on the attribute
+     @param {SC.Record} the record that was materialized
     */
   _materializeNestedRecordType: function(value, key){
     var childNS, recordType, ret;
@@ -836,6 +895,7 @@ SC.Record = SC.Object.extend(
     @param {SC.Record} recordType The type of the nested record to create.
     @param {Hash} hash The hash of attributes to apply to the child record.
     (may be null)
+    @returns {SC.Record} the nested record created
    */
   createNestedRecord: function(recordType, hash) {
     var store, id, sk, pk, cr = null, existingId = null;
@@ -879,22 +939,27 @@ SC.Record = SC.Object.extend(
   _nestedRecordKey: 0,
     
   /**
-   * Override this function if you want to have a special way of creating 
-   * ids for your child records
+    Override this function if you want to have a special way of creating 
+    ids for your child records
+    
+    @param {SC.Record} childRecord
+    @returns {String} the id generated
    */
   generateIdForChild: function(childRecord){}
      
 }) ;
 
 // Class Methods
-SC.Record.mixin( /** @scope SC.Record */ {
+SC.Record.mixin( /** @scope SC.Record.prototype */ {
 
   /**
     Whether to ignore unknown properties when they are being set on the record
     object. This is useful if you want to strictly enforce the model schema
     and not allow dynamically expanding it by setting new unknown properties
     
-    @property {Boolean}
+    @static
+    @type Boolean
+    @default NO
   */
   ignoreUnknownProperties: NO,
 
@@ -905,18 +970,24 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     Generic state for records with no local changes.
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0001
   */
   CLEAN:            0x0001, // 1
 
   /** 
     Generic state for records with local changes.
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0002
   */
   DIRTY:            0x0002, // 2
   
@@ -924,37 +995,49 @@ SC.Record.mixin( /** @scope SC.Record */ {
     State for records that are still loaded.  
     
     A record instance should never be in this state.  You will only run into 
-    it when working with the low-level data hash API on SC.Store. Use a 
-    logical AND (single &) to test record status
+    it when working with the low-level data hash API on `SC.Store`. Use a 
+    logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0100
   */
   EMPTY:            0x0100, // 256
 
   /** 
     State for records in an error state.
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x1000
   */
   ERROR:            0x1000, // 4096
   
   /** 
     Generic state for records that are loaded and ready for use
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0200
   */
   READY:            0x0200, // 512
 
   /** 
     State for records that are loaded and ready for use with no local changes
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0201
   */
   READY_CLEAN:      0x0201, // 513
 
@@ -962,9 +1045,12 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     State for records that are loaded and ready for use with local changes
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0202
   */
   READY_DIRTY:      0x0202, // 514
 
@@ -972,9 +1058,12 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     State for records that are new - not yet committed to server
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0203
   */
   READY_NEW:        0x0203, // 515
   
@@ -982,9 +1071,12 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     Generic state for records that have been destroyed
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0400
   */
   DESTROYED:        0x0400, // 1024
 
@@ -992,9 +1084,12 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     State for records that have been destroyed and committed to server
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0401
   */
   DESTROYED_CLEAN:  0x0401, // 1025
 
@@ -1002,9 +1097,12 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     State for records that have been destroyed but not yet committed to server
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0402
   */
   DESTROYED_DIRTY:  0x0402, // 1026
   
@@ -1012,9 +1110,12 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     Generic state for records that have been submitted to data source
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0800
   */
   BUSY:             0x0800, // 2048
 
@@ -1022,9 +1123,12 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     State for records that are still loading data from the server
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0804
   */
   BUSY_LOADING:     0x0804, // 2052
 
@@ -1033,9 +1137,12 @@ SC.Record.mixin( /** @scope SC.Record */ {
     State for new records that were created and submitted to the server; 
     waiting on response from server
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0808
   */
   BUSY_CREATING:    0x0808, // 2056
 
@@ -1043,9 +1150,12 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     State for records that have been modified and submitted to server
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0810
   */
   BUSY_COMMITTING:  0x0810, // 2064
 
@@ -1053,9 +1163,12 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     State for records that have requested a refresh from the server.
     
-    Use a logical AND (single &) to test record status.
+    Use a logical AND (single `&`) to test record status.
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0820
   */
   BUSY_REFRESH:     0x0820, // 2080
 
@@ -1063,27 +1176,36 @@ SC.Record.mixin( /** @scope SC.Record */ {
   /** 
     State for records that have requested a refresh from the server.
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0821
   */
   BUSY_REFRESH_CLEAN:  0x0821, // 2081
 
   /** 
     State for records that have requested a refresh from the server.
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0822
   */
   BUSY_REFRESH_DIRTY:  0x0822, // 2082
 
   /** 
     State for records that have been destroyed and submitted to server
     
-    Use a logical AND (single &) to test record status
+    Use a logical AND (single `&`) to test record status
   
-    @property {Number}
+    @static
+    @constant
+    @type Number
+    @default 0x0840
   */
   BUSY_DESTROYING:  0x0840, // 2112
 
@@ -1096,41 +1218,52 @@ SC.Record.mixin( /** @scope SC.Record */ {
     Error for when you try to modify a record while it is in a bad 
     state.
     
-    @property {SC.Error}
+    @static
+    @constant
+    @type SC.Error
   */
-  BAD_STATE_ERROR:     SC.$error("Internal barf Inconsistency"),
+  BAD_STATE_ERROR:     SC.$error("Internal Inconsistency"),
 
   /**
     Error for when you try to create a new record that already exists.
     
-    @property {SC.Error}
+    @static
+    @constant
+    @type SC.Error
   */
   RECORD_EXISTS_ERROR: SC.$error("Record Exists"),
 
   /**
     Error for when you attempt to locate a record that is not found
     
-    @property {SC.Error}
+    @static
+    @constant
+    @type SC.Error
   */
   NOT_FOUND_ERROR:     SC.$error("Not found "),
 
   /**
     Error for when you try to modify a record that is currently busy
     
-    @property {SC.Error}
+    @static
+    @constant
+    @type SC.Error
   */
   BUSY_ERROR:          SC.$error("Busy"),
 
   /**
     Generic unknown record error
     
-    @property {SC.Error}
+    @static
+    @constant
+    @type SC.Error
   */
   GENERIC_ERROR:       SC.$error("Generic Error"),
   
   /**
-   * The next child key to allocate.  A nextChildKey must always be greater than 0.
-   */
+    @private
+    The next child key to allocate.  A nextChildKey must always be greater than 0.
+  */
   _nextChildKey: 0,
   
   // ..........................................................
@@ -1138,20 +1271,16 @@ SC.Record.mixin( /** @scope SC.Record */ {
   // 
   
   /**
-    Helper method returns a new SC.RecordAttribute instance to map a simple
+    Helper method returns a new `SC.RecordAttribute` instance to map a simple
     value or to-one relationship.  At the very least, you should pass the 
     type class you expect the attribute to have.  You may pass any additional
     options as well.
     
     Use this helper when you define SC.Record subclasses. 
     
-    h4. Example
-    
-    {{{
-      MyApp.Contact = SC.Record.extend({
-        firstName: SC.Record.attr(String, { isRequired: YES })
-      });
-    }}}
+        MyApp.Contact = SC.Record.extend({
+          firstName: SC.Record.attr(String, { isRequired: YES })
+        });
     
     @param {Class} type the attribute type
     @param {Hash} opts the options for the attribute
@@ -1162,19 +1291,15 @@ SC.Record.mixin( /** @scope SC.Record */ {
   },
   
   /**
-    Returns an SC.RecordAttribute that describes a fetched attribute.  When 
-    you reference this attribute, it will return an SC.RecordArray that uses
+    Returns an `SC.RecordAttribute` that describes a fetched attribute.  When 
+    you reference this attribute, it will return an `SC.RecordArray` that uses
     the type as the fetch key and passes the attribute value as a param.
     
     Use this helper when you define SC.Record subclasses. 
     
-    h4. Example
-    
-    {{{
-      MyApp.Group = SC.Record.extend({
-        contacts: SC.Record.fetch('MyApp.Contact')
-      });
-    }}}
+        MyApp.Group = SC.Record.extend({
+          contacts: SC.Record.fetch('MyApp.Contact')
+        });
     
     @param {SC.Record|String} recordType The type of records to load
     @param {Hash} opts the options for the attribute
@@ -1185,16 +1310,16 @@ SC.Record.mixin( /** @scope SC.Record */ {
   },
   
   /**
-    Returns:
+    Will return one of the following:
     
-    1: SC.ManyAttribute that describes a record array backed by an 
-    array of guids stored in the underlying JSON.  
-    2: SC.ChildrenAttribute that describes a record array backed by a
-    array of hashes.
+     1. `SC.ManyAttribute` that describes a record array backed by an 
+        array of guids stored in the underlying JSON.  
+     2. `SC.ChildrenAttribute` that describes a record array backed by a
+        array of hashes.
     
     You can edit the contents of this relationship.
     
-    For SC.ManyAttribute, If you set the inverse and isMaster: NO key, 
+    For `SC.ManyAttribute`, If you set the inverse and `isMaster: NO` key, 
     then editing this array will modify the underlying data, but the 
     inverse key on the matching record will also be edited and that 
     record will be marked as needing a change.
@@ -1217,13 +1342,13 @@ SC.Record.mixin( /** @scope SC.Record */ {
   },
   
   /**
-    Returns:
-    1. SC.SingleAttribute that converts the underlying ID to a single
-    record.  If you modify this property, it will rewrite the underyling ID. 
-    It will also modify the inverse of the relationship, if you set it.
+    Will return one of the following:
     
-    2. SC.ChildAttribute that you can edit the contents
-    of this relationship.
+     1. `SC.SingleAttribute` that converts the underlying ID to a single
+        record.  If you modify this property, it will rewrite the underyling
+        ID. It will also modify the inverse of the relationship, if you set it.
+     2. `SC.ChildAttribute` that you can edit the contents
+        of this relationship.
     
     @param {SC.Record|String} recordType the type of the record to create
     @param {Hash} opts additional options
@@ -1244,7 +1369,7 @@ SC.Record.mixin( /** @scope SC.Record */ {
   
   /**
     Returns all storeKeys mapped by Id for this record type.  This method is
-    used mostly by the SC.Store and the Record to coordinate.  You will rarely
+    used mostly by the `SC.Store` and the Record to coordinate.  You will rarely
     need to call this method yourself.
     
     @returns {Hash}
@@ -1261,8 +1386,8 @@ SC.Record.mixin( /** @scope SC.Record */ {
     storeKey.  If the primaryKey has not been assigned a storeKey yet, it 
     will be added.
     
-    For the inverse of this method see SC.Store.idFor() and 
-    SC.Store.recordTypeFor().
+    For the inverse of this method see `SC.Store.idFor()` and 
+    `SC.Store.recordTypeFor()`.
     
     @param {String} id a record id
     @returns {Number} a storeKey.
@@ -1283,7 +1408,7 @@ SC.Record.mixin( /** @scope SC.Record */ {
   
   /**
     Given a primaryKey value for the record, returns the associated
-    storeKey.  As opposed to storeKeyFor() however, this method
+    storeKey.  As opposed to `storeKeyFor()` however, this method
     will NOT generate a new storeKey but returned undefined.
     
     @param {String} id a record id

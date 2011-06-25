@@ -1,7 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -63,8 +63,7 @@ SC.ContainerView = SC.View.extend(
     @param {SC.View} newContent the new content view or null.
   */
   replaceContent: function(newContent) {
-    this.removeAllChildren() ;
-    if (newContent) this.appendChild(newContent) ;
+    this.replaceAllChildren(newContent ? [newContent] : []);
   },
 
   /** @private */
@@ -84,7 +83,9 @@ SC.ContainerView = SC.View.extend(
   awake: function() {
     arguments.callee.base.apply(this,arguments);
     var nowShowing = this.get('nowShowing') ;
-    if (nowShowing && nowShowing.length>0) this.nowShowingDidChange();
+    if (nowShowing && nowShowing.length>0) {
+      this.nowShowingDidChange();
+    }
   },
   
   /**
@@ -109,7 +110,7 @@ SC.ContainerView = SC.View.extend(
         content = SC.objectForPropertyPath(content);
       } else {
         var tempContent = this.getPath(content);
-        content = SC.kindOf(tempContent, SC.View) ? tempContent : SC.objectForPropertyPath(content, this.get('page'));
+        content = SC.kindOf(tempContent, SC.CoreView) ? tempContent : SC.objectForPropertyPath(content, this.get('page'));
       }
     }
     

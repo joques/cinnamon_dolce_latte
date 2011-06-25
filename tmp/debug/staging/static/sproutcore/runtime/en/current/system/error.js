@@ -1,9 +1,12 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+// @global SC
+
+sc_require('ext/function');
 
 /**
   @class
@@ -21,7 +24,8 @@
   the interface. You can easily determine if the value returned by some API is
   an error or not using the helper SC.ok(value).
 
-  h2. Faking Error Objects
+  Faking Error Objects
+  ---
 
   You can actually make any object you want to be treated like an Error object
   by simply implementing two properties: isError and errorValue.  If you
@@ -38,7 +42,7 @@ SC.Error = SC.Object.extend(
   /**
     error code.  Used to designate the error type.
 
-    @property {Number}
+    @type Number
   */
   code: -1,
 
@@ -46,7 +50,7 @@ SC.Error = SC.Object.extend(
     Human readable description of the error.  This can also be a non-localized
     key.
 
-    @property {String}
+    @type String
   */
   message: '',
 
@@ -54,7 +58,7 @@ SC.Error = SC.Object.extend(
     The value the error represents.  This is used when wrapping a value inside
     of an error to represent the validation failure.
 
-    @property {Object}
+    @type Object
   */
   errorValue: null,
 
@@ -63,7 +67,7 @@ SC.Error = SC.Object.extend(
     However, sometimes another object will masquarade as an error; this gives
     you a way to get at the underyling error.
 
-    @property {SC.Error}
+    @type SC.Error
   */
   errorObject: function() {
     return this;
@@ -72,7 +76,7 @@ SC.Error = SC.Object.extend(
   /**
     Human readable name of the item with the error.
 
-    @property {String}
+    @type String
   */
   label: null,
 
@@ -84,7 +88,7 @@ SC.Error = SC.Object.extend(
   /**
     Walk like a duck.
 
-    @property {Boolean}
+    @type Boolean
   */
   isError: YES
 }) ;
@@ -114,7 +118,8 @@ SC.Error.desc = function(description, label, value, code) {
   @param code {Number} an error code to use for testing.
   @returns {SC.Error} new error instance.
 */
-SC.$error = function(description, label, value, c) {
+
+SC.$error = function(description, label, value, c) {  
   return SC.Error.desc(description,label, value, c);
 } ;
 
@@ -152,6 +157,6 @@ SC.$val = SC.val;
 /**
   Standard error code for errors that do not support multiple values.
 
-  @property {Number}
+  @type Number
 */
 SC.Error.HAS_MULTIPLE_VALUES = -100 ;

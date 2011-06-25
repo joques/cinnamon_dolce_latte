@@ -11,29 +11,28 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="apple-touch-icon" href="/static/sproutcore/foundation/en/current/source/images/sproutcore-logo.png?1300829302" />
-	  <link rel="apple-touch-startup-image" media="screen and (orientation:portrait)" href="/static/sproutcore/foundation/en/current/source/images/sproutcore-startup-portrait.png?1300829302" /> 
-	  <link rel="apple-touch-startup-image" media="screen and (orientation:landscape)" href="/static/sproutcore/foundation/en/current/source/images/sproutcore-startup-landscape.png?1300829302" />
-	  <link rel="shortcut icon" href="/static/sproutcore/foundation/en/current/images/favicon.ico?1300829302" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/static/sproutcore/foundation/en/current/source/images/sproutcore-logo.png?1305983803" />
+	  <link rel="apple-touch-startup-image" media="screen and (orientation:portrait)" href="/static/sproutcore/foundation/en/current/source/images/sproutcore-startup-portrait.png?1305983803" /> 
+	  <link rel="apple-touch-startup-image" media="screen and (orientation:landscape)" href="/static/sproutcore/foundation/en/current/source/images/sproutcore-startup-landscape.png?1305983803" />
+	  <link rel="shortcut icon" href="/static/sproutcore/foundation/en/current/images/favicon.ico?1305983803" type="image/x-icon" />
     
     <title>Cinnamon Dolce Latte</title>
-  <script type="text/javascript">
+  <script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
 /* >>>>>>>>>> BEGIN source/core.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-
-/* >>>>>>>>>> BEGIN __sc_chance.js */
 
 /* >>>>>>>>>> BEGIN source/system/browser.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -49,58 +48,218 @@ SC._detectBrowser = function(userAgent, language) {
   version = browser.version = (userAgent.match( /.*(?:rv|chrome|webkit|opera|ie)[\/: ](.+?)([ \);]|$)/ ) || [])[1];
   webkitVersion = (userAgent.match( /webkit\/(.+?) / ) || [])[1];
 
+  /**
+    @name SC.browser.isWindows
+    @type Boolean
+  */
   browser.windows = browser.isWindows = !!/windows/.test(userAgent);
+  
+  /**
+    @name SC.browser.isMac
+    @type Boolean
+  */
   browser.mac = browser.isMac = !!/macintosh/.test(userAgent) || (/mac os x/.test(userAgent) && !/like mac os x/.test(userAgent));
+  
+  /**
+    @name SC.browser.isiPhone
+    @type Boolean
+  */
   browser.iPhone = browser.isiPhone = !!/iphone/.test(userAgent);
+  
+  /**
+    @name SC.browser.isiPod
+    @type Boolean
+  */
   browser.iPod = browser.isiPod = !!/ipod/.test(userAgent);
+  
+  /**
+    @name SC.browser.isiPad
+    @type Boolean
+  */
   browser.iPad = browser.isiPad = !!/ipad/.test(userAgent);
+  
+  /**
+    @name SC.browser.isiOS
+    @type Boolean
+  */
   browser.iOS = browser.isiOS = browser.iPhone || browser.iPod || browser.iPad;
+  
+  /**
+    @name SC.browser.isAndroid
+    @type Boolean
+  */
   browser.android = browser.isAndroid = !!/android/.test(userAgent);
 
+  /**
+    @name SC.browser.opera
+    @type String
+  */
   browser.opera = /opera/.test(userAgent) ? version : 0;
+  
+  /**
+    @name SC.browser.isOpera
+    @type Boolean
+  */
   browser.isOpera = !!browser.opera;
 
+  /**
+    @name SC.browser.msie
+    @type String
+  */
   browser.msie = /msie/.test(userAgent) && !browser.opera ? version : 0;
+  
+  /**
+    @name SC.browser.isIE
+    @type Boolean
+  */
   browser.isIE = !!browser.msie;
+  
+  /**
+    @name SC.browser.isIE8OrLower
+    @type Boolean
+  */
   browser.isIE8OrLower = !!(browser.msie && parseInt(browser.msie, 10) <= 8);
 
+  /**
+    @name SC.browser.mozilla
+    @type String
+  */
   browser.mozilla = /mozilla/.test(userAgent) && !/(compatible|webkit|msie)/.test(userAgent) ? version : 0;
+  
+  /**
+    @name SC.browser.isMozilla
+    @type Boolean
+  */
   browser.isMozilla = !!browser.mozilla;
 
+  /**
+    @name SC.browser.webkit
+    @type String
+  */
   browser.webkit = /webkit/.test(userAgent) ? webkitVersion : 0;
+  
+  /**
+    @name SC.browser.isWebkit
+    @type Boolean
+  */
   browser.isWebkit = !!browser.webkit;
 
+  /**
+    @name SC.browser.chrome
+    @type String
+  */
   browser.chrome = /chrome/.test(userAgent) ? version: 0;
+  
+  /**
+    @name SC.browser.isChrome
+    @type Boolean
+  */
   browser.isChrome = !!browser.chrome;
 
+  /**
+    @name SC.browser.mobileSafari
+    @type String
+  */
   browser.mobileSafari = /apple.*mobile.*safari/.test(userAgent) && browser.iOS ? webkitVersion : 0;
+  
+  /**
+    @name SC.browser.isMobileSafari
+    @type Boolean
+  */
   browser.isMobileSafari = !!browser.mobileSafari;
 
+  /**
+    @name SC.browser.iPadSafari
+    @type String
+  */
   browser.iPadSafari = browser.iPad && browser.isMobileSafari ? webkitVersion : 0;
+  
+  /**
+    @name SC.browser.isiPadSafari
+    @type Boolean
+  */
   browser.isiPadSafari = !!browser.iPadSafari;
 
+  /**
+    @name SC.browser.iPhoneSafari
+    @type String
+  */
   browser.iPhoneSafari = browser.iPhone && browser.isMobileSafari ? webkitVersion : 0;
+  
+  /**
+    @name SC.browser.isiPhoneSafari
+    @type Boolean
+  */
   browser.isiPhoneSafari = !!browser.iphoneSafari;
 
+  /**
+    @name SC.browser.iPodSafari
+    @type String
+  */
   browser.iPodSafari = browser.iPod && browser.isMobileSafari ? webkitVersion : 0;
+  
+  /**
+    @name SC.browser.isiPodSafari
+    @type Boolean
+  */
   browser.isiPodSafari = !!browser.iPodSafari;
 
+  /**
+    @name SC.browser.safari
+    @type String
+  */
   browser.safari = browser.webkit && !browser.chrome && !browser.iOS && !browser.android ? webkitVersion : 0;
+  
+  /**
+    @name SC.browser.isSafari
+    @type Boolean
+  */
   browser.isSafari = !!browser.safari;
 
+  /**
+    @name SC.browser.language
+    @type String
+  */
   browser.language = language.split('-', 1)[0];
   
+  /**
+    Possible values:
+    
+      - 'msie'
+      - 'mozilla'
+      - 'chrome'
+      - 'safari'
+      - 'opera'
+      - 'mobile-safari'
+      - 'unknown'
+
+    @name SC.browser.current
+    @type String
+    @default 'unknown'
+  */
   browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.chrome ? 'chrome' : browser.safari ? 'safari' : browser.opera ? 'opera' : browser.mobileSafari ? 'mobile-safari' : 'unknown';
   return browser;
 };
 
+
+/** @class
+  
+  Contains information about the browser environment that SproutCore
+  is running in. String properties, such as `SC.browser.webkit` or
+  `SC.browser.msie`, will have a value that represents the browser build
+  number if that browser is being used. Otherwise, they will have a
+  falsey value. For convenience, Boolean counterparts for all of the
+  versioned properties are provided.
+  
+  @since SproutCore 1.0
+*/
 SC.browser = SC._detectBrowser();
 
 /* >>>>>>>>>> BEGIN source/system/bench.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 /*global SC_benchmarkPreloadEvents*/
@@ -115,7 +274,7 @@ if (typeof SC_benchmarkPreloadEvents !== "undefined") {
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -172,9 +331,9 @@ SC.setupBodyClassNames = function() {
       (function() { 
         var styles = [];
         if (window.devicePixelRatio == 2 || window.location.search.indexOf("2x") > -1) {
-          styles = ["/static/sproutcore/testing/en/current/stylesheet@2x.css?1300829302","/static/sproutcore/core_foundation/en/current/stylesheet@2x.css?1300829302","/static/sproutcore/foundation/en/current/stylesheet@2x.css?1300829302","/static/sproutcore/desktop/en/current/stylesheet@2x.css?1300829302","/static/sproutcore/ace/en/current/stylesheet@2x.css?1300829302","/static/cinnamon_dolce_latte/en/current/stylesheet@2x.css?1300874157"];
+          styles = ["/static/sproutcore/testing/en/current/stylesheet.css?1305983803","/static/sproutcore/core_foundation/en/current/stylesheet.css?1305983802","/static/sproutcore/foundation/en/current/stylesheet.css?1305983803","/static/sproutcore/desktop/en/current/stylesheet.css?1305983802","/static/sproutcore/ace/en/current/stylesheet.css?1305983803","/static/cinnamon_dolce_latte/en/current/stylesheet.css?1299451144"];
         } else {
-          styles = ["/static/sproutcore/testing/en/current/stylesheet.css?1300829302","/static/sproutcore/core_foundation/en/current/stylesheet.css?1300829302","/static/sproutcore/foundation/en/current/stylesheet.css?1300829302","/static/sproutcore/desktop/en/current/stylesheet.css?1300829302","/static/sproutcore/ace/en/current/stylesheet.css?1300829302","/static/cinnamon_dolce_latte/en/current/stylesheet.css?1300874157"];
+          styles = ["/static/sproutcore/testing/en/current/stylesheet.css?1305983803","/static/sproutcore/core_foundation/en/current/stylesheet.css?1305983802","/static/sproutcore/foundation/en/current/stylesheet.css?1305983803","/static/sproutcore/desktop/en/current/stylesheet.css?1305983802","/static/sproutcore/ace/en/current/stylesheet.css?1305983803","/static/cinnamon_dolce_latte/en/current/stylesheet.css?1299451144"];
         }
 
         var head = document.getElementsByTagName("head")[0];
@@ -204,7 +363,7 @@ SC.setupBodyClassNames = function() {
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -220,61 +379,62 @@ if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
 
 
 </div>
-<script type="text/javascript">String.preferredLanguage = "en";</script>
-  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/jquery/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/handlebars/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/core_foundation/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/datetime/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/desktop/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/datastore/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/ki/foundation/en/current/javascript.js?1297828859"></script>
-  <script type="text/javascript" src="/static/ki/en/current/javascript.js?1295872796"></script>
-  <script type="text/javascript" src="/static/sproutcore/table/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/empty_theme/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/sproutcore/ace/en/current/javascript.js?1300829302"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/core.js?1299432898"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/__sc_chance.js?1300874157"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/author.js?1297382554"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/author_array.js?1300838362"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/citation.js?1300560011"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/citation_array.js?1300838186"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/comment.js?1298738771"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/comment_array.js?1300837854"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/discipline.js?1300880899"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/discipline_array.js?1300923725"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/disciplines_tree.js?1300568479"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/login.js?1300568818"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/post.js?1300570415"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/post_array.js?1300923700"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/topic.js?1300922688"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/topic_array.js?1300906056"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/tree_node.js?1298927047"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/discipline.js?1300836357"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/data_sources/discipline.js?1300923153"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/fixtures/discipline.js?1297029586"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/author.js?1300838396"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/citation.js?1300836608"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/comment.js?1300836784"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/post.js?1300836565"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/topic.js?1300836551"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/resources/strings.js?1300561445"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/routes.js?1299445337"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/application_manager.js?1298927418"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/comment_manager.js?1298927443"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/discipline_topic_manager.js?1298732575"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/logged_in.js?1298719880"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/logged_out.js?1298146384"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/post_manager.js?1300562183"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/shut_down.js?1298147713"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/statechart.js?1298027890"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/resources/login_page.js?1300874315"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/resources/main_page.js?1300921465"></script>
-  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/main.js?1300560395"></script>
+  <script type="text/javascript" src="/static/sproutcore/jquery/en/current/javascript.js?1305983803"></script>
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1305983802"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1305983803"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1305983803"></script>
+  <script type="text/javascript" src="/static/sproutcore/handlebars/en/current/javascript.js?1305983803"></script>
+  <script type="text/javascript" src="/static/sproutcore/core_foundation/en/current/javascript.js?1305983802"></script>
+  <script type="text/javascript" src="/static/sproutcore/datetime/core/en/current/javascript.js?1305983802"></script>
+  <script type="text/javascript" src="/static/sproutcore/datetime/localized/en/current/javascript.js?1305983802"></script>
+  <script type="text/javascript" src="/static/sproutcore/ajax/en/current/javascript.js?1305983802"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1305983803"></script>
+  <script type="text/javascript" src="/static/sproutcore/desktop/en/current/javascript.js?1305983803"></script>
+  <script type="text/javascript" src="/static/sproutcore/datastore/en/current/javascript.js?1305983802"></script>
+  <script type="text/javascript" src="/static/sproutcore/en/current/javascript.js?1305983803"></script>
+  <script type="text/javascript" src="/static/ki/foundation/en/current/javascript.js?1300716162"></script>
+  <script type="text/javascript" src="/static/ki/en/current/javascript.js?1300716162"></script>
+  <script type="text/javascript" src="/static/sproutcore/table/en/current/javascript.js?1305983803"></script>
+  <script type="text/javascript" src="/static/sproutcore/empty_theme/en/current/javascript.js?1305983803"></script>
+  <script type="text/javascript" src="/static/sproutcore/ace/en/current/javascript.js?1305983803"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/core.js?1299451144"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/__sc_chance.js?1299451144"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/author.js?1297384374"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/author_array.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/citation.js?1300571057"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/citation_array.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/comment.js?1295230162"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/comment_array.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/discipline.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/discipline_array.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/disciplines_tree.js?1300571057"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/login.js?1300571057"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/post.js?1300571057"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/post_array.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/topic.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/topic_array.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/controllers/tree_node.js?1298927575"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/discipline.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/data_sources/discipline.js?1306960934"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/fixtures/discipline.js?1297218882"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/author.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/citation.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/comment.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/post.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/models/topic.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/resources/strings.js?1300571057"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/routes.js?1299451144"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/application_manager.js?1298927575"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/comment_manager.js?1298927575"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/discipline_topic_manager.js?1298758747"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/logged_in.js?1298758747"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/logged_out.js?1298758747"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/post_manager.js?1300571057"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/shut_down.js?1298758747"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/states/statechart.js?1298758747"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/resources/login_page.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/resources/main_page.js?1300961808"></script>
+  <script type="text/javascript" src="/static/cinnamon_dolce_latte/en/current/source/main.js?1300571057"></script>
 
   <script>
   SC.benchmarkPreloadEvents['bodyEnd'] = new Date().getTime();

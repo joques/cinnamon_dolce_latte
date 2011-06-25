@@ -1,7 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 //            Portions ©2010 Strobe Inc.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -20,7 +20,7 @@ SC.IMAGE_TYPE_CSS_CLASS = 'CSS_CLASS';
 */
 SC.BLANK_IMAGE_DATAURL = "data:image/gif;base64,R0lGODlhAQABAJAAAP///wAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw==";
 
-SC.BLANK_IMAGE_URL = SC.browser.msie && SC.browser.msie<8 ? '/static/sproutcore/foundation/en/current/source/blank.gif?1300829302' : SC.BLANK_IMAGE_DATAURL;
+SC.BLANK_IMAGE_URL = SC.browser.msie && SC.browser.msie<8 ? '/static/sproutcore/foundation/en/current/source/blank.gif?1305983803' : SC.BLANK_IMAGE_DATAURL;
 
 SC.BLANK_IMAGE = new Image();
 SC.BLANK_IMAGE.src = SC.BLANK_IMAGE_URL;
@@ -51,7 +51,7 @@ SC.ImageView = SC.View.extend(SC.Control, SC.InnerFrame,
 
   ariaRole: 'img',
 
-  displayProperties: 'frame image innerFrame toolTip'.w(),
+  displayProperties: ['frame', 'image', 'innerFrame', 'toolTip', 'imageValue', 'type'],
 
   renderDelegateName: function() {
     return (this.get('useCanvas') ? 'canvasImage' : 'image') + "RenderDelegate";
@@ -150,8 +150,8 @@ SC.ImageView = SC.View.extend(SC.Control, SC.InnerFrame,
     @since SproutCore 1.5
   */
   useCanvas: function() {
-    return SC.platform.supportsCanvas;
-  }.property().cacheable(),
+    return SC.platform.supportsCanvas && !this.get('useStaticLayout') && this.get('type') !== SC.IMAGE_TYPE_CSS_CLASS;
+  }.property('useStaticLayout', 'type').cacheable(),
 
   /**
     If YES, image view will use the SC.imageQueue to control loading.  This
@@ -257,14 +257,15 @@ SC.ImageView = SC.View.extend(SC.Control, SC.InnerFrame,
     if (value !== this._iv_value) {
       this._iv_value = value;
 
-      // While the new image is loading use SC.BLANK_IMAGE as a placeholder
       this.set('image', SC.BLANK_IMAGE);
-      this.set('status', SC.IMAGE_STATE_LOADING);
 
-      // order: image cache, normal load
-      if (!this._loadImageUsingCache()) {
-        if (!this._loadImage()) {
-          // CSS class? this will be handled automatically
+      if (type !== SC.IMAGE_TYPE_CSS_CLASS) {
+        // While the new image is loading use SC.BLANK_IMAGE as a placeholder
+        this.set('status', SC.IMAGE_STATE_LOADING);
+
+        // order: image cache, normal load
+        if (!this._loadImageUsingCache()) {
+          this._loadImage();
         }
       }
     }

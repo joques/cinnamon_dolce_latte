@@ -1,7 +1,7 @@
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
-//            Portions ©2008-2010 Apple Inc. All rights reserved.
+//            Portions ©2008-2011 Apple Inc. All rights reserved.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
@@ -26,12 +26,23 @@
   @since SproutCore 1.2
   @author Tom Dale
 */
+SC.StaticContentView = SC.View.extend(SC.StaticLayout,
+/** @scope SC.StaticContentView.prototype */ {
 
-SC.StaticContentView = SC.View.extend(SC.StaticLayout, {
-/** @scope SC.StaticContentView.prototype */
+  /**
+    @type Array
+    @default ['sc-static-content-view']
+    @see SC.View#classNames
+  */
   classNames: ['sc-static-content-view'],
 
+  /**
+    @type Array
+    @default ['content']
+    @see SC.View#displayProperties
+  */
   displayProperties: ['content'],
+
 
   // ..........................................................
   // PROPERTIES
@@ -42,6 +53,7 @@ SC.StaticContentView = SC.View.extend(SC.StaticLayout, {
     the DOM, so ensure that any user-generated content has been escaped.
 
     @type String
+    @default null
   */
   content: null,
 
@@ -121,11 +133,13 @@ SC.StaticContentView = SC.View.extend(SC.StaticLayout, {
     }
   },
   
+  /** @private */
   touchStart: function(evt){
     evt.allowDefault();
     return YES;
   },
   
+  /** @private */
   touchEnd: function(evt){
     evt.allowDefault();
     return YES;
